@@ -1,6 +1,6 @@
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
-import { flatten } from 'lodash';
+import flatten from 'lodash/flatten';
 import { ProposalContractType, ProposalEvent } from 'typings/contracts';
 import { SlashingProposalForm } from 'typings/forms';
 import { Proposal, SlashingProposal } from 'typings/proposals';

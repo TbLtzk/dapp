@@ -1,9 +1,7 @@
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
 import { initializeConnector } from '@web3-react/core';
-import { EMPTY, Empty } from '@web3-react/empty';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
-import { Url } from '@web3-react/url';
 import { WalletConnect } from '@web3-react/walletconnect';
 
 import { networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
@@ -27,16 +25,10 @@ export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<Coinbas
     })
 );
 
-export const [empty, emptyHooks] = initializeConnector<Empty>(() => EMPTY);
-
 export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>((actions) => new MetaMask({ actions }));
 
 export const [network, networkHooks] = initializeConnector<Network>(
   (actions) => new Network({ actions, urlMap: networkConfig.rpcUrl })
-);
-
-export const [url, urlHooks] = initializeConnector<Url>(
-  (actions) => new Url({ actions, url: networkConfig.rpcUrl })
 );
 
 export const [walletConnect, walletConnectHooks] = initializeConnector<WalletConnect>(

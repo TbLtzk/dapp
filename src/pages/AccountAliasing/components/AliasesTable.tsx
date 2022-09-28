@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
-import { invert } from 'lodash';
+import invert from 'lodash/invert';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';

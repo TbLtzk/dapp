@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
 
 import { motion } from 'framer-motion';
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 import { SwitchContainer } from './styles';
 

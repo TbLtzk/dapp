@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { snakeCase } from 'lodash';
+import snakeCase from 'lodash/snakeCase';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
 import Button from 'ui/Button';

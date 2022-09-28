@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import { isNumber } from 'lodash';
+import isNumber from 'lodash/isNumber';
 
 export function toBigNumber (value: BigNumber.Value): BigNumber {
   return new BigNumber(value);

@@ -1,5 +1,5 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
-import { isBoolean } from 'lodash';
+import isBoolean from 'lodash/isBoolean';
 import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';

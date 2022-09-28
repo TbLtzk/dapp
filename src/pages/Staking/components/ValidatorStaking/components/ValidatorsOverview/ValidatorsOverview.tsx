@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { sumBy } from 'lodash';
+import sumBy from 'lodash/sumBy';
 
 import { ValidatorsOverviewContainer } from '../../styles';
 

@@ -1,5 +1,5 @@
 import { AliasPurpose } from '@q-dev/q-js-sdk';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import { AliasEvent } from 'typings/validator';
 import { toHex } from 'web3-utils';
 

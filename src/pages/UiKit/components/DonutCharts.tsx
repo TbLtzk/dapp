@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 import AddressIcon from 'components/Custom/AddressIcon';
 import Button from 'ui/Button';

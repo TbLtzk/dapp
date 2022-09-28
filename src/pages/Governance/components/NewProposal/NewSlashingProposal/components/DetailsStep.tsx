@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { isNil } from 'lodash';
+import isNil from 'lodash/isNil';
 
 import { FormStep } from 'components/MultiStepForm';
 import Button from 'ui/Button';

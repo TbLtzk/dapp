@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactNode } from 'react';
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 import { CheckContainer } from './styles';
 

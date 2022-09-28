@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 import { RadioContainer } from './styles';
 

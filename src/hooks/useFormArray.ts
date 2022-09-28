@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { uniqueId } from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 import useForm from './useForm';
 

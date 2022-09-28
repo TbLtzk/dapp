@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { ArcProps, Chart, TooltipModel } from 'chart.js';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 import { DonutTooltipOptions, DonutTooltipPosition } from '../types';
 

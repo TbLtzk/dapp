@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { orderBy, round, sumBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
+import round from 'lodash/round';
+import sumBy from 'lodash/sumBy';
 import { fromWei, toWei } from 'web3-utils';
 
 import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTimeLocks, setTotalStake, setWithdrawalInfo } from './reducer';

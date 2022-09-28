@@ -1,6 +1,7 @@
 import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode } from 'react';
 
-import { isNil, uniqueId } from 'lodash';
+import isNil from 'lodash/isNil';
+import uniqueId from 'lodash/uniqueId';
 
 import Button from 'ui/Button';
 
