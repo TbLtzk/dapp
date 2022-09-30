@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import styled from 'styled-components';
 import { Asset, VaultWithId } from 'typings/defi';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useBorrowAssets } from 'store/borrow-assets/hooks';
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';

@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { TransactionReceipt } from 'web3-eth';
 import { fromWei } from 'web3-utils';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 

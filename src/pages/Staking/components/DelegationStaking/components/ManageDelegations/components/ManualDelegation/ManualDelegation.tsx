@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Form, useFormArray } from '@q-dev/form-hooks';
 import { FormDelegation } from 'typings/forms';
 import { toWei } from 'web3-utils';
 
@@ -8,8 +9,6 @@ import FormBlock from 'components/FormBlock';
 import { StakingContainer } from 'pages/Staking/styles';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useFormArray, { Form } from 'hooks/useFormArray';
 
 import ClaimTip from '../../../ClaimTip';
 import DelegationForm from '../DelegationForm';

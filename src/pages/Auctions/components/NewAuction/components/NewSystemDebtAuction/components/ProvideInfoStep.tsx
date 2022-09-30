@@ -1,11 +1,11 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useSystemDebtAuctionForm } from '../NewSystemDebtAuction';
 

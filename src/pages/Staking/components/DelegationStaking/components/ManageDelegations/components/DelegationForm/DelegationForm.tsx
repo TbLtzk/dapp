@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Form, useForm } from '@q-dev/form-hooks';
 import { Validator } from 'typings/validator';
 
 import Input from 'ui/Input';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';
-
-import useForm from 'hooks/useForm';
-import { Form } from 'hooks/useFormArray';
 
 import { formatAsset } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';

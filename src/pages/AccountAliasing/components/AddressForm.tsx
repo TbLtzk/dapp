@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import Button from 'ui/Button';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { trimAddress } from 'utils/strings';
 import { address, required } from 'utils/validators';

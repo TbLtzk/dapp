@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { Validator } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
@@ -7,8 +8,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { StakeFormContainer } from 'pages/Staking/styles';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import ClaimTip from '../../../ClaimTip';
 

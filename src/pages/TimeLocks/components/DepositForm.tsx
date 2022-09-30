@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
@@ -10,8 +11,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
 import Calendar from 'ui/Calendar';
 import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 

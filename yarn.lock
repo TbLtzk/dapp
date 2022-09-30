@@ -1411,6 +1411,13 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
+"@q-dev/form-hooks@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/form-hooks/-/form-hooks-0.2.0.tgz#e4d5a122fc18d133b1207e14b0c020761b833411"
+  integrity sha512-2wvfnq77sj2egrW+jOGk3IN6rshinVWypSgEmpS3U0dK9NGXdABk1tGhjCmu4e6LiqYIHnpEuPZXpA/gXH2xjA==
+  dependencies:
+    lodash "^4.17.21"
+
 "@q-dev/q-js-sdk@^1.4.0":
   version "1.4.0"
   resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-1.4.0.tgz#0e49356e36475755ae298b827b12d21657df1261"

@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import isNil from 'lodash/isNil';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -8,8 +9,6 @@ import Button from 'ui/Button';
 import Input from 'ui/Input';
 import Range from 'ui/Range';
 import Tip from 'ui/Tip';
-
-import useForm from 'hooks/useForm';
 
 import usePurgeSlashing from '../hooks/usePurgeSlashing';
 import { useNewSlashingProposal } from '../NewSlashingProposal';
