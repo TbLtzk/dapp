@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
+
 import TopUpQVault from 'components/TopUpQVault';
 
 import { useQVault } from 'store/q-vault/hooks';
-
-import { formatAsset } from 'utils/numbers';
 
 function DelegationStakeInfo () {
   const { t } = useTranslation();

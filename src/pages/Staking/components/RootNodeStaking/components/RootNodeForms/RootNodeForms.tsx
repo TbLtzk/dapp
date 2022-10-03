@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { toBigNumber } from '@q-dev/utils';
 import { TransactionReceipt } from 'web3-eth';
 import { fromWei } from 'web3-utils';
 
@@ -13,7 +14,6 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 interface Props {

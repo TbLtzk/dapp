@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatAsset, formatNumber, toBigNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
@@ -12,7 +13,6 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
-import { formatAsset, formatNumber, toBigNumber } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 const StyledForm = styled.form`

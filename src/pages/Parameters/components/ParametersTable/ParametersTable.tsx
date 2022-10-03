@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from '@q-dev/utils';
 import parametersJson from 'json/parameters.json';
 import { fromWei } from 'web3-utils';
 
@@ -11,7 +12,6 @@ import { TableWrapper } from './styles';
 import { ParameterValue } from 'store/parameters/reducer';
 
 import { formatDuration } from 'utils/date';
-import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from 'utils/numbers';
 
 const parametersDictionary = parametersJson as {
   [key: string]: {

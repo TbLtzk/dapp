@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Form, useFormArray } from '@q-dev/form-hooks';
+import { formatAsset, toBigNumber } from '@q-dev/utils';
 import { FormDelegation } from 'typings/forms';
 import { toWei } from 'web3-utils';
 
@@ -16,8 +17,6 @@ import DelegationForm from '../DelegationForm';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useValidators } from 'store/validators/hooks';
-
-import { formatAsset, toBigNumber } from 'utils/numbers';
 
 function ManageDelegations () {
   const { t } = useTranslation();

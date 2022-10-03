@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { calculateInterestRate } from '@q-dev/utils';
 import { fromWei, toWei } from 'web3-utils';
 
 import {
@@ -25,7 +26,6 @@ import { countTotalStakeReward, getDelegatorsShare, getQHolderRewardPool } from 
 
 import { dateToUnix } from 'utils/date';
 import { captureError } from 'utils/errors';
-import { calculateInterestRate } from 'utils/numbers';
 
 export function useQVault () {
   const dispatch = useDispatch();

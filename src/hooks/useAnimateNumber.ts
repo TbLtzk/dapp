@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+import { formatNumber } from '@q-dev/utils';
 import { animate } from 'framer-motion';
-
-import { formatNumber } from 'utils/numbers';
 
 const useAnimateNumber = (
   to: string | number,

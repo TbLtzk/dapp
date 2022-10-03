@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
+import { formatNumber } from '@q-dev/utils';
 import uniqueId from 'lodash/uniqueId';
 
 import AddressIcon from 'components/Custom/AddressIcon';
 import Button from 'ui/Button';
 import DonutChart from 'ui/DonutChart';
 import { DonutOption } from 'ui/DonutChart/types';
-
-import { formatNumber } from 'utils/numbers';
 
 function DonutCharts () {
   const [options, setOptions] = useState<DonutOption[]>([

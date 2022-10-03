@@ -1,4 +1,5 @@
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
+import { transformToPercentage } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
 import { RootNodeProposalForm } from 'typings/forms';
 import { Proposal } from 'typings/proposals';
@@ -9,7 +10,6 @@ import { getContractProposals } from '.';
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
-import { transformToPercentage } from 'utils/numbers';
 
 export async function getRootNodeProposals (
   proposals: ProposalEvent[],

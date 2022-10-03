@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
+
 import RedirectAddress from 'components/Custom/RedirectAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
@@ -12,7 +14,6 @@ import { useEnterShortList } from '../ManageValidator/components/ManageBalance/h
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { formatAsset } from 'utils/numbers';
 
 function ValidatorsTable () {
   const { t } = useTranslation();

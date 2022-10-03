@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { toBigNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
@@ -11,7 +12,6 @@ import Input from 'ui/Input';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { toBigNumber } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';
 
 const StyledForm = styled.form`

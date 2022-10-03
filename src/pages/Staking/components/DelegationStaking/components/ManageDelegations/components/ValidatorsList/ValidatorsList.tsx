@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
+
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
@@ -8,8 +10,6 @@ import Table from 'ui/Table';
 import DelegateModal from '../../../DelegateModal';
 
 import { useValidators } from 'store/validators/hooks';
-
-import { formatAsset } from 'utils/numbers';
 
 function ValidatorsList () {
   const { t } = useTranslation();

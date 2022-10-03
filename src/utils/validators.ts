@@ -1,8 +1,8 @@
 import { getValidatorValue, ValidatorFn } from '@q-dev/form-hooks';
 import { ParameterType } from '@q-dev/q-js-sdk';
+import { toBigNumber } from '@q-dev/utils';
 
-import { toBigNumber } from './numbers';
-import { isAddress } from './strings';
+import { isAddress } from './web3';
 
 export {
   address,

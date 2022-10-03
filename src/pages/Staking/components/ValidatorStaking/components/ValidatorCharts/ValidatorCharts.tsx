@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatNumber } from '@q-dev/utils';
+
 import DonutChart from 'ui/DonutChart';
 
 import { StyledWrapper } from '../Validator/styles';
-
-import { formatNumber } from 'utils/numbers';
 
 interface Props {
   validatorShare: string | number;

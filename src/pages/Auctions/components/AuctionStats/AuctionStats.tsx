@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
+
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
 import Button from 'ui/Button';
 
@@ -12,8 +14,6 @@ import { useSystemBalance } from 'store/system-balance/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
-
-import { formatAsset } from 'utils/numbers';
 
 function AuctionStats () {
   const { t } = useTranslation();

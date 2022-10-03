@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { fromWei } from 'web3-utils';
@@ -9,7 +10,6 @@ import ValidatorMenu from './ValidatorMenu';
 import { useValidators } from 'store/validators/hooks';
 
 import { formatDateGMT, unixToDate } from 'utils/date';
-import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   grid-area: staking-info;

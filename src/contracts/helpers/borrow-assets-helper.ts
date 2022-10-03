@@ -1,10 +1,10 @@
 import { VaultStats } from '@q-dev/q-js-sdk';
+import { calculateInterestRate, toBigNumber } from '@q-dev/utils';
 import { Asset, VaultData } from 'typings/defi';
 
 import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 
 import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
-import { calculateInterestRate, toBigNumber } from 'utils/numbers';
 
 export function convertToBigAmount (decimals: number) {
   return (value: number | string) =>

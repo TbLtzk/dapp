@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatAsset, formatNumber, formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 import { VaultWithId } from 'typings/defi';
 import { fromWei } from 'web3-utils';
@@ -17,7 +18,6 @@ import { useTransaction } from 'store/transaction/hooks';
 import { getEpdrParametersInstance } from 'contracts/contract-instance';
 
 import { captureError } from 'utils/errors';
-import { formatAsset, formatNumber, formatPercent } from 'utils/numbers';
 import { amount, min, required } from 'utils/validators';
 
 const StyledForm = styled.form`

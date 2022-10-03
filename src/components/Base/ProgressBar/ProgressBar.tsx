@@ -1,6 +1,6 @@
-import { ProgressBarWrapper } from './styles';
+import { formatNumberFixed } from '@q-dev/utils';
 
-import { formatNumberFixed } from 'utils/numbers';
+import { ProgressBarWrapper } from './styles';
 
 const ProgressBar = ({ value }: { value: string | number }) => {
   return (

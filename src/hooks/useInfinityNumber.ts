@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { formatNumberFixed } from 'utils/numbers';
+import { formatNumberFixed } from '@q-dev/utils';
 
 function useInfinityNumber (
   initialNumber: number | string,

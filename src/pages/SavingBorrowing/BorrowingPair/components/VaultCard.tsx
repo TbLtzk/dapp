@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 import { BorrowingVault } from 'typings/defi';
 
@@ -7,8 +8,6 @@ import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
 import Tooltip from 'ui/Tooltip';
-
-import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .vault-card-title-wrp {

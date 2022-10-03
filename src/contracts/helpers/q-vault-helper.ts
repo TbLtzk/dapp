@@ -1,9 +1,8 @@
 import { StakeDelegationInfo } from '@q-dev/q-js-sdk';
+import { toBigNumber, transformToPercentage } from '@q-dev/utils';
 import { fromWei, toWei } from 'web3-utils';
 
 import { contractRegistryInstance, getQVaultInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance';
-
-import { toBigNumber, transformToPercentage } from 'utils/numbers';
 
 export async function getQHolderRewardPool () {
   const address = await contractRegistryInstance?.instance.methods.getAddress('tokeneconomics.qHolderRewardPool').call();

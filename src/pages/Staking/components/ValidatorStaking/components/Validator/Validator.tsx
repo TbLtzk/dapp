@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { trimString } from '@q-dev/utils';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { Validator } from 'typings/validator';
@@ -24,7 +25,6 @@ import { useFetchValidatorData } from './hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { trimAddress } from 'utils/strings';
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -123,7 +123,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
           <span>{t('GO_TO_VALIDATOR_STAKING')}</span>
         </Button>
       </Link>
-      <PageLayout title={`${t('VALIDATOR')} ${trimAddress(address)}`}>
+      <PageLayout title={`${t('VALIDATOR')} ${trimString(address)}`}>
         <StyledContainer>
           <div className="info">
             <MainInfo />

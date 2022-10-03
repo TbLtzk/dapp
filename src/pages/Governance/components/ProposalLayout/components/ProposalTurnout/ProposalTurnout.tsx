@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatNumber, formatPercent } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 
 import Icon from 'ui/Icon';
@@ -8,7 +9,6 @@ import Progress from 'ui/Progress';
 import { StyledProposalTurnout } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();

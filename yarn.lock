@@ -1429,6 +1429,13 @@
     bn.js "^5.2.1"
     web3 "^1.7.0"
 
+"@q-dev/utils@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/utils/-/utils-0.1.0.tgz#bef4cdf4cdfa67f4bfb562ace7d0bd8d04ae5702"
+  integrity sha512-SM8e7xZwWFgXQoUR494jUaDcoWcyFOtJx4viY5BaikFicoKAd2UJ57LYRs4sf7MpBeZLyKp1OWLLwdlJRmhaPg==
+  dependencies:
+    lodash "^4.17.21"
+
 "@reduxjs/toolkit@^1.8.3":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.3.tgz#9c6a9c497bde43a67618d37a4175a00ae12efeb2"

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatAsset, trimString } from '@q-dev/utils';
 import isNil from 'lodash/isNil';
 
 import { FormStep } from 'components/MultiStepForm';
@@ -16,9 +17,8 @@ import { useNewSlashingProposal } from '../NewSlashingProposal';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useValidators } from 'store/validators/hooks';
 
-import { formatAsset } from 'utils/numbers';
-import { isAddress, trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
+import { isAddress } from 'utils/web3';
 
 function DetailsStep () {
   const { t } = useTranslation();
@@ -94,8 +94,8 @@ function DetailsStep () {
           )}
         >
           {hasActiveProposal
-            ? t('SLASHING_PROPOSAL_ALREADY_EXISTS', { address: trimAddress(form.values.address) })
-            : t('PURGE_SLASHING_DETAILS_TIP', { address: trimAddress(form.values.address) })
+            ? t('SLASHING_PROPOSAL_ALREADY_EXISTS', { address: trimString(form.values.address) })
+            : t('PURGE_SLASHING_DETAILS_TIP', { address: trimString(form.values.address) })
           }
         </Tip>
       )}

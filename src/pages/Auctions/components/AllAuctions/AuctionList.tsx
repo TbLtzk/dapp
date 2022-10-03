@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { fillArray } from '@q-dev/utils';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
@@ -12,8 +13,6 @@ import Illustration from 'ui/Illustration';
 import AuctionCard from './components/AuctionCard';
 
 import { useAuctions } from 'store/auctions/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const PAGE_LIMIT = 10;
 

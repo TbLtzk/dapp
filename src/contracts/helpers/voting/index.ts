@@ -4,6 +4,7 @@ import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contr
 import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIMembershipVotingInstance';
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
+import { transformToPercentage } from '@q-dev/utils';
 import merge from 'lodash/merge';
 import uniqBy from 'lodash/uniqBy';
 import { ContractType, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
@@ -41,7 +42,6 @@ import { getState, getUserAddress } from 'store';
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { captureError } from 'utils/errors';
-import { transformToPercentage } from 'utils/numbers';
 
 async function checkProposal (contract: ProposalsContract, proposal: ProposalEvent) {
   const status = await contract.getStatus(proposal.id);

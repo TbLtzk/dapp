@@ -1,10 +1,10 @@
 import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
+import { calculateInterestRate } from '@q-dev/utils';
 import { fromWei } from 'web3-utils';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
 import { captureError } from 'utils/errors';
-import { calculateInterestRate } from 'utils/numbers';
 
 export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDetails) {
   const interestRate = calculateInterestRate(Number(balanceDetails.interestRate));

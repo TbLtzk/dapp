@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getFixedPercentage } from '@q-dev/utils';
+
 import { useUser } from 'store/user/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
-
-import { getFixedPercentage } from 'utils/numbers';
 
 function useSetDelegatorsShare () {
   const { getVRPDelegatorsShare } = useValidationRewards();

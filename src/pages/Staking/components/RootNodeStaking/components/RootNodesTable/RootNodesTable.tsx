@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset, formatPercent } from '@q-dev/utils';
+
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table, { TableColumn } from 'ui/Table';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
-
-import { formatAsset, formatPercent } from 'utils/numbers';
 
 function RootNodeTable () {
   const { t } = useTranslation();

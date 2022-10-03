@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { toBigNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -12,7 +13,6 @@ import { useTimeLocksAddress } from '../TimeLocks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useVesting } from 'store/vesting/hooks';
 
-import { toBigNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 const StyledForm = styled.form`

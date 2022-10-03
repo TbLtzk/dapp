@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { trimString } from '@q-dev/utils';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
 import { motion } from 'framer-motion';
@@ -12,8 +13,6 @@ import Icon from 'ui/Icon';
 import { AddressDropdown } from './styles';
 
 import { useUser } from 'store/user/hooks';
-
-import { trimAddress } from 'utils/strings';
 
 function UserAddress () {
   const { t } = useTranslation();
@@ -43,7 +42,7 @@ function UserAddress () {
           active={addressOpen}
         >
           <AddressIcon address={user.address} size={20} />
-          <span>{trimAddress(user.address)}</span>
+          <span>{trimString(user.address)}</span>
           <motion.span
             style={{ height: '100%' }}
             animate={{
@@ -59,7 +58,7 @@ function UserAddress () {
       <div className="address-content">
         <h3 className="address-title text-xl font-semibold">
           <AddressIcon address={user.address} size={32} />
-          {trimAddress(user.address)}
+          {trimString(user.address)}
         </h3>
 
         <div className="address-main">

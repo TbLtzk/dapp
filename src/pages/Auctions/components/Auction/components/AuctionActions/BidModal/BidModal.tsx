@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm, useMultiStepForm } from '@q-dev/form-hooks';
+import { toBigNumber } from '@q-dev/utils';
 import snakeCase from 'lodash/snakeCase';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
@@ -18,7 +19,6 @@ import { getStableCoinInstance } from 'contracts/contract-instance';
 import { getAuctionInstance } from 'contracts/helpers/auction';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
-import { toBigNumber } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
 const DEFAULT_VALUES = {

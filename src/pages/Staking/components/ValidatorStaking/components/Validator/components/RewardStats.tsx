@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
 import { Validator } from 'typings/validator';
 
 import Button from 'ui/Button';
@@ -7,7 +8,6 @@ import Button from 'ui/Button';
 import { StyledWrapper } from '../styles';
 
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
-import { formatAsset } from 'utils/numbers';
 
 interface Props {
   onButtonClick: () => void;

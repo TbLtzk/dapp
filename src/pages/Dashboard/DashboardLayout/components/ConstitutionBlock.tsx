@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { trimString } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import CopyToClipboard from 'components/CopyToClipboard';
@@ -14,7 +15,6 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 
 import { formatDateDMY } from 'utils/date';
-import { trimAddress } from 'utils/strings';
 
 const StyledWrapper = styled.div`
   grid-area: constitution;
@@ -118,7 +118,7 @@ function ConstitutionBlock () {
       </div>
 
       <div className="constutition__hash text-xl font-semibold">
-        <span>{trimAddress(constitutionHash)}</span>
+        <span>{trimString(constitutionHash)}</span>
         <CopyToClipboard value={constitutionHash} />
       </div>
 

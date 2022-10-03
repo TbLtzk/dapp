@@ -1,4 +1,5 @@
 import { AuctionStatus, LiquidationAuctionInfo as SdkLiquidationAuctionInfo } from '@q-dev/q-js-sdk';
+import { toBigNumber } from '@q-dev/utils';
 import {
   AuctionInfos,
   CreateLiquidationAuction,
@@ -16,7 +17,6 @@ import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatus
 import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
 
 import { dateToUnix } from 'utils/date';
-import { toBigNumber } from 'utils/numbers';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,

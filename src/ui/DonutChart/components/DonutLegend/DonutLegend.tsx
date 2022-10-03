@@ -6,7 +6,7 @@ import { DonutLegendItem } from '../../types';
 
 import { LegendContainer } from './styles';
 
-import { isAddress } from 'utils/strings';
+import { isAddress } from 'utils/web3';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   items: DonutLegendItem[];

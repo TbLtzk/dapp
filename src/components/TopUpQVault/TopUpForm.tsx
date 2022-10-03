@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
@@ -14,7 +15,6 @@ import { useUser } from 'store/user/hooks';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
-import { formatAsset } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 const StyledForm = styled.form`

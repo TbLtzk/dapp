@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { toBigNumber } from '@q-dev/utils';
 import { Asset } from 'typings/defi';
 import { fromWei } from 'web3-utils';
 
@@ -19,7 +20,6 @@ import { convertFromBigAmount, prepareVaultdata } from 'contracts/helpers/borrow
 import { getBorrowAssetRateAndFee } from 'contracts/helpers/borrowing-core';
 
 import { captureError } from 'utils/errors';
-import { toBigNumber } from 'utils/numbers';
 
 export function useBorrowing () {
   const dispatch = useDispatch();

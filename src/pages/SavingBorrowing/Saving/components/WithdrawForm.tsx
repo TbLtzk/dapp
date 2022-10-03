@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
@@ -9,7 +10,6 @@ import Input from 'ui/Input';
 import { useSaving } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { formatNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 const StyledForm = styled.form`
