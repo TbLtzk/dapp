@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function APRViewer ({ asset }: { asset: Asset }) {
+function BorrowingFeeViewer ({ asset }: { asset: Asset }) {
   const { t } = useTranslation();
   const { borrowingFee } = useBorrowing();
   const { borrowingVaults } = useBorrowingVaults();
@@ -30,7 +30,7 @@ function APRViewer ({ asset }: { asset: Asset }) {
 
   return (
     <StyledWrapper className="block">
-      <h2 className="text-lg">{t('APR')}</h2>
+      <h2 className="text-lg">{t('BORROWING_FEE')}</h2>
       <p ref={borrowingFeeRef} className="text-xl font-semibold">0 %</p>
       <p className="active-vaults-count text-sm">
         <span className="font-light">{t('ACTIVE_VAULTS')}</span>
@@ -41,4 +41,4 @@ function APRViewer ({ asset }: { asset: Asset }) {
   );
 }
 
-export default APRViewer;
+export default BorrowingFeeViewer;

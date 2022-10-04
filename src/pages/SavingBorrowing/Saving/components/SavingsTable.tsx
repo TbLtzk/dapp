@@ -87,17 +87,7 @@ function SavingsTable () {
         columns={[
           {
             dataField: 'depositAsset',
-            text: t('DEPOSIT_ASSET'),
-            formatter: (cell) => (
-              <div className="asset-block">
-                <AssetLogo asset={cell} className="asset-logo" />
-                {cell}
-              </div>
-            )
-          },
-          {
-            dataField: 'interestAsset',
-            text: t('INTEREST_ASSET'),
+            text: t('SAVING_ASSET'),
             formatter: (cell) => (
               <div className="asset-block">
                 <AssetLogo asset={cell} className="asset-logo" />
@@ -107,7 +97,7 @@ function SavingsTable () {
           },
           {
             dataField: 'rate',
-            text: t('APY'),
+            text: t('STABILIZATION_REWARD'),
             headerStyle: { minWidth: '100px' },
             formatter: (cell) => formatPercent(cell)
           },

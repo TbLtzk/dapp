@@ -124,7 +124,7 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
 
       <div className="asset-card-main">
         <div className="asset-card-block">
-          <p className="text-md color-secondary">{t('APR')}</p>
+          <p className="text-md color-secondary">{t('BORROWING_FEE')}</p>
           <p ref={interestRateRef} className="text-xl font-semibold" />
         </div>
 
