@@ -25,7 +25,7 @@ export const StyledSpinner = styled.svg<{ $size: number }>`
       stroke-dashoffset: ${({ $size }) => $size * -0.5};
     }
     100% {
-      stroke-dasharray: 90, ${({ $size }) => $size * 3};
+      stroke-dasharray: 100, ${({ $size }) => $size * 3};
       stroke-dashoffset: ${({ $size }) => $size * -2.5};
     }
   }
