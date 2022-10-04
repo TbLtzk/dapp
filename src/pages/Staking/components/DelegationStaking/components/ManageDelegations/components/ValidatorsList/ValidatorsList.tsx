@@ -9,7 +9,7 @@ import DelegateModal from '../../../DelegateModal';
 
 import { useValidators } from 'store/validators/hooks';
 
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function ValidatorsList () {
   const { t } = useTranslation();
@@ -63,7 +63,7 @@ function ValidatorsList () {
           </div>
         ),
         totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
+        delegatorsShare: formatPercent(validator.delegatorsShare),
         delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
         chooseValidator: <DelegateModal type="validator-select" delegation={validator}/>,
       }))}

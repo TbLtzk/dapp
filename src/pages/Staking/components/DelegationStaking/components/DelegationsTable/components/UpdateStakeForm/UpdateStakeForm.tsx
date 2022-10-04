@@ -15,7 +15,7 @@ import ClaimTip from '../../../ClaimTip';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
 interface Props {
@@ -59,7 +59,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatAsset(delegation.delegatorsShare, ' %')}</p>
+          <p className="text-lg">{formatPercent(delegation.delegatorsShare)}</p>
         </div>
       </div>
 

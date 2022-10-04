@@ -12,7 +12,7 @@ import { useEnterShortList } from '../ManageValidator/components/ManageBalance/h
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function ValidatorsTable () {
   const { t } = useTranslation();
@@ -105,8 +105,8 @@ function ValidatorsTable () {
         totalStake: formatAsset(validator.totalStake, 'Q'),
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        validatorShare: formatAsset(validator.validatorShare, ' %'),
-        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
+        validatorShare: formatPercent(validator.validatorShare),
+        delegatorShare: formatPercent(validator.delegatorsShare),
       }))}
     />
   );

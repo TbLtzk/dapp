@@ -11,7 +11,7 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { fillArray } from 'utils/arrays';
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function DelegationsTable () {
   const { t } = useTranslation();
@@ -115,7 +115,7 @@ function DelegationsTable () {
           semibold
           address={delegation.validator}
         />,
-        delegatorsShare: formatAsset(delegation.delegatorsShare, ' %'),
+        delegatorsShare: formatPercent(delegation.delegatorsShare),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (
