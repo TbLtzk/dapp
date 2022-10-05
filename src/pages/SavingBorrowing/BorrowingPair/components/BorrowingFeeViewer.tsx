@@ -1,10 +1,9 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { Asset } from 'typings/defi';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';
 

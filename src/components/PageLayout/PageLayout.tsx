@@ -1,12 +1,11 @@
 import { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useOnScreen } from '@q-dev/react-hooks';
 import { titleCase } from '@q-dev/utils';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useOnScreen from 'hooks/useOnScreen';
 
 import { PageLayoutContainer } from './styles';
 

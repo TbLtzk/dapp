@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import Button from 'ui/Button';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';

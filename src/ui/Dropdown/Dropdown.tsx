@@ -1,9 +1,8 @@
 import { HTMLAttributes, ReactNode, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { useOnClickOutside } from '@q-dev/react-hooks';
 import { AnimatePresence, motion } from 'framer-motion';
-
-import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import { DropdownContainer } from './styles';
 

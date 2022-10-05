@@ -2,12 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AssetMenu from 'pages/SavingBorrowing/components/AssetMenu';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useSaving } from 'store/saving/hooks';
 

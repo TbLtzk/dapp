@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useSystemBalance } from 'store/system-balance/hooks';
 

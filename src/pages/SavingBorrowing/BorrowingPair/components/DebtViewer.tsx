@@ -2,14 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { Asset } from 'typings/defi';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';
 import { useTransaction } from 'store/transaction/hooks';

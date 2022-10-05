@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { fetchBlockNumber } from 'contracts/helpers/block-number';
 

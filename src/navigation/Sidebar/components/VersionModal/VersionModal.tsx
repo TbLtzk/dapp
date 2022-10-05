@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ConnectionInfo, Web3Adapter } from '@q-dev/q-js-sdk';
+import { useInterval } from '@q-dev/react-hooks';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 import Modal from 'ui/Modal';
-
-import useInterval from 'hooks/useInterval';
 
 import packageJson from '../../../../../package.json';
 

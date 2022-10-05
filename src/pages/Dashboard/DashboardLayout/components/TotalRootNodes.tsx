@@ -2,13 +2,12 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 

@@ -2,15 +2,13 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { useAnimateNumber, useInfinityNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInfinityNumber from 'hooks/useInfinityNumber';
 
 import { useSystemBalance } from 'store/system-balance/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';

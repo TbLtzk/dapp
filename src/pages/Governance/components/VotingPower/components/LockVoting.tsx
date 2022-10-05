@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import LockForm from './LockForm';
 

@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { useLocalStorage } from '@q-dev/react-hooks';
+
 import Check from 'ui/Check';
 import Modal from 'ui/Modal';
 
-import useLocalStorage from 'hooks/useLocalStorage';
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { StyledConnectWalletModal } from '../../styles';

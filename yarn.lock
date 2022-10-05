@@ -1429,6 +1429,11 @@
     bn.js "^5.2.1"
     web3 "^1.7.0"
 
+"@q-dev/react-hooks@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/react-hooks/-/react-hooks-0.1.0.tgz#5b59ca8db23f3372cc731f771dcc845502704807"
+  integrity sha512-w6JhnqTFskh+oAnIJyzPpgr4y7iCo2bDJjhYm1yOfyFCZY7cD5XcW3BqK+93FwQxkrlcVr0SMtVHvI1UKCeuKA==
+
 "@q-dev/utils@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@q-dev/utils/-/utils-0.1.0.tgz#bef4cdf4cdfa67f4bfb562ace7d0bd8d04ae5702"

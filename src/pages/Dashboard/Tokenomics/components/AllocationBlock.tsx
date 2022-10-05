@@ -1,11 +1,10 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 const StyledWrapper = styled.div`
   .allocation-block-btn {

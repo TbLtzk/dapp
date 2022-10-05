@@ -1,12 +1,11 @@
 import { HTMLAttributes, ReactNode, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { useOnClickOutside } from '@q-dev/react-hooks';
 import { motion } from 'framer-motion';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
-
-import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import { MenuContainer } from './styles';
 

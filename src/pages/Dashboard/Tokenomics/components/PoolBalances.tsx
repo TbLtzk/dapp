@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useInfinityNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-
-import useInfinityNumber from 'hooks/useInfinityNumber';
 
 import { useSystemBalance } from 'store/system-balance/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';

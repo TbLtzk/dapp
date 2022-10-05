@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
 
+import { useLocalStorage } from '@q-dev/react-hooks';
 import { ThemeProvider } from 'styled-components';
 import { darkColors, lightColors, THEMES } from 'styles/colors';
 import { GlobalStyle } from 'styles/globalStyle';
 import { ResetStyle } from 'styles/reset';
 import { TextStyle } from 'styles/text';
-
-import useLocalStorage from 'hooks/useLocalStorage';
 
 interface Props {
   children: ReactNode;
