@@ -41,7 +41,7 @@ function Range ({
   };
 
   const handleInputChange = (val: string) => {
-    const percent = Number(val) > 100 ? '100' : formatNumber(val, 1) || '0';
+    const percent = Number(val) > 100 ? '100' : formatNumber(val || '0', 1) || '0';
     onChange(percent, getAbsoluteValue(val));
   };
 

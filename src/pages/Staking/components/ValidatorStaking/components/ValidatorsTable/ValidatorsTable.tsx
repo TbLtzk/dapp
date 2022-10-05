@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatAsset } from '@q-dev/utils';
+import { formatAsset, formatPercent } from '@q-dev/utils';
 
 import RedirectAddress from 'components/Custom/RedirectAddress';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
@@ -106,8 +106,8 @@ function ValidatorsTable () {
         totalStake: formatAsset(validator.totalStake, 'Q'),
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        validatorShare: formatAsset(validator.validatorShare, ' %'),
-        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
+        validatorShare: formatPercent(validator.validatorShare),
+        delegatorShare: formatPercent(validator.delegatorsShare),
       }))}
     />
   );

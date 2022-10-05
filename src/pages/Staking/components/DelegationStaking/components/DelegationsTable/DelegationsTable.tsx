@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fillArray, formatAsset } from '@q-dev/utils';
+import { fillArray, formatAsset, formatPercent } from '@q-dev/utils';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
@@ -114,7 +114,7 @@ function DelegationsTable () {
           semibold
           address={delegation.validator}
         />,
-        delegatorsShare: formatAsset(delegation.delegatorsShare, ' %'),
+        delegatorsShare: formatPercent(delegation.delegatorsShare),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (

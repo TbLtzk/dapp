@@ -14,8 +14,8 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import AssetPairLogos from '../components/AssetPairLogos';
 
-import APRViewer from './components/APRViewer';
 import BorrowingBalance from './components/BorrowingBalance';
+import BorrowingFeeViewer from './components/BorrowingFeeViewer';
 import CollateralBalance from './components/CollateralBalance';
 import DebtViewer from './components/DebtViewer';
 import VaultsList from './components/VaultsList';
@@ -119,7 +119,7 @@ function BorrowingPair ({ match }: RouteComponentProps<{
       </div>
 
       <div className="borrowing-pair-overview">
-        <APRViewer asset={collateral} />
+        <BorrowingFeeViewer asset={collateral} />
         <CollateralBalance asset={collateral} />
         <BorrowingBalance />
         <DebtViewer asset={collateral} />

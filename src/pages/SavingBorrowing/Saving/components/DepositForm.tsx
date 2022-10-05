@@ -83,7 +83,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
         </p>
 
         <p className="deposit-balance text-sm">
-          <span className="font-light">{t('APY')}</span>
+          <span className="font-light">{t('STABILIZATION_REWARD')}</span>
           <span>{formatPercent(savingBalanceDetails.interestRate)}</span>
         </p>
 

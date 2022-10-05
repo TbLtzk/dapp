@@ -26,7 +26,7 @@ export async function getAliasEvents (): Promise<AliasEvent[]> {
   return orderBy([...updatedEvents, ...reservedEvents], 'blockNumber', 'desc')
     .map(item => ({
       event: item.event,
-      address: item.address,
+      address: item.returnValues[0],
       alias: item.returnValues[1],
       role: toHex(item.returnValues[2]) as AliasPurpose,
     }));

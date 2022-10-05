@@ -9,7 +9,7 @@ import Input from 'ui/Input';
 import Select from 'ui/Select';
 import Tip from 'ui/Tip';
 
-import { address, amount, required } from 'utils/validators';
+import { address, max, required } from 'utils/validators';
 
 interface Props {
   onChange: (form: Form<{ address: string; amount: string }>) => void;
@@ -41,7 +41,7 @@ function DelegationForm ({ onChange, validators, availableValidators, delegatedS
     initialValues: { address: '', amount: '' },
     validators: {
       address: [required, address, duplicateAddress(addresses), validator(validators)],
-      amount: [required, amount(maxAmount)],
+      amount: [required, max(maxAmount)],
     },
   });
 

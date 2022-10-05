@@ -14,7 +14,7 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { max, required } from 'utils/validators';
+import { amount, required } from 'utils/validators';
 
 interface Props {
   formType: string | null;
@@ -49,7 +49,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, max(getMaxAmount())] },
+    validators: { amount: [required, amount(getMaxAmount())] },
     onSubmit: ({ amount }) => {
       let successMessage: string;
       let submitFn: () => Promise<TransactionReceipt>;

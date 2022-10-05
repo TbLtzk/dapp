@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
-import { formatAsset } from '@q-dev/utils';
+import { formatPercent } from '@q-dev/utils';
 import { Validator } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
@@ -56,7 +56,7 @@ function DelegateStakeForm ({ delegation, onSubmit }: Props) {
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatAsset(delegation.delegatorsShare, ' %')}</p>
+          <p className="text-lg">{formatPercent(delegation.delegatorsShare)}</p>
         </div>
       </div>
 

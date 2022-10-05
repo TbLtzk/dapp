@@ -213,6 +213,16 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           try {
             await connector.activate(isSameNetwork ? undefined : connectorParametersMap[newChainId]);
           } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((error as any)?.code === -32603) {
+              await connector.provider?.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  ...connectorParametersMap[newChainId],
+                  chainId: `0x${connectorParametersMap[newChainId].chainId}`
+                }]
+              });
+            }
             setSwitchNetworkError(true);
           }
           setSelectedChainId(newChainId);

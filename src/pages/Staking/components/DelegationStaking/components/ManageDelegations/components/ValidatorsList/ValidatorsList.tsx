@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { formatAsset } from '@q-dev/utils';
+import { formatAsset, formatPercent } from '@q-dev/utils';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -63,7 +63,7 @@ function ValidatorsList () {
           </div>
         ),
         totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
+        delegatorsShare: formatPercent(validator.delegatorsShare),
         delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
         chooseValidator: <DelegateModal type="validator-select" delegation={validator}/>,
       }))}

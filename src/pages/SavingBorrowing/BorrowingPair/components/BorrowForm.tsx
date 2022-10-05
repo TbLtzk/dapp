@@ -97,7 +97,7 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
 
       <div className="borrow-balances">
         <p className="borrow-balance text-sm">
-          <span className="font-light">{t('APR')}</span>
+          <span className="font-light">{t('BORROWING_FEE')}</span>
           <span>{formatPercent(borrowVault.borrowingDetails.borrowingFee)}</span>
         </p>
 
