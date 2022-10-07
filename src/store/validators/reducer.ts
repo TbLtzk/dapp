@@ -28,6 +28,7 @@ interface ValidatorsState {
 
   withdrawalInfo: ValidatorsWithdrawalInfo;
   timeLocks: TimeLockEntry[];
+  timeLocksLoading: boolean;
   minimumTimeLock: string;
 }
 
@@ -58,6 +59,7 @@ const initialState: ValidatorsState = {
   validatorsMonitoringLoading: true,
 
   timeLocks: [],
+  timeLocksLoading: true,
   minimumTimeLock: '0',
 };
 
@@ -115,6 +117,7 @@ const validatorsSlice = createSlice({
 
     setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
       state.timeLocks = payload;
+      state.timeLocksLoading = false;
     },
 
     setMinimumTimeLock: (state, { payload }: PayloadAction<string>) => {

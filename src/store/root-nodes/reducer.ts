@@ -18,6 +18,7 @@ interface RootNodesState {
 
   minimumTimeLock: string;
   timeLocks: TimeLockEntry[];
+  timeLocksLoading: boolean;
 }
 
 const initialState: RootNodesState = {
@@ -33,7 +34,8 @@ const initialState: RootNodesState = {
   },
 
   minimumTimeLock: '0',
-  timeLocks: []
+  timeLocks: [],
+  timeLocksLoading: true,
 };
 
 const rootNodesSlice = createSlice({
@@ -67,6 +69,7 @@ const rootNodesSlice = createSlice({
 
     setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
       state.timeLocks = payload;
+      state.timeLocksLoading = false;
     }
   }
 });

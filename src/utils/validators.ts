@@ -58,9 +58,9 @@ export const amount: ValidatorFn<string | number> = max => (val, form) => {
   };
 };
 
-export const min: ValidatorFn<string | number, string | number> = min => (val, form) => {
-  const value = toBigNumber(val);
-  const validatorValue = toBigNumber(getValidatorValue(min, form));
+export const min: ValidatorFn<string | number> = min => (val, form) => {
+  const value = toBigNumber(String(val));
+  const validatorValue = toBigNumber(String(getValidatorValue(min, form)));
 
   return {
     isValid: value.comparedTo(validatorValue) >= 0,
@@ -68,9 +68,9 @@ export const min: ValidatorFn<string | number, string | number> = min => (val, f
   };
 };
 
-export const max: ValidatorFn<string | number, string | number> = max => (val, form) => {
-  const value = toBigNumber(val);
-  const validatorValue = toBigNumber(getValidatorValue(max, form));
+export const max: ValidatorFn<string | number> = max => (val, form) => {
+  const value = toBigNumber(String(val));
+  const validatorValue = toBigNumber(String(getValidatorValue(max, form)));
 
   return {
     isValid: value.comparedTo(validatorValue) <= 0,

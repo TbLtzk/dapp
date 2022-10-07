@@ -63,6 +63,8 @@ interface Props {
   balance: string;
   contract: TimeLockContractType;
   timeLockBalance: string;
+  isLoadingTimeLocks?: boolean;
+  isDepositsLimitReached?: boolean;
 }
 
 function LocksOverview ({
@@ -70,6 +72,8 @@ function LocksOverview ({
   balance,
   contract,
   timeLockBalance,
+  isLoadingTimeLocks,
+  isDepositsLimitReached,
 }: Props) {
   const { t } = useTranslation();
   const { address } = useTimeLocksAddress();
@@ -82,7 +86,11 @@ function LocksOverview ({
     <StyledWrapper className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('OVERVIEW')}</h2>
-        <LockActions contract={contract} />
+        <LockActions
+          contract={contract}
+          isLoadingTimeLocks={isLoadingTimeLocks}
+          isDepositsLimitReached={isDepositsLimitReached}
+        />
       </div>
 
       <div className="lock-values">

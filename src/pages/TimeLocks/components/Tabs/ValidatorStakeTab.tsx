@@ -5,6 +5,7 @@ import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
 import useInterval from 'hooks/useInterval';
 
+import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
 
@@ -20,7 +21,8 @@ function ValidatorStakeTab () {
     validatorsTimeLocks,
     loadValidatorAccountableSelfStake,
     loadValidatorMinimumTimeLock,
-    loadValidatorTimeLocks
+    loadValidatorTimeLocks,
+    validatorsTimeLocksLoading,
   } = useValidators();
 
   useInterval(() => {
@@ -33,6 +35,8 @@ function ValidatorStakeTab () {
     loadValidatorTimeLocks(address);
   }, [address]);
 
+  const isDepositsLimitReached = useTimeLockLimits(validatorsTimeLocks);
+
   return (
     <div>
       <LocksOverview
@@ -40,12 +44,15 @@ function ValidatorStakeTab () {
         balance={validatorAccountableSelfStake}
         contract="validators"
         timeLockBalance={validatorsMinimumTimeLock}
+        isLoadingTimeLocks={validatorsTimeLocksLoading}
+        isDepositsLimitReached={isDepositsLimitReached}
       />
 
       <TimeLocksTable
         address={address}
         contract="validators"
         lockAmountData={validatorsTimeLocks}
+        isLoading={validatorsTimeLocksLoading}
       />
     </div>
   );

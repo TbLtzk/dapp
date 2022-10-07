@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { TimeLockEntry } from '@q-dev/q-js-sdk';
+import { getLockStatus } from 'helpers/time-locks';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { fromWei } from 'web3-utils';
@@ -35,25 +36,18 @@ interface Props {
   contract: TimeLockContractType;
   lockAmountData: TimeLockEntry[];
   address: string;
+  isLoading?: boolean;
 }
 
 function TimeLocksTable ({
   contract,
   lockAmountData,
-  address
+  address,
+  isLoading,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { purgeTimeLocks } = useLockedAmount();
-
-  const getLockStatus = (lock: TimeLockEntry) => {
-    const startDate = unixToDate(lock.releaseStart.toString());
-    const endDate = unixToDate(lock.releaseEnd.toString());
-
-    if (startDate > new Date()) return TimeLockStatus.locked;
-    if (endDate < new Date()) return TimeLockStatus.unlocked;
-    return TimeLockStatus.unlocking;
-  };
 
   const statusToText: Record<TimeLockStatus, string> = {
     locked: t('LOCKED'),
@@ -85,6 +79,7 @@ function TimeLocksTable ({
           tiny
           perPage={10}
           emptyTableMessage={t('NO_TIME_LOCKS')}
+          loading={isLoading}
           table={lockAmountData.map((lock, i) => ({
             id: i + 1,
             amount: fromWei(lock.amount) + ' Q',

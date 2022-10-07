@@ -49,6 +49,7 @@ export function useValidators () {
 
   const validatorsMinimumTimeLock = useAppSelector(({ validators }) => validators.minimumTimeLock);
   const validatorsTimeLocks = useAppSelector(({ validators }) => validators.timeLocks);
+  const validatorsTimeLocksLoading = useAppSelector(({ validators }) => validators.timeLocksLoading);
 
   const isValidator = useAppSelector(({ validators }) => validators.isValidator);
   const validatorWithdrawalInfo = useAppSelector(({ validators }) => validators.withdrawalInfo);
@@ -238,6 +239,7 @@ export function useValidators () {
 
     validatorsMinimumTimeLock,
     validatorsTimeLocks,
+    validatorsTimeLocksLoading,
 
     isValidator,
     validatorWithdrawalInfo,

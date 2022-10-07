@@ -1111,5 +1111,7 @@
   "SHARE_ACTION": "Share",
   "VOTING_WEIGHT": "Voting Weight",
   "ERROR_TRANSACTION_REVERTED": "Transaction reverted",
-  "STABILIZATION_REWARD": "Stabilization reward (p.a)"
+  "STABILIZATION_REWARD": "Stabilization reward (p.a)",
+  "MINIMUM_AMOUNT": "Minimum: {{amount}}",
+  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Time locks limit is reached. Please, wait for unlocking existing locks."
 }

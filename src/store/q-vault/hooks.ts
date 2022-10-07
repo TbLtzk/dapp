@@ -48,6 +48,7 @@ export function useQVault () {
 
   const qVaultMinimumTimeLock = useAppSelector(({ qVault }) => qVault.qVaultMinimumTimeLock);
   const qVaultTimeLocks = useAppSelector(({ qVault }) => qVault.qVaultTimeLocks);
+  const qVaultTimeLocksLoading = useAppSelector(({ qVault }) => qVault.qVaultTimeLocksLoading);
 
   async function loadWalletBalance () {
     try {
@@ -304,6 +305,7 @@ export function useQVault () {
     qvBalance,
     qVaultMinimumTimeLock,
     qVaultTimeLocks,
+    qVaultTimeLocksLoading,
     delegationStakeInfo,
     delegationStakeInfoLoading,
 
