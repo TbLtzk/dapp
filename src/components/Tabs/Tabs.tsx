@@ -14,10 +14,11 @@ export type TabsType = {
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   tabs: TabsType[];
+  noAnimation?: boolean;
 }
 
-function Tabs ({ tabs, ...rest }: Props) {
-  const { pathname } = useLocation();
+function Tabs ({ tabs, noAnimation, ...rest }: Props) {
+  const { pathname, hash } = useLocation();
 
   return (
     <TabsContainer {...rest}>
@@ -28,13 +29,14 @@ function Tabs ({ tabs, ...rest }: Props) {
             className="tab text-lg"
             activeClassName="active font-semibold"
             to={link}
+            isActive={() => (pathname + hash).includes(link)}
           >
             <span className="tab-label">{label}</span>
 
-            {link === pathname && (
+            {(link === pathname || link === pathname + hash) && (
               <motion.div
                 className="tab-active"
-                layoutId="underline"
+                layoutId={noAnimation ? undefined : 'underline'}
                 transition={{ duration: 0.2 }}
               />
             )}

@@ -6,7 +6,7 @@ export const darkColors = {
   active: COLORS.grey000,
   countBackground: COLORS.blue400,
   countNumber: COLORS.white,
-  border: COLORS.blue800,
+  border: COLORS.blue700,
   borderHover: COLORS.blue500,
   borderActive: COLORS.grey100,
   borderFocus: COLORS.grey400,

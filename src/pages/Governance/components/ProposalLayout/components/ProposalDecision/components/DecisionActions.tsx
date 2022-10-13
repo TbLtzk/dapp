@@ -14,6 +14,7 @@ import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
+import { ObjectionStatus } from 'constants/slashing';
 
 interface Props {
   proposal: SlashingProposal;
@@ -41,7 +42,8 @@ function DecisionActions ({ proposal }: Props) {
   const isDecisionEnded = decision.endDate.getTime() < Date.now();
   const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
   const canProposeDecision = decision.proposer !== user.address &&
-    (isDecisionEnded || decision.proposer === ZERO_ADDRESS);
+    (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
+    proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

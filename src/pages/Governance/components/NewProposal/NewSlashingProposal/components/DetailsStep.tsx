@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Range, Tip } from '@q-dev/q-ui-kit';
 import { isNil } from 'lodash';
-import { isAddress } from 'web3-utils';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -18,7 +17,7 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { formatAsset } from 'utils/numbers';
-import { trimAddress } from 'utils/strings';
+import { isAddress, trimAddress } from 'utils/strings';
 import { address, percent, required, url } from 'utils/validators';
 
 function DetailsStep () {
@@ -44,7 +43,7 @@ function DetailsStep () {
   const isRootType = values.type === 'root-slashing';
   const memberError = isRootType ? 'Not a root node' : 'Not a validator';
 
-  const { shouldPurge, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
+  const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
 
   useEffect(() => {
     if (isRootType) {
@@ -83,7 +82,7 @@ function DetailsStep () {
       {shouldPurge && (
         <Tip
           type="warning"
-          action={(
+          action={!hasActiveProposal && (
             <Button
               compact
               type="button"
@@ -94,9 +93,10 @@ function DetailsStep () {
             </Button>
           )}
         >
-          {t('PURGE_SLASHING_DETAILS_TIP', {
-            address: trimAddress(form.values.address)
-          })}
+          {hasActiveProposal
+            ? t('SLASHING_PROPOSAL_ALREADY_EXISTS', { address: trimAddress(form.values.address) })
+            : t('PURGE_SLASHING_DETAILS_TIP', { address: trimAddress(form.values.address) })
+          }
         </Tip>
       )}
 

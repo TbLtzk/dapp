@@ -8,19 +8,15 @@ import { fromWei, toWei } from 'web3-utils';
 import { setBorrowAllowanceDeposit, setBorrowAllowanceError, setBorrowAllowanceRepay, setBorrowVault, setBorrowVaultError } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
-import { useBorrowingCore } from 'store/borrowing-core/hooks';
-import { useSavingAssets } from 'store/saving-assets/hooks';
 
-import { getBorrowingCoreInstance } from 'contracts/contract-instance';
-import { convertToBigAmount, getDeFiContractByType, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
+import { getBorrowingCoreInstance, getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
+import { convertToBigAmount, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { captureError } from 'utils/errors';
 
 export function useBorrowAssets () {
   const dispatch = useDispatch();
-  const { getOutstandingDebt, getTotalSavingBalance } = useBorrowingCore();
-  const { getSavingAvailableToDeposit } = useSavingAssets();
 
   const borrowVault = useAppSelector(({ borrowAssets }) => borrowAssets.borrowVault);
   const borrowVaultLoading = useAppSelector(({ borrowAssets }) => borrowAssets.borrowVaultLoading);
@@ -46,14 +42,14 @@ export function useBorrowAssets () {
 
   async function getBorrowingAllowance ({ borrowType, asset }: { borrowType: ApproveType; asset: Asset }) {
     try {
-      const contract = await getDeFiContractByType(borrowType, asset);
-      const borrowingCoreInstance = await getBorrowingCoreInstance();
-      const allowance = await contract.allowance(getUserAddress(), borrowingCoreInstance.address);
-
+      const { address } = await getBorrowingCoreInstance();
       if (borrowType === 'deposit') {
-        const allowAmount = await allowance.call();
+        const contract = await getBorrowingInstance(asset);
+        const allowAmount = await contract.methods.allowance(getUserAddress(), address).call();
         dispatch(setBorrowAllowanceDeposit(fromWei(allowAmount)));
       } else {
+        const contract = await getStableCoinInstance();
+        const allowance = await contract.allowance(getUserAddress(), address);
         dispatch(setBorrowAllowanceRepay(fromWei(allowance)));
       }
     } catch (error) {
@@ -67,15 +63,16 @@ export function useBorrowAssets () {
     asset: Asset;
   }) {
     const userAddress = getUserAddress();
-    const borrowingContract = await getBorrowingCoreInstance();
-    const contract = await getDeFiContractByType(borrowType, asset);
+    const { address } = await getBorrowingCoreInstance();
 
     let receipt: TransactionReceipt;
     if (borrowType === 'deposit') {
-      receipt = await contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT)
+      const contract = await getBorrowingInstance(asset);
+      receipt = await contract.methods.approve(address, MAX_APPROVE_AMOUNT)
         .send({ from: userAddress });
     } else {
-      receipt = await contract.approve(borrowingContract.address, MAX_APPROVE_AMOUNT, { from: userAddress });
+      const contract = await getStableCoinInstance();
+      receipt = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
     }
 
     getBorrowingAllowance({ borrowType, asset });
@@ -87,10 +84,6 @@ export function useBorrowAssets () {
     const receipt = await contract.generateStc(vaultId, toWei(amount), { from: getUserAddress() });
 
     getBorrowingVault(vaultId);
-    getOutstandingDebt();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-
     return receipt;
   }
 
@@ -99,10 +92,6 @@ export function useBorrowAssets () {
     const receipt = await contract.payBackStc(vaultId, toWei(amount), { from: getUserAddress() });
 
     getBorrowingVault(vaultId);
-    getOutstandingDebt();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-
     return receipt;
   }
 
@@ -118,10 +107,6 @@ export function useBorrowAssets () {
     });
 
     getBorrowingVault(vaultId);
-    getOutstandingDebt();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-
     return receipt;
   }
 
@@ -136,12 +121,8 @@ export function useBorrowAssets () {
     const receipt = await contract.withdrawCol(vaultId, convertAmount(amount), {
       from: getUserAddress()
     });
-    await getBorrowingVault(vaultId);
 
-    getOutstandingDebt();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-
+    getBorrowingVault(vaultId);
     return receipt;
   }
 

@@ -40,9 +40,10 @@ export const StyledLink = styled(NavLink)`
     display: grid;
     place-content: center;
     align-items: flex-end;
-    width: 20px;
+    padding: 0 4px;
+    min-width: 20px;
     height: 20px;
-    border-radius: 50%;
+    border-radius: 10px;
     background-color: ${({ theme }) => getSidebarColor(theme, 'linkIconBg')};
     color: ${({ theme }) => getSidebarColor(theme, 'linkIconText')};
   }

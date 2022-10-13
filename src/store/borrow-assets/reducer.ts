@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { VaultData } from 'typings/defi';
+import { Asset, VaultData } from 'typings/defi';
 
 interface BorrowAssetsState {
   borrowVault: VaultData;
@@ -12,7 +12,27 @@ interface BorrowAssetsState {
 }
 
 const initialState: BorrowAssetsState = {
-  borrowVault: {} as VaultData,
+  borrowVault: {
+    collateralDetails: {
+      collateralAsset: '' as Asset,
+      lockedCollateral: '0',
+      assetPrice: '0',
+      availableWithdraw: '0',
+      availableDeposit: '0',
+      liquidationPrice: '0',
+      decimals: 0
+    },
+    borrowingDetails: {
+      collateralValue: 0,
+      borrowingFee: 0,
+      borrowingAsset: '0',
+      borrowingLimit: '0',
+      availableBorrow: '0',
+      availableRepay: '0',
+      outstandingDebt: '0',
+      liquidationLimit: '0',
+    }
+  },
   borrowVaultLoading: true,
   borrowVaultError: null,
 

@@ -48,6 +48,7 @@ export function useQVault () {
 
   const qVaultMinimumTimeLock = useAppSelector(({ qVault }) => qVault.qVaultMinimumTimeLock);
   const qVaultTimeLocks = useAppSelector(({ qVault }) => qVault.qVaultTimeLocks);
+  const qVaultTimeLocksLoading = useAppSelector(({ qVault }) => qVault.qVaultTimeLocksLoading);
 
   async function loadWalletBalance () {
     try {
@@ -245,7 +246,7 @@ export function useQVault () {
     try {
       const contract = await getVotingWeightProxyInstance();
       const info = await contract.getDelegationInfo(address);
-      dispatch(setDelegationInfo(info));
+      dispatch(setDelegationInfo({ ...info }));
     } catch (error) {
       captureError(error);
     }
@@ -304,6 +305,7 @@ export function useQVault () {
     qvBalance,
     qVaultMinimumTimeLock,
     qVaultTimeLocks,
+    qVaultTimeLocksLoading,
     delegationStakeInfo,
     delegationStakeInfoLoading,
 

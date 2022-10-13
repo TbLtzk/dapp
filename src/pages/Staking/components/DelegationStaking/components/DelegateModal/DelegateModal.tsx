@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal } from '@q-dev/q-ui-kit';
@@ -9,15 +9,30 @@ import Button from 'components/Button';
 import UpdateStakeForm from '../DelegationsTable/components/UpdateStakeForm';
 import DelegateStakeForm from '../ManageDelegations/components/DelegateStakeForm';
 
+import { useQVault } from 'store/q-vault/hooks';
+
 export interface DelegateModalProps {
   delegation: Delegation | Validator;
   btnTitle?: string;
+  onClose?: () => void;
   type: 'validator-select' | 'delegator-select';
 }
 
-function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
+function DelegateModal ({ delegation, type, btnTitle, onClose = () => {} }: DelegateModalProps) {
   const { t } = useTranslation();
+
+  const { loadDelegationStakeInfo } = useQVault();
+
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    loadDelegationStakeInfo();
+  }, []);
+
+  const handleClose = () => {
+    setModalOpen(false);
+    onClose();
+  };
 
   const modalTypes = {
     'delegator-select': {
@@ -27,7 +42,7 @@ function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
       form: (
         <UpdateStakeForm
           delegation={delegation as Delegation}
-          onSubmit={() => setModalOpen(false)}
+          onSubmit={handleClose}
         />
       ),
     },
@@ -38,7 +53,7 @@ function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
       form: (
         <DelegateStakeForm
           delegation={delegation as Validator}
-          onSubmit={() => setModalOpen(false)}
+          onSubmit={handleClose}
         />),
     },
   };
@@ -54,7 +69,7 @@ function DelegateModal ({ delegation, type, btnTitle }: DelegateModalProps) {
         open={modalOpen}
         title={modalType.title}
         tip={modalType.tip}
-        onClose={() => setModalOpen(false)}
+        onClose={handleClose}
       >
         {modalType.form}
       </Modal>

@@ -61,4 +61,10 @@ export enum RoutePaths {
   timeLocksRootStake = '/time-locks/root-stake',
   timeLocksValidatorStake = '/time-locks/validator-stake',
   timeLocksVestingAccount = '/time-locks/vesting-account',
+
+  savingBorrowing = '/saving-borrowing',
+  savingBorrowingTab = '/saving-borrowing/:tab?',
+  saving = '/saving-borrowing/saving',
+  borrowing = '/saving-borrowing/borrowing',
+  borrowingPair = '/saving-borrowing/borrowing/:collateral-:borrow',
 }

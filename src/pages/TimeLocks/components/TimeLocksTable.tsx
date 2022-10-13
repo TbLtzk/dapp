@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { TimeLockEntry } from '@q-dev/q-js-sdk';
+import { getLockStatus } from 'helpers/time-locks';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { fromWei } from 'web3-utils';
@@ -25,8 +26,8 @@ const StatusMark = styled.span<{ status: TimeLockStatus }>`
   margin-right: 8px;
   border-radius: 50%;
   background-color: ${({ status, theme }) => {
-    if (status === TimeLockStatus.active) return theme.colors.success;
-    if (status === TimeLockStatus.pending) return theme.colors.warning;
+    if (status === TimeLockStatus.unlocked) return theme.colors.success;
+    if (status === TimeLockStatus.unlocking) return theme.colors.warning;
     return theme.colors.error;
   }};
 `;
@@ -35,48 +36,40 @@ interface Props {
   contract: TimeLockContractType;
   lockAmountData: TimeLockEntry[];
   address: string;
+  isLoading?: boolean;
 }
 
 function TimeLocksTable ({
   contract,
   lockAmountData,
-  address
+  address,
+  isLoading,
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { purgeTimeLocks } = useLockedAmount();
 
-  function onSetPurgeTimeLocksAmount () {
-    submitTransaction({
-      successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
-      submitFn: () => purgeTimeLocks({ address, contractType: contract })
-    });
-  }
-
-  function getLockStatus (lock: TimeLockEntry): TimeLockStatus {
-    const startDate = unixToDate(lock.releaseStart.toString());
-    const endDate = unixToDate(lock.releaseEnd.toString());
-
-    if (startDate > new Date()) return TimeLockStatus.pending;
-    if (endDate < new Date()) return TimeLockStatus.expired;
-    return TimeLockStatus.active;
-  }
-
   const statusToText: Record<TimeLockStatus, string> = {
-    active: t('ACTIVE'),
-    pending: t('PENDING'),
-    expired: t('EXPIRED')
+    locked: t('LOCKED'),
+    unlocking: t('UNLOCKING'),
+    unlocked: t('UNLOCKED')
   };
 
-  const hasExpiredLocks = lockAmountData.some(lock => getLockStatus(lock) === 'expired');
+  const hasUnlockedLocks = lockAmountData.some(lock => getLockStatus(lock) === TimeLockStatus.unlocked);
 
   return (
     <StyledWrapper className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('CURRENT_TIME_LOCKS')}</h2>
-        {hasExpiredLocks && (
-          <Button look="secondary" onClick={onSetPurgeTimeLocksAmount}>
-            {t('PURGE_EXPIRED')}
+        {hasUnlockedLocks && (
+          <Button
+            look="secondary"
+            onClick={() => submitTransaction({
+              successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
+              submitFn: () => purgeTimeLocks({ address, contractType: contract })
+            })}
+          >
+            {t('PURGE_UNLOCKED')}
           </Button>
         )}
       </div>
@@ -86,6 +79,7 @@ function TimeLocksTable ({
           tiny
           perPage={10}
           emptyTableMessage={t('NO_TIME_LOCKS')}
+          loading={isLoading}
           table={lockAmountData.map((lock, i) => ({
             id: i + 1,
             amount: fromWei(lock.amount) + ' Q',
@@ -95,8 +89,8 @@ function TimeLocksTable ({
                 <span>{statusToText[getLockStatus(lock)]}</span>
               </>
             ),
-            releaseStart: formatDate(unixToDate(lock.releaseStart.toString())),
-            releaseEnd: formatDate(unixToDate(lock.releaseEnd.toString())),
+            releaseStart: formatDate(unixToDate(lock.releaseStart.toString()), i18n.language),
+            releaseEnd: formatDate(unixToDate(lock.releaseEnd.toString()), i18n.language),
           }))}
           columns={[
             {

@@ -75,7 +75,7 @@ function ShareButton ({ title = '', text = '', url, ...rest }: Props) {
         onClick={handleShare}
       >
         <Icon name="share" />
-        <span>{t('SHARE')}</span>
+        <span>{t('SHARE_ACTION')}</span>
       </Button>
 
       <Modal

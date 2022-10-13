@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Validator, ValidatorMonitoring } from 'typings/validator';
 
 type ValidatorWithAlias = AddressWithBalance & { alias: string };
+type MonitoringValidatorWithAlias = ValidatorWithAlias & ValidatorMonitoring & { rank: number };
 
 interface ValidatorsState {
   isValidator: boolean;
@@ -14,7 +15,7 @@ interface ValidatorsState {
   accountableSelfStake: string;
 
   inactiveCount: number;
-  withdrawalInfo: ValidatorsWithdrawalInfo;
+  inactiveCountLoading: boolean;
 
   validators: ValidatorWithAlias[];
   validatorsLoading: boolean;
@@ -22,10 +23,12 @@ interface ValidatorsState {
   validatorStats: Validator[];
   validatorStatsLoading: boolean;
 
-  validatorsMonitoring: ValidatorMonitoring[];
+  validatorsMonitoring: MonitoringValidatorWithAlias[];
   validatorsMonitoringLoading: boolean;
 
+  withdrawalInfo: ValidatorsWithdrawalInfo;
   timeLocks: TimeLockEntry[];
+  timeLocksLoading: boolean;
   minimumTimeLock: string;
 }
 
@@ -39,6 +42,8 @@ const initialState: ValidatorsState = {
   accountableSelfStake: '0',
 
   inactiveCount: 0,
+  inactiveCountLoading: true,
+
   withdrawalInfo: {
     amount: '0',
     endTime: '0',
@@ -54,6 +59,7 @@ const initialState: ValidatorsState = {
   validatorsMonitoringLoading: true,
 
   timeLocks: [],
+  timeLocksLoading: true,
   minimumTimeLock: '0',
 };
 
@@ -87,6 +93,7 @@ const validatorsSlice = createSlice({
 
     setInactiveCount: (state, { payload }: PayloadAction<number>) => {
       state.inactiveCount = payload;
+      state.inactiveCountLoading = false;
     },
 
     setWithdrawalInfo: (state, { payload }: PayloadAction<ValidatorsWithdrawalInfo>) => {
@@ -103,13 +110,14 @@ const validatorsSlice = createSlice({
       state.validatorStatsLoading = false;
     },
 
-    setValidatorsMonitoring: (state, { payload }: PayloadAction<ValidatorMonitoring[]>) => {
+    setValidatorsMonitoring: (state, { payload }: PayloadAction<MonitoringValidatorWithAlias[]>) => {
       state.validatorsMonitoring = payload;
       state.validatorsMonitoringLoading = false;
     },
 
     setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
       state.timeLocks = payload;
+      state.timeLocksLoading = false;
     },
 
     setMinimumTimeLock: (state, { payload }: PayloadAction<string>) => {

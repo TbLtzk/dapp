@@ -2,17 +2,20 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon, Tooltip } from '@q-dev/q-ui-kit';
-import { Validator } from 'typings/validator';
 
 import Button from 'components/Button';
 
 import { StyledWrapper } from '../styles';
+import { useValidator } from '../Validator';
 
 import { RoutePaths } from 'constants/routes';
+import { formatDate } from 'utils/date';
+import { formatNumber, formatPercent } from 'utils/numbers';
 
-function MonitoringInfo ({ validator }: { validator: Validator }) {
-  const { t } = useTranslation();
-  const { lastBlock, monthDayYear, average, timestamp } = validator;
+function MonitoringInfo () {
+  const { t, i18n } = useTranslation();
+  const { validator } = useValidator();
+  const { lastBlock, timestamp, availability1000Cycles } = validator;
 
   return (
     <StyledWrapper gridArea="validator-status" className="block">
@@ -33,17 +36,17 @@ function MonitoringInfo ({ validator }: { validator: Validator }) {
 
       <div className="row block__content">
         <p className="color-secondary text-md">{t('LAST_BLOCK_VALIDATED')}</p>
-        <p className="color-primary text-md">{lastBlock}</p>
+        <p className="color-primary text-md">{formatNumber(lastBlock)}</p>
       </div>
 
       <div className="row">
         <p className="color-secondary text-md">{t('TIME_OF_LAST_VALIDATED_BLOCK')}</p>
-        <div className="color-primary text-md"><Tooltip trigger={monthDayYear}>{timestamp}</Tooltip></div>
+        <div className="color-primary text-md"><Tooltip trigger={formatDate(timestamp, i18n.language)}>{timestamp}</Tooltip></div>
       </div>
 
       <div className="row">
         <p className="color-secondary text-md">{t('AVERAGE_AVAILABILITY')}</p>
-        <p className="color-primary text-md">{average}</p>
+        <p className="color-primary text-md">{formatPercent(availability1000Cycles)}</p>
       </div>
     </StyledWrapper>
   );

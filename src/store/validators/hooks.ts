@@ -27,7 +27,7 @@ import {
   getValidatorsInstance,
 } from 'contracts/contract-instance';
 import { getBlockSealingAliasMap } from 'contracts/helpers/aliases-helper';
-import { getValidator, getValidators, prepareValidatorsMonitoringData } from 'contracts/helpers/validators-helper';
+import { getMonitoringValidators, getValidator, getValidators } from 'contracts/helpers/validators-helper';
 
 import { dateToUnix } from 'utils/date';
 import { captureError } from 'utils/errors';
@@ -43,10 +43,13 @@ export function useValidators () {
 
   const validatorsMonitoring = useAppSelector(({ validators }) => validators.validatorsMonitoring);
   const validatorsMonitoringLoading = useAppSelector(({ validators }) => validators.validatorsMonitoringLoading);
+
   const inactiveValidatorsCount = useAppSelector(({ validators }) => validators.inactiveCount);
+  const inactiveValidatorsCountLoading = useAppSelector(({ validators }) => validators.inactiveCountLoading);
 
   const validatorsMinimumTimeLock = useAppSelector(({ validators }) => validators.minimumTimeLock);
   const validatorsTimeLocks = useAppSelector(({ validators }) => validators.timeLocks);
+  const validatorsTimeLocksLoading = useAppSelector(({ validators }) => validators.timeLocksLoading);
 
   const isValidator = useAppSelector(({ validators }) => validators.isValidator);
   const validatorWithdrawalInfo = useAppSelector(({ validators }) => validators.withdrawalInfo);
@@ -153,25 +156,26 @@ export function useValidators () {
     try {
       await loadValidatorsShortList();
       const { validators: shortList } = getState().validators;
+      const monitoringValidators = await getMonitoringValidators(shortList.map(v => v.address), indexerUrl);
+      dispatch(setValidatorsMonitoring(shortList.map((validator, i) => ({
+        rank: i + 1,
+        ...validator,
+        ...monitoringValidators[i],
+      }))));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
+  async function loadInactiveValidatorsCount (indexerUrl: string) {
+    try {
+      await loadValidatorsShortList();
+      const { validators: shortList } = getState().validators;
 
       const indexer = await getIndexerInstance(indexerUrl);
-      const validatorAdresses = shortList.map((user) => user.address);
-      // @ts-ignore Fix SDK
-      const inactiveValidators = await indexer.getInactiveValidators(validatorAdresses);
-      const aliasesMap = await getBlockSealingAliasMap(validatorAdresses, getState().user.chainId);
-
-      const preparedShortList = await Promise.all(
-        shortList.map((member) => prepareValidatorsMonitoringData(indexer, member))
-      );
-
-      const members = preparedShortList.map((member, rank) => ({
-        ...member,
-        rank: rank + 1,
-        alias: aliasesMap[member.address],
-      }));
-
+      const validatorAddresses = shortList.map((user) => user.address);
+      const inactiveValidators = await indexer.getInactiveValidators(validatorAddresses);
       dispatch(setInactiveCount(inactiveValidators));
-      dispatch(setValidatorsMonitoring(members));
     } catch (error) {
       captureError(error);
     }
@@ -229,10 +233,13 @@ export function useValidators () {
 
     validatorsMonitoring,
     validatorsMonitoringLoading,
+
     inactiveValidatorsCount,
+    inactiveValidatorsCountLoading,
 
     validatorsMinimumTimeLock,
     validatorsTimeLocks,
+    validatorsTimeLocksLoading,
 
     isValidator,
     validatorWithdrawalInfo,
@@ -249,6 +256,7 @@ export function useValidators () {
     loadValidatorAccountableSelfStake: useCallback(loadValidatorAccountableSelfStake, []),
     loadValidatorWithdrawalInfo: useCallback(loadValidatorWithdrawalInfo, []),
     loadValidatorsShortList: useCallback(loadValidatorsShortList, []),
+    loadInactiveValidatorsCount: useCallback(loadInactiveValidatorsCount, []),
     loadValidatorStats: useCallback(loadValidatorStats, []),
     loadMonitoringValidators: useCallback(loadMonitoringValidators, []),
     checkIsValidator: useCallback(checkIsValidator, []),

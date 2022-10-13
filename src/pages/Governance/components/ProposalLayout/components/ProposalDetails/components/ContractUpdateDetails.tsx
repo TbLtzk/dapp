@@ -17,17 +17,18 @@ function ContractUpdateDetails ({ proposal }: Props) {
   return (
     <div className="details-list-item">
       <div className="details-item">
-        <p className="text-md color-secondary">
-          {isAddressVotingContract ? t('KEY') : t('IMPLEMENTATION')}
-        </p>
-        <p className="text-md break-word">
-          {isAddressVotingContract ? proposal.key : proposal.implementation}
-        </p>
+        <p className="text-md color-secondary">{t('PROXY')}</p>
+        <ExplorerAddress className="text-md word-break" address={proposal.proxy} />
       </div>
 
       <div className="details-item">
-        <p className="text-md color-secondary">{t('PROXY')}</p>
-        <ExplorerAddress className="text-md word-break" address={proposal.proxy} />
+        <p className="text-md color-secondary">
+          {isAddressVotingContract ? t('KEY') : t('NEW_IMPLEMENTATION')}
+        </p>
+        { isAddressVotingContract
+          ? <p className="text-md break-word">{proposal.key}</p>
+          : <ExplorerAddress className="text-md word-break" address={proposal.implementation} />
+        }
       </div>
     </div>
   );

@@ -74,12 +74,16 @@ function getErrorMessage (err: unknown): string {
     return t('ERROR_TRANSACTION_REJECTED');
   }
 
-  if (error.message?.includes('Internal JSON-RPC error')) {
-    const rpcErrorCode = error.message.match(/\[.+-(.+)\]/)?.at(1);
-    return rpcErrorCode
-      ? t(`ERROR_${rpcErrorCode}`)
-      : t('ERROR_RPC_UNKNOWN');
+  if (!error.message?.includes('Internal JSON-RPC error')) {
+    return error.message || t('ERROR_UNKNOWN');
   }
 
-  return error.message || t('ERROR_UNKNOWN');
+  if (error.message === 'execution reverted') {
+    return t('ERROR_TRANSACTION_REVERTED');
+  }
+
+  const rpcErrorCode = error.message.match(/\[.+-(.+)\]/)?.at(1);
+  return rpcErrorCode
+    ? t(`ERROR_${rpcErrorCode}`)
+    : t('ERROR_RPC_UNKNOWN');
 }

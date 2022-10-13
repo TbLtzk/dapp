@@ -11,7 +11,7 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { fillArray } from 'utils/arrays';
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function DelegationsTable () {
   const { t } = useTranslation();
@@ -93,13 +93,13 @@ function DelegationsTable () {
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '150px' }),
           dataField: 'reward',
-          text: t('Your Reward'),
+          text: t('CLAIMABLE_REWARD'),
           sort: true,
         },
         {
           headerStyle: () => ({ cursor: 'pointer', minWidth: '160px' }),
           dataField: 'delegatorsShare',
-          text: t('Delegator Share'),
+          text: t('DELEGATOR_SHARE'),
           sort: true,
         },
         {
@@ -112,9 +112,10 @@ function DelegationsTable () {
         address: <ExplorerAddress
           iconed
           short
+          semibold
           address={delegation.validator}
         />,
-        delegatorShare: formatAsset(delegation.delegatorsShare, ' %'),
+        delegatorsShare: formatPercent(delegation.delegatorsShare),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (

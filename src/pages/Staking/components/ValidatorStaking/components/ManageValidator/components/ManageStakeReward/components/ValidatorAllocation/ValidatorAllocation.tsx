@@ -69,7 +69,7 @@ function ValidatorAllocation () {
       <RefreshBlock
         icon="mdi mdi-cube-outline"
         loading={validationRewardProxyLoading}
-        title={t('Validation Reward Proxy')}
+        title={t('VALIDATION_REWARD_PROXY')}
         onClick={() => submitTransaction({
           successMessage: t('VALIDATON_REWARD_PROXY_SUCCESS'),
           hideLoading: true,

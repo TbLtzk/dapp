@@ -47,7 +47,6 @@ const useIsUserActiveValidator = () => {
   const getValidatoRank = async () => {
     try {
       const indexer = await getIndexerInstance(indexerUrl);
-      // @ts-ignore FIXME: Fix SDK types
       const inactiveValidators = await indexer.getInactiveValidators([user.address]);
       setIsActiveValidator(inactiveValidators === 0);
     } catch (error) {
@@ -107,7 +106,7 @@ function useEnterShortList () {
 
   const enterShortList = async () => {
     await submitTransaction({
-      successMessage: t('SUCCES_ENTERING_VALIDATOR_RANK'),
+      successMessage: t('SUCCESS_ENTERING_VALIDATOR_RANK'),
       submitFn: async () => {
         const contract = await getValidatorsInstance();
         return contract.enterShortList({ from: user.address });
@@ -115,7 +114,7 @@ function useEnterShortList () {
       onSuccess: () => {
         checkIsValidator();
         loadValidatorsShortList();
-      }
+      },
     });
   };
 

@@ -1,28 +1,5 @@
-import { AddressWithBalance, AliasPurpose, StakeDelegationInfo } from '@q-dev/q-js-sdk';
+import { AddressWithBalance, AliasPurpose, StakeDelegationInfo, ValidatorMetric } from '@q-dev/q-js-sdk';
 import { DelegationEfficiency } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
-
-export interface Validator extends DelegationEfficiency, AddressWithBalance {
-  totalStake: string;
-  rank: number;
-  alias: string;
-  address: string;
-  selfStake: string;
-  timestamp: string;
-  average: string;
-  monthDayYear: string;
-  amount: string | number;
-  lastBlockValidated: string;
-  isActiveValidator: boolean;
-  lastBlock: string | number;
-  delegationSaturation: string;
-  delegatedStake: string;
-  delegatorsShare: number | string;
-  validatorShare: number;
-  validatorPoolBalance: string;
-  poolinterestRate: number;
-  payoutToDelegators: string;
-  payoutPerDelegatedQ: string;
-}
 
 export interface Delegation extends StakeDelegationInfo {
   validator: string;
@@ -41,13 +18,37 @@ export interface AliasEvent {
 }
 
 export interface ValidatorMonitoring {
-  rank?: number;
-  alias?: string;
   address: string;
-  amount: string | number;
-  lastBlock: string | number;
-  timestamp: string;
+  lastBlock: number;
+  timestamp: number;
+  metric20?: ValidatorMetric;
+  metric1000?: ValidatorMetric;
+  availability20Cycles: number;
+  availability1000Cycles: number;
+}
+
+export interface Validator extends DelegationEfficiency, AddressWithBalance, ValidatorMonitoring {
+  totalStake: string;
+  rank: number;
+  alias: string;
+  address: string;
+  selfStake: string;
+  timestamp: number;
   average: string;
   monthDayYear: string;
+  amount: string | number;
   lastBlockValidated: string;
+  isActiveValidator: boolean;
+  lastBlock: string | number;
+  delegationSaturation: string;
+  delegatedStake: string;
+  delegatorsShare: number | string;
+  validatorShare: number;
+  validatorPoolBalance: string;
+  poolinterestRate: number;
+  payoutToDelegators: string;
+  payoutPerDelegatedQ: string;
+  distributableDelegatorsRewards: number;
+  reservedForClaims: number;
+  lastUpdateOfCompoundRate: string;
 }

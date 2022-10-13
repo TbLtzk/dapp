@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
@@ -16,6 +17,7 @@ import { RoutePaths } from 'constants/routes';
 import { formatNumberCompact } from 'utils/numbers';
 
 function Balance () {
+  const { t } = useTranslation();
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
   const { vaultBalance, walletBalance } = useQVault();
@@ -52,21 +54,21 @@ function Balance () {
             <QLogo width={30} margin="0 5px 0 0">
               <img src="/logo.png" alt="q" />
             </QLogo>
-            <p className="text-lg color-secondary">Balance</p>
+            <p className="text-lg color-secondary">{t('BALANCE')}</p>
           </div>
           <p className="text-xl color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
         </div>
 
         <Link to={RoutePaths.qVault}>
           <div className="balance balance-action">
-            <p className="text-md color-secondary">Q Vault Balance </p>
+            <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')} </p>
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(vaultBalance)}</p>
           </div>
         </Link>
 
         <Link to={RoutePaths.governance}>
           <div className="balance balance-action">
-            <p className="text-md color-secondary">Voting Weight</p>
+            <p className="text-md color-secondary">{t('VOTING_WEIGHT')}</p>
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight)}</p>
           </div>
         </Link>

@@ -13,7 +13,7 @@ export const StyledProposalVeto = styled.div`
 
   .proposal-veto__vote {
     display: grid;
-    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-columns: 1fr 1.5fr 1fr;
     gap: 8px;
   }
 

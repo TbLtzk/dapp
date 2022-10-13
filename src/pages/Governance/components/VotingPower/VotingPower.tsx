@@ -51,11 +51,12 @@ function VotingPower () {
   const { t } = useTranslation();
   const user = useUser();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
-  const { loadLockInfo, loadDelegationStakeInfo, loadQVBalanceDetails } = useQVault();
+  const { loadLockInfo, loadDelegationStakeInfo, loadQVBalanceDetails, loadDelegationInfo } = useQVault();
 
   useEffect(() => {
     getBaseVotingWeightInfo();
     loadLockInfo(user.address);
+    loadDelegationInfo(user.address);
     loadDelegationStakeInfo();
     loadQVBalanceDetails();
   }, []);

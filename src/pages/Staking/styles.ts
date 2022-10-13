@@ -10,7 +10,7 @@ export const StakingContainer = styled.div`
   }
 
   .block {
-    margin-top: 30px;
+    margin-top: 24px;
     margin-bottom: 40px;
 
     .block_header {

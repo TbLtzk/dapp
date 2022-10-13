@@ -56,7 +56,7 @@ function Network () {
         className="network-wrong"
         onClick={() => switchNetwork()}
       >
-        {t('WRONG_NETWORK')}
+        {t('SWITCH_TO_Q')}
       </Button>
     );
 }

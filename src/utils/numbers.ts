@@ -38,9 +38,8 @@ export function transformToPercentage (value: BigNumber.Value): string {
   return new BigNumber(value).dividedBy('10000000000000000000000000').toFixed(6);
 }
 
-export function formatPercent (value: BigNumber.Value): string {
-  const percent = Number(formatNumber(value));
-  return isNaN(Number(percent)) ? '0 %' : `${formatNumber(value)} %`;
+export function formatPercent (value: BigNumber.Value, precision?: number): string {
+  return isNaN(Number(value.toString())) ? '0 %' : `${formatNumber(value, precision)} %`;
 }
 
 export function formatFraction (value: BigNumber.Value): string {

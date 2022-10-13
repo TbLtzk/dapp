@@ -12,7 +12,7 @@ import { useEnterShortList } from '../ManageValidator/components/ManageBalance/h
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { formatAsset } from 'utils/numbers';
+import { formatAsset, formatPercent } from 'utils/numbers';
 
 function ValidatorsTable () {
   const { t } = useTranslation();
@@ -82,7 +82,7 @@ function ValidatorsTable () {
         },
         {
           headerStyle: () => ({ minWidth: '100px', cursor: 'pointer' }),
-          dataField: 'delegatorsShare',
+          dataField: 'delegatorShare',
           text: t('DELEGATOR_SHARE'),
           sort: true,
         },
@@ -95,6 +95,7 @@ function ValidatorsTable () {
             <RedirectAddress
               iconed
               short
+              semibold
               address={validator.address}
               to={`${RoutePaths.stakingValidators}/${validator.address}`}
             />
@@ -104,8 +105,8 @@ function ValidatorsTable () {
         totalStake: formatAsset(validator.totalStake, 'Q'),
         selfStake: formatAsset(validator.selfStake, 'Q'),
         delegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        validatorShare: formatAsset(validator.validatorShare, ' %'),
-        delegatorShare: formatAsset(validator.delegatorsShare, ' %'),
+        validatorShare: formatPercent(validator.validatorShare),
+        delegatorShare: formatPercent(validator.delegatorsShare),
       }))}
     />
   );

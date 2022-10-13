@@ -80,7 +80,8 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
               />}
 
               <SidebarLink
-                to="/saving-and-borrowing"
+                exact={false}
+                to={RoutePaths.savingBorrowing}
                 title={t('SAVING_BORROWING')}
                 icon="coins"
               />

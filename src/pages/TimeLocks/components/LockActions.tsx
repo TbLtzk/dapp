@@ -17,9 +17,11 @@ const StyledWrapper = styled.div`
 
 interface Props {
   contract: TimeLockContractType;
+  isLoadingTimeLocks?: boolean;
+  isDepositsLimitReached?: boolean;
 }
 
-function LockActions ({ contract }: Props) {
+function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached }: Props) {
   const { t } = useTranslation();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
@@ -27,7 +29,10 @@ function LockActions ({ contract }: Props) {
 
   return (
     <StyledWrapper className="lock-actions">
-      <Button onClick={() => setDepositModalOpen(true)}>
+      <Button
+        disabled={isLoadingTimeLocks}
+        onClick={() => setDepositModalOpen(true)}
+      >
         {t('DEPOSIT')}
       </Button>
 
@@ -43,7 +48,11 @@ function LockActions ({ contract }: Props) {
         width={480}
         onClose={() => setDepositModalOpen(false)}
       >
-        <DepositForm contract={contract} onSubmit={() => setDepositModalOpen(false)} />
+        <DepositForm
+          isDepositsLimitReached={isDepositsLimitReached}
+          contract={contract}
+          onSubmit={() => setDepositModalOpen(false)}
+        />
       </Modal>
 
       <Modal

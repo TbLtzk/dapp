@@ -42,7 +42,7 @@ function RewardStats () {
   const { poolInfo } = useValidationRewards();
   const reserverdForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
-  const distributableDelegatorsRewards = Number(poolInfo.poolBalance) - reserverdForClaims ?? 0;
+  const distributableDelegatorsRewards = Number(fromWei(poolInfo.poolBalance)) - reserverdForClaims ?? 0;
   const delegatorPercentage = distributableDelegatorsRewards / Number(validatorDelegatedStake);
 
   const rewardStatsArray = [
@@ -52,16 +52,15 @@ function RewardStats () {
       value: formatAsset(fromWei(poolInfo.poolBalance), 'Q'),
     },
     {
-      id: 'delegator-reward',
-      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(distributableDelegatorsRewards, 'Q'),
-    },
-    {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
       value: formatAsset(reserverdForClaims, 'Q'),
     },
-
+    {
+      id: 'delegator-reward',
+      label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
+      value: formatAsset(distributableDelegatorsRewards, 'Q'),
+    },
     {
       id: 'delegator-percentage',
       label: t('DISTRIBUTABLE_DELEGATOR_PERCENTAGE'),

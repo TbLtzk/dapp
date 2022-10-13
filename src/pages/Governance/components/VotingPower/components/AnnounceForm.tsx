@@ -11,7 +11,7 @@ import useForm from 'hooks/useForm';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { address, required } from 'utils/validators';
+import { nonZeroAddress, required } from 'utils/validators';
 
 const StyledForm = styled.form`
   display: grid;
@@ -29,7 +29,7 @@ function AnnounceForm ({ onSubmit }: { onSubmit: () => void }) {
 
   const form = useForm({
     initialValues: { address: '' },
-    validators: { address: [required, address] },
+    validators: { address: [required, nonZeroAddress] },
     onSubmit: ({ address }) => {
       submitTransaction({
         successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),

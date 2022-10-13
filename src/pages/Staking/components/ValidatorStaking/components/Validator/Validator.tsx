@@ -1,9 +1,11 @@
+import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { Icon, media, Spinner } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
+import { Validator } from 'typings/validator';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
@@ -14,7 +16,10 @@ import ValidatorCharts from '../ValidatorCharts';
 import DelegationInfo from './components/DelegationInfo';
 import MainInfo from './components/MainInfo';
 import MonitoringInfo from './components/MonitoringInfo';
+import RewardStats from './components/RewardStats';
 import { useFetchValidatorData } from './hooks';
+
+import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { trimAddress } from 'utils/strings';
@@ -29,8 +34,10 @@ const CenteredContainer = styled.div`
 const StyledContainer = styled.div`
   .info {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-areas: 'main-info validator-status delegation-info';
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      'main-info validator-status'
+      'reward-stats delegation-info';
     gap: 24px;
   }
 
@@ -49,6 +56,7 @@ const StyledContainer = styled.div`
       grid-template-areas:
         'main-info'
         'validator-status'
+        'reward-stats'
         'delegation-info';
     }
   }
@@ -64,12 +72,25 @@ const StyledContainer = styled.div`
   }
 `;
 
-function Validator ({ match }: RouteComponentProps<{ address: string }>) {
+const ValidatorContext = createContext({
+  validator: {} as Validator,
+  refetchValidator: () => {}
+});
+
+function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
   const { t } = useTranslation();
-  const { isValidator, validator, loading: validatorLoading, error: validatorError } = useFetchValidatorData(address);
+  const { submitTransaction } = useTransaction();
+  const {
+    isValidator,
+    validator,
+    loading: validatorLoading,
+    error: validatorError,
+    refetchValidator,
+    updateCompoundRate
+  } = useFetchValidatorData(address);
 
-  if (validatorLoading) {
+  if (validatorLoading && !validator.address) {
     return (
       <CenteredContainer>
         <Spinner size={100} />
@@ -88,7 +109,7 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
   }
 
   return (
-    <>
+    <ValidatorContext.Provider value={{ validator, refetchValidator }}>
       <Link to={RoutePaths.stakingValidators}>
         <Button
           alwaysEnabled
@@ -103,9 +124,16 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
       <PageLayout title={`${t('VALIDATOR')} ${trimAddress(address)}`}>
         <StyledContainer>
           <div className="info">
-            <MainInfo validator={validator} />
-            <MonitoringInfo validator={validator} />
-            <DelegationInfo validator={validator} />
+            <MainInfo />
+            <MonitoringInfo />
+            <DelegationInfo />
+            <RewardStats
+              validator={validator}
+              onButtonClick={() => submitTransaction({
+                successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
+                submitFn: updateCompoundRate
+              })}
+            />
           </div>
 
           <div className="charts">
@@ -113,8 +141,10 @@ function Validator ({ match }: RouteComponentProps<{ address: string }>) {
           </div>
         </StyledContainer>
       </PageLayout>
-    </>
+    </ValidatorContext.Provider>
   );
 }
 
-export default Validator;
+export const useValidator = () => useContext(ValidatorContext);
+
+export default ValidatorPage;

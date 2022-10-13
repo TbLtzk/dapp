@@ -27,8 +27,10 @@ export const StyledHeader = styled.header`
   }
 
   .header__menu {
-    ${media.greaterThan('medium')} {
-      display: none;
+    display: none;
+
+    ${media.lessThan('medium')} {
+      display: inline-flex;
     }
   }
 

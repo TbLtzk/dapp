@@ -21,7 +21,6 @@ const StyledBlock = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-
 `;
 
 function DelegatorsShare () {
@@ -47,7 +46,7 @@ function DelegatorsShare () {
   return (
     <StyledBlock className="block">
       <div className="block__header">
-        <h3 className="text-h3">{t('Sharing')}</h3>
+        <h3 className="text-h3">{t('VALIDATOR_DELEGATOR_SHARE')}</h3>
       </div>
 
       <div className="share-info block__content">

@@ -5,12 +5,14 @@ import styled from 'styled-components';
 
 import PageLayout from 'components/PageLayout';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import DashboardLink from '../components/DashboardLink';
 
 import BalanceOverview from './components/BalanceOverview';
 import InterestRateBlock from './components/InterestRateBlock';
 
-import { useBorrowingCore } from 'store/borrowing-core/hooks';
+import { useInterestRates } from 'store/borrowing/hooks';
 
 const StyledWrapper = styled.div`
   .saving-borrowing__main {
@@ -35,10 +37,11 @@ const StyledWrapper = styled.div`
 `;
 
 function SavingBorrowing () {
-  const { interestRates, getInterestRates } = useBorrowingCore();
+  const { collaterals } = useNetworkConfig();
+  const { interestRates, getInterestRates } = useInterestRates();
 
   useEffect(() => {
-    getInterestRates();
+    getInterestRates(collaterals);
   }, []);
 
   return (

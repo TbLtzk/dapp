@@ -33,6 +33,7 @@ interface QVaultState {
 
   qVaultMinimumTimeLock: string;
   qVaultTimeLocks: TimeLockEntry[];
+  qVaultTimeLocksLoading: boolean;
 }
 
 const initialState: QVaultState = {
@@ -69,7 +70,8 @@ const initialState: QVaultState = {
   },
 
   qVaultMinimumTimeLock: '0',
-  qVaultTimeLocks: []
+  qVaultTimeLocks: [],
+  qVaultTimeLocksLoading: true,
 };
 
 const qVaultSlice = createSlice({
@@ -112,6 +114,7 @@ const qVaultSlice = createSlice({
 
     setQVaultTimeLocks (state, { payload }: PayloadAction<TimeLockEntry[]>) {
       state.qVaultTimeLocks = payload;
+      state.qVaultTimeLocksLoading = false;
     },
 
     setDelegationInfo (state, { payload }: PayloadAction<VotingDelegationInfo>) {

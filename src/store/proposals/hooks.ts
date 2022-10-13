@@ -67,7 +67,7 @@ export function useBaseVotingWeightInfo () {
     try {
       const contract = await getVotingWeightProxyInstance();
       const result = await contract.getBaseVotingWeightInfo(getUserAddress(), String(dateToUnix()));
-      dispatch(setBaseVotingWeightInfo(result));
+      dispatch(setBaseVotingWeightInfo({ ...result }));
     } catch (error) {
       captureError(error);
     }
@@ -238,8 +238,8 @@ export function useProposals () {
     activeProposalsCount,
     endedProposalsCount,
 
-    getActiveProposalsByType: useCallback(getActiveProposalsByType, []),
-    getEndedProposalsByType: useCallback(getEndedProposalsByType, []),
+    getActiveProposalsByType,
+    getEndedProposalsByType,
 
     getAllProposals: useCallback(getAllProposals, []),
     getProposals: useCallback(getProposals, []),

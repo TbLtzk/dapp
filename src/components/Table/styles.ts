@@ -60,9 +60,11 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       font-size: 14px;
       line-height: 17px;
       border-style: none;
-      padding: ${({ tiny }) => (tiny ? '8px' : '16px')};
+      padding: ${({ tiny }) => (tiny ? '8px' : '16px 16px 8px')};
       color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
       background: transparent;
+      white-space: pre-line;
+      vertical-align: bottom;
 
       &.sortable {
         cursor: pointer;
@@ -92,7 +94,6 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
           box-shadow: inset 0 0 1px 1px ${({ theme }) => theme.colors.blockHover};
         `}
 
-        // TODO: add hover after creating unique validator page
         td {
           &:first-child {
             padding-left: ${({ tiny }) => (tiny ? 0 : '32px')};

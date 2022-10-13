@@ -37,16 +37,14 @@ function TotalValidators () {
   const {
     validators,
     inactiveValidatorsCount,
-    validatorsMonitoringLoading,
-    loadValidatorsShortList,
-    loadMonitoringValidators
+    inactiveValidatorsCountLoading,
+    loadInactiveValidatorsCount,
   } = useValidators();
 
   const validatorsRef = useAnimateNumber(validators.length, ' ', val => formatNumber(val, 0));
 
   useEffect(() => {
-    loadValidatorsShortList();
-    loadMonitoringValidators(indexerUrl);
+    loadInactiveValidatorsCount(indexerUrl);
   }, []);
 
   return (
@@ -55,7 +53,7 @@ function TotalValidators () {
         <h2 className="text-lg">{t('TOTAL_VALIDATORS')}</h2>
         <p ref={validatorsRef} className="total-validators__val text-xl font-semibold">–</p>
         <p className="total-validators__inactive text-sm font-light">
-          {t('INACTIVE_COUNT', { value: validatorsMonitoringLoading ? '…' : inactiveValidatorsCount })}
+          {t('INACTIVE_COUNT', { value: inactiveValidatorsCountLoading ? '…' : inactiveValidatorsCount })}
         </p>
       </div>
 

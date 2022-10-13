@@ -10,8 +10,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import useAnimateNumber from 'hooks/useAnimateNumber';
 import useInterval from 'hooks/useInterval';
 
-import { useBorrowingCore } from 'store/borrowing-core/hooks';
-import { useSavingAssets } from 'store/saving-assets/hooks';
+import { useSaving } from 'store/saving/hooks';
 import { useSystemBalance } from 'store/system-balance/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -49,8 +48,7 @@ function BalanceOverview () {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { updateSavingCompoundRate } = useSavingAssets();
-  const { savingRate, getSavingRate } = useBorrowingCore();
+  const { savingRate, getSavingRate, updateSavingCompoundRate } = useSaving();
   const {
     systemBalance,
     stableCoinTotalSupply,

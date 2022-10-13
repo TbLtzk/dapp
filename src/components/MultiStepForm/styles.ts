@@ -8,7 +8,7 @@ export const MultiStepFormContainer = styled.div<{ $step: number}>`
   gap: 24px;
   margin-top: 16px;
 
-  ${media.lessThan('medium')} {
+  ${media.lessThan('xMedium')} {
     display: flex;
     flex-direction: column-reverse;
     gap: 8px;

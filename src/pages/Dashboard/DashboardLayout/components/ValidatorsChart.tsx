@@ -12,6 +12,7 @@ import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import { useValidators } from 'store/validators/hooks';
 
+import { RoutePaths } from 'constants/routes';
 import { formatNumber } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
@@ -44,7 +45,7 @@ function ValidatorsChart () {
           <InfoTooltip topic="validator-ranking" />
         </h2>
 
-        <Link to="/staking/validator-staking">
+        <Link to={RoutePaths.stakingValidators}>
           <Button
             block
             compact

@@ -59,7 +59,7 @@ const StyledWrapper = styled.div`
 `;
 
 function ConstitutionBlock () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { constitutionHash, getConstitutionHash } = useBaseVotingWeightInfo();
   const { constitutionUrl, constitutionUpdatedAt } = useNetworkConfig();
 
@@ -122,7 +122,7 @@ function ConstitutionBlock () {
       </div>
 
       <p className="constutition__date text-sm font-light">
-        {t('LAST_UPDATE', { date: formatDateDMY(constitutionUpdatedAt) })}
+        {t('LAST_UPDATE', { date: formatDateDMY(constitutionUpdatedAt, i18n.language) })}
       </p>
     </StyledWrapper>
   );

@@ -20,9 +20,10 @@ import { amount, required } from 'utils/validators';
 
 interface Props {
   formType: string;
+  onClose: () => void;
 }
 
-function ValidatorForms ({ formType }: Props) {
+function ValidatorForms ({ formType, onClose }: Props) {
   const { t } = useTranslation();
   const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
   const { walletBalance } = useQVault();
@@ -64,6 +65,7 @@ function ValidatorForms ({ formType }: Props) {
 
       submitTransaction({
         successMessage,
+        onSuccess: () => onClose(),
         submitFn: () => sendForm(formType, amount),
       });
     },

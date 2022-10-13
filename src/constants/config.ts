@@ -1,3 +1,4 @@
+import { Asset } from 'typings/defi';
 import Web3 from 'web3';
 
 export type NetworkName = 'mainnet' | 'testnet' | 'devnet';
@@ -15,6 +16,7 @@ interface NetworkConfig {
   docsUrl: string;
   constitutionUrl: string;
   constitutionUpdatedAt: number;
+  collaterals: Asset[];
   featureFlags: {
     aliases: boolean;
   };
@@ -46,6 +48,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
     constitutionUpdatedAt: 1657120401000,
+    collaterals: ['QBTC'],
     featureFlags: { aliases: false },
   },
   testnet: {
@@ -61,6 +64,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
     constitutionUpdatedAt: 1657120425000,
+    collaterals: ['QBTC', 'QUSDC', 'QDAI'],
     featureFlags: { aliases: false },
   },
   devnet: {
@@ -76,6 +80,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'http://34.248.83.162:8999',
     constitutionUpdatedAt: 1652719113000,
+    collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     featureFlags: { aliases: true },
   },
 };
