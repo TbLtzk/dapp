@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import Button from 'ui/Button';
 
 import Balance from './components/Balance';
@@ -9,12 +11,8 @@ import Settings from './components/Settings';
 import UserAddress from './components/UserAddress';
 import { StyledHeader } from './styles';
 
-import { useUser } from 'store/user/hooks';
-
-import { LOAD_TYPES } from 'constants/statuses';
-
 function Header ({ onMenuClick }: { onMenuClick: () => void }) {
-  const { loadType } = useUser();
+  const { isConnected } = useWeb3Context();
 
   return (
     <StyledHeader>
@@ -34,16 +32,15 @@ function Header ({ onMenuClick }: { onMenuClick: () => void }) {
           </Button>
         </div>
         <div className="header__actions">
-          {loadType !== LOAD_TYPES.loaded
+          {isConnected
             ? (
-              <ConnectWallet />
-            )
-            : (
               <>
                 <Balance />
                 <UserAddress />
               </>
-            )}
+            )
+            : <ConnectWallet />
+          }
           <Settings />
         </div>
       </div>

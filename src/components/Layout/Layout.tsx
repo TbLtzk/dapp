@@ -1,6 +1,9 @@
 import { ReactNode, useState } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
+import NetworkWarning from 'components/NetworkWarning';
 import TransactionModal from 'components/TransactionModal';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
@@ -14,6 +17,7 @@ interface Props {
 
 function Layout ({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { isConnected, isRightNetwork } = useWeb3Context();
 
   return (
     <AlertProvider
@@ -35,18 +39,22 @@ function Layout ({ children }: Props) {
         gap: '12px',
       }}
     >
-      <AppContainer>
-        <Sidebar
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
-        <div className="app__content">
-          <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="app__main">
-            <div className="app__main-content">{children}</div>
-          </main>
-        </div>
-      </AppContainer>
+      { isConnected && !isRightNetwork
+        ? <NetworkWarning />
+        : (
+          <AppContainer>
+            <Sidebar
+              open={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+            />
+            <div className="app__content">
+              <Header onMenuClick={() => setSidebarOpen(true)} />
+              <main className="app__main">
+                <div className="app__main-content">{children}</div>
+              </main>
+            </div>
+          </AppContainer>)
+      }
       <TransactionModal/>
     </AlertProvider>
   );

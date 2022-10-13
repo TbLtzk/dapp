@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
@@ -8,11 +9,8 @@ import ValidatorCharts from '../../../ValidatorCharts';
 import StakingInfo from './components/StakingInfo';
 import ValidatorInfo from './components/ValidatorInfo';
 
-import { useUser } from 'store/user/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
-
-import { LOAD_TYPES } from 'constants/statuses';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -44,7 +42,7 @@ const StyledWrapper = styled.div`
 `;
 
 function ManageBalance () {
-  const { loadType } = useUser();
+  const { isConnected } = useWeb3Context();
   const { delegatorsShare, getVRPDelegatorsShare } = useValidationRewards();
 
   const {
@@ -58,9 +56,9 @@ function ManageBalance () {
   } = useValidators();
 
   const chartsData =
-  loadType !== LOAD_TYPES.loaded
-    ? { validatorShare: '0', delegatorsShare: '0', selfStake: '0', delegatedStake: '0' }
-    : { validatorShare: 100 - delegatorsShare, delegatorsShare, selfStake, delegatedStake };
+    isConnected
+      ? { validatorShare: '0', delegatorsShare: '0', selfStake: '0', delegatedStake: '0' }
+      : { validatorShare: 100 - delegatorsShare, delegatorsShare, selfStake, delegatedStake };
 
   useEffect(() => {
     getVRPDelegatorsShare();

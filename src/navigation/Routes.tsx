@@ -38,11 +38,8 @@ import { captureError } from 'utils/errors';
 
 function addSentryContext () {
   try {
-    const { chainId, loadType } = getState().user;
-    Sentry.setContext('additional', {
-      network: chainId,
-      loadType,
-    });
+    const { chainId } = getState().user;
+    Sentry.setContext('additional', { network: chainId });
   } catch (error) {
     captureError(error);
   }

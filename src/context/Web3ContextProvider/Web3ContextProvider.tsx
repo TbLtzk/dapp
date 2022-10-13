@@ -1,4 +1,4 @@
-import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 import { getWallet, WalletType } from 'connectors';
@@ -17,6 +17,7 @@ import { useUser } from 'store/user/hooks';
 
 import { getContractRegistryInstance } from 'contracts/contract-instance';
 
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import {
   chainIdToNetworkMap,
   connectorParametersMap,
@@ -39,19 +40,21 @@ export type Web3Data = {
   switchNetworkError: boolean | null;
   success: boolean;
   setSwitchNetworkError: (err: boolean | null) => void;
+  isConnected: boolean;
+  isRightNetwork: boolean;
 };
 
 export const Web3Context = createContext({} as Web3Data);
 
 const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
-  const { setAddress, setChainId, setLoadType } = useUser();
+  const { setAddress, setChainId, address } = useUser();
   const { loadAllBalances } = useQVault();
   const { getAllProposals } = useProposals();
   const { getAllAuctions } = useAuctions();
   const { checkRootNodeMembership } = useRootNodes();
 
   const networkConfig = networkConfigsMap[ORIGIN_NETWORK_NAME];
-  const { connector, chainId } = useWeb3React();
+  const { connector, chainId, isActive } = useWeb3React();
 
   const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
   const [selectedRpc, setSelectedRpc] = useLocalStorage('selectedRpc', networkConfig.rpcUrl);
@@ -61,6 +64,11 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<boolean | null>(null);
+
+  const isConnected = useMemo(
+    () => Boolean(address !== ZERO_ADDRESS && isActive),
+    [address, isActive]);
+  const isRightNetwork = useMemo(() => Boolean(chainId && chainIdToNetworkMap[chainId]), [chainId]);
 
   const loadAdditionalInfo = async () => {
     getAllProposals();
@@ -85,7 +93,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const disconnectWallet = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoadAppType(LOAD_TYPES.loading);
       setSelectedWallet(undefined);
       cleanConnectorStorage();
       connector.deactivate ? await connector.deactivate() : await connector.resetState();
@@ -97,7 +105,6 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       setError(error);
       captureError(error);
     } finally {
-      setLoading(false);
       window.location.reload();
     }
   }, [connector]);
@@ -110,8 +117,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         await wallet.activate();
         setSelectedWallet(walletType);
 
-        if (reload && (!chainId || !chainIdToNetworkMap[chainId])) {
-          await switchNetwork(selectedChainId);
+        if (reload && !isRightNetwork) {
+          await providerSwitchNetwork(selectedChainId);
         }
 
         setSuccess(true);
@@ -125,7 +132,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         setLoading(false);
       }
     },
-    [disconnectWallet, connector, chainId]
+    [disconnectWallet, connector, isRightNetwork]
   );
 
   const initConnection = useCallback(async () => {
@@ -138,29 +145,37 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       } else {
         const provider = getProvider(selectedWallet);
         const chainId = await getChainId(provider);
-        if (!chainIdToNetworkMap[chainId]) {
-          // wrong network
-          window.web3 = httpProvider;
-        } else {
-          window.web3 = new Web3(provider);
-          const accounts = await window.web3.eth.getAccounts();
+        const web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        const isHttpProvider = !chainIdToNetworkMap[chainId] || !accounts.length || !selectedWallet;
+        window.web3 = isHttpProvider
+          ? httpProvider
+          : web3;
 
-          if (selectedWallet && accounts.length) {
-            await connectWallet(selectedWallet, false);
-            setSelectedChainId(Number(chainId));
-            setAddress(accounts[0]);
-            setLoadType(LOAD_TYPES.loaded);
-          }
+        if (selectedWallet && accounts.length) {
+          setAddress(accounts[0]);
+          await connectWallet(selectedWallet, false);
+          setSelectedChainId(Number(chainId));
         }
-        setChainId(Number(chainId));
+        setChainId(isHttpProvider ? selectedChainId : Number(chainId));
       }
       await getContractRegistryInstance();
       await loadAdditionalInfo();
       setLoadAppType(LOAD_TYPES.loaded);
 
       if (selectedWallet) {
-        ethereum?.on('accountsChanged', () => window.location.reload());
-        ethereum?.on('chainChanged', () => window.location.reload());
+        ethereum?.on('accountsChanged', async (e) => {
+          if (e.length) {
+            setLoadAppType(LOAD_TYPES.loading);
+            window.location.reload();
+          } else {
+            await disconnectWallet();
+          }
+        });
+        ethereum?.on('chainChanged', () => {
+          setLoadAppType(LOAD_TYPES.loading);
+          window.location.reload();
+        });
       }
     } catch (error) {
       captureError(error);
@@ -201,37 +216,40 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     return chainId;
   };
 
+  const providerSwitchNetwork = async (newChainId: number) => {
+    try {
+      await connector.activate(connectorParametersMap[newChainId]);
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((error as any)?.code === -32603) {
+        await connector.provider?.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            ...connectorParametersMap[newChainId],
+            chainId: `0x${connectorParametersMap[newChainId].chainId}`
+          }]
+        });
+      }
+      setSwitchNetworkError(true);
+    }
+    setSelectedChainId(newChainId);
+  };
+
   const switchNetwork = useCallback(
     async (newChainId = networkConfig.chainId) => {
       try {
-        if (!ethereum) {
+        if (!ethereum || !isConnected) {
           setSelectedChainId(newChainId);
           setSelectedRpc(connectorParametersMap[newChainId].rpcUrls[0]);
           setTimeout(() => window.location.reload(), 500);
         } else {
-          const isSameNetwork = chainId === newChainId;
-          try {
-            await connector.activate(isSameNetwork ? undefined : connectorParametersMap[newChainId]);
-          } catch (error) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((error as any)?.code === -32603) {
-              await connector.provider?.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                  ...connectorParametersMap[newChainId],
-                  chainId: `0x${connectorParametersMap[newChainId].chainId}`
-                }]
-              });
-            }
-            setSwitchNetworkError(true);
-          }
-          setSelectedChainId(newChainId);
+          await providerSwitchNetwork(newChainId);
         }
       } catch (error) {
         setError(error);
       }
     },
-    [connector, chainId]
+    [connector, chainId, isConnected]
   );
 
   useEffect(() => {
@@ -262,6 +280,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             switchNetwork,
             switchNetworkError,
             setSwitchNetworkError,
+            isConnected,
+            isRightNetwork,
           }}
         >
           {children}

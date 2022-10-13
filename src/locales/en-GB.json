@@ -1113,5 +1113,9 @@
   "ERROR_TRANSACTION_REVERTED": "Transaction reverted",
   "STABILIZATION_REWARD": "Stabilization reward (p.a)",
   "MINIMUM_AMOUNT": "Minimum: {{amount}}",
-  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Time locks limit is reached. Please, wait for unlocking existing locks."
+  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Time locks limit is reached. Please, wait for unlocking existing locks.",
+  "VERIFIED": "Verified:",
+  "COUNT_PENDING": "{{count}} pending",
+  "NETWORK_WARNING_MESSAGE": "It seems your wallet is running on a different network from Q. Please manually change the network in your wallet, or you can click the button below.",
+  "NETWORK_WARNING_HEADER": "Oops, your wallet is not on the right network."
 }

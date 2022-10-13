@@ -18,5 +18,6 @@ interface Window {
     request: (request: { method: string; params?: {} }) => Promise<any>;
     on: (request: string, callback: (...args: any[]) => void) => void;
     setSelectedProvider: (provider: typeof window.ethereum) => void;
+    isConnected: () => void;
   };
 }

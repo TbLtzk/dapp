@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import Button from 'ui/Button';
 import SegmentedButton from 'ui/SegmentedButton';
 
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
-import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
+import { networkConfigsMap } from 'constants/config';
 
 function Network () {
   const { switchNetwork, switchNetworkError, setSwitchNetworkError } = useWeb3Context();
@@ -42,23 +41,11 @@ function Network () {
     switchNetwork(chainId);
   };
 
-  return chainIdToNetworkMap[chainId]
-    ? (
-      <SegmentedButton
-        value={currentNetwork}
-        options={networkOptions}
-        onChange={handleChangeNetwork}
-      />
-    )
-    : (
-      <Button
-        alwaysEnabled
-        className="network-wrong"
-        onClick={() => switchNetwork()}
-      >
-        {t('SWITCH_TO_Q')}
-      </Button>
-    );
+  return <SegmentedButton
+    value={currentNetwork}
+    options={networkOptions}
+    onChange={handleChangeNetwork}
+  />;
 }
 
 export default Network;

@@ -1,12 +1,10 @@
 import { HTMLAttributes } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import Spinner from 'ui/Spinner';
 
 import { StyledButton } from './styles';
-
-import { useUser } from 'store/user/hooks';
-
-import { LOAD_TYPES } from 'constants/statuses';
 
 export type ButtonLook = 'primary' | 'secondary' | 'ghost' | 'danger';
 interface Props extends HTMLAttributes<HTMLButtonElement> {
@@ -36,9 +34,9 @@ function Button ({
   onClick = () => {},
   ...rest
 }: Props) {
-  const { loadType } = useUser();
+  const { isConnected, isRightNetwork } = useWeb3Context();
   const isDisabled = disabled ||
-    (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
+    (!alwaysEnabled && (!isConnected || !isRightNetwork));
 
   return (
     <StyledButton

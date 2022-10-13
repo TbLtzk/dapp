@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
@@ -11,11 +12,8 @@ import RewardStats from './components/RewardStats';
 import RefreshDelegationUpdate from './components/ValidatorAllocation';
 import ValidatorPool from './components/ValidatorPool';
 
-import { useUser } from 'store/user/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
-
-import { LOAD_TYPES } from 'constants/statuses';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -30,7 +28,7 @@ const StyledWrapper = styled.div`
 
 function ManageStakeReward () {
   const { t } = useTranslation();
-  const { loadType } = useUser();
+  const { isConnected } = useWeb3Context();
 
   const {
     getVRPPoolInfo,
@@ -69,7 +67,7 @@ function ManageStakeReward () {
   }, []);
 
   const tip =
-    loadType === LOAD_TYPES.loaded && !isValidator
+    isConnected && !isValidator
       ? (
         <Tip type="warning">{t('NOTICE_YOU_ARE_NOT_A_VALIDATOR')}</Tip>
       )

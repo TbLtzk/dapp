@@ -1,14 +1,11 @@
 import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { isNil, uniqueId } from 'lodash';
 
 import Button from 'ui/Button';
 
 import { InputWrapper } from './styles';
-
-import { useUser } from 'store/user/hooks';
-
-import { LOAD_TYPES } from 'constants/statuses';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
@@ -41,8 +38,8 @@ function Input ({
   onChange = () => {},
   ...rest
 }: Props) {
-  const { loadType } = useUser();
-  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
+  const { isConnected, isRightNetwork } = useWeb3Context();
+  const isDisabled = disabled || !isConnected || !isRightNetwork;
   const inputId = `input-${uniqueId()}`;
 
   const handleChange = (e: ChangeEvent) => {
