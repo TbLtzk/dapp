@@ -1427,10 +1427,10 @@
     bn.js "^5.2.1"
     web3 "^1.7.0"
 
-"@q-dev/q-ui-kit@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.3.0.tgz#0537456ee4a7982bdaca347d70c4124b1990d84e"
-  integrity sha512-a5T9KJXuL7a2SioxDNStTjDqaf138jSaWubvnWZU413tIVSM0D12MWRCwWfKHQlRNcL/KmGjTvidWf04iWzj8Q==
+"@q-dev/q-ui-kit@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.5.0.tgz#7e4819180eb93e4bedcf21eef8fb160ff6ca5f67"
+  integrity sha512-DXyl+8aAnZvrunQTRVVydJrqy/jUOiCOLUQeI57Xk04q76UqU7NJiBNvJhtTEpg80PhdD7MnlPNBvtWf7nQ8yA==
   dependencies:
     "@mdi/font" "^7.0.96"
     lodash "^4.17.21"

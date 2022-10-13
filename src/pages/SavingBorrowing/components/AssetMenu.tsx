@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Dropdown, Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { Asset } from 'typings/defi';
 
-import Button from 'ui/Button';
-import Dropdown from 'ui/Dropdown';
-import Icon from 'ui/Icon';
+import Button from 'components/Button';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 

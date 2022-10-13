@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
+import { Icon, Modal } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { SavingAsset } from 'typings/defi';
 
-import AssetLogo from 'ui/AssetLogo';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Modal from 'ui/Modal';
-import Table from 'ui/Table';
+import AssetLogo from 'components/AssetLogo';
+import Button from 'components/Button';
+import Table from 'components/Table';
 
 import ManageSaving from './ManageSaving';
 import RefreshBalanceButton from './RefreshBalanceButton';

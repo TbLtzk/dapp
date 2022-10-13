@@ -14,9 +14,11 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   hint?: string;
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
+  decimals?: number;
   max?: string;
   prefix?: ReactNode;
   children?: ReactNode;
+  labelTip?: string;
   onChange: (val: string) => void;
 }
 
@@ -28,7 +30,9 @@ function Input ({
   disabled,
   hint,
   max,
+  decimals,
   prefix,
+  labelTip,
   children,
   onChange,
   ...rest
@@ -43,6 +47,8 @@ function Input ({
       error={error}
       type={type}
       disabled={isDisabled}
+      decimals={decimals}
+      labelTip={labelTip}
       hint={hint}
       max={max}
       prefix={prefix}

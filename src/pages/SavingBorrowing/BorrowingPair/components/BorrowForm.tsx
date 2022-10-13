@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { VaultWithId } from 'typings/defi';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
-import Input from 'ui/Input';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import useForm from 'hooks/useForm';
 

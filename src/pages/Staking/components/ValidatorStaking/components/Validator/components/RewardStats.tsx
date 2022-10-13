@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Validator } from 'typings/validator';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import { StyledWrapper } from '../styles';
 

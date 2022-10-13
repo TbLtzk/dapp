@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Asset, VaultWithId } from 'typings/defi';
 
-import Button from 'ui/Button';
-import Input from 'ui/Input';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import useForm from 'hooks/useForm';
 

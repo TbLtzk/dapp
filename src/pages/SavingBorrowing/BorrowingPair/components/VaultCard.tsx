@@ -1,12 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon, Progress, Tooltip } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 import { BorrowingVault } from 'typings/defi';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Progress from 'ui/Progress';
-import Tooltip from 'ui/Tooltip';
+import Button from 'components/Button';
 
 import { formatAsset } from 'utils/numbers';
 
