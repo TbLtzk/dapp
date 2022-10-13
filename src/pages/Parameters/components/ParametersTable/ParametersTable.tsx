@@ -2,14 +2,15 @@ import { useTranslation } from 'react-i18next';
 
 import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from '@q-dev/utils';
 import parametersJson from 'json/parameters.json';
+import { ParameterValue } from 'typings/parameters';
 import { fromWei } from 'web3-utils';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Icon from 'ui/Icon';
+import Tooltip from 'ui/Tooltip';
 
 import { TableWrapper } from './styles';
-
-import { ParameterValue } from 'store/parameters/reducer';
 
 import { formatDuration } from 'utils/date';
 
@@ -27,17 +28,6 @@ interface Props {
 
 function ParametersTable ({ parameters, simplified }: Props) {
   const { t } = useTranslation();
-
-  const renderKey = (item: ParameterValue) => {
-    return simplified
-      ? parametersDictionary[item.key]?.name || item.key
-      : (
-        <div>
-          <span>{item.key}</span>
-          <CopyToClipboard value={item.key} />
-        </div>
-      );
-  };
 
   const renderValue = (item: ParameterValue) => {
     const type = parametersDictionary[item.key]?.type;
@@ -86,7 +76,17 @@ function ParametersTable ({ parameters, simplified }: Props) {
         <tbody>
           {parameters.map((item, index) => (
             <tr key={item.key + index}>
-              <td>{renderKey(item)}</td>
+              <td className="parameter-key-cell">
+                <span className="font-semibold">
+                  {(simplified && parametersDictionary[item.key]?.name) || item.key}
+                </span>
+                {!simplified && <CopyToClipboard className="parameter-key-copy" value={item.key} />}
+                {item.verifiedName && (
+                  <Tooltip trigger={<Icon name="check-circle" className="color-success text-lg" />}>
+                    {t('VERIFIED')} <span className="font-semibold">{item.verifiedName}</span>
+                  </Tooltip>
+                )}
+              </td>
               <td>{renderValue(item)}</td>
               {!simplified && <td>{item.type.toUpperCase()}</td>}
             </tr>

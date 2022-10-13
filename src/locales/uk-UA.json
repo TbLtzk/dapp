@@ -1111,5 +1111,8 @@
   "SHARE_ACTION": "Поділитися",
   "VOTING_WEIGHT": "Вага голосування",
   "ERROR_TRANSACTION_REVERTED": "Транзакцію скасовано",
-  "STABILIZATION_REWARD": "Стабілізаційна винагорода"
+  "STABILIZATION_REWARD": "Стабілізаційна винагорода",
+  "MINIMUM_AMOUNT": "Мінімум: {{amount}}",
+  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Досягнуто обмеження кількості таймлоків. Будь ласка, дочекайтеся завершення поточних блокувань.",
+  "VERIFIED": "Верифіковано:"
 }

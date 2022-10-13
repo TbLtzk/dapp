@@ -1,11 +1,5 @@
-import { ParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface ParameterValue {
-  key: string;
-  value: string;
-  type: ParameterType;
-}
+import { ParameterValue } from 'typings/parameters';
 
 interface ParametersState {
   contractRegistry: ParameterValue[];

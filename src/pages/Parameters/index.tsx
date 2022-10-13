@@ -10,6 +10,8 @@ import Icon from 'ui/Icon';
 import Tabs from 'ui/Tabs';
 import { TabRoute, TabSwitch } from 'ui/Tabs/components';
 
+import ExplorerProvider from './providers/ExplorerProvider';
+
 import { RoutePaths } from 'constants/routes';
 
 const QContractRegistryParameters = lazy(() => import('./components/QParameters/QContractRegistryParameters'));
@@ -77,7 +79,9 @@ function ManageParameters () {
 
           <TabRoute exact path={RoutePaths.qContractRegistry}>
             <LazyLoading>
-              <QContractRegistryParameters />
+              <ExplorerProvider>
+                <QContractRegistryParameters />
+              </ExplorerProvider>
             </LazyLoading>
           </TabRoute>
 
