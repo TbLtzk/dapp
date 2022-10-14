@@ -24,4 +24,14 @@ export const TableWrapper = styled.div<{ $simplified: boolean }>`
       }
     `}
   }
+
+  .parameter-key-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .parameter-key-copy {
+    padding: 0;
+  }
 `;

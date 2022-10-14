@@ -1113,5 +1113,6 @@
   "ERROR_TRANSACTION_REVERTED": "Transaction reverted",
   "STABILIZATION_REWARD": "Stabilisierungsprämie (p.a.)",
   "MINIMUM_AMOUNT": "Minimum: {{amount}}",
-  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Das Limit für Zeitsperren ist erreicht. Bitte warten Sie, bis Sie vorhandene Schlösser entsperrt haben."
+  "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Das Limit für Zeitsperren ist erreicht. Bitte warten Sie, bis Sie vorhandene Schlösser entsperrt haben.",
+  "VERIFIED": "Verified:"
 }
