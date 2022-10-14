@@ -31,6 +31,7 @@ export function useRootNodes () {
 
   const rootMinimumTimeLock = useAppSelector(({ rootNodes }) => rootNodes.minimumTimeLock);
   const rootTimeLocks = useAppSelector(({ rootNodes }) => rootNodes.timeLocks);
+  const rootTimeLocksLoading = useAppSelector(({ rootNodes }) => rootNodes.timeLocksLoading);
 
   async function commitRootNodeStake (amount: string) {
     const userAddress = getUserAddress();
@@ -159,6 +160,7 @@ export function useRootNodes () {
     rootTotalStake,
     rootMembers,
     rootMembersLoading,
+    rootTimeLocksLoading,
 
     commitRootNodeStake: useCallback(commitRootNodeStake, []),
     announceRootStakeWithdrawal: useCallback(announceRootStakeWithdrawal, []),

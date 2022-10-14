@@ -15,12 +15,13 @@ function Spinner ({
   return (
     <StyledSpinner
       $size={size}
+      $radius={size / 2 - 2 * thickness}
       {...rest}
     >
       <circle
         cx={size / 2}
         cy={size / 2}
-        r={size / 2.5}
+        r={size / 2 - 2 * thickness}
         fill="none"
         strokeWidth={thickness}
       />

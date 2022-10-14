@@ -5,6 +5,7 @@ import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
+import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
 
@@ -20,7 +21,8 @@ function RootStakeTab () {
     rootTimeLocks,
     getMinimumRootTimeLock,
     getRootNodeStakes,
-    getRootTimeLocks
+    getRootTimeLocks,
+    rootTimeLocksLoading,
   } = useRootNodes();
 
   useInterval(() => {
@@ -33,6 +35,8 @@ function RootStakeTab () {
     getRootTimeLocks(address);
   }, [address]);
 
+  const isDepositsLimitReached = useTimeLockLimits(rootTimeLocks);
+
   return (
     <div>
       <LocksOverview
@@ -40,12 +44,15 @@ function RootStakeTab () {
         balance={rootNodeStake}
         contract="rootNodes"
         timeLockBalance={rootMinimumTimeLock}
+        isLoadingTimeLocks={rootTimeLocksLoading}
+        isDepositsLimitReached={isDepositsLimitReached}
       />
 
       <TimeLocksTable
         address={address}
         contract="rootNodes"
         lockAmountData={rootTimeLocks}
+        isLoading={rootTimeLocksLoading}
       />
     </div>
   );

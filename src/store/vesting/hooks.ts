@@ -18,6 +18,7 @@ export function useVesting () {
   const vestingBalance = useAppSelector(({ vesting }) => vesting.balance);
   const vestingMinimumTimeLock = useAppSelector(({ vesting }) => vesting.minimumTimeLock);
   const vestingTimeLocks = useAppSelector(({ vesting }) => vesting.timeLocks);
+  const vestingTimeLocksLoading = useAppSelector(({ vesting }) => vesting.timeLocksLoading);
 
   async function getVestingBalance (address: string) {
     try {
@@ -65,6 +66,7 @@ export function useVesting () {
     vestingBalance,
     vestingMinimumTimeLock,
     vestingTimeLocks,
+    vestingTimeLocksLoading,
 
     getVestingBalance: useCallback(getVestingBalance, []),
     getMinimumVestingTimeLock: useCallback(getMinimumVestingTimeLock, []),

@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
@@ -11,6 +12,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
 import Calendar from 'ui/Calendar';
 import Input from 'ui/Input';
+import Tip from 'ui/Tip';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 
@@ -21,7 +23,7 @@ import { useUser } from 'store/user/hooks';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
-import { amount, futureDate, required } from 'utils/validators';
+import { futureDate, max, min, required } from 'utils/validators';
 
 const StyledForm = styled.form`
   display: grid;
@@ -45,10 +47,13 @@ const StyledForm = styled.form`
 
 interface Props {
   contract: TimeLockContractType;
+  isDepositsLimitReached?: boolean;
   onSubmit: () => void;
 }
 
-function DepositForm ({ contract, onSubmit }: Props) {
+const MIN_DEPOSIT_AMOUNT = 10; // Q
+
+function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   const { t } = useTranslation();
   const { address } = useTimeLocksAddress();
 
@@ -67,7 +72,7 @@ function DepositForm ({ contract, onSubmit }: Props) {
       endDate: null as Date | null,
     },
     validators: {
-      amount: [required, amount(maxAmount)],
+      amount: [required, min(MIN_DEPOSIT_AMOUNT), max(maxAmount)],
       startDate: [required, futureDate],
       endDate: [required, futureDate]
     },
@@ -111,6 +116,7 @@ function DepositForm ({ contract, onSubmit }: Props) {
           startDate={form.values.startDate ? new Date(form.values.startDate) : null}
           endDate={form.values.endDate ? new Date(form.values.endDate) : null}
           minDate={new Date()}
+          disabled={isDepositsLimitReached}
         />
 
         <Calendar
@@ -118,7 +124,7 @@ function DepositForm ({ contract, onSubmit }: Props) {
           selectsEnd
           value={form.values.endDate as Date}
           label={t('END_DATE')}
-          disabled={!form.values.startDate}
+          disabled={!form.values.startDate || isDepositsLimitReached}
           startDate={form.values.startDate as Date}
           endDate={form.values.endDate as Date}
           minDate={form.values.startDate as Date}
@@ -130,16 +136,24 @@ function DepositForm ({ contract, onSubmit }: Props) {
         type="number"
         value={form.values.amount as string}
         label={t('AMOUNT')}
+        labelTip={t('MINIMUM_AMOUNT', { amount: formatAsset(MIN_DEPOSIT_AMOUNT, 'Q') })}
         prefix="Q"
         placeholder="0.0"
         max={maxAmount}
         hint={form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : ''}
+        disabled={isDepositsLimitReached}
       />
+
+      { isDepositsLimitReached &&
+        <Tip compact type="info">
+          {t('MAX_TIME_LOCK_DEPOSIT_MESSAGE')}
+        </Tip>
+      }
 
       <Button
         type="submit"
         className="deposit-form-btn"
-        disabled={!form.isValid}
+        disabled={!form.isValid || isDepositsLimitReached}
       >
         {t('DEPOSIT')}
       </Button>

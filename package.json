@@ -1,6 +1,6 @@
 {
   "name": "q-hq-dapp",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "private": true,
   "scripts": {
     "start": "vite",
@@ -18,7 +18,7 @@
     "@mdi/font": "^6.7.96",
     "@metamask/jazzicon": "^2.0.0",
     "@popperjs/core": "^2.11.5",
-    "@q-dev/form-hooks": "^0.2.0",
+    "@q-dev/form-hooks": "^0.2.1",
     "@q-dev/q-js-sdk": "^1.4.0",
     "@q-dev/react-hooks": "^0.1.0",
     "@q-dev/utils": "^0.1.0",

@@ -5,6 +5,7 @@ import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
+import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
 
@@ -21,6 +22,7 @@ function VestingAccountTab () {
     getVestingBalance,
     getMinimumVestingTimeLock,
     getVestingTimeLocks,
+    vestingTimeLocksLoading,
   } = useVesting();
 
   useInterval(() => {
@@ -33,6 +35,8 @@ function VestingAccountTab () {
     getVestingTimeLocks(address);
   }, [address]);
 
+  const isDepositsLimitReached = useTimeLockLimits(vestingTimeLocks);
+
   return (
     <div>
       <LocksOverview
@@ -40,12 +44,15 @@ function VestingAccountTab () {
         balance={vestingBalance}
         contract="vesting"
         timeLockBalance={vestingMinimumTimeLock}
+        isLoadingTimeLocks={vestingTimeLocksLoading}
+        isDepositsLimitReached={isDepositsLimitReached}
       />
 
       <TimeLocksTable
         address={address}
         contract="vesting"
         lockAmountData={vestingTimeLocks}
+        isLoading={vestingTimeLocksLoading}
       />
     </div>
   );

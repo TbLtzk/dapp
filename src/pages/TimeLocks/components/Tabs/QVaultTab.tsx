@@ -5,6 +5,7 @@ import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
+import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
 
@@ -20,7 +21,8 @@ function QVaultTab () {
     qVaultTimeLocks,
     loadVaultBalance,
     loadQVaultTimeLocks,
-    loadMinimumQVaultTimeLock
+    loadMinimumQVaultTimeLock,
+    qVaultTimeLocksLoading,
   } = useQVault();
 
   useInterval(() => {
@@ -33,6 +35,8 @@ function QVaultTab () {
     loadQVaultTimeLocks(address);
   }, [address]);
 
+  const isDepositsLimitReached = useTimeLockLimits(qVaultTimeLocks);
+
   return (
     <div>
       <LocksOverview
@@ -40,12 +44,15 @@ function QVaultTab () {
         balance={vaultBalance}
         contract="qVault"
         timeLockBalance={qVaultMinimumTimeLock}
+        isLoadingTimeLocks={qVaultTimeLocksLoading}
+        isDepositsLimitReached={isDepositsLimitReached}
       />
 
       <TimeLocksTable
         address={address}
         contract="qVault"
         lockAmountData={qVaultTimeLocks}
+        isLoading={qVaultTimeLocksLoading}
       />
     </div>
   );

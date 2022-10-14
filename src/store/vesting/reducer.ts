@@ -5,12 +5,14 @@ interface VestingState {
   balance: string;
   minimumTimeLock: string;
   timeLocks: TimeLockEntry[];
+  timeLocksLoading: boolean;
 }
 
 const initialState: VestingState = {
   balance: '0',
   minimumTimeLock: '0',
-  timeLocks: []
+  timeLocks: [],
+  timeLocksLoading: true,
 };
 
 const vestingSlice = createSlice({
@@ -27,6 +29,7 @@ const vestingSlice = createSlice({
 
     setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
       state.timeLocks = payload;
+      state.timeLocksLoading = false;
     }
   }
 });

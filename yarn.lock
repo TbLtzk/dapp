@@ -1411,10 +1411,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
-"@q-dev/form-hooks@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/form-hooks/-/form-hooks-0.2.0.tgz#e4d5a122fc18d133b1207e14b0c020761b833411"
-  integrity sha512-2wvfnq77sj2egrW+jOGk3IN6rshinVWypSgEmpS3U0dK9NGXdABk1tGhjCmu4e6LiqYIHnpEuPZXpA/gXH2xjA==
+"@q-dev/form-hooks@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@q-dev/form-hooks/-/form-hooks-0.2.1.tgz#added839ff13003939421d8c586e8eaa7800e33b"
+  integrity sha512-6pGZLp17w9IFEfuO3Jqeq8c+5YwdLViY2/IKiBnegJ376+0OZTfoLrddF8d3GuQwsIUhN/rAtNZ/KIBAkbHGzg==
   dependencies:
     lodash "^4.17.21"
 
