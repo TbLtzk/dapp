@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 export const StyledWrapper = styled.div`
   position: fixed;
