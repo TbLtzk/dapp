@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { trimString } from '@q-dev/utils';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
-import { trimAddress } from 'utils/strings';
 
 function useVoteDelegation () {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ function useVoteDelegation () {
   if (!agent) return '...';
 
   if (agent !== address && agent !== ZERO_ADDRESS) {
-    return `${t('YOUR_VOTING_AGENT_IS')} ${trimAddress(agent)}`;
+    return `${t('YOUR_VOTING_AGENT_IS')} ${trimString(agent)}`;
   }
 
   if (agent === address) {

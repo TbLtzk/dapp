@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { formatAsset } from '@q-dev/utils';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';
@@ -17,7 +18,6 @@ import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
-import { formatAsset } from 'utils/numbers';
 
 function VotingStats () {
   const { t, i18n } = useTranslation();

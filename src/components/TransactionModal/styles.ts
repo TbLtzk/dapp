@@ -1,8 +1,8 @@
-import { includes } from 'lodash';
+import includes from 'lodash/includes';
 import styled from 'styled-components';
 
-import { getToastColor } from 'ui/Toast/colors';
-import { ToastType, toastTypes } from 'ui/Toast/Toast';
+import { getToastColor } from 'components/Toast/colors';
+import { ToastType, toastTypes } from 'components/Toast/Toast';
 
 import { TransactionType } from './TransactionModal';
 

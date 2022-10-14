@@ -1,21 +1,20 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { formatPercent } from '@q-dev/utils';
 import { Validator } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import Input from 'components/Input';
 import { StakeFormContainer } from 'pages/Staking/styles';
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import ClaimTip from '../../../ClaimTip';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { formatPercent } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 interface Props {

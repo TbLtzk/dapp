@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
 import PageLayout from 'components/PageLayout';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
 import { NewExpertProposal, NewQProposal, NewRootProposal, NewSlashingProposal } from './components/NewProposal';
 

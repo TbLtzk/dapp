@@ -1,12 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon, media, Tag } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tag from 'ui/Tag';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';

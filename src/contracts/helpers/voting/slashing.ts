@@ -1,6 +1,7 @@
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
-import { flatten } from 'lodash';
+import { getFixedPercentage, transformToPercentage } from '@q-dev/utils';
+import flatten from 'lodash/flatten';
 import { ProposalContractType, ProposalEvent } from 'typings/contracts';
 import { SlashingProposalForm } from 'typings/forms';
 import { Proposal, SlashingProposal } from 'typings/proposals';
@@ -12,7 +13,6 @@ import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, 
 
 import { ObjectionStatus } from 'constants/slashing';
 import { unixToDate } from 'utils/date';
-import { getFixedPercentage, transformToPercentage } from 'utils/numbers';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],

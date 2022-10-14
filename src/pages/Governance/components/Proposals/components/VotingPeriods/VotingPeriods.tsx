@@ -2,9 +2,8 @@ import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { Tooltip } from '@q-dev/q-ui-kit';
 import { Proposal } from 'typings/proposals';
-
-import Tooltip from 'ui/Tooltip';
 
 import { VotingContainer } from './styles';
 

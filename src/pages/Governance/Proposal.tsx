@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
+import { Icon } from '@q-dev/q-ui-kit';
+import { useInterval } from '@q-dev/react-hooks';
 import { ProposalContractType } from 'typings/contracts';
 import { Proposal as ProposalInterface, ProposalType } from 'typings/proposals';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-
-import useInterval from 'hooks/useInterval';
+import Button from 'components/Button';
 
 import ProposalLayout from './components/ProposalLayout';
 import ProposalSkeleton from './components/Proposals/components/ProposalSkeleton';

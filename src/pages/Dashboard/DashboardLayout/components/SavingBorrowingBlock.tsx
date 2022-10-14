@@ -2,14 +2,12 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Icon, media } from '@q-dev/q-ui-kit';
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
+import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useSystemBalance } from 'store/system-balance/hooks';
 

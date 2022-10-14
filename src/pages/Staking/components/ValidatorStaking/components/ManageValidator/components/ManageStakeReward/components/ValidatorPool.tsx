@@ -1,11 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 import { useValidators } from 'store/validators/hooks';
-
-import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .content {

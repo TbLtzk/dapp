@@ -4,7 +4,7 @@ import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { Asset } from 'typings/defi';
 
-import AssetLogo from 'ui/AssetLogo';
+import AssetLogo from 'components/AssetLogo';
 
 const StyledWrapper = styled.div`
   display: flex;

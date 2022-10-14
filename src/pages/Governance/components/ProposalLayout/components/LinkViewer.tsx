@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import Icon from 'ui/Icon';
-
-import { URL_REGEX } from 'utils/validators';
+import { URL_REGEX } from '@q-dev/form-hooks';
+import { Icon } from '@q-dev/q-ui-kit';
 
 interface Props {
   link: string;

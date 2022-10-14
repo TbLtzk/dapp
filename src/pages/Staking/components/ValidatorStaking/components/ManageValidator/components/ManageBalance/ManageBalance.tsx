@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
+import { media } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 import ValidatorCharts from '../../../ValidatorCharts';
 

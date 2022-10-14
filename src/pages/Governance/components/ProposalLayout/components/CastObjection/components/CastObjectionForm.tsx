@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { Proposal } from 'typings/proposals';
 
+import Button from 'components/Button';
+import Input from 'components/Input';
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useTransaction } from 'store/transaction/hooks';
 

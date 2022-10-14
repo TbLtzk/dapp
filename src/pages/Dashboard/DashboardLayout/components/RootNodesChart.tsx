@@ -2,17 +2,16 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Spinner } from '@q-dev/q-ui-kit';
+import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
 import AddressIcon from 'components/Custom/AddressIcon';
+import DonutChart from 'components/DonutChart';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
-import DonutChart from 'ui/DonutChart';
-import Spinner from 'ui/Spinner';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
-
-import { formatNumber } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   grid-area: root;

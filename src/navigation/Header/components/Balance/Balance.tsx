@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
+import { formatNumberCompact } from '@q-dev/utils';
 import { motion } from 'framer-motion';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
+import Button from 'components/Button';
 
 import { BalanceDropdown, QLogo } from './styles';
 
@@ -14,7 +15,6 @@ import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { formatNumberCompact } from 'utils/numbers';
 
 function Balance () {
   const { t } = useTranslation();

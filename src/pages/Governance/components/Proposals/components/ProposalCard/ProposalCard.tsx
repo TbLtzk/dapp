@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Icon, Progress, Tag } from '@q-dev/q-ui-kit';
+import { formatPercent } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
-import Icon from 'ui/Icon';
-import Progress from 'ui/Progress';
-import Tag from 'ui/Tag';
 
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
 import VotingPeriods from '../VotingPeriods';
@@ -17,7 +16,6 @@ import { ProposalCardLink } from './styles';
 import { getProposal } from 'contracts/helpers/voting';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatPercent } from 'utils/numbers';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   const { t } = useTranslation();

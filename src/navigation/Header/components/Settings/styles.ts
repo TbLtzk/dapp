@@ -1,6 +1,5 @@
+import { Dropdown } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-
-import Dropdown from 'ui/Dropdown';
 
 export const SettingsDropdown = styled(Dropdown)`
   .settings-content {

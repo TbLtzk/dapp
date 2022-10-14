@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';

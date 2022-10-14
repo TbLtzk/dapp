@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Illustration } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
+import Button from 'components/Button';
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
 import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
 import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
-import Button from 'ui/Button';
-import Illustration from 'ui/Illustration';
 
 import AuctionCard from './components/AuctionCard';
 
 import { useAuctions } from 'store/auctions/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const PAGE_LIMIT = 10;
 

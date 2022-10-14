@@ -1,6 +1,8 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { isEqual, orderBy, uniqWith } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import orderBy from 'lodash/orderBy';
+import uniqWith from 'lodash/uniqWith';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
 import { countActiveAuctions } from 'contracts/helpers/auction';

@@ -1,11 +1,10 @@
 import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { useLocalStorage } from '@q-dev/react-hooks';
 import { useWeb3React } from '@web3-react/core';
 import { getWallet, WalletType } from 'connectors';
 import { motion } from 'framer-motion';
 import Web3 from 'web3';
-
-import useLocalStorage from 'hooks/useLocalStorage';
 
 import { Wrap } from './styles';
 

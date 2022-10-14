@@ -1,17 +1,16 @@
 import { useTranslation } from 'react-i18next';
 
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
-import { invert } from 'lodash';
+import { Tooltip } from '@q-dev/q-ui-kit';
+import { trimString } from '@q-dev/utils';
+import invert from 'lodash/invert';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
-import Table from 'ui/Table';
-import Tooltip from 'ui/Tooltip';
+import Table from 'components/Table';
 
 import { useAliases } from 'store/aliases/hooks';
 import { useUser } from 'store/user/hooks';
-
-import { trimAddress } from 'utils/strings';
 
 interface Props {
   address: string;
@@ -65,7 +64,7 @@ function AliasesTable ({ address, onSelect }: Props) {
   return (
     <div className="block">
       <div className="block__header">
-        <h3 className="text-h3">{`${t('ACCOUNT_ALIASES')} (${trimAddress(address)})`}</h3>
+        <h3 className="text-h3">{`${t('ACCOUNT_ALIASES')} (${trimString(address)})`}</h3>
       </div>
 
       <div className="block__content">

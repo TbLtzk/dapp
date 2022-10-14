@@ -2,15 +2,14 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
-import { invert } from 'lodash';
+import { Check } from '@q-dev/q-ui-kit';
+import { trimString } from '@q-dev/utils';
+import invert from 'lodash/invert';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Check from 'ui/Check';
-import Table, { TableColumn } from 'ui/Table';
+import Table, { TableColumn } from 'components/Table';
 
 import { useAliasEvents } from 'store/aliases/hooks';
-
-import { trimAddress } from 'utils/strings';
 
 function AliasEventsTable ({ address }: { address: string }) {
   const { events, isEventsLoading } = useAliasEvents();
@@ -39,7 +38,7 @@ function AliasEventsTable ({ address }: { address: string }) {
     <div className="block">
       <div className="block__header">
         <h3 className="text-h3">
-          {isFiltered ? `${t('ALIASES_EVENTS')} (${trimAddress(address)})` : t('ALIASES_EVENTS')}
+          {isFiltered ? `${t('ALIASES_EVENTS')} (${trimString(address)})` : t('ALIASES_EVENTS')}
         </h3>
         <Check
           id="filter-alias-events"

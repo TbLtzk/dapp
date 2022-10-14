@@ -2,16 +2,15 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
-import { camelCase } from 'lodash';
+import { Icon, Tag } from '@q-dev/q-ui-kit';
+import camelCase from 'lodash/camelCase';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
 
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tag from 'ui/Tag';
 
 import AuctionActions from './components/AuctionActions';
 import AuctionLayout from './components/AuctionLayout';

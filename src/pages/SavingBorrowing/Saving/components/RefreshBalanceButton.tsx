@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
+import { Icon } from '@q-dev/q-ui-kit';
+
+import Button from 'components/Button';
 
 import { useSaving, useSavingAssets } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';

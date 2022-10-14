@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
 import { Placement } from '@popperjs/core';
+import { Tooltip } from '@q-dev/q-ui-kit';
 
 import { AuctionPeriodsContainer } from 'pages/Auctions/styles';
-import Tooltip from 'ui/Tooltip';
 
 import { formatDate, formatDateRelative } from 'utils/date';
 

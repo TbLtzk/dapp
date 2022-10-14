@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Dropdown, Icon } from '@q-dev/q-ui-kit';
+import { trimString } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
 import CopyToClipboard from 'components/CopyToClipboard';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
-import Dropdown from 'ui/Dropdown';
-import Icon from 'ui/Icon';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 
 import { formatDateDMY } from 'utils/date';
-import { trimAddress } from 'utils/strings';
 
 const StyledWrapper = styled.div`
   grid-area: constitution;
@@ -118,7 +117,7 @@ function ConstitutionBlock () {
       </div>
 
       <div className="constutition__hash text-xl font-semibold">
-        <span>{trimAddress(constitutionHash)}</span>
+        <span>{trimString(constitutionHash)}</span>
         <CopyToClipboard value={constitutionHash} />
       </div>
 

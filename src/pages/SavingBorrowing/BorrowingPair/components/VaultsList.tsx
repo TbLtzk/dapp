@@ -2,21 +2,16 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
+import { Illustration, media, Modal, SegmentedButton } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 import { Asset, VaultWithId } from 'typings/defi';
-
-import Illustration from 'ui/Illustration';
-import Modal from 'ui/Modal';
-import SegmentedButton from 'ui/SegmentedButton';
 
 import ManageVault from './ManageVault';
 import VaultCard from './VaultCard';
 import VaultCardSkeleton from './VaultCardSkeleton';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const StyledWrapper = styled.div`
   .vaults-list-title {

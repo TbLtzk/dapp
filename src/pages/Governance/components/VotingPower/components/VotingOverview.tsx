@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 import { fromWei } from 'web3-utils';
 
 import TopUpQVault from 'components/TopUpQVault';
 
-import useAnimateNumber from 'hooks/useAnimateNumber';
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';
 

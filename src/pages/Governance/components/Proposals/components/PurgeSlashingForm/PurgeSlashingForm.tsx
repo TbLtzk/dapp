@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
-import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-import RadioGroup from 'ui/RadioGroup';
+import { useForm } from '@q-dev/form-hooks';
+import { RadioGroup } from '@q-dev/q-ui-kit';
 
-import useForm from 'hooks/useForm';
+import Button from 'components/Button';
+import Input from 'components/Input';
+import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 
 import { StyledPurgeSlashingForm } from './styles';
 

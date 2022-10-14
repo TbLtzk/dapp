@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import { Delegation, Validator } from 'typings/validator';
 
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
+import Button from 'components/Button';
 
 import UpdateStakeForm from '../DelegationsTable/components/UpdateStakeForm';
 import DelegateStakeForm from '../ManageDelegations/components/DelegateStakeForm';

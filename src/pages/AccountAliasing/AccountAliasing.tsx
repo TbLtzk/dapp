@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Alias } from '@q-dev/q-js-sdk';
+import { Modal } from '@q-dev/q-ui-kit';
+import { trimString } from '@q-dev/utils';
 
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
 
 import AddressForm from './components/AddressForm';
 import AliasesTable from './components/AliasesTable';
@@ -16,8 +17,6 @@ import ReserveForm from './components/ReserveForm';
 import { useAliases, useAliasEvents } from 'store/aliases/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
-
-import { trimAddress } from 'utils/strings';
 
 function AccountAliasing () {
   const { t } = useTranslation();
@@ -76,7 +75,7 @@ function AccountAliasing () {
       <Modal
         open={isReserveModalShown}
         title={t('RESERVE_ALIAS')}
-        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimAddress(user.address) })}
+        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimString(user.address) })}
         width={440}
         onClose={() => setIsReserveModalShown(false)}
       >

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { calculateInterestRate } from '@q-dev/utils';
 import { fromWei, toWei } from 'web3-utils';
 
 import {
@@ -21,7 +22,6 @@ import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-h
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
-import { calculateInterestRate } from 'utils/numbers';
 
 export function useSaving () {
   const dispatch = useDispatch();

@@ -21,7 +21,7 @@ import {
   getValidatorsSlashingVotingInstance
 } from 'contracts/contract-instance';
 
-import { isAddress } from 'utils/strings';
+import { isAddress } from 'utils/web3';
 
 function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const { t } = useTranslation();

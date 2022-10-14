@@ -1,18 +1,16 @@
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { Calendar, media, Tip } from '@q-dev/q-ui-kit';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
-import Calendar from 'ui/Calendar';
-import Input from 'ui/Input';
-import Tip from 'ui/Tip';
-
-import useForm from 'hooks/useForm';
+import Input from 'components/Input';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 
@@ -23,7 +21,6 @@ import { useUser } from 'store/user/hooks';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
-import { formatAsset } from 'utils/numbers';
 import { futureDate, max, min, required } from 'utils/validators';
 
 const StyledForm = styled.form`
@@ -55,7 +52,7 @@ interface Props {
 const MIN_DEPOSIT_AMOUNT = 10; // Q
 
 function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { address } = useTimeLocksAddress();
 
   const { submitTransaction } = useTransaction();
@@ -112,8 +109,10 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         <Calendar
           {...form.fields.startDate}
           selectsStart
+          locale={i18n.language}
           value={form.values.startDate as Date}
           label={t('START_DATE')}
+          placeholder={t('CHOOSE_DATE_AND_TIME')}
           startDate={form.values.startDate ? new Date(form.values.startDate) : null}
           endDate={form.values.endDate ? new Date(form.values.endDate) : null}
           minDate={new Date()}
@@ -123,8 +122,10 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         <Calendar
           {...form.fields.endDate}
           selectsEnd
+          locale={i18n.language}
           value={form.values.endDate as Date}
           label={t('END_DATE')}
+          placeholder={t('CHOOSE_DATE_AND_TIME')}
           disabled={!form.values.startDate || isDepositsLimitReached}
           startDate={form.values.startDate as Date}
           endDate={form.values.endDate as Date}

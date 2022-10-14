@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
 
 import ValidatorsOverview from './components/ValidatorsOverview';
 import ValidatorsTable from './components/ValidatorsTable';

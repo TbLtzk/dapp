@@ -4,10 +4,10 @@ import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import NetworkWarning from 'components/NetworkWarning';
+import Toast from 'components/Toast';
 import TransactionModal from 'components/TransactionModal';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
-import Toast from 'ui/Toast';
 
 import { AppContainer } from './styles';
 

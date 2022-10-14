@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
-import { ExpertProposalForm, ExpertType, Options } from 'typings/forms';
+import { useForm } from '@q-dev/form-hooks';
+import { FieldOptions, RadioGroup } from '@q-dev/q-ui-kit';
+import { ExpertProposalForm, ExpertType } from 'typings/forms';
 
+import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
-import Input from 'ui/Input';
-import RadioGroup from 'ui/RadioGroup';
-
-import useForm from 'hooks/useForm';
 
 import { useNewExpertProposal } from '../NewExpertProposal';
 
@@ -32,7 +31,7 @@ function ManageExpertStep () {
     },
   });
 
-  const panelTypeOptions: Options<ExpertType> = [
+  const panelTypeOptions: FieldOptions<ExpertType> = [
     {
       value: 'fees-incentives',
       label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')

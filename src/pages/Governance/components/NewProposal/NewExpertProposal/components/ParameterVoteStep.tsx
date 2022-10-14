@@ -1,17 +1,14 @@
 import { useTranslation } from 'react-i18next';
 
-import { ExpertProposalForm, ExpertType, FormParameter, Options } from 'typings/forms';
+import { useForm, useFormArray } from '@q-dev/form-hooks';
+import { FieldOptions, Icon, RadioGroup } from '@q-dev/q-ui-kit';
+import { ExpertProposalForm, ExpertType, FormParameter } from 'typings/forms';
 
+import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
+import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
 import ParameterForm from 'components/ParameterForm';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Input from 'ui/Input';
-import RadioGroup from 'ui/RadioGroup';
-
-import useForm from 'hooks/useForm';
-import useFormArray from 'hooks/useFormArray';
 
 import { useNewExpertProposal } from '../NewExpertProposal';
 
@@ -45,7 +42,7 @@ function ParameterVoteStep () {
     },
   });
 
-  const panelTypeOptions: Options<ExpertType> = [
+  const panelTypeOptions: FieldOptions<ExpertType> = [
     {
       value: 'fees-incentives',
       label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')

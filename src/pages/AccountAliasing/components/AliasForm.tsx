@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
+import { Select } from '@q-dev/q-ui-kit';
 
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-import Select from 'ui/Select';
-
-import useForm from 'hooks/useForm';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import { useAliases } from 'store/aliases/hooks';
 import { useTransaction } from 'store/transaction/hooks';

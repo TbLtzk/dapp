@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 
-import Spinner from 'ui/Spinner';
+import { Spinner } from '@q-dev/q-ui-kit';
 
 import { LazyLoadingWrapper } from './styles';
 

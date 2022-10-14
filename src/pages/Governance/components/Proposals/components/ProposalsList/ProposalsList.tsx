@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Illustration } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
-import Button from 'ui/Button';
-import Illustration from 'ui/Illustration';
+import Button from 'components/Button';
 
 import ProposalCard from '../ProposalCard';
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
@@ -13,8 +14,6 @@ import ProposalCardSkeleton from '../ProposalCardSkeleton';
 import { ListEmptyStub, ListNextContainer, ListWrapper } from './styles';
 
 import { useProposals } from 'store/proposals/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const PAGE_LIMIT = 10;
 

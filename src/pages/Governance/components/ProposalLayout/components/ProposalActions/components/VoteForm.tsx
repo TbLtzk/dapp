@@ -1,20 +1,19 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { RadioGroup } from '@q-dev/q-ui-kit';
+import { formatAsset } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
-import RadioGroup from 'ui/RadioGroup';
-
-import useForm from 'hooks/useForm';
+import Button from 'components/Button';
 
 import { StyledVoteForm } from './styles';
 
 import { useBaseVotingWeightInfo, useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { formatAsset } from 'utils/numbers';
 import { required } from 'utils/validators';
 
 interface Props {

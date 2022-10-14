@@ -1,7 +1,7 @@
 import ContentLoader from 'react-content-loader';
 
+import { COLORS } from '@q-dev/q-ui-kit';
 import { useTheme } from 'styled-components';
-import { COLORS } from 'styles/colors';
 
 function ProposalSkeleton () {
   const { palette } = useTheme();

@@ -1,14 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { media } from '@q-dev/q-ui-kit';
+import { trimString } from '@q-dev/utils';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
-import Button from 'ui/Button';
-import Input from 'ui/Input';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
-import useForm from 'hooks/useForm';
-
-import { trimAddress } from 'utils/strings';
 import { address, required } from 'utils/validators';
 
 const WrapContainer = styled.div`
@@ -51,7 +50,7 @@ function AddressForm ({ selectedAddress, onSubmit }: Props) {
           <Input
             {...form.fields.address}
             label={t('DISPLAY_ALIASES_FOR_ADDRESS')}
-            hint={`${t('SELECTED_ADDRESS')} ${trimAddress(selectedAddress)}`}
+            hint={`${t('SELECTED_ADDRESS')} ${trimString(selectedAddress)}`}
           />
           <Button
             type="submit"

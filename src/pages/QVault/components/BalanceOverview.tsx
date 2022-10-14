@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { media } from 'styles/media';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useUser } from 'store/user/hooks';

@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import { Progress, Tooltip } from '@q-dev/q-ui-kit';
+import { formatNumber, formatPercent } from '@q-dev/utils';
 import { useTheme } from 'styled-components';
 import { Proposal } from 'typings/proposals';
-
-import Progress from 'ui/Progress';
-import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../hooks/useEndTime';
 
@@ -12,7 +11,6 @@ import { getVotingColor } from './colors';
 import { StyledProposalVoting } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatNumber, formatPercent } from 'utils/numbers';
 
 function ProposalVoting ({ proposal }: { proposal: Proposal }) {
   const { t } = useTranslation();

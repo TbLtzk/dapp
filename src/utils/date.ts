@@ -2,16 +2,9 @@ import { getCurrentLangInfo } from 'context/LanguageProvider/helpers';
 import { format } from 'date-fns';
 import { format as formatAgo } from 'timeago.js';
 
-type Timestamp = string | number;
+export { compareDates, dateToUnix, formatDuration, unixToDate } from '@q-dev/utils';
+
 type DateLike = string | number | Date | null;
-
-export function unixToDate (unix: Timestamp): Date {
-  return new Date(Number(unix) * 1000);
-}
-
-export function dateToUnix (value: DateLike = Date.now()): number {
-  return Math.floor(Number(value) / 1000);
-}
 
 export function formatDateRelative (
   value: DateLike,
@@ -54,26 +47,3 @@ export function formatDate (
     return '–';
   }
 };
-
-export function formatDuration (value: Timestamp): string {
-  const duration = Number(value);
-  const time = {
-    day: Math.floor(duration / 86_400),
-    hour: Math.floor(duration / 3600) % 24,
-    minute: Math.floor(duration / 60) % 60,
-    second: Math.floor(duration) % 60,
-  };
-
-  return Object.entries(time)
-    .filter(([_, val]) => val !== 0)
-    .map(([key, val]) => `${val} ${key}${val > 1 ? 's' : ''}`)
-    .join(', ');
-}
-
-export function compareDates (a: DateLike, b: DateLike): number {
-  if (!a && !b) return 0;
-  if (!a) return 1;
-  if (!b) return -1;
-
-  return new Date(a).getTime() - new Date(b).getTime();
-}

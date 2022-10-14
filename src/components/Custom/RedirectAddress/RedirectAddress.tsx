@@ -1,8 +1,8 @@
+import { trimString } from '@q-dev/utils';
+
 import Address from '../Address';
 
 import { RedirectAddressLink } from './styles';
-
-import { trimAddress } from 'utils/strings';
 
 type AddressProps = Parameters<typeof Address>[0];
 
@@ -18,7 +18,7 @@ function RedirectAddress ({ address, short = false, to = '', ...rest }: Props) {
       {...rest}
     >
       <RedirectAddressLink to={to} title="Validator Profile">
-        <p className="ellipsis">{short ? trimAddress(address) : address}</p>
+        <p className="ellipsis">{short ? trimString(address) : address}</p>
       </RedirectAddressLink>
     </Address>
   );

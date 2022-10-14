@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Link, Redirect, Route, useLocation } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
 import AllAuctions from './components/AllAuctions';
 import AuctionStats from './components/AuctionStats';

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Stepper from 'ui/Stepper';
+import { Stepper } from '@q-dev/q-ui-kit';
 
 import { MultiStepFormContainer } from './styles';
 

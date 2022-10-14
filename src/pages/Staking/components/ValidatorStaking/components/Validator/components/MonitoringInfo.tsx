@@ -1,16 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tooltip from 'ui/Tooltip';
+import { Icon, Tooltip } from '@q-dev/q-ui-kit';
+import { formatNumber, formatPercent } from '@q-dev/utils';
+
+import Button from 'components/Button';
 
 import { StyledWrapper } from '../styles';
 import { useValidator } from '../Validator';
 
 import { RoutePaths } from 'constants/routes';
 import { formatDate } from 'utils/date';
-import { formatNumber, formatPercent } from 'utils/numbers';
 
 function MonitoringInfo () {
   const { t, i18n } = useTranslation();

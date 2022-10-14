@@ -4,7 +4,7 @@ import {
 } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
 import { EmergencyUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/EmergencyUpdateVotingInstance';
 import { GeneralUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/GeneralUpdateVotingInstance';
-import { flatten } from 'lodash';
+import flatten from 'lodash/flatten';
 import { ProposalEvent } from 'typings/contracts';
 import { QProposalForm } from 'typings/forms';
 import { Proposal } from 'typings/proposals';

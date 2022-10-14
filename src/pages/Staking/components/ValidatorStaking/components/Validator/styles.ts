@@ -1,5 +1,5 @@
+import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
 export const StyledWrapper = styled.div<{ gridArea: string }>`
   grid-area: ${({ gridArea }) => gridArea};

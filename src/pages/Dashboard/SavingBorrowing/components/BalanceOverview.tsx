@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { media } from '@q-dev/q-ui-kit';
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { media } from 'styles/media';
 
+import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Button from 'ui/Button';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { useSaving } from 'store/saving/hooks';
 import { useSystemBalance } from 'store/system-balance/hooks';

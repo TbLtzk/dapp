@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
+import { TabsType } from 'components/Tabs/Tabs';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
-import { TabsType } from 'ui/Tabs/Tabs';
 
 import ManualDelegation from './components/ManualDelegation';
 import { ManageDelegationsContainer } from './components/ManualDelegation/styles';

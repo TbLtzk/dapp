@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
+import Input from 'components/Input';
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
 
 import { address, required } from 'utils/validators';
 

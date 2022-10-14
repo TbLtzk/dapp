@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { Tooltip } from '@q-dev/q-ui-kit';
 import tooltips from 'json/tooltips.json';
-
-import Tooltip from 'ui/Tooltip';
 
 import { InfoIcon } from './styles';
 

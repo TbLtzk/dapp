@@ -3,12 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { Redirect, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
 import LazyLoading from 'components/Base/LazyLoading';
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import Button from 'ui/Button';
-import Icon from 'ui/Icon';
-import Tabs from 'ui/Tabs';
-import { TabRoute, TabSwitch } from 'ui/Tabs/components';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
+
+import ExplorerProvider from './providers/ExplorerProvider';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -77,7 +80,9 @@ function ManageParameters () {
 
           <TabRoute exact path={RoutePaths.qContractRegistry}>
             <LazyLoading>
-              <QContractRegistryParameters />
+              <ExplorerProvider>
+                <QContractRegistryParameters />
+              </ExplorerProvider>
             </LazyLoading>
           </TabRoute>
 

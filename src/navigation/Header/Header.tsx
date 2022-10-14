@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import Button from 'ui/Button';
+import Button from 'components/Button';
 
 import Balance from './components/Balance';
 import ConnectWallet from './components/ConnectWallet';

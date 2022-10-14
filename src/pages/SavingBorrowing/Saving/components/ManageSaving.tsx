@@ -5,7 +5,7 @@ import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import { SavingAsset } from 'typings/defi';
 
-import Tabs from 'ui/Tabs';
+import Tabs from 'components/Tabs';
 
 import DepositForm from './DepositForm';
 import WithdrawForm from './WithdrawForm';

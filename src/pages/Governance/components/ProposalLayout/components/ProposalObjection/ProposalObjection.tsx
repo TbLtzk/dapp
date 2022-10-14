@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Modal } from '@q-dev/q-ui-kit';
 import { SlashingProposal } from 'typings/proposals';
 
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
+import Button from 'components/Button';
 
 import ObjectionDetails from './components/ObjectionDetails';
 import ProposerRemarkForm from './components/ProposerRemarkForm';

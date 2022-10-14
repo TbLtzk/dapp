@@ -1,12 +1,5 @@
 import { Classification, ParameterType } from '@q-dev/q-js-sdk';
 
-export type Option<T> = {
-  value: T;
-  label: string;
-};
-export type Options<T> = Option<T>[];
-export type RadioOptions<T> = (Option<T> & { tip?: string })[];
-
 interface FormParameter {
   type: ParameterType;
   key: string;

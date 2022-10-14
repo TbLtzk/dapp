@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { toBigNumber } from '@q-dev/utils';
 import { TransactionReceipt } from 'web3-eth';
 import { fromWei } from 'web3-utils';
 
-import Button from 'ui/Button';
-import Input from 'ui/Input';
-
-import useForm from 'hooks/useForm';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
@@ -14,7 +14,6 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { toBigNumber } from 'utils/numbers';
 import { amount, required } from 'utils/validators';
 
 interface Props {

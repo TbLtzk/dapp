@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset, formatPercent } from '@q-dev/utils';
+
 import ProgressBar from 'components/Base/ProgressBar';
 import DelegateModal from 'pages/Staking/components/DelegationStaking/components/DelegateModal';
 
@@ -7,8 +9,6 @@ import { StyledWrapper } from '../styles';
 import { useValidator } from '../Validator';
 
 import { useUser } from 'store/user/hooks';
-
-import { formatAsset, formatPercent } from 'utils/numbers';
 
 function DelegationInfo () {
   const { t } = useTranslation();

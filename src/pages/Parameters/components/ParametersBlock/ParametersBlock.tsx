@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Spinner from 'ui/Spinner';
-import Switch from 'ui/Switch';
-import Tooltip from 'ui/Tooltip';
+import { Spinner, Switch, Tooltip } from '@q-dev/q-ui-kit';
+import { ParameterValue } from 'typings/parameters';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -11,8 +10,6 @@ import GnosisSafeTooltip from '../GnosisSafeTooltip';
 import ParametersTable from '../ParametersTable';
 
 import { BlockParagraph, DocsLink, ParametersBlockTitle } from './styles';
-
-import { ParameterValue } from 'store/parameters/reducer';
 
 interface Props {
   title: string;
