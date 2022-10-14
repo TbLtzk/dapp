@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from '@q-dev/utils';
 import parametersJson from 'json/parameters.json';
 import { ParameterValue } from 'typings/parameters';
@@ -7,8 +8,6 @@ import { fromWei } from 'web3-utils';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-import Icon from 'ui/Icon';
-import Tooltip from 'ui/Tooltip';
 
 import { TableWrapper } from './styles';
 
