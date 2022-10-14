@@ -2,10 +2,9 @@ import { HTMLAttributes, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, Modal } from '@q-dev/q-ui-kit';
+import { useCopyToClipboard } from '@q-dev/react-hooks';
 
 import Button from 'components/Button';
-
-import useCopyToClipboard from 'hooks/useCopyToClipboard';
 
 import { StyledShareContent } from './styles';
 

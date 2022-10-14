@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router';
 
 import { Icon, Tag } from '@q-dev/q-ui-kit';
-import { camelCase } from 'lodash';
+import camelCase from 'lodash/camelCase';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
 
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';

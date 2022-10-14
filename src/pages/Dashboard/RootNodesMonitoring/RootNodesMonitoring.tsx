@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -11,8 +12,6 @@ import Table, { TableColumn } from 'components/Table';
 import DashboardLink from '../components/DashboardLink';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
-
-import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .table-header {

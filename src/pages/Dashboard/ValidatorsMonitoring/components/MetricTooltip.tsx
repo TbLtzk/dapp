@@ -2,9 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import { ValidatorMetric } from '@q-dev/q-js-sdk';
 import { Icon, Tooltip } from '@q-dev/q-ui-kit';
+import { formatNumber, formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
-
-import { formatNumber, formatPercent } from 'utils/numbers';
 
 const StyledTooltip = styled(Tooltip)`
   .metric-tooltip-content {

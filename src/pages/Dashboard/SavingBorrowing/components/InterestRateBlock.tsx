@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { BorrowAssetsRateAndFee } from 'typings/defi';
 
 import Button from 'components/Button';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 
 import { useBorrowing } from 'store/borrowing/hooks';
 import { useTransaction } from 'store/transaction/hooks';

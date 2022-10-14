@@ -4,7 +4,7 @@ import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/gov
 import { EPQFIParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIParametersVotingInstance';
 import { EPRSMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSMembershipVotingInstance';
 import { EPRSParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSParametersVotingInstance';
-import { flatten } from 'lodash';
+import flatten from 'lodash/flatten';
 import { ProposalEvent } from 'typings/contracts';
 import { ExpertProposalForm, ExpertType } from 'typings/forms';
 import { Proposal } from 'typings/proposals';

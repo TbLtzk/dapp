@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media } from '@q-dev/q-ui-kit';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import { ProgressBarWrapper } from 'components/Base/ProgressBar/styles';
@@ -15,7 +16,6 @@ import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
-import { formatAsset } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   grid-area: validator-info;

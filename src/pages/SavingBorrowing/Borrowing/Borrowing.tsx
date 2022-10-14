@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { media } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
@@ -9,8 +10,6 @@ import AssetCard from './components/AssetCard';
 import AssetCardSkeleton from './components/AssetCardSkeleton';
 
 import { useInterestRates } from 'store/borrowing/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const StyledWrapper = styled.div`
   .borrowing__list {

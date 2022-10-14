@@ -1,6 +1,7 @@
 import { HTMLAttributes, useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+import { formatNumber, formatPercent } from '@q-dev/utils';
 import { ArcElement, Chart, ChartData, Legend, Tooltip } from 'chart.js';
 import { useTheme } from 'styled-components';
 
@@ -10,8 +11,6 @@ import useDonutTooltip from './hooks/useDonutTooltip';
 import { getDonutChartColor } from './colors';
 import { DonutChartContainer } from './styles';
 import { DonutOption } from './types';
-
-import { formatNumber, formatPercent } from 'utils/numbers';
 
 Chart.register(ArcElement, Tooltip, Legend);
 

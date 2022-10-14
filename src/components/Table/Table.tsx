@@ -4,14 +4,14 @@ import paginationFactory, { PaginationListStandalone, PaginationProvider } from 
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import { useTranslation } from 'react-i18next';
 
+import { parseNumber } from '@q-dev/utils';
+
 import Search from 'components/Search';
 
 import { SkeletonTableLoading } from '../../components/Base/SkeletonLoading/SkeletonLoading';
 
 import { SortCaretIcon, TableContainer } from './styles';
 import { TableColumn } from '.';
-
-import { parseNumber } from 'utils/numbers';
 
 interface Props<T> {
   loading?: boolean;

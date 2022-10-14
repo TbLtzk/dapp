@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Form, useForm } from '@q-dev/form-hooks';
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { RadioGroup, Select, Tip } from '@q-dev/q-ui-kit';
 import { FormParameter } from 'typings/forms';
 
 import Input from 'components/Input';
-
-import useForm from 'hooks/useForm';
-import { Form } from 'hooks/useFormArray';
 
 import { ParameterFormContainer } from './styles';
 

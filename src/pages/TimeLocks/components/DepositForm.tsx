@@ -1,7 +1,9 @@
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { Calendar, media, Tip } from '@q-dev/q-ui-kit';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
@@ -9,8 +11,6 @@ import { TimeLockForm } from 'typings/time-locks';
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 
@@ -21,7 +21,6 @@ import { useUser } from 'store/user/hooks';
 
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
-import { formatAsset } from 'utils/numbers';
 import { futureDate, max, min, required } from 'utils/validators';
 
 const StyledForm = styled.form`

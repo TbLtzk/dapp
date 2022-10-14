@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
+import { useInterval } from '@q-dev/react-hooks';
 
-import useInterval from 'hooks/useInterval';
+import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
 import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';

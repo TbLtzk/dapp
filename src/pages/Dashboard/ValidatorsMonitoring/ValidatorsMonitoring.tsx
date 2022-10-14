@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset, formatNumber, formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -18,7 +19,6 @@ import MetricTooltip from './components/MetricTooltip';
 import { useValidators } from 'store/validators/hooks';
 
 import { formatDate, formatDateRelative } from 'utils/date';
-import { formatAsset, formatNumber, formatPercent } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   .table-header {

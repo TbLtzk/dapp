@@ -1,6 +1,6 @@
 import { BaseVotingWeightInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import { ProposalEvent } from 'typings/contracts';
 import { ProposalType } from 'typings/proposals';
 

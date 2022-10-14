@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@q-dev/q-ui-kit';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { AuctionInfos, LiquidationAuctionInfo, SystemDebtAndSurplusInfo } from 'typings/auctions';
 
 import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';

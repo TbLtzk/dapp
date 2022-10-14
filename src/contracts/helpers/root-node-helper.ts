@@ -1,4 +1,6 @@
-import { orderBy, round, sumBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
+import round from 'lodash/round';
+import sumBy from 'lodash/sumBy';
 import { fromWei } from 'web3-utils';
 
 export const prepareRootMembersTable = (

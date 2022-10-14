@@ -1,6 +1,7 @@
 import { AddressWithBalance } from '@q-dev/q-js-sdk';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
+import { calculateInterestRate, toBigNumber, transformToPercentage } from '@q-dev/utils';
 import { Validator, ValidatorMonitoring } from 'typings/validator';
 import { fromWei } from 'web3-utils';
 
@@ -14,8 +15,7 @@ import {
   getValidatorsInstance,
 } from 'contracts/contract-instance';
 
-import { calculateInterestRate, toBigNumber, transformToPercentage } from 'utils/numbers';
-import { isAddress } from 'utils/strings';
+import { isAddress } from 'utils/web3';
 
 export async function getValidators (shortList: AddressWithBalance[]) {
   const metrics = await getValidatorMetricsInstance();

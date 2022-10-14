@@ -11,6 +11,8 @@ import PageLayout from 'components/PageLayout';
 import Tabs from 'components/Tabs';
 import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
+import ExplorerProvider from './providers/ExplorerProvider';
+
 import { RoutePaths } from 'constants/routes';
 
 const QContractRegistryParameters = lazy(() => import('./components/QParameters/QContractRegistryParameters'));
@@ -78,7 +80,9 @@ function ManageParameters () {
 
           <TabRoute exact path={RoutePaths.qContractRegistry}>
             <LazyLoading>
-              <QContractRegistryParameters />
+              <ExplorerProvider>
+                <QContractRegistryParameters />
+              </ExplorerProvider>
             </LazyLoading>
           </TabRoute>
 

@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media, Modal } from '@q-dev/q-ui-kit';
+import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
-import useAnimateNumber from 'hooks/useAnimateNumber';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 

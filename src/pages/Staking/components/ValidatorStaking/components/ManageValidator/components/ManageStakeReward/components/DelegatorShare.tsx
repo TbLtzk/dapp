@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useSetDelegatorsShare } from '../hooks';
 
@@ -13,7 +13,6 @@ import { useTransaction } from 'store/transaction/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
 
-import { formatPercent } from 'utils/numbers';
 import { max, required } from 'utils/validators';
 
 const StyledBlock = styled.div`

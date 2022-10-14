@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { useAnimateNumber } from '@q-dev/react-hooks';
+import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 
-import useAnimateNumber from 'hooks/useAnimateNumber';
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
-import { formatNumber } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   grid-area: total-validators;

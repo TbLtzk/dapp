@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm, useFormArray } from '@q-dev/form-hooks';
 import { FieldOptions, Icon, RadioGroup } from '@q-dev/q-ui-kit';
 import { ExpertProposalForm, ExpertType, FormParameter } from 'typings/forms';
 
@@ -8,9 +9,6 @@ import FormBlock from 'components/FormBlock';
 import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
 import ParameterForm from 'components/ParameterForm';
-
-import useForm from 'hooks/useForm';
-import useFormArray from 'hooks/useFormArray';
 
 import { useNewExpertProposal } from '../NewExpertProposal';
 

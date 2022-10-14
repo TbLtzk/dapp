@@ -3,14 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 import { InterestRate } from 'typings/defi';
 
 import Button from 'components/Button';
 import AssetPairLogos from 'pages/SavingBorrowing/components/AssetPairLogos';
 
-import useAnimateNumber from 'hooks/useAnimateNumber';
-import useInterval from 'hooks/useInterval';
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { useBorrowing, useInterestRates } from 'store/borrowing/hooks';

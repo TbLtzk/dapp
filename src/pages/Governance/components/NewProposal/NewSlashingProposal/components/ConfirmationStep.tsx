@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset, formatPercent } from '@q-dev/utils';
 import { SlashingProposalForm } from 'typings/forms';
 
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
 import { useNewSlashingProposal } from '../NewSlashingProposal';
-
-import { formatAsset, formatPercent } from 'utils/numbers';
 
 function ConfirmationStep () {
   const { t } = useTranslation();

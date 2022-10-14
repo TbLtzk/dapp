@@ -1,13 +1,13 @@
 
 import { HTMLAttributes, ReactNode } from 'react';
 
+import { trimString } from '@q-dev/utils';
+
 import CopyToClipboard from 'components/CopyToClipboard';
 
 import AddressIcon from '../AddressIcon';
 
 import { AddressWrapper } from './styles';
-
-import { trimAddress } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   address: string;
@@ -28,7 +28,7 @@ function Address ({
   ...rest
 }: Props) {
   const addressContent = (
-    <p>{short ? trimAddress(address) : address}</p>
+    <p>{short ? trimString(address) : address}</p>
   );
 
   return (

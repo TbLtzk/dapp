@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { sumBy } from 'lodash';
+import { formatAsset } from '@q-dev/utils';
+import sumBy from 'lodash/sumBy';
 
 import { ValidatorsOverviewContainer } from '../../styles';
 
 import { useValidators } from 'store/validators/hooks';
-
-import { formatAsset } from 'utils/numbers';
 
 function ValidatorsOverview () {
   const { t } = useTranslation();

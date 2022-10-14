@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { Icon, Modal } from '@q-dev/q-ui-kit';
+import { formatAsset, formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 import { SavingAsset } from 'typings/defi';
 
@@ -16,7 +17,6 @@ import RefreshBalanceButton from './RefreshBalanceButton';
 import { useSavingAssets } from 'store/saving/hooks';
 
 import { formatDate, formatDateRelative } from 'utils/date';
-import { formatAsset, formatPercent } from 'utils/numbers';
 
 const StyledWrapper = styled.div`
   overflow: hidden;

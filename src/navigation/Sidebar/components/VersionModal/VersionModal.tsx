@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { ConnectionInfo, Web3Adapter } from '@q-dev/q-js-sdk';
 import { Modal } from '@q-dev/q-ui-kit';
+import { useInterval } from '@q-dev/react-hooks';
 
 import CopyToClipboard from 'components/CopyToClipboard';
-
-import useInterval from 'hooks/useInterval';
 
 import packageJson from '../../../../../package.json';
 

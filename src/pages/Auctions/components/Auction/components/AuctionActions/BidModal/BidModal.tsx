@@ -1,15 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm, useMultiStepForm } from '@q-dev/form-hooks';
 import { Modal, Tip } from '@q-dev/q-ui-kit';
-import { snakeCase } from 'lodash';
+import { toBigNumber } from '@q-dev/utils';
+import snakeCase from 'lodash/snakeCase';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
-
-import useForm from 'hooks/useForm';
-import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import { useAuctions } from 'store/auctions/hooks';
 import { useTransaction } from 'store/transaction/hooks';
@@ -19,7 +18,6 @@ import { getStableCoinInstance } from 'contracts/contract-instance';
 import { getAuctionInstance } from 'contracts/helpers/auction';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
-import { toBigNumber } from 'utils/numbers';
 import { max, min, required } from 'utils/validators';
 
 const DEFAULT_VALUES = {

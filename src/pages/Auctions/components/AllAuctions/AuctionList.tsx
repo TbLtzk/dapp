@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Illustration } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
 
 import Button from 'components/Button';
@@ -12,8 +13,6 @@ import { ListNextContainer } from 'pages/Governance/components/Proposals/compone
 import AuctionCard from './components/AuctionCard';
 
 import { useAuctions } from 'store/auctions/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const PAGE_LIMIT = 10;
 

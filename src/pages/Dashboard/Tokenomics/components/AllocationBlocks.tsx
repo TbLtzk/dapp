@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media } from '@q-dev/q-ui-kit';
+import { useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-
-import useInterval from 'hooks/useInterval';
 
 import AllocationBlock from './AllocationBlock';
 

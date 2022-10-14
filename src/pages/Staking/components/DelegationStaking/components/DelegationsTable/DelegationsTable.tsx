@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { fillArray, formatAsset, formatPercent } from '@q-dev/utils';
+
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'components/Table';
@@ -9,9 +11,6 @@ import DelegateModal from '../DelegateModal';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-
-import { fillArray } from 'utils/arrays';
-import { formatAsset, formatPercent } from 'utils/numbers';
 
 function DelegationsTable () {
   const { t } = useTranslation();

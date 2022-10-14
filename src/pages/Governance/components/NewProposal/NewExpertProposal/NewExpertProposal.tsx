@@ -2,11 +2,10 @@ import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
+import { useMultiStepForm } from '@q-dev/form-hooks';
 import { ExpertProposalForm } from 'typings/forms';
 
 import MultiStepForm from 'components/MultiStepForm';
-
-import useMultiStepForm from 'hooks/useMultiStepForm';
 
 import ConfirmationStep from './components/ConfirmationStep';
 import ManageExpertStep from './components/ManageExpertStep';

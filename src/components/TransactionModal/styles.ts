@@ -1,4 +1,4 @@
-import { includes } from 'lodash';
+import includes from 'lodash/includes';
 import styled from 'styled-components';
 
 import { getToastColor } from 'components/Toast/colors';

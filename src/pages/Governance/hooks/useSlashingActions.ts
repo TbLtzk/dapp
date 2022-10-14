@@ -1,4 +1,6 @@
 
+import { getFixedPercentage } from '@q-dev/utils';
+
 import { getUserAddress } from 'store';
 
 import {
@@ -7,8 +9,6 @@ import {
   getValidatorsInstance,
   getValidatorSlashingEscrowInstance,
 } from 'contracts/contract-instance';
-
-import { getFixedPercentage } from 'utils/numbers';
 
 function getEscrowContractInstance (isRootNode: boolean) {
   return isRootNode

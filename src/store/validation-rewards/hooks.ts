@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { transformToPercentage } from '@q-dev/utils';
+
 import { setDelegatorsShare, setLastUpdateOfCompoundRate, setPoolBalance, setPoolInfo } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
@@ -8,7 +10,6 @@ import { getUserAddress, useAppSelector } from 'store';
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 
 import { captureError } from 'utils/errors';
-import { transformToPercentage } from 'utils/numbers';
 
 export function useValidationRewards () {
   const dispatch = useDispatch();

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
+
 import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
-
-import useForm from 'hooks/useForm';
 
 import { useNewRootProposal } from '../NewRootProposal';
 

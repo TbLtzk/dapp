@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { Illustration, media, Modal, SegmentedButton } from '@q-dev/q-ui-kit';
+import { fillArray } from '@q-dev/utils';
 import styled from 'styled-components';
 import { Asset, VaultWithId } from 'typings/defi';
 
@@ -11,8 +12,6 @@ import VaultCard from './VaultCard';
 import VaultCardSkeleton from './VaultCardSkeleton';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
-
-import { fillArray } from 'utils/arrays';
 
 const StyledWrapper = styled.div`
   .vaults-list-title {

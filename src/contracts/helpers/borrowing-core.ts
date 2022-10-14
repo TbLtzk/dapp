@@ -1,3 +1,4 @@
+import { calculateInterestRate } from '@q-dev/utils';
 import { Asset, BorrowAssetsRateAndFee } from 'typings/defi';
 
 import {
@@ -9,7 +10,6 @@ import {
 
 import { unixToDate } from 'utils/date';
 import { captureError } from 'utils/errors';
-import { calculateInterestRate } from 'utils/numbers';
 
 export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAssetsRateAndFee> {
   const contract = await getEpdrParametersInstance();

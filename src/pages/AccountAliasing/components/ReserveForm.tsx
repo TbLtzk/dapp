@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
-
-import useForm from 'hooks/useForm';
 
 import { useAliases, useAliasEvents } from 'store/aliases/hooks';
 import { useTransaction } from 'store/transaction/hooks';

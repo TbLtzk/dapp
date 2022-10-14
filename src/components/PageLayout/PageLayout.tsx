@@ -2,14 +2,12 @@ import { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { useOnScreen } from '@q-dev/react-hooks';
+import { titleCase } from '@q-dev/utils';
 
 import Button from 'components/Button';
 
-import useOnScreen from 'hooks/useOnScreen';
-
 import { PageLayoutContainer } from './styles';
-
-import { titleCase } from 'utils/strings';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   title: string;

@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
+import { formatAsset } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import LinkViewer from '../../LinkViewer';
-
-import { formatAsset } from 'utils/numbers';
 
 interface Props {
   proposal: Proposal;

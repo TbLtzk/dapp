@@ -1,11 +1,11 @@
 
+import { trimString } from '@q-dev/utils';
+
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import Address from '../Address';
 
 import { ExplorerLink } from './styles';
-
-import { trimAddress } from 'utils/strings';
 
 function ExplorerAddress ({
   address,
@@ -27,7 +27,7 @@ function ExplorerAddress ({
         title="View on Explorer"
       >
         <p className="ellipsis" style={{ marginBottom: 0 }}>
-          {short ? trimAddress(address) : address}
+          {short ? trimString(address) : address}
         </p>
       </ExplorerLink>
     </Address>

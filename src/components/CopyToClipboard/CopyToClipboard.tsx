@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, Tooltip } from '@q-dev/q-ui-kit';
@@ -6,7 +6,7 @@ import copy from 'copy-to-clipboard';
 
 import { CopyTrigger, TooltipWrapper } from './styles';
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   value: string;
   hideTooltip?: boolean;
 }
@@ -14,6 +14,7 @@ interface Props {
 function CopyToClipboard ({
   value,
   hideTooltip = false,
+  ...rest
 }: Props) {
   const { t } = useTranslation();
   const [isCopied, setIsCopied] = useState(false);
@@ -34,7 +35,7 @@ function CopyToClipboard ({
   };
 
   const copyTrigger = (
-    <CopyTrigger onClick={handleCopy}>
+    <CopyTrigger {...rest} onClick={handleCopy}>
       <Icon name={isCopied ? 'check-circle' : 'copy'} />
     </CopyTrigger>
   );
@@ -42,7 +43,7 @@ function CopyToClipboard ({
   return hideTooltip
     ? copyTrigger
     : (
-      <TooltipWrapper>
+      <TooltipWrapper {...rest}>
         <Tooltip trigger={copyTrigger}>
           <span className="copy-msg">
             {isCopied ? t('COPIED') : t('COPY')}
