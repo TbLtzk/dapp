@@ -16,17 +16,12 @@ export const StyledWrapper = styled.div`
   padding: 32px;
   pointer-events: all;
 
-  .network-warning__header {
-    text-align: center;
-  }
-
   .network-warning__message {
     margin-top: 20px;
-    text-align: center;
   }
 
   .network-warning__button {
-    margin-top: 20px;
+    margin-top: 24px;
     width: 100%;
   }
 `;
@@ -37,7 +32,7 @@ function NetworkWarning () {
 
   return (
     <StyledWrapper className="block">
-      <p className="network-warning__header text-xl font-semibold">
+      <p className="text-xl font-semibold">
         {t('NETWORK_WARNING_HEADER')}
       </p>
       <p className="network-warning__message text-md color-secondary">

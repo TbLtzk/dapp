@@ -1116,6 +1116,6 @@
   "MAX_TIME_LOCK_DEPOSIT_MESSAGE": "Das Limit für Zeitsperren ist erreicht. Bitte warten Sie, bis Sie vorhandene Schlösser entsperrt haben.",
   "VERIFIED": "Verified:",
   "COUNT_PENDING": "{{count}} pending",
-  "NETWORK_WARNING_MESSAGE": "Anscheinend läuft Ihr Wallet in einem anderen Netzwerk als Q. Bitte ändern Sie das Netzwerk in Ihrem Wallet manuell oder klicken Sie auf die Schaltfläche unten.",
-  "NETWORK_WARNING_HEADER": "Hoppla, Ihre Wallet befindet sich nicht im richtigen Netzwerk."
+  "NETWORK_WARNING_MESSAGE": "Es scheint, dass Ihre Brieftasche mit einem Nicht-Q-Netzwerk verbunden ist. Bitte wechseln Sie in Ihrer Brieftasche zu Q oder klicken Sie auf die Schaltfläche unten",
+  "NETWORK_WARNING_HEADER": "Hoppla, falsches Netzwerk"
 }
