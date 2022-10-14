@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             web3: ['web3/dist/web3.min.js'],
             q_sdk: ['@q-dev/q-js-sdk'],
+            q_ui_kit: ['@q-dev/q-ui-kit'],
           }
         },
         plugins: [
