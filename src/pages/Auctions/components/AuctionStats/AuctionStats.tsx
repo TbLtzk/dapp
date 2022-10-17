@@ -17,7 +17,7 @@ import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 function AuctionStats () {
   const { t } = useTranslation();
-  const { transactionLoading, submitTransaction } = useTransaction();
+  const { pendingTransactions, submitTransaction } = useTransaction();
 
   const {
     walletBalance,
@@ -46,7 +46,7 @@ function AuctionStats () {
 
   useEffect(() => {
     getParams();
-  }, [transactionLoading]);
+  }, [pendingTransactions.length]);
 
   const getParams = () => {
     getEPDRUint('governed.EPDR.reserveLot')

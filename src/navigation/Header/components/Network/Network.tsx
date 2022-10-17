@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 
 import { SegmentedButton } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
 import { networkConfigsMap } from 'constants/config';
@@ -12,7 +12,7 @@ import { networkConfigsMap } from 'constants/config';
 function Network () {
   const { switchNetwork, switchNetworkError, setSwitchNetworkError } = useWeb3Context();
   const { t } = useTranslation();
-  const { setTransactionError } = useTransaction();
+  const alert = useAlert();
 
   const { chainId } = useUser();
   const [currentNetwork, setCurrentNetwork] = useState(chainId);
@@ -29,7 +29,7 @@ function Network () {
 
   useEffect(() => {
     if (switchNetworkError) {
-      setTransactionError(t('SWITCH_NETWORK_ERROR'));
+      alert.error(t('SWITCH_NETWORK_ERROR'));
       setCurrentNetwork(chainId);
       setSwitchNetworkError(false);
     }

@@ -1,4 +1,4 @@
-import { TagState } from 'ui/Tag';
+import { TagState } from '@q-dev/q-ui-kit/dist/components/Tag';
 
 import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 

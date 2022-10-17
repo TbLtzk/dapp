@@ -1,54 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface PendingTransaction {
+  id: string;
+  title: string;
+  hideLoading: boolean;
+}
+
 interface TransactionState {
-  isLoading: boolean;
-  hash: string;
-  successMessage: string;
-  errorMessage: string;
+  pendingTransactions: PendingTransaction[];
 }
 
 const initialState: TransactionState = {
-  isLoading: false,
-  hash: '',
-  errorMessage: '',
-  successMessage: '',
+  pendingTransactions: [],
 };
 
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
   reducers: {
-    setLoading: (state, { payload }: PayloadAction<boolean>) => {
-      state.isLoading = payload;
-    },
-
-    setHash: (state, { payload }: PayloadAction<string>) => {
-      state.hash = payload;
-    },
-
-    setSuccessMessage: (state, { payload }: PayloadAction<string>) => {
-      state.successMessage = payload;
-    },
-
-    setErrorMessage: (state, { payload }: PayloadAction<string>) => {
-      state.errorMessage = payload;
-      state.isLoading = false;
-    },
-
-    reset: (state) => {
-      state.isLoading = false;
-      state.hash = '';
-      state.errorMessage = '';
-      state.successMessage = '';
+    setPendingTransactions: (state, { payload }: PayloadAction<PendingTransaction[]>) => {
+      state.pendingTransactions = payload;
     },
   }
 });
 
-export const {
-  setLoading,
-  setHash,
-  setSuccessMessage,
-  setErrorMessage,
-  reset,
-} = transactionSlice.actions;
+export const { setPendingTransactions } = transactionSlice.actions;
 export default transactionSlice.reducer;

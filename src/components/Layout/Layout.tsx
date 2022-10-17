@@ -5,7 +5,7 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import NetworkWarning from 'components/NetworkWarning';
 import Toast from 'components/Toast';
-import TransactionModal from 'components/TransactionModal';
+import TransactionLoader from 'components/TransactionLoader';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
 
@@ -55,7 +55,7 @@ function Layout ({ children }: Props) {
             </div>
           </AppContainer>)
       }
-      <TransactionModal/>
+      <TransactionLoader />
     </AlertProvider>
   );
 }

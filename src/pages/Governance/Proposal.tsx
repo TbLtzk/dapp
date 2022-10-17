@@ -24,17 +24,17 @@ function Proposal ({ match }: RouteComponentProps<{
 }>) {
   const { t } = useTranslation();
   const history = useHistory();
-  const { transactionLoading } = useTransaction();
+  const { pendingTransactions } = useTransaction();
 
   const [proposal, setProposal] = useState<ProposalInterface |null>(null);
   const type = getProposalTypeByContract(match.params.contract);
 
   useInterval(loadProposal, 60_000);
   useEffect(() => {
-    if (!transactionLoading) {
+    if (!pendingTransactions.length) {
       loadProposal();
     }
-  }, [transactionLoading]);
+  }, [pendingTransactions.length]);
 
   async function loadProposal () {
     const proposal = await getProposal(match.params.contract, match.params.id);
