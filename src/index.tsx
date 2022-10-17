@@ -28,6 +28,8 @@ import Routes from 'navigation/Routes';
 
 import { store } from './store';
 
+import '@mdi/font/css/materialdesignicons.min.css';
+
 Sentry.init({
   dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',
   integrations: [new BrowserTracing()],

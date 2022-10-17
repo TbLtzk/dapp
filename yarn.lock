@@ -1386,11 +1386,6 @@
   resolved "https://registry.yarnpkg.com/@mdi/font/-/font-6.7.96.tgz#1686425ba291b90ea02a87292a565c6d0c854afe"
   integrity sha512-M68vlRhtmA/SpDjo2dV3SUZus20jrU9Zp2ggslfzh0cbFpygPukcVpBIA3pErwsukhYt4RfbgXpFi74SjixOrQ==
 
-"@mdi/font@^7.0.96":
-  version "7.0.96"
-  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-7.0.96.tgz#9853c222623072f5575b4039c8c195ea929b61fc"
-  integrity sha512-rzlxTfR64hqY8yiBzDjmANfcd8rv+T5C0Yedv/TWk2QyAQYdc66e0kaN1ipmnYU3RukHRTRcBARHzzm+tIhL7w==
-
 "@metamask/detect-provider@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-1.2.0.tgz#3667a7531f2a682e3c3a43eaf3a1958bdb42a696"
@@ -1458,15 +1453,15 @@
     bn.js "^5.2.1"
     web3 "^1.7.0"
 
-"@q-dev/q-ui-kit@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.5.0.tgz#7e4819180eb93e4bedcf21eef8fb160ff6ca5f67"
-  integrity sha512-DXyl+8aAnZvrunQTRVVydJrqy/jUOiCOLUQeI57Xk04q76UqU7NJiBNvJhtTEpg80PhdD7MnlPNBvtWf7nQ8yA==
+"@q-dev/q-ui-kit@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/q-ui-kit/-/q-ui-kit-0.6.0.tgz#7eab38644405b6d3a80976cc42a525a58b37aa96"
+  integrity sha512-866B+OT/cRdRA+VtQ9CUtB79svVp+XIvvuXcnf/JB/17ZF8JswVMfhGZaZThW4uCPuHcg7xp0kNC1gzc0B2K9Q==
   dependencies:
-    "@mdi/font" "^7.0.96"
     lodash "^4.17.21"
     react-datepicker "^4.8.0"
     react-hotkeys-hook "^3.4.7"
+
 "@q-dev/react-hooks@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@q-dev/react-hooks/-/react-hooks-0.1.0.tgz#5b59ca8db23f3372cc731f771dcc845502704807"
