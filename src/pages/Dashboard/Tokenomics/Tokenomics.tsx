@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
@@ -32,10 +34,12 @@ const StyledWrapper = styled.div`
 `;
 
 function Tokenomics () {
+  const { t } = useTranslation();
+
   return (
     <StyledWrapper>
       <DashboardLink />
-      <PageLayout title="Tokenomics">
+      <PageLayout title={t('TOKENOMICS')}>
         <div className="tokenomics__main">
           <AllocationBlocks />
           <div className="tokenomics__balance-blocks">

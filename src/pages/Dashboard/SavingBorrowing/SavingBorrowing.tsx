@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
 import { media } from 'styles/media';
@@ -37,6 +38,7 @@ const StyledWrapper = styled.div`
 `;
 
 function SavingBorrowing () {
+  const { t } = useTranslation();
   const { collaterals } = useNetworkConfig();
   const { interestRates, getInterestRates } = useInterestRates();
 
@@ -47,7 +49,7 @@ function SavingBorrowing () {
   return (
     <StyledWrapper>
       <DashboardLink />
-      <PageLayout title="Saving & Borrowing">
+      <PageLayout title={t('SAVING_BORROWING')}>
         <div className="saving-borrowing__main">
           <BalanceOverview />
           <div className="saving-borrowing-rates">
