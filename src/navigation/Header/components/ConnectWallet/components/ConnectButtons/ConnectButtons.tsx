@@ -38,43 +38,58 @@ function ConnectButtons () {
     );
   }
 
-  if (!window.ethereum) {
-    return (
-      <div className="connect">
-        <p>{t('NO_WALLETS_CONNECTED')}</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="connect_buttons">
-      {window.ethereum.isMetaMask && (
+    <div className="connect-buttons">
+      {window.ethereum?.isMetaMask
+        ? (
+          <Button
+            alwaysEnabled
+            style={{ width: '100%' }}
+            onClick={() => connectWallet(WalletType.INJECTED, true)}
+          >
+            <img
+              src="/icons/metamask.svg"
+              alt="metamask"
+              className="connect-buttons__icon"
+            />
+            <span>{t('CONNECT_WITH_METAMASK')}</span>
+          </Button>
+        )
+        : (
+          <a
+            href="https://metamask.io/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button
+              alwaysEnabled
+              block
+              style={{ width: '100%' }}
+            >
+              <img
+                src="/icons/metamask.svg"
+                alt="metamask"
+                className="connect-buttons__icon"
+              />
+              <span>{t('INSTALL_METAMASK')}</span>
+            </Button>
+          </a>
+        )}
+
+      {Boolean(window.ethereum) && (
         <Button
           alwaysEnabled
           style={{ width: '100%' }}
-          onClick={() => connectWallet(WalletType.INJECTED, true)}
+          onClick={() => connectWallet(WalletType.COINBASE, true)}
         >
           <img
-            src="/icons/metamask.svg"
-            alt="metamask"
-            className="icon"
+            src="/icons/coinbase.png"
+            alt="Coinbase"
+            className="connect-buttons__icon"
           />
-          <span>{t('CONNECT_WITH_METAMASK')}</span>
+          <span>{t('CONNECT_WITH_COINBASE')}</span>
         </Button>
       )}
-
-      <Button
-        alwaysEnabled
-        style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.COINBASE, true)}
-      >
-        <img
-          src="/icons/coinbase.png"
-          alt="metamask"
-          className="icon"
-        />
-        <span>{t('CONNECT_WITH_COINBASE')}</span>
-      </Button>
 
       {/* TODO: add bridge between dApp and connect to wallet
        <Button

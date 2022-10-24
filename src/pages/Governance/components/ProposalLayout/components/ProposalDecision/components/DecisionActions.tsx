@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SlashingProposal } from 'typings/proposals';
@@ -14,6 +14,8 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { checkConfirmedDecision } from 'contracts/helpers/voting/slashing';
+
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { ObjectionStatus } from 'constants/slashing';
 
@@ -24,6 +26,7 @@ interface Props {
 function DecisionActions ({ proposal }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { address } = useUser();
   const {
     confirmDecision,
     recallDecision,
@@ -33,6 +36,7 @@ function DecisionActions ({ proposal }: Props) {
   const { isRootNode } = useRootNodes();
   const user = useUser();
 
+  const [hasConfirmed, setHasConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
@@ -45,6 +49,11 @@ function DecisionActions ({ proposal }: Props) {
   const canProposeDecision = decision.proposer !== user.address &&
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
     proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
+
+  useEffect(() => {
+    checkConfirmedDecision({ proposal, address }).then(setHasConfirmed);
+    return () => setHasConfirmed(false);
+  }, []);
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -74,13 +83,13 @@ function DecisionActions ({ proposal }: Props) {
             <Button
               compact
               look="secondary"
-              disabled={!isRootNode}
+              disabled={hasConfirmed || !isRootNode}
               onClick={() => submitTransaction({
                 successMessage: t('VOTE_TO_CONFIRM_DECISION_SUCCESS'),
                 submitFn: () => confirmDecision(proposal.id),
               })}
             >
-              {t('VOTE_TO_CONFIRM_DECISION')}
+              {hasConfirmed ? t('YOU_VOTED') : t('VOTE_TO_CONFIRM_DECISION')}
             </Button>
           )}
         >

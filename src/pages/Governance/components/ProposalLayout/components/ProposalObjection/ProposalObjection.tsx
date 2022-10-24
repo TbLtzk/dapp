@@ -11,6 +11,8 @@ import ProposerRemarkForm from './components/ProposerRemarkForm';
 
 import { useUser } from 'store/user/hooks';
 
+import { ObjectionStatus } from 'constants/slashing';
+
 function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
 
@@ -21,12 +23,15 @@ function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
     setModalOpen(false);
   };
 
+  const canConfirmAppeal = user.address === proposal.proposer &&
+    proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
+
   return (
     <div className="block">
       <div className="block__header">
         <h2 className="text-h2">{t('OBJECTION')}</h2>
 
-        {proposal.proposer === user.address && (
+        {canConfirmAppeal && (
           <Button
             compact
             look="secondary"

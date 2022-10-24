@@ -50,6 +50,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
     onSubmit: (values) => {
       submitTransaction({
         successMessage: t('BID_FOR_AUCTION_SUCCESS'),
+        onSuccess: () => onSubmit(),
         submitFn: () => bidForAuction({
           auctionType: auction.auctionType,
           form: {
