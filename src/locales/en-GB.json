@@ -1119,5 +1119,21 @@
   "NETWORK_WARNING_MESSAGE": "It seems your wallet is connected to a non-Q network. Please switch to Q in your wallet, or click the button below",
   "NETWORK_WARNING_HEADER": "Oops, wrong network",
   "DETAILED_SECTION_ROOT_NODE_VALIDATION_PERIOD": "Detailed section root node validation period",
-  "TIME": "Time"
+  "TIME": "Time",
+  "VALIDATION_REQUIRED": "The field is required",
+  "VALIDATION_AMOUNT_COMPARED_ZERO": "Amount must be greater than 0",
+  "VALIDATION_AVAILABLE_AMOUNT_ZERO": "Available amount is 0",
+  "VALIDATION_MAX_AMOUNT": "Max amount: {{max}}",
+  "VALIDATION_MAX_VALUE": "Maximum value is {{max}}",
+  "VALIDATION_MIN_VALUE": "Minimum value is {{min}}",
+  "VALIDATION_URL": "Invalid URL",
+  "VALIDATION_ADDRESS": "Invalid address",
+  "VALIDATION_VAULT_UD": "Invalid vault ID",
+  "VALIDATION_HASH": "Invalid hash",
+  "VALIDATION_CURRENT_HASH": "Invalid current hash",
+  "VALIDATION_PERCENT": "Invalid percentage value",
+  "VALIDATION_FUTURE_DATE": "Invalid future date",
+  "VALIDATION_STRING_VALUE": "Invalid string value",
+  "VALIDATION_BOOLEAN_VALUE": "Invalid boolean value",
+  "VALIDATION_UINT_VALUE": "Invalid uint value"
 }

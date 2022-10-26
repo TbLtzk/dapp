@@ -1,4 +1,5 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
+import i18n from 'i18next';
 import { isBoolean } from 'lodash';
 import isDate from 'lodash/isDate';
 import isEmpty from 'lodash/isEmpty';
@@ -23,13 +24,13 @@ type ValidatorFn<U, T extends ValidatorValue = ValidatorValue> = (val: U | ((for
 
 export const required: Validator = (val) => ({
   isValid: !isEmpty(val) || isNumber(val) || isDate(val) || isBoolean(val) || val instanceof File,
-  message: 'The field is required'
+  message: i18n.t('VALIDATION_REQUIRED')
 });
 
 export const requiredIf: ValidatorFn<(val: ValidatorValue, form: unknown) => boolean> = predicate => (val, form) => {
   return {
     isValid: !predicate(val, form) || required(val).isValid,
-    message: 'The field is required'
+    message: i18n.t('VALIDATION_REQUIRED')
   };
 };
 
@@ -41,20 +42,20 @@ export const amount: ValidatorFn<string | number> = max => (val, form) => {
   if (value.comparedTo(zero) === 0) {
     return {
       isValid: false,
-      message: 'Amount must be greater than 0'
+      message: i18n.t('VALIDATION_AMOUNT_COMPARED_ZERO')
     };
   }
 
   if (validatorValue.comparedTo(toBigNumber(0)) === 0) {
     return {
       isValid: false,
-      message: 'Available amount is 0'
+      message: i18n.t('VALIDATION_AVAILABLE_AMOUNT_ZERO')
     };
   }
 
   return {
     isValid: value.comparedTo(validatorValue) <= 0,
-    message: `Max amount: ${max}`
+    message: i18n.t('VALIDATION_MAX_AMOUNT', { max })
   };
 };
 
@@ -64,7 +65,7 @@ export const min: ValidatorFn<string | number> = min => (val, form) => {
 
   return {
     isValid: value.comparedTo(validatorValue) >= 0,
-    message: `Minimum value is ${min}`
+    message: i18n.t('VALIDATION_MIN_VALUE', { min })
   };
 };
 
@@ -74,43 +75,43 @@ export const max: ValidatorFn<string | number> = max => (val, form) => {
 
   return {
     isValid: value.comparedTo(validatorValue) <= 0,
-    message: `Maximum value is ${max}`
+    message: i18n.t('VALIDATION_MAX_VALUE', { max })
   };
 };
 
 export const url: Validator = val => ({
   isValid: !val || URL_REGEX.test(String(val)),
-  message: 'Invalid URL'
+  message: i18n.t('VALIDATION_URL')
 });
 
 export const address: Validator<string> = val => ({
   isValid: !val || isAddress(val),
-  message: 'Invalid address'
+  message: i18n.t('VALIDATION_ADDRESS')
 });
 
 export const nonZeroAddress: Validator<string> = val => ({
   isValid: !val || (isAddress(val) && val !== ZERO_ADDRESS),
-  message: 'Invalid address'
+  message: i18n.t('VALIDATION_ADDRESS')
 });
 
 export const vaultID: Validator = val => ({
   isValid: !val || VAULT_ID_REGEX.test(String(val)),
-  message: 'Invalid vault ID'
+  message: i18n.t('VALIDATION_VAULT_UD')
 });
 
 export const hash: Validator = val => ({
   isValid: !val || HASH_REGEX.test(String(val)),
-  message: 'Invalid hash'
+  message: i18n.t('VALIDATION_HASH')
 });
 
 export const currentHash: ValidatorFn<string> = hash => val => ({
   isValid: !val || val === hash,
-  message: 'Invalid current hash'
+  message: i18n.t('VALIDATION_CURRENT_HASH')
 });
 
 export const percent: Validator = val => ({
   isValid: !val || (Number(val) >= 0 && Number(val) <= 100),
-  message: 'Invalid percentage value'
+  message: i18n.t('VALIDATION_PERCENT')
 });
 
 export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => {
@@ -121,25 +122,25 @@ export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => 
     case ParameterType.ADDRESS:
       return {
         isValid: isAddress(String(val)),
-        message: 'Invalid address'
+        message: i18n.t('VALIDATION_ADDRESS')
       };
 
     case ParameterType.BOOL:
       return {
         isValid: ['true', 'false'].includes(String(val).toLowerCase()),
-        message: 'Invalid boolean value'
+        message: i18n.t('VALIDATION_BOOLEAN_VALUE')
       };
 
     case ParameterType.STRING:
       return {
         isValid: String(val).length <= 1024,
-        message: 'Invalid string value'
+        message: i18n.t('VALIDATION_STRING_VALUE')
       };
 
     case ParameterType.UINT:
       return {
         isValid: !toBigNumber(String(val)).isNaN(),
-        message: 'Invalid uint value'
+        message: i18n.t('VALIDATION_UINT_VALUE')
       };
 
     default:
@@ -149,7 +150,7 @@ export const parameterType: ValidatorFn<ParameterType> = type => (val, form) => 
 
 export const futureDate: Validator = val => ({
   isValid: !val || new Date(val.toString()) > new Date(),
-  message: 'Invalid future date'
+  message: i18n.t('VALIDATION_FUTURE_DATE')
 });
 
 function getValidatorValue<T extends ValidatorValue> (raw: T | ((form: unknown) => T), form: unknown): T {

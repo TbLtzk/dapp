@@ -1118,5 +1118,21 @@
   "COUNT_PENDING": "{{count}} в очікуванні",
   "NETWORK_WARNING_MESSAGE": "Схоже, що ваш гаманець працює в іншій мережі, ніж Q. Перейдіть на Q у своєму гаманці або натисніть кнопку нижче",
   "NETWORK_WARNING_HEADER": "На жаль, неправильна мережа",
-  "TIME": "Час"
+  "TIME": "Час",
+  "VALIDATION_REQUIRED": "Поле обов'язкове для заповнення",
+  "VALIDATION_AMOUNT_COMPARED_ZERO": "Сума має бути більше 0",
+  "VALIDATION_AVAILABLE_AMOUNT_ZERO": "Доступна сума 0",
+  "VALIDATION_MAX_AMOUNT": "Максимальна сума: {{max}}",
+  "VALIDATION_MAX_VALUE": "Максимальне значення {{max}}",
+  "VALIDATION_MIN_VALUE": "Мінімальне значення {{min}}",
+  "VALIDATION_URL": "Недійсний URL",
+  "VALIDATION_ADDRESS": "Недійсна адреса",
+  "VALIDATION_VAULT_UD": "Недійсний ідентифікатор сховища",
+  "VALIDATION_HASH": "Недійсний хеш",
+  "VALIDATION_CURRENT_HASH": "Недійсний поточний хеш",
+  "VALIDATION_PERCENT": "Недійсне відсоткове значення",
+  "VALIDATION_FUTURE_DATE": "Недійсна майбутня дата",
+  "VALIDATION_STRING_VALUE": "Недійсне строкове значення",
+  "VALIDATION_BOOLEAN_VALUE": "Недійсне логічне значення",
+  "VALIDATION_UINT_VALUE": "Недійсне значення uint"
 }
