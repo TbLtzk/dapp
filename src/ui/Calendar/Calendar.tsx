@@ -30,6 +30,7 @@ function Calendar ({ value, label, error, placeholder, disabled = false, onChang
         filterTime={(d) => new Date(d).getTime() > Date.now()}
         timeIntervals={30}
         disabled={disabled}
+        timeCaption={t('TIME')}
         placeholderText={placeholder || t('CHOOSE_DATE_AND_TIME')}
         {...rest}
         onChange={onChange}
