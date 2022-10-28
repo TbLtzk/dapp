@@ -16,7 +16,6 @@ import { calculateInterestRate, formatAsset, formatFactor, formatFraction, forma
 const parametersDictionary = parametersJson as {
   [key: string]: {
     type: string;
-    name: string;
   };
 };
 
@@ -30,7 +29,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
 
   const renderKey = (item: ParameterValue) => {
     return simplified
-      ? parametersDictionary[item.key]?.name || item.key
+      ? t(item.key)
       : (
         <div>
           <span>{item.key}</span>
