@@ -38,12 +38,8 @@ function DecisionActions ({ proposal }: Props) {
 
   const [hasConfirmed, setHasConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const handleClose = () => {
-    setModalOpen(false);
-  };
 
   const decision = proposal.objEscrow.decision;
-
   const isDecisionEnded = decision.endDate.getTime() < Date.now();
   const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
   const canProposeDecision = decision.proposer !== user.address &&
@@ -54,6 +50,15 @@ function DecisionActions ({ proposal }: Props) {
     checkConfirmedDecision({ proposal, address }).then(setHasConfirmed);
     return () => setHasConfirmed(false);
   }, []);
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleDecisionSubmit = () => {
+    handleClose();
+    setHasConfirmed(true);
+  };
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -86,6 +91,7 @@ function DecisionActions ({ proposal }: Props) {
               disabled={hasConfirmed || !isRootNode}
               onClick={() => submitTransaction({
                 successMessage: t('VOTE_TO_CONFIRM_DECISION_SUCCESS'),
+                onSuccess: () => setHasConfirmed(true),
                 submitFn: () => confirmDecision(proposal.id),
               })}
             >
@@ -141,7 +147,7 @@ function DecisionActions ({ proposal }: Props) {
         tip={t('PROPOSE_DECISION_MODAL_TIP')}
         onClose={handleClose}
       >
-        <ProposeDecisionForm proposal={proposal} onSubmit={handleClose} />
+        <ProposeDecisionForm proposal={proposal} onSubmit={handleDecisionSubmit} />
       </Modal>
     </div>
   );
