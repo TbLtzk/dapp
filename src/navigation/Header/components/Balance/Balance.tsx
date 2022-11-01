@@ -8,6 +8,8 @@ import { fromWei } from 'web3-utils';
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 
+import useInterval from 'hooks/useInterval';
+
 import { BalanceDropdown, QLogo } from './styles';
 
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
@@ -20,7 +22,9 @@ function Balance () {
   const { t } = useTranslation();
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
-  const { vaultBalance, walletBalance } = useQVault();
+  const { vaultBalance, walletBalance, loadAllBalances } = useQVault();
+
+  useInterval(loadAllBalances, 5000);
 
   const [balanceOpen, setBalanceOpen] = useState(false);
 

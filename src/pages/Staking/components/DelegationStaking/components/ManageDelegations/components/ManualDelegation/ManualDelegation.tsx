@@ -97,11 +97,11 @@ function ManageDelegations () {
         <div className="delegation-info_container">
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('CURRENT_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('AVAILABLE_TO_DELEGATE')}</p>
-            <p className="text-xl font-semibold">
+            <p className="text-xl font-semibold ellipsis">
               {
                 toBigNumber(availableAmountToDelegate).isNegative()
                   ? '0 Q'
@@ -111,7 +111,7 @@ function ManageDelegations () {
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('NEW_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold">{formatAsset(newDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(newDelegatedStake, 'Q')}</p>
           </div>
         </div>
 
