@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -81,6 +81,9 @@ const ValidatorContext = createContext({
 
 function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const {
@@ -95,7 +98,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   if (validatorLoading && !validator.address) {
     return (
       <CenteredContainer>
-        <Spinner size={100} />
+        <Spinner size={100} thickness={4} />
       </CenteredContainer>
     );
   }
@@ -112,7 +115,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
 
   return (
     <ValidatorContext.Provider value={{ validator, refetchValidator }}>
-      <Link to={RoutePaths.stakingValidators}>
+      <Link to={params.get('from') || RoutePaths.stakingValidators}>
         <Button
           alwaysEnabled
           compact
@@ -120,7 +123,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
           style={{ marginBottom: '24px' }}
         >
           <Icon name="arrow-left" />
-          <span>{t('GO_TO_VALIDATOR_STAKING')}</span>
+          <span>{t('STAKING')}</span>
         </Button>
       </Link>
       <PageLayout title={`${t('VALIDATOR')} ${trimAddress(address)}`}>

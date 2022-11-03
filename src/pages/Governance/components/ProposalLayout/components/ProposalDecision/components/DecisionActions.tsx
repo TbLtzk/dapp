@@ -39,12 +39,12 @@ function DecisionActions ({ proposal }: Props) {
   const [hasConfirmed, setHasConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const decision = proposal.objEscrow.decision;
-  const isDecisionEnded = decision.endDate.getTime() < Date.now();
+  const { objection, decision } = proposal.objEscrow;
+  const isDecisionEnded = decision.endDate.getTime() < Date.now() || objection.status === ObjectionStatus.EXECUTED;
   const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
   const canProposeDecision = decision.proposer !== user.address &&
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
-    proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
+    objection.status === ObjectionStatus.PENDING;
 
   useEffect(() => {
     checkConfirmedDecision({ proposal, address }).then(setHasConfirmed);

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import RedirectAddress from 'components/Custom/RedirectAddress';
 import Button from 'ui/Button';
 import Table from 'ui/Table';
 
@@ -10,6 +10,7 @@ import DelegateModal from '../DelegateModal';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
+import { RoutePaths } from 'constants/routes';
 import { fillArray } from 'utils/arrays';
 import { formatAsset, formatPercent } from 'utils/numbers';
 
@@ -109,12 +110,15 @@ function DelegationsTable () {
       ]}
       table={delegationList.map((delegation, idx) => ({
         id: idx,
-        address: <ExplorerAddress
-          iconed
-          short
-          semibold
-          address={delegation.validator}
-        />,
+        address: (
+          <RedirectAddress
+            iconed
+            short
+            semibold
+            address={delegation.validator}
+            to={`${RoutePaths.stakingValidators}/${delegation.validator}?from=${RoutePaths.stakingDelegations}`}
+          />
+        ),
         delegatorsShare: formatPercent(delegation.delegatorsShare),
         amount: formatAsset(delegation.actualStake, 'Q'),
         reward: formatAsset(delegation.claimableReward, 'Q'),
