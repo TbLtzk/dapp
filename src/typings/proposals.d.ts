@@ -1,4 +1,4 @@
-import { Classification, ProposalStatus } from '@q-dev/q-js-sdk';
+import { Classification, ProposalStatus, ValidatorsWithdrawalInfo } from '@q-dev/q-js-sdk';
 
 import { ProposalContractType } from './contracts';
 import { FormParameter } from './forms';
@@ -15,6 +15,16 @@ export type FormProposalType = 'q' | 'rootNode' | 'expert' | 'slashing';
 export type ProposalType = FormProposalType | 'contractUpdate';
 
 export type VotingType = 'basic' | 'constitution' | 'approve';
+
+export interface ProposalRootNodeInfo {
+  stake: string;
+  withdrawalInfo: ValidatorsWithdrawalInfo;
+};
+
+export interface ProposalRootNodesInfo {
+  addedNode?: ProposalRootNodeInfo;
+  removedNode?: ProposalRootNodeInfo;
+}
 
 export interface Proposal {
   id: string;
@@ -46,6 +56,7 @@ export interface Proposal {
   replaceDest: string;
   amountToSlash: string | number;
   proposer: string;
+  rootNodes?: ProposalRootNodesInfo;
 }
 
 export interface SlashingProposal extends Proposal {

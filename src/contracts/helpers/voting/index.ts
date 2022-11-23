@@ -2,6 +2,7 @@ import { ParameterType, ProposalStatus, RawParameter, VotingStats } from '@q-dev
 import { ConstitutionVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
 import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
 import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIMembershipVotingInstance';
+import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesInstance';
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { transformToPercentage } from '@q-dev/utils';
@@ -9,7 +10,7 @@ import merge from 'lodash/merge';
 import uniqBy from 'lodash/uniqBy';
 import { ContractType, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
 import { CreateProposalForm, FormParameter } from 'typings/forms';
-import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
+import { Proposal, ProposalRootNodesInfo, ProposalType, SlashingProposal } from 'typings/proposals';
 
 import { getMinimalActiveBlockHeight } from '../block-number';
 
@@ -41,6 +42,7 @@ import { getState, getUserAddress } from 'store';
 
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import { captureError } from 'utils/errors';
 
 async function checkProposal (contract: ProposalsContract, proposal: ProposalEvent) {
@@ -221,6 +223,17 @@ export async function getProposal<T extends ProposalContractType> (
     const rootNodesInstance = await getRootNodesInstance();
     const rootNodesNumber = await rootNodesInstance.getSize();
 
+    const rootNodes: ProposalRootNodesInfo = {};
+
+    if (contractType === 'rootNodesMembershipVoting') {
+      if (proposal.candidate && proposal.candidate !== ZERO_ADDRESS) {
+        rootNodes.addedNode = await getRootNodeInfo(proposal.candidate, rootNodesInstance);
+      }
+      if (proposal.replaceDest && proposal.replaceDest !== ZERO_ADDRESS) {
+        rootNodes.removedNode = await getRootNodeInfo(proposal.replaceDest, rootNodesInstance);
+      }
+    }
+
     return {
       id,
       status,
@@ -233,12 +246,25 @@ export async function getProposal<T extends ProposalContractType> (
       vetoThreshold: 50,
       requiredQuorum: Number(transformToPercentage(stats.requiredQuorum)) || 0,
       currentQuorum: Number(transformToPercentage(stats.currentQuorum)) || 0,
+      rootNodes,
       ...proposal,
     } as Proposal;
   } catch (e) {
     captureError(e);
     return null;
   }
+}
+
+async function getRootNodeInfo (address: string, contract: RootNodesInstance) {
+  const [stake, withdrawalInfo] = await Promise.all([
+    contract.getRootNodeStake(address),
+    contract.getWithdrawalInfo(address)
+  ]);
+
+  return {
+    stake,
+    withdrawalInfo,
+  };
 }
 
 async function getContractProposal ({
