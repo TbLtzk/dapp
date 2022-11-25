@@ -1,4 +1,4 @@
-import { ContractRegistryInstance } from '@q-dev/q-js-sdk';
+import { ContractRegistryInstance, RewardKPI } from '@q-dev/q-js-sdk';
 import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common/CompoundRateKeeperInstance';
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
@@ -89,6 +89,15 @@ let validatorMetricsInstance: ValidatorMetrics | null = null;
 let compoundRateKeeperSavingInstance: CompoundRateKeeperInstance | null = null;
 let compoundRateKeeperQVaultInstance: CompoundRateKeeperInstance | null = null;
 let indexerInstance: Indexer | null = null;
+let rewardKPIInstance: RewardKPI | null = null;
+
+export function getRewardKPIInstance () {
+  if (!rewardKPIInstance) {
+    const contractRegistryInstance = getContractRegistryInstance();
+    rewardKPIInstance = new RewardKPI(window.web3, contractRegistryInstance);
+  }
+  return rewardKPIInstance;
+}
 
 export async function getCompoundRateKeeperSavingInstance () {
   if (!compoundRateKeeperSavingInstance) {

@@ -14,14 +14,8 @@ import { useTransaction } from 'store/transaction/hooks';
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 
 const StyledWrapper = styled.div`
-  grid-area: holder;
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 16px;
-
-  ${media.lessThan('medium')} {
-    grid-template-columns: 1fr;
-  }
 
   .token-holder-time {
     display: flex;
@@ -50,7 +44,6 @@ function TokenHolderRewards () {
   } = useTokenomics();
 
   const balanceRewardPoolRef = useAnimateNumber(qvBalance.qHolderRewardPool);
-  const balanceInterestRateRef = useAnimateNumber(qvBalance.interestRatePercentage, ' %');
 
   useEffect(() => {
     loadQVBalanceDetails();
@@ -66,10 +59,6 @@ function TokenHolderRewards () {
       <div>
         <p ref={balanceRewardPoolRef} className="text-xl font-semibold">0 Q</p>
         <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_POOL')}</p>
-      </div>
-      <div>
-        <p ref={balanceInterestRateRef} className="text-xl font-semibold">0 %</p>
-        <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_RATE')}</p>
       </div>
       <div className="token-holder-time">
         <div>

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=3072 vite build",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
     "preview": "vite preview",
     "i18n:compile": "node scripts/compileLangs.js",
     "patch-version": "npm version patch -m \"Upgrade to %s\"",
@@ -20,7 +20,7 @@
     "@metamask/jazzicon": "^2.0.0",
     "@popperjs/core": "^2.11.5",
     "@q-dev/form-hooks": "^0.2.1",
-    "@q-dev/q-js-sdk": "^1.4.0",
+    "@q-dev/q-js-sdk": "^1.7.0",
     "@q-dev/q-ui-kit": "^0.6.0",
     "@q-dev/react-hooks": "^0.1.0",
     "@q-dev/utils": "^0.1.0",

@@ -12,6 +12,9 @@ interface TokenomicsState {
 
   qHolderUpdateTime: string;
   qHolderUpdateTimeLoading: boolean;
+
+  rootNodesAPR: string;
+  validatorsAPR: string;
 }
 
 const initialState: TokenomicsState = {
@@ -26,6 +29,9 @@ const initialState: TokenomicsState = {
 
   qHolderUpdateTime: '0',
   qHolderUpdateTimeLoading: false,
+
+  rootNodesAPR: '0',
+  validatorsAPR: '0',
 };
 
 const tokenomicsSlice = createSlice({
@@ -66,6 +72,14 @@ const tokenomicsSlice = createSlice({
 
     setQHolderUpdateTimeLoading: (state, { payload }: PayloadAction<boolean>) => {
       state.qHolderUpdateTimeLoading = payload;
+    },
+
+    setRootNodesAPR: (state, { payload }: PayloadAction<string>) => {
+      state.rootNodesAPR = payload;
+    },
+
+    setValidatorsAPR: (state, { payload }: PayloadAction<string>) => {
+      state.validatorsAPR = payload;
     }
   }
 });
@@ -78,6 +92,8 @@ export const {
   setRootNodeRewardProxy,
   setRootNodeRewardProxyLoading,
   setqHolderUpdateTime,
-  setQHolderUpdateTimeLoading
+  setQHolderUpdateTimeLoading,
+  setRootNodesAPR,
+  setValidatorsAPR,
 } = tokenomicsSlice.actions;
 export default tokenomicsSlice.reducer;

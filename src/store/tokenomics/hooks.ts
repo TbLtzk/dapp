@@ -8,8 +8,10 @@ import {
   setQHolderUpdateTimeLoading,
   setRootNodeRewardProxy,
   setRootNodeRewardProxyLoading,
+  setRootNodesAPR,
   setValidationRewardProxy,
-  setValidationRewardProxyLoading
+  setValidationRewardProxyLoading,
+  setValidatorsAPR,
 } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
@@ -19,6 +21,7 @@ import {
   getCompoundRateKeeperQVaultInstance,
   getDefaultAllocationProxyInstance,
   getQVaultInstance,
+  getRewardKPIInstance,
   getRootNodeRewardProxyInstance,
   getValidationRewardProxyInstance,
 } from 'contracts/contract-instance';
@@ -37,6 +40,8 @@ export function useTokenomics () {
   const rootNodeRewardProxyLoading = useAppSelector(({ tokenomics }) => tokenomics.rootNodeRewardProxyLoading);
   const qHolderUpdateTime = useAppSelector(({ tokenomics }) => tokenomics.qHolderUpdateTime);
   const qHolderUpdateTimeLoading = useAppSelector(({ tokenomics }) => tokenomics.qHolderUpdateTimeLoading);
+  const rootNodesAPR = useAppSelector(({ tokenomics }) => tokenomics.rootNodesAPR);
+  const validatorsAPR = useAppSelector(({ tokenomics }) => tokenomics.validatorsAPR);
 
   async function getDefaultAllocationProxy () {
     try {
@@ -137,6 +142,26 @@ export function useTokenomics () {
     }
   }
 
+  async function getRootNodesAPR () {
+    try {
+      const contract = getRewardKPIInstance();
+      const apr = await contract.getRootNodesAPR();
+      dispatch(setRootNodesAPR(apr));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
+  async function getValidatorsAPR () {
+    try {
+      const contract = getRewardKPIInstance();
+      const apr = await contract.getValidatorsAPR();
+      dispatch(setValidatorsAPR(apr));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
   return {
     defaultAllocationProxy,
     defaultAllocationProxyLoading,
@@ -150,6 +175,9 @@ export function useTokenomics () {
     qHolderUpdateTime,
     qHolderUpdateTimeLoading,
 
+    rootNodesAPR,
+    validatorsAPR,
+
     getDefaultAllocationProxy: useCallback(getDefaultAllocationProxy, []),
     allocateDefaultProxyRewards: useCallback(allocateDefaultProxyRewards, []),
 
@@ -161,5 +189,8 @@ export function useTokenomics () {
 
     getQHolderUpdateTime: useCallback(getQHolderUpdateTime, []),
     allocateQHolderRewards: useCallback(allocateQHolderRewards, []),
+
+    getValidatorsAPR: useCallback(getValidatorsAPR, []),
+    getRootNodesAPR: useCallback(getRootNodesAPR, []),
   };
 }

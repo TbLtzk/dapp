@@ -8,7 +8,6 @@ import { useSystemBalance } from 'store/system-balance/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 
 const StyledWrapper = styled.div`
-  grid-area: balance;
   display: grid;
   gap: 16px;
 `;

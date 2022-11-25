@@ -6,6 +6,7 @@ import PageLayout from 'components/PageLayout';
 import DashboardLink from '../components/DashboardLink';
 
 import AllocationBlocks from './components/AllocationBlocks';
+import AprBlock from './components/AprBlock';
 import PoolBalances from './components/PoolBalances';
 import TokenHolderRewards from './components/TokenHolderRewards';
 
@@ -21,12 +22,12 @@ const StyledWrapper = styled.div`
 
   .tokenomics__balance-blocks {
     display: grid;
-    grid-template: "holder holder balance" / 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
 
     ${media.lessThan('medium')} {
       gap: 16px;
-      grid-template: "holder" "balance" / 1fr;
+      grid-template-columns: 1fr;
     }
   }
 `;
@@ -42,6 +43,7 @@ function Tokenomics () {
             <TokenHolderRewards />
             <PoolBalances />
           </div>
+          <AprBlock />
         </div>
       </PageLayout>
     </StyledWrapper>

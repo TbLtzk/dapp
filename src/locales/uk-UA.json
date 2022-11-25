@@ -1287,5 +1287,7 @@
   "constitution.voting.valSlashingOBJP": "Період заперечення скорочення валідатора",
   "ROOT_NODE_STAKE": "Ставка кореневого вузла",
   "TO_ADD": "Додати",
-  "TO_REMOVE": "Видалити"
+  "TO_REMOVE": "Видалити",
+  "VALIDATOR_NODES_APR": "APR Валідаторів",
+  "ROOT_NODES_APR": "APR Кореневих вузлів"
 }

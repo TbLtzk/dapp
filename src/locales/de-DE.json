@@ -1287,5 +1287,7 @@
   "constitution.voting.valSlashingOBJP": "Validator slashing objection period",
   "ROOT_NODE_STAKE": "Root Node Stake",
   "TO_ADD": "To Add",
-  "TO_REMOVE": "To Remove"
+  "TO_REMOVE": "To Remove",
+  "VALIDATOR_NODES_APR": "Validator Node APR",
+  "ROOT_NODES_APR": "Root Node APR"
 }
