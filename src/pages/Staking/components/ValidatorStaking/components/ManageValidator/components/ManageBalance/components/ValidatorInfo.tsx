@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
@@ -36,7 +36,7 @@ function ValidatorInfo () {
   const { t } = useTranslation();
   const user = useUser();
   const { walletBalance } = useQVault();
-  const { isValidator } = useValidators();
+  const { isValidator, checkIsValidator } = useValidators();
 
   const validatorRank = useGetValidatorRank();
   const isUserActiveValidator = useIsUserActiveValidator();
@@ -49,7 +49,11 @@ function ValidatorInfo () {
         : { status: t('INACTIVE_VALIDATOR'), value: 81 };
     }
     return { status: t('NOT_A_VALIDATOR'), value: 100 };
-  }, [isUserActiveValidator, isValidator]);
+  }, [isUserActiveValidator, isValidator, user, t]);
+
+  useEffect(() => {
+    checkIsValidator();
+  }, []);
 
   return (
     <StyledWrapper className="block">

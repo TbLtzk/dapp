@@ -15,8 +15,8 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useValidators } from 'store/validators/hooks';
 
-import { toBigNumber } from 'utils/numbers';
-import { amount, required } from 'utils/validators';
+import { formatNumber, toBigNumber } from 'utils/numbers';
+import { amount, max, required } from 'utils/validators';
 
 interface Props {
   formType: string;
@@ -25,7 +25,10 @@ interface Props {
 
 function ValidatorForms ({ formType, onClose }: Props) {
   const { t } = useTranslation();
-  const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
+  const {
+    validatorAccountableSelfStake: selfStake,
+    validatorWithdrawalInfo,
+  } = useValidators();
   const { walletBalance } = useQVault();
 
   const { submitTransaction } = useTransaction();
@@ -37,7 +40,7 @@ function ValidatorForms ({ formType, onClose }: Props) {
       case FORM_TYPES.stakeToRanking:
         return walletBalance;
       case FORM_TYPES.announceWithdrawal:
-        return toBigNumber(validatorAccountableTotalStake).plus(toBigNumber(withdrawalAmount)).toString();
+        return toBigNumber(selfStake).plus(toBigNumber(withdrawalAmount)).toString();
       case FORM_TYPES.withdrawFromRanking:
         return fromWei(validatorWithdrawalInfo.amount);
       default:
@@ -45,9 +48,15 @@ function ValidatorForms ({ formType, onClose }: Props) {
     }
   };
 
+  const maxAmountValidation = () => {
+    return formType === FORM_TYPES.announceWithdrawal
+      ? max(getMaxAmount())
+      : amount(getMaxAmount());
+  };
+
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(getMaxAmount())] },
+    validators: { amount: [required, maxAmountValidation()] },
     onSubmit: ({ amount }) => {
       let successMessage: string;
       switch (formType) {
@@ -81,6 +90,9 @@ function ValidatorForms ({ formType, onClose }: Props) {
         max={getMaxAmount()}
         hint={
           formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount() ? t('WARNING_NO_Q_LEFT') : ''
+        }
+        labelTip={
+          formType === FORM_TYPES.announceWithdrawal ? t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(getMaxAmount()) }) : ''
         }
       />
 
