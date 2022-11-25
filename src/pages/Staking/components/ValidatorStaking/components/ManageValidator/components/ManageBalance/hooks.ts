@@ -25,7 +25,7 @@ const useGetValidatorRank = () => {
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
       const validatorRank = shortList.findIndex((val) => val.address === user.address);
-      setValidatorRank(validatorRank === -1 ? '-' : String('#' + validatorRank));
+      setValidatorRank(validatorRank === -1 ? '-' : String(`#${validatorRank + 1}`));
     } catch (error) {
       captureError(error);
     }
