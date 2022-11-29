@@ -31,7 +31,7 @@ function ManageDelegations () {
     loadDelegationList,
     loadDelegationStakeInfo
   } = useQVault();
-  const { validatorStats } = useValidators();
+  const { validatorAddressesLongList, loadValidatorAddressesLongList } = useValidators();
 
   const formArray = useFormArray({
     minCount: 1,
@@ -51,6 +51,7 @@ function ManageDelegations () {
   useEffect(() => {
     loadDelegationList();
     loadDelegationStakeInfo();
+    loadValidatorAddressesLongList();
   }, []);
 
   const [
@@ -73,12 +74,6 @@ function ManageDelegations () {
       potentialDelegatedStake.toString()
     ];
   }, [formArray.forms, delegationStakeInfo, delegationList]);
-
-  const availableValidators = useMemo(() => {
-    return validatorStats.filter(({ address }) =>
-      !formArray.forms.find(i => i?.values?.address === address)
-    );
-  }, [formArray.forms, validatorStats]);
 
   function getDelegatedStake (address: string) {
     const delegate = delegationList.find(i => i.validator === address);
@@ -123,8 +118,7 @@ function ManageDelegations () {
             onAction={() => formArray.removeForm(form.id)}
           >
             <DelegationForm
-              validators={validatorStats}
-              availableValidators={availableValidators}
+              validators={validatorAddressesLongList}
               delegatedStake={getDelegatedStake(form?.values?.address)}
               maxAmount={getMaxAmountFromForm(form)}
               addresses={

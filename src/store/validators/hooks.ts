@@ -13,6 +13,7 @@ import {
   setMinimumTimeLock,
   setTimeLocks,
   setTotalStake,
+  setValidatorAddressesLongList,
   setValidators,
   setValidatorsMonitoring,
   setValidatorStats,
@@ -37,6 +38,8 @@ export function useValidators () {
 
   const validators = useAppSelector(({ validators }) => validators.validators);
   const validatorsLoading = useAppSelector(({ validators }) => validators.validatorsLoading);
+
+  const validatorAddressesLongList = useAppSelector(({ validators }) => validators.validatorAddressesLongList);
 
   const validatorStats = useAppSelector(({ validators }) => validators.validatorStats);
   const validatorStatsLoading = useAppSelector(({ validators }) => validators.validatorStatsLoading);
@@ -224,9 +227,22 @@ export function useValidators () {
     }
   }
 
+  async function loadValidatorAddressesLongList () {
+    try {
+      const validatorsInstance = await getValidatorsInstance();
+      const longList = await validatorsInstance.getLongList();
+
+      dispatch(setValidatorAddressesLongList(longList));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
   return {
     validators,
     validatorsLoading,
+
+    validatorAddressesLongList,
 
     validatorStats,
     validatorStatsLoading,
@@ -263,5 +279,6 @@ export function useValidators () {
     loadCompoundRateKeeperExists: useCallback(loadCompoundRateKeeperExists, []),
     loadValidatorMinimumTimeLock: useCallback(loadValidatorMinimumTimeLock, []),
     loadValidatorTimeLocks: useCallback(loadValidatorTimeLocks, []),
+    loadValidatorAddressesLongList: useCallback(loadValidatorAddressesLongList, [])
   };
 }

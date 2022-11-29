@@ -20,6 +20,8 @@ interface ValidatorsState {
   validators: ValidatorWithAlias[];
   validatorsLoading: boolean;
 
+  validatorAddressesLongList: string[];
+
   validatorStats: Validator[];
   validatorStatsLoading: boolean;
 
@@ -51,6 +53,8 @@ const initialState: ValidatorsState = {
 
   validators: [],
   validatorsLoading: true,
+
+  validatorAddressesLongList: [],
 
   validatorStats: [],
   validatorStatsLoading: true,
@@ -122,6 +126,10 @@ const validatorsSlice = createSlice({
 
     setMinimumTimeLock: (state, { payload }: PayloadAction<string>) => {
       state.minimumTimeLock = payload;
+    },
+
+    setValidatorAddressesLongList: (state, { payload }: PayloadAction<string[]>) => {
+      state.validatorAddressesLongList = payload;
     }
   }
 });
@@ -140,5 +148,6 @@ export const {
   setValidatorsMonitoring,
   setTimeLocks,
   setMinimumTimeLock,
+  setValidatorAddressesLongList,
 } = validatorsSlice.actions;
 export default validatorsSlice.reducer;

@@ -142,3 +142,10 @@ export async function getMonitoringValidators (
     };
   });
 }
+
+export async function getValidatorDelegatorShare (address: string) {
+  const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
+  const poolInfo = await validationRewardPoolsInstance.getPoolInfo(address);
+  const delegatorShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+  return delegatorShare;
+}
