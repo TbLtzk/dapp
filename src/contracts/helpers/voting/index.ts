@@ -217,7 +217,7 @@ export async function getProposal<T extends ProposalContractType> (
 
     const userVoted = 'hasUserVoted' in contract
       ? await contract.hasUserVoted(id, userAddress)
-      : await contract.instance.methods.voted(id, userAddress);
+      : await contract.instance.methods.voted(id, userAddress).call();
     const userVetoed = 'hasRootVetoed' in contract ? await contract.hasRootVetoed(id, userAddress) : false;
 
     const rootNodesInstance = await getRootNodesInstance();
