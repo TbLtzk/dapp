@@ -1284,5 +1284,11 @@
   "constitution.voting.rootSlashingEOBJ": "Правочинний заперечувач скорочення кореневого вузла",
   "constitution.voting.valslashingEOBJ": "Правочинний заперечувач скорочення валідатора",
   "constitution.voting.rootSlashingOBJP": "Період заперечення скорочення кореневого вузла",
-  "constitution.voting.valSlashingOBJP": "Період заперечення скорочення валідатора"
+  "constitution.voting.valSlashingOBJP": "Період заперечення скорочення валідатора",
+  "ROOT_NODE_STAKE": "Ставка кореневого вузла",
+  "TO_ADD": "Додати",
+  "TO_REMOVE": "Видалити",
+  "VALIDATOR_NODES_APR": "APR Валідаторів",
+  "ROOT_NODES_APR": "APR Кореневих вузлів",
+  "ROOT_NODE_LIST": "Список кореневих вузлів"
 }
