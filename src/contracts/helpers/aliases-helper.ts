@@ -32,15 +32,14 @@ export async function getAliasEvents (): Promise<AliasEvent[]> {
     }));
 }
 
-export async function getBlockSealingAliasMap (addresses: string[] = [], chainId: number) {
+export async function getAliasMap (addresses: string[] = [], chainId: number, purpose: AliasPurpose) {
   try {
     const network = chainIdToNetworkMap[chainId] || ORIGIN_NETWORK_NAME;
     if (!networkConfigsMap[network].featureFlags.aliases) return {};
-
     const contract = await getAccountAliasesInstance();
     const aliases = await contract.resolveBatch(
       addresses,
-      addresses.map(() => AliasPurpose.BLOCK_SEALING)
+      addresses.map(() => purpose)
     );
 
     return aliases.reduce((acc, alias, i) => {

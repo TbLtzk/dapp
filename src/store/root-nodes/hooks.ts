@@ -1,15 +1,17 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { orderBy, round, sumBy } from 'lodash';
 import { fromWei, toWei } from 'web3-utils';
 
 import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTimeLocks, setTotalStake, setWithdrawalInfo } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { getState, getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
+import { getAliasMap } from 'contracts/helpers/aliases-helper';
 
 import { dateToUnix } from 'utils/date';
 import { captureError } from 'utils/errors';
@@ -76,8 +78,15 @@ export function useRootNodes () {
   async function getRootMembers () {
     try {
       const contract = await getRootNodesInstance();
-      const members = await contract.getMembers();
-      const stakes = await contract.getStakes();
+      const [members, stakes] = await Promise.all([
+        contract.getMembers(),
+        contract.getStakes()
+      ]);
+      const aliasesMap = await getAliasMap(
+        members,
+        getState().user.chainId,
+        AliasPurpose.ROOT_NODE_OPERATION
+      );
 
       const membersWithAmount = members.map((address) => {
         const memberWithStake = stakes.find(({ root }) => root === address);
@@ -90,6 +99,7 @@ export function useRootNodes () {
         address,
         stakeAmount,
         share: totalStake ? round(Number(stakeAmount) / totalStake * 100, 2) : 0,
+        alias: aliasesMap[address],
       }));
 
       dispatch(setMembers(orderBy(membersWithShare, 'stakeAmount', 'desc')));

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
+import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import Table, { TableColumn } from 'ui/Table';
 
 import DashboardLink from '../components/DashboardLink';
@@ -64,15 +65,21 @@ function RootNodesMonitoring () {
           emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
           table={rootMembers.map((rootNode, i) => ({
             id: i,
-            address: <ExplorerAddress
-              short
-              iconed
-              semibold
-              address={rootNode.address}
-            />,
+            address: (
+              <div style={{ display: 'flex' }}>
+                <ExplorerAddress
+                  short
+                  iconed
+                  semibold
+                  address={rootNode.address}
+                />
+                <AliasTooltip isRootNode alias={rootNode.alias}/>
+              </div>
+            ),
             amount: formatAsset(rootNode.stakeAmount, 'Q'),
             offChain: 'n/a',
             onChain: 'n/a',
+            alias: rootNode.alias
           }))}
         />
       </PageLayout>

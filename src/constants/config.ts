@@ -65,7 +65,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.qtestnet.org',
     constitutionUpdatedAt: 1657120425000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI'],
-    featureFlags: { aliases: false },
+    featureFlags: { aliases: true },
   },
   devnet: {
     chainId: 35442,

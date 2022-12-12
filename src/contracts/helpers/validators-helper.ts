@@ -1,10 +1,10 @@
-import { AddressWithBalance } from '@q-dev/q-js-sdk';
+import { AddressWithBalance, AliasPurpose } from '@q-dev/q-js-sdk';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
 import { Validator, ValidatorMonitoring } from 'typings/validator';
 import { fromWei } from 'web3-utils';
 
-import { getBlockSealingAliasMap } from './aliases-helper';
+import { getAliasMap } from './aliases-helper';
 
 import {
   getContractRegistryInstance,
@@ -94,7 +94,7 @@ export async function getAndCombineValidatorInfo (
   ] = await Promise.all([
     indexer.getInactiveValidators([address]),
     getValidators(shortList),
-    getBlockSealingAliasMap([address], network),
+    getAliasMap([address], network, AliasPurpose.BLOCK_SEALING),
   ]);
 
   const isActiveValidator = inactiveValidators === 0;

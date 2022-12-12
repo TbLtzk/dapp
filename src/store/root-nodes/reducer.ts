@@ -5,6 +5,7 @@ export interface RootNodeMember {
   address: string;
   stakeAmount: string;
   share: number;
+  alias: string;
 }
 
 interface RootNodesState {

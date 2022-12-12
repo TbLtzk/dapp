@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import Table, { TableColumn } from 'ui/Table';
 
@@ -74,11 +75,14 @@ function RootNodeTable () {
       table={rootMembers.map((rootNode, idx) => ({
         id: idx,
         address: (
-          <ExplorerAddress
-            iconed
-            semibold
-            address={rootNode.address}
-          />
+          <div style={{ display: 'flex' }}>
+            <ExplorerAddress
+              iconed
+              semibold
+              address={rootNode.address}
+            />
+            <AliasTooltip isRootNode alias={rootNode.alias} />
+          </div>
         ),
         amount: formatAsset(rootNode.stakeAmount, 'Q'),
         share: formatPercent(rootNode.share),

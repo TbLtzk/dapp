@@ -882,6 +882,7 @@
   "ERROR_039005": "Proposal haven't initialized.",
   "ERROR_040000": "Alias already exists.",
   "ERROR_040001": "Length of adresses and role arrays must be equal.",
+  "ERROR_040002": "Alias is reserved for another account.",
   "TOAST_INFO": "Info",
   "TOAST_SUCCESS": "Success",
   "TOAST_ERROR": "Error",
@@ -1290,5 +1291,7 @@
   "TO_REMOVE": "To Remove",
   "VALIDATOR_NODES_APR": "Validator Node APR",
   "ROOT_NODES_APR": "Root Node APR",
-  "ROOT_NODE_LIST": "Root Node List"
+  "ROOT_NODE_LIST": "Root Node List",
+  "THIS_ROOT_NODE_USES_ALIAS": "This root node uses alias",
+  "FOR_ROOT_NODE_OPERATION": "for root node operation"
 }

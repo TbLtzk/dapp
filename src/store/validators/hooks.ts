@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { fromWei } from 'web3-utils';
 
 import {
@@ -27,7 +28,7 @@ import {
   getValidationRewardPoolsInstance,
   getValidatorsInstance,
 } from 'contracts/contract-instance';
-import { getBlockSealingAliasMap } from 'contracts/helpers/aliases-helper';
+import { getAliasMap } from 'contracts/helpers/aliases-helper';
 import { getMonitoringValidators, getValidator, getValidators } from 'contracts/helpers/validators-helper';
 
 import { dateToUnix } from 'utils/date';
@@ -118,9 +119,10 @@ export function useValidators () {
     try {
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
-      const aliasesMap = await getBlockSealingAliasMap(
+      const aliasesMap = await getAliasMap(
         shortList.map((item) => item.address),
-        getState().user.chainId
+        getState().user.chainId,
+        AliasPurpose.BLOCK_SEALING
       );
 
       const validatorsWithAlias = shortList.map((member) => ({

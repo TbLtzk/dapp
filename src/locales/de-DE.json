@@ -882,6 +882,7 @@
   "ERROR_039005": "Vorschlag nicht initialisiert.",
   "ERROR_040000": "Alias ​​existiert bereits.",
   "ERROR_040001": "Länge der Adressen und Rollenarrays müssen gleich sein.",
+  "ERROR_040002": "Alias ​​ist für ein anderes Konto reserviert.",
   "TOAST_INFO": "Die Info",
   "TOAST_SUCCESS": "Erfolg",
   "TOAST_ERROR": "Fehler",
@@ -1290,5 +1291,7 @@
   "TO_REMOVE": "To Remove",
   "VALIDATOR_NODES_APR": "Validator Node APR",
   "ROOT_NODES_APR": "Root Node APR",
-  "ROOT_NODE_LIST": "Root Node List"
+  "ROOT_NODE_LIST": "Root Node List",
+  "THIS_ROOT_NODE_USES_ALIAS": "Dieser Stammknoten verwendet Alias",
+  "FOR_ROOT_NODE_OPERATION": "Für den Stammknotenbetrieb"
 }
