@@ -35,7 +35,7 @@ function RootNodeTable () {
             semibold
             address={cell}
           />
-          <AliasTooltip alias={row.alias} />
+          <AliasTooltip isRootNode alias={row.alias} />
         </div>
       ),
     },

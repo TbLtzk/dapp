@@ -42,7 +42,7 @@ function RootNodesMonitoring () {
             semibold
             address={cell}
           />
-          <AliasTooltip alias={row.alias} />
+          <AliasTooltip isRootNode alias={row.alias} />
         </div>
       ),
     },
