@@ -28,19 +28,30 @@ function RootNodeTable () {
       headerStyle: () => ({ minWidth: '300px', }),
       dataField: 'address',
       text: t('ROOT_NODE_ADDRESS'),
-      filterValue: (cell) => cell.props.address,
+      formatter: (cell, row) => (
+        <div style={{ display: 'flex' }}>
+          <ExplorerAddress
+            iconed
+            semibold
+            address={cell}
+          />
+          <AliasTooltip alias={row.alias} />
+        </div>
+      ),
     },
     {
       headerStyle: () => ({ minWidth: '180px', cursor: 'pointer' }),
-      dataField: 'amount',
+      dataField: 'stakeAmount',
       text: t('STAKED_AMOUNT'),
       sort: true,
+      formatter: (cell) => formatAsset(cell, 'Q'),
     },
     {
       headerStyle: () => ({ minWidth: '90px', cursor: 'pointer' }),
       dataField: 'share',
       text: t('SHARE'),
       sort: true,
+      formatter: (cell) => formatPercent(cell),
     },
   ];
 
@@ -72,21 +83,9 @@ function RootNodeTable () {
       columns={columns}
       loading={rootMembersLoading}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
-      table={rootMembers.map((rootNode, idx) => ({
-        id: idx,
-        address: (
-          <div style={{ display: 'flex' }}>
-            <ExplorerAddress
-              iconed
-              semibold
-              address={rootNode.address}
-            />
-            <AliasTooltip isRootNode alias={rootNode.alias} />
-          </div>
-        ),
-        amount: formatAsset(rootNode.stakeAmount, 'Q'),
-        share: formatPercent(rootNode.share),
-      }))}
+      keyField="address"
+      searchFormatted={false}
+      table={rootMembers}
     />
   );
 }

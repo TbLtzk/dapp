@@ -103,6 +103,10 @@ function Table<T> ({
                 paginationProps.page = 1;
                 paginationProps.sizePerPage = 999;
               }
+              // HACK: when changing `table.length` being on `paginationProps.page >1`
+              if (table.length <= perPage) {
+                paginationProps.page = 1;
+              }
               return (
                 <>
                   {!tiny && !hideSearch && (
