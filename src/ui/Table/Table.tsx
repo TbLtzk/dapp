@@ -70,6 +70,7 @@ function Table<T> ({
     return (
       <PaginationProvider
         pagination={paginationFactory({
+          page: 1,
           custom: true,
           sizePerPage: perPage,
           totalSize: table.length,
@@ -102,10 +103,6 @@ function Table<T> ({
               if (props.searchProps.searchText.length >= 1) {
                 paginationProps.page = 1;
                 paginationProps.sizePerPage = 999;
-              }
-              // HACK: when changing `table.length` being on `paginationProps.page >1`
-              if (table.length <= perPage) {
-                paginationProps.page = 1;
               }
               return (
                 <>
