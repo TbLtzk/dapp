@@ -55,9 +55,12 @@ export function useVesting () {
     const contract = await getVestingInstance();
     const receipt = await contract.withdraw(toWei(amount), { from: userAddress });
 
-    getMinimumVestingTimeLock(userAddress);
-    getVestingTimeLocks(userAddress);
-    getVestingBalance(userAddress);
+    receipt.promiEvent
+      .once('receipt', () => {
+        getMinimumVestingTimeLock(userAddress);
+        getVestingTimeLocks(userAddress);
+        getVestingBalance(userAddress);
+      });
 
     return receipt;
   }

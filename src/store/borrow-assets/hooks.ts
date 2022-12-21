@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { ApproveType, Asset } from 'typings/defi';
-import { TransactionReceipt } from 'web3-eth';
 import { fromWei, toWei } from 'web3-utils';
 
 import { setBorrowAllowanceDeposit, setBorrowAllowanceError, setBorrowAllowanceRepay, setBorrowVault, setBorrowVaultError } from './reducer';
@@ -65,17 +65,25 @@ export function useBorrowAssets () {
     const userAddress = getUserAddress();
     const { address } = await getBorrowingCoreInstance();
 
-    let receipt: TransactionReceipt;
+    let receipt: SubmitTransactionResponse;
     if (borrowType === 'deposit') {
       const contract = await getBorrowingInstance(asset);
-      receipt = await contract.methods.approve(address, MAX_APPROVE_AMOUNT)
-        .send({ from: userAddress });
+      receipt = {
+        promiEvent: contract.methods.approve(address, MAX_APPROVE_AMOUNT)
+          .send({ from: userAddress })
+      };
     } else {
       const contract = await getStableCoinInstance();
       receipt = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
     }
 
-    getBorrowingAllowance({ borrowType, asset });
+    if ('promiEvent' in receipt) {
+      receipt?.promiEvent
+        .once('receipt', () => {
+          getBorrowingAllowance({ borrowType, asset });
+        });
+    }
+
     return receipt;
   }
 
@@ -83,7 +91,7 @@ export function useBorrowAssets () {
     const contract = await getBorrowingCoreInstance();
     const receipt = await contract.generateStc(vaultId, toWei(amount), { from: getUserAddress() });
 
-    getBorrowingVault(vaultId);
+    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
     return receipt;
   }
 
@@ -91,7 +99,7 @@ export function useBorrowAssets () {
     const contract = await getBorrowingCoreInstance();
     const receipt = await contract.payBackStc(vaultId, toWei(amount), { from: getUserAddress() });
 
-    getBorrowingVault(vaultId);
+    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
     return receipt;
   }
 
@@ -106,7 +114,7 @@ export function useBorrowAssets () {
       from: getUserAddress()
     });
 
-    getBorrowingVault(vaultId);
+    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
     return receipt;
   }
 
@@ -122,7 +130,7 @@ export function useBorrowAssets () {
       from: getUserAddress()
     });
 
-    getBorrowingVault(vaultId);
+    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
     return receipt;
   }
 

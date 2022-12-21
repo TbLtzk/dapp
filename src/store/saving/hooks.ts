@@ -71,11 +71,14 @@ export function useSaving () {
     const contract = await getSavingInstance();
     const receipt = await contract.deposit(toWei(amount), { from: getUserAddress() });
 
-    getSavingBalanceDetails();
-    getSavingAllowance();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-    getSavingAssets();
+    receipt.promiEvent
+      .once('receipt', () => {
+        getSavingBalanceDetails();
+        getSavingAllowance();
+        getTotalSavingBalance();
+        getSavingAvailableToDeposit();
+        getSavingAssets();
+      });
 
     return receipt;
   }
@@ -84,11 +87,14 @@ export function useSaving () {
     const contract = await getSavingInstance();
     const receipt = await contract.withdraw(toWei(amount), { from: getUserAddress() });
 
-    getSavingBalanceDetails();
-    getSavingAllowance();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-    getSavingAssets();
+    receipt.promiEvent
+      .once('receipt', () => {
+        getSavingBalanceDetails();
+        getSavingAllowance();
+        getTotalSavingBalance();
+        getSavingAvailableToDeposit();
+        getSavingAssets();
+      });
 
     return receipt;
   }
@@ -100,11 +106,14 @@ export function useSaving () {
       from: getUserAddress()
     });
 
-    getSavingBalanceDetails();
-    getSavingAllowance();
-    getTotalSavingBalance();
-    getSavingAvailableToDeposit();
-    getSavingAssets();
+    receipt.promiEvent
+      .once('receipt', () => {
+        getSavingBalanceDetails();
+        getSavingAllowance();
+        getTotalSavingBalance();
+        getSavingAvailableToDeposit();
+        getSavingAssets();
+      });
 
     return receipt;
   }

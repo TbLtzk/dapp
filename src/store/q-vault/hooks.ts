@@ -100,8 +100,11 @@ export function useQVault () {
       from: address,
     });
 
-    loadWalletBalance();
-    loadVaultBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        loadVaultBalance();
+      });
 
     return receipt;
   }
@@ -113,8 +116,11 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.transfer(address, toWei(amount));
 
-    loadWalletBalance();
-    loadVaultBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        loadVaultBalance();
+      });
 
     return receipt;
   }
@@ -126,8 +132,11 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.withdraw(toWei(amount), { from: address });
 
-    loadWalletBalance();
-    loadVaultBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        loadVaultBalance();
+      });
 
     return receipt;
   }
@@ -140,11 +149,14 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.delegateStake(addresses, stakes, { from: userAddress });
 
-    loadDelegationStakeInfo();
-    loadDelegationList();
-    loadWalletBalance();
-    loadDelegationInfo(userAddress);
-    loadValidatorStats();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadDelegationStakeInfo();
+        loadDelegationList();
+        loadWalletBalance();
+        loadDelegationInfo(userAddress);
+        loadValidatorStats();
+      });
 
     return receipt;
   }
@@ -156,10 +168,13 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.lock(toWei(amount), { from: address });
 
-    loadWalletBalance();
-    loadVaultBalance();
-    loadLockInfo(address);
-    loadDelegationInfo(address);
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        loadVaultBalance();
+        loadLockInfo(address);
+        loadDelegationInfo(address);
+      });
 
     return receipt;
   }
@@ -171,10 +186,13 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.unlock(toWei(amount), { from: address });
 
-    loadWalletBalance();
-    loadVaultBalance();
-    loadLockInfo(address);
-    loadDelegationInfo(address);
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        loadVaultBalance();
+        loadLockInfo(address);
+        loadDelegationInfo(address);
+      });
 
     return receipt;
   }
@@ -214,9 +232,12 @@ export function useQVault () {
     const contract = await getQVaultInstance();
     const receipt = await contract.claimStakeDelegatorReward({ from: userAddress });
 
-    loadDelegationStakeInfo();
-    loadDelegationList();
-    loadWalletBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadDelegationStakeInfo();
+        loadDelegationList();
+        loadWalletBalance();
+      });
 
     return receipt;
   }
@@ -257,8 +278,11 @@ export function useQVault () {
     const contract = await getVotingWeightProxyInstance();
     const receipt = await contract.announceNewVotingAgent(address);
 
-    loadDelegationInfo(userAddress);
-    loadWalletBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadDelegationInfo(userAddress);
+        loadWalletBalance();
+      });
 
     return receipt;
   }
@@ -268,8 +292,11 @@ export function useQVault () {
     const contract = await getVotingWeightProxyInstance();
     const receipt = await contract.setNewVotingAgent();
 
-    loadDelegationInfo(userAddress);
-    loadWalletBalance();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadDelegationInfo(userAddress);
+        loadWalletBalance();
+      });
 
     return receipt;
   }

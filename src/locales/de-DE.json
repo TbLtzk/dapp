@@ -602,6 +602,8 @@
   "ERROR_TRANSACTION_REJECTED": "Sie haben die Transaktion abgelehnt",
   "ERROR_RPC_UNKNOWN": "Ein unbekannter RPC -Fehler aufgetreten",
   "ERROR_UNKNOWN": "Unbekannter Fehler aufgetreten",
+  "ERROR_TRANSACTION_REVERTED_BY_EVM": "Die Transaktion wurde von der EVM rückgängig gemacht",
+  "ERROR_METHOD_MISSING_FROM_CONTRACT": "Methode \"{{method}}\" fehlt im Vertrag",
   "ERROR_001000": "Der Parameter des Abstimmungszeitraums ist ungültig, Erstellung des Proposals fehlgeschlagen.",
   "ERROR_001001": "Der Parameter der Veto Periode ist ungültig, Erstellung des Proposals fehlgeschlagen.",
   "ERROR_001002": "Ungültiger Quorum -Parameter, Erstellung des Proposals fehlgeschlagen.",

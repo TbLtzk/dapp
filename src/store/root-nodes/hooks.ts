@@ -38,11 +38,14 @@ export function useRootNodes () {
     const contract = await getRootNodesInstance();
     const receipt = await contract.commitStake({ from: userAddress, value: toWei(amount) });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }
@@ -52,11 +55,14 @@ export function useRootNodes () {
     const contract = await getRootNodesInstance();
     const receipt = await contract.announceWithdrawal(toWei(amount), { from: userAddress });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }
@@ -66,11 +72,14 @@ export function useRootNodes () {
     const contract = await getRootNodesInstance();
     const receipt = await contract.withdraw(toWei(amount), userAddress, { from: userAddress });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }

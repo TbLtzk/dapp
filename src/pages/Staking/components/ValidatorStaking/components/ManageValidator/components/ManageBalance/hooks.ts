@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TransactionReceipt } from 'web3-eth';
+import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { toWei } from 'web3-utils';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
@@ -73,7 +73,7 @@ const useSendValidatorForms = () => {
 
   const sendForm = async (formType: string, amount: string) => {
     const contract = await getValidatorsInstance();
-    let receipt = {} as TransactionReceipt;
+    let receipt: SubmitTransactionResponse;
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
         receipt = await contract.commitStake({ value: toWei(amount), from: user.address });
@@ -84,13 +84,18 @@ const useSendValidatorForms = () => {
       case FORM_TYPES.withdrawFromRanking:
         receipt = await contract.withdraw(toWei(amount), user.address);
         break;
+      default:
+        throw new Error('Unknown form type');
     }
 
-    loadValidatorTotalStake();
-    loadValidatorDelegatedStake();
-    loadValidatorAccountableTotalStake();
-    loadValidatorAccountableSelfStake();
-    loadValidatorWithdrawalInfo();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadValidatorTotalStake();
+        loadValidatorDelegatedStake();
+        loadValidatorAccountableTotalStake();
+        loadValidatorAccountableSelfStake();
+        loadValidatorWithdrawalInfo();
+      });
 
     return receipt;
   };

@@ -602,6 +602,8 @@
   "ERROR_TRANSACTION_REJECTED": "You've rejected transaction",
   "ERROR_RPC_UNKNOWN": "Unknown RPC error occured",
   "ERROR_UNKNOWN": "Unknown error occured",
+  "ERROR_TRANSACTION_REVERTED_BY_EVM": "Transaction has been reverted by the EVM",
+  "ERROR_METHOD_MISSING_FROM_CONTRACT": "Method \"{{method}}\" missing from contract",
   "ERROR_001000": "Invalid voting period parameter, proposal creation failed.",
   "ERROR_001001": "Invalid veto period parameter, proposal creation failed.",
   "ERROR_001002": "Invalid quorum parameter, proposal creation failed.",

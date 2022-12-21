@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { ProposalStatus, SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType, Proposal, ProposalType, VotingType } from 'typings/proposals';
-import { TransactionReceipt } from 'web3-eth';
 
 import { setBaseVotingWeightInfo, setConstitutionHash, setMinimalActiveBlock, setProposals } from './reducer';
 
@@ -84,6 +84,7 @@ export function useBaseVotingWeightInfo () {
 }
 
 export function useProposals () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { loadDelegationInfo, loadLockInfo } = useQVault();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
@@ -133,11 +134,14 @@ export function useProposals () {
     const userAddress = getUserAddress();
     const receipt = await createProposal(form, userAddress);
 
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
+    receipt.promiEvent
+      .once('receipt', () => {
+        getBaseVotingWeightInfo();
+        loadDelegationInfo(userAddress);
 
-    const proposalType = getProposalTypeFromFormType(form.type);
-    getProposals(proposalType);
+        const proposalType = getProposalTypeFromFormType(form.type);
+        getProposals(proposalType);
+      });
 
     return receipt;
   }
@@ -150,16 +154,21 @@ export function useProposals () {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt = {} as TransactionReceipt;
+    let receipt: SubmitTransactionResponse | undefined;
+    let methodError: string | undefined;
     switch (type) {
       case 'approve':
         if ('aprove' in contract) {
           receipt = await contract.aprove(proposal.id, { from: userAddress });
+        } else {
+          methodError = 'aprove';
         }
         break;
       case 'constitution':
         if ('veto' in contract) {
           receipt = await contract.veto(proposal.id, { from: userAddress });
+        } else {
+          methodError = 'veto';
         }
         break;
       case 'basic':
@@ -167,31 +176,51 @@ export function useProposals () {
           receipt = isVotedFor
             ? await contract.voteFor(proposal.id, { from: userAddress })
             : await contract.voteAgainst(proposal.id, { from: userAddress });
+        } else {
+          methodError = isVotedFor ? 'voteFor' : 'voteAgainst';
         }
         break;
     }
 
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
-    loadLockInfo(userAddress);
+    if (methodError && !receipt) {
+      throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: methodError }));
+    }
 
-    return receipt;
+    receipt?.promiEvent
+      .once('receipt', () => {
+        getBaseVotingWeightInfo();
+        loadDelegationInfo(userAddress);
+        loadLockInfo(userAddress);
+      });
+
+    return receipt as SubmitTransactionResponse;
   }
 
   async function executeProposal (proposal: Proposal) {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt = {} as TransactionReceipt;
+    let receipt: SubmitTransactionResponse | undefined;
     const promiseStatus = await contract.getStatus(proposal.id);
 
-    if (promiseStatus === ProposalStatus.PASSED && 'execute' in contract) {
-      receipt = await contract.execute(proposal.id, { from: userAddress });
-    }
+    if (promiseStatus === ProposalStatus.PASSED) {
+      if ('execute' in contract) {
+        receipt = await contract.execute(proposal.id, { from: userAddress });
 
-    getProposalsByContract(proposal.contract);
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
+        receipt.promiEvent
+          .once('receipt', () => {
+            getProposalsByContract(proposal.contract);
+            getBaseVotingWeightInfo();
+            loadDelegationInfo(userAddress);
+          });
+      } else {
+        throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: 'execute' }));
+      }
+    } else {
+      getProposalsByContract(proposal.contract);
+      getBaseVotingWeightInfo();
+      loadDelegationInfo(userAddress);
+    }
 
     return receipt;
   }

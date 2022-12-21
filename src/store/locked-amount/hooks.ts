@@ -42,7 +42,9 @@ export function useLockedAmount () {
     const contract = await getInstance(contractType)();
     const receipt = await contract.purgeTimeLocks(address);
 
-    loadTimeLocks(contractType, address);
+    receipt.promiEvent.once('receipt', () => {
+      loadTimeLocks(contractType, address);
+    });
     return receipt;
   }
 
@@ -55,7 +57,10 @@ export function useLockedAmount () {
       { value: toWei(form.amount) }
     );
 
-    loadTimeLocks(form.contract, form.address);
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadTimeLocks(form.contract, form.address);
+      });
     return receipt;
   }
 
