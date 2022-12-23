@@ -882,7 +882,7 @@
   "ERROR_039002": "Die Abstimmungszeit ist abgelaufen.",
   "ERROR_039004": "Der Absender hat bereits gestimmt.",
   "ERROR_039005": "Vorschlag nicht initialisiert.",
-  "ERROR_040000": "Alias ​​existiert bereits.",
+  "ERROR_040000": "Alias nicht reserviert.",
   "ERROR_040001": "Länge der Adressen und Rollenarrays müssen gleich sein.",
   "ERROR_040002": "Alias ​​ist für ein anderes Konto reserviert.",
   "TOAST_INFO": "Die Info",

@@ -73,7 +73,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     networkName: 'devnet',
     dAppUrl: 'http://63.34.190.209:8000',
     rpcUrl: 'http://63.34.190.209:8545',
-    indexerUrl: 'http://63.34.190.209:4000',
+    indexerUrl: 'http://54.73.188.73:4000',
     explorerUrl: 'http://54.73.188.73:8080',
     gnosisSafeUrl: 'http://63.34.190.209:8020',
     qBridgeUrl: 'http://63.34.190.209:8080',

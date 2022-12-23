@@ -882,7 +882,7 @@
   "ERROR_039002": "Voting time has expired.",
   "ERROR_039004": "Sender has already voted.",
   "ERROR_039005": "Proposal haven't initialized.",
-  "ERROR_040000": "Alias already exists.",
+  "ERROR_040000": "Alias is not reserved.",
   "ERROR_040001": "Length of adresses and role arrays must be equal.",
   "ERROR_040002": "Alias is reserved for another account.",
   "TOAST_INFO": "Info",
