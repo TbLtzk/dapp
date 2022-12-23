@@ -18,14 +18,12 @@ import transaction from './transaction/reducer';
 import user from './user/reducer';
 import validationRewards from './validation-rewards/reducer';
 import validators from './validators/reducer';
-import vesting from './vesting/reducer';
 
 export const store = configureStore({
   reducer: {
     user,
     rootNodes,
     qVault,
-    vesting,
     borrowing,
     borrowAssets,
     saving,

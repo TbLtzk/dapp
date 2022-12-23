@@ -11,8 +11,6 @@ import {
   setDelegatedStake,
   setInactiveCount,
   setIsValidator,
-  setMinimumTimeLock,
-  setTimeLocks,
   setTotalStake,
   setValidatorAddressesLongList,
   setValidators,
@@ -31,7 +29,6 @@ import {
 import { getAliasMap } from 'contracts/helpers/aliases-helper';
 import { getMonitoringValidators, getValidator, getValidators } from 'contracts/helpers/validators-helper';
 
-import { dateToUnix } from 'utils/date';
 import { captureError } from 'utils/errors';
 
 export function useValidators () {
@@ -50,10 +47,6 @@ export function useValidators () {
 
   const inactiveValidatorsCount = useAppSelector(({ validators }) => validators.inactiveCount);
   const inactiveValidatorsCountLoading = useAppSelector(({ validators }) => validators.inactiveCountLoading);
-
-  const validatorsMinimumTimeLock = useAppSelector(({ validators }) => validators.minimumTimeLock);
-  const validatorsTimeLocks = useAppSelector(({ validators }) => validators.timeLocks);
-  const validatorsTimeLocksLoading = useAppSelector(({ validators }) => validators.timeLocksLoading);
 
   const isValidator = useAppSelector(({ validators }) => validators.isValidator);
   const validatorWithdrawalInfo = useAppSelector(({ validators }) => validators.withdrawalInfo);
@@ -209,26 +202,6 @@ export function useValidators () {
     }
   }
 
-  async function loadValidatorMinimumTimeLock (address: string) {
-    try {
-      const contract = await getValidatorsInstance();
-      const minimumBalance = await contract.getMinimumBalance(address, dateToUnix());
-      dispatch(setMinimumTimeLock(fromWei(minimumBalance)));
-    } catch (error) {
-      captureError(error);
-    }
-  }
-
-  async function loadValidatorTimeLocks (address: string) {
-    try {
-      const contract = await getValidatorsInstance();
-      const timeLocks = await contract.getTimeLocks(address);
-      dispatch(setTimeLocks(timeLocks));
-    } catch (error) {
-      captureError(error);
-    }
-  }
-
   async function loadValidatorAddressesLongList () {
     try {
       const validatorsInstance = await getValidatorsInstance();
@@ -255,10 +228,6 @@ export function useValidators () {
     inactiveValidatorsCount,
     inactiveValidatorsCountLoading,
 
-    validatorsMinimumTimeLock,
-    validatorsTimeLocks,
-    validatorsTimeLocksLoading,
-
     isValidator,
     validatorWithdrawalInfo,
     compoundRateKeeperExists,
@@ -279,8 +248,6 @@ export function useValidators () {
     loadMonitoringValidators: useCallback(loadMonitoringValidators, []),
     checkIsValidator: useCallback(checkIsValidator, []),
     loadCompoundRateKeeperExists: useCallback(loadCompoundRateKeeperExists, []),
-    loadValidatorMinimumTimeLock: useCallback(loadValidatorMinimumTimeLock, []),
-    loadValidatorTimeLocks: useCallback(loadValidatorTimeLocks, []),
     loadValidatorAddressesLongList: useCallback(loadValidatorAddressesLongList, [])
   };
 }

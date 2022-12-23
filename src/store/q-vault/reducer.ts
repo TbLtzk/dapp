@@ -1,4 +1,4 @@
-import { SavingBalanceDetails, TimeLockEntry, VotingDelegationInfo } from '@q-dev/q-js-sdk';
+import { SavingBalanceDetails, VotingDelegationInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Delegation } from 'typings/validator';
 
@@ -32,8 +32,6 @@ interface QVaultState {
   delegationStakeInfoLoading: boolean;
 
   qVaultMinimumTimeLock: string;
-  qVaultTimeLocks: TimeLockEntry[];
-  qVaultTimeLocksLoading: boolean;
 }
 
 const initialState: QVaultState = {
@@ -70,8 +68,6 @@ const initialState: QVaultState = {
   },
 
   qVaultMinimumTimeLock: '0',
-  qVaultTimeLocks: [],
-  qVaultTimeLocksLoading: true,
 };
 
 const qVaultSlice = createSlice({
@@ -112,11 +108,6 @@ const qVaultSlice = createSlice({
       state.qVaultMinimumTimeLock = payload;
     },
 
-    setQVaultTimeLocks (state, { payload }: PayloadAction<TimeLockEntry[]>) {
-      state.qVaultTimeLocks = payload;
-      state.qVaultTimeLocksLoading = false;
-    },
-
     setDelegationInfo (state, { payload }: PayloadAction<VotingDelegationInfo>) {
       state.delegationInfo = payload;
     }
@@ -132,7 +123,6 @@ export const {
   setQVBalance,
   setDelegationStakeInfo,
   setQVaultMinimumTimeLock,
-  setQVaultTimeLocks,
   setDelegationInfo
 } = qVaultSlice.actions;
 export default qVaultSlice.reducer;

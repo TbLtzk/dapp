@@ -1,4 +1,4 @@
-import { RootNodesWithdrawalInfo, TimeLockEntry } from '@q-dev/q-js-sdk';
+import { RootNodesWithdrawalInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface RootNodeMember {
@@ -18,8 +18,6 @@ interface RootNodesState {
   withdrawalInfo: RootNodesWithdrawalInfo;
 
   minimumTimeLock: string;
-  timeLocks: TimeLockEntry[];
-  timeLocksLoading: boolean;
 }
 
 const initialState: RootNodesState = {
@@ -35,8 +33,6 @@ const initialState: RootNodesState = {
   },
 
   minimumTimeLock: '0',
-  timeLocks: [],
-  timeLocksLoading: true,
 };
 
 const rootNodesSlice = createSlice({
@@ -67,11 +63,6 @@ const rootNodesSlice = createSlice({
     setMinimumTimeLock: (state, { payload }: PayloadAction<string>) => {
       state.minimumTimeLock = payload;
     },
-
-    setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
-      state.timeLocks = payload;
-      state.timeLocksLoading = false;
-    }
   }
 });
 
@@ -82,6 +73,5 @@ export const {
   setWithdrawalInfo,
   setIsRootNode,
   setMinimumTimeLock,
-  setTimeLocks
 } = rootNodesSlice.actions;
 export default rootNodesSlice.reducer;

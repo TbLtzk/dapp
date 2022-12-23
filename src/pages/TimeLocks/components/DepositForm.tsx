@@ -16,11 +16,11 @@ import useForm from 'hooks/useForm';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 
-import { useLockedAmount } from 'store/locked-amount/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { depositTimeLock } from 'contracts/helpers/locked-amount-helper';
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
 import { formatAsset } from 'utils/numbers';
@@ -59,7 +59,6 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   const { address } = useTimeLocksAddress();
 
   const { submitTransaction } = useTransaction();
-  const { depositTimeLock } = useLockedAmount();
 
   const { walletBalance } = useQVault();
   const user = useUser();

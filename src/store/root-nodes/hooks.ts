@@ -5,7 +5,7 @@ import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { orderBy, round, sumBy } from 'lodash';
 import { fromWei, toWei } from 'web3-utils';
 
-import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTimeLocks, setTotalStake, setWithdrawalInfo } from './reducer';
+import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTotalStake, setWithdrawalInfo } from './reducer';
 
 import { getState, getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
@@ -30,8 +30,6 @@ export function useRootNodes () {
   const rootMembersLoading = useAppSelector(({ rootNodes }) => rootNodes.isMembersLoading);
 
   const rootMinimumTimeLock = useAppSelector(({ rootNodes }) => rootNodes.minimumTimeLock);
-  const rootTimeLocks = useAppSelector(({ rootNodes }) => rootNodes.timeLocks);
-  const rootTimeLocksLoading = useAppSelector(({ rootNodes }) => rootNodes.timeLocksLoading);
 
   async function commitRootNodeStake (amount: string) {
     const userAddress = getUserAddress();
@@ -158,26 +156,14 @@ export function useRootNodes () {
     }
   }
 
-  async function getRootTimeLocks (address: string) {
-    try {
-      const contract = await getRootNodesInstance();
-      const timeLocks = await contract.getTimeLocks(address);
-      dispatch(setTimeLocks(timeLocks));
-    } catch (error) {
-      captureError(error);
-    }
-  }
-
   return {
     withdrawalInfo,
     isRootNode,
     rootNodeStake,
     rootMinimumTimeLock,
-    rootTimeLocks,
     rootTotalStake,
     rootMembers,
     rootMembersLoading,
-    rootTimeLocksLoading,
 
     commitRootNodeStake: useCallback(commitRootNodeStake, []),
     announceRootStakeWithdrawal: useCallback(announceRootStakeWithdrawal, []),
@@ -186,7 +172,6 @@ export function useRootNodes () {
     getRootNodeStakes: useCallback(getRootNodeStakes, []),
     getRootWithdrawalInfo: useCallback(getRootWithdrawalInfo, []),
     getMinimumRootTimeLock: useCallback(getMinimumRootTimeLock, []),
-    getRootTimeLocks: useCallback(getRootTimeLocks, []),
     checkRootNodeMembership: useCallback(checkRootNodeMembership, []),
   };
 }

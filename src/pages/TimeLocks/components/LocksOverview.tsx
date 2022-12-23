@@ -92,6 +92,8 @@ function LocksOverview ({
           contract={contract}
           isLoadingTimeLocks={isLoadingTimeLocks}
           isDepositsLimitReached={isDepositsLimitReached}
+          balance={balance}
+          timeLockBalance={timeLockBalance}
           onSubmit={onSubmit}
         />
       </div>

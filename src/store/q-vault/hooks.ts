@@ -8,7 +8,6 @@ import {
   setDelegationList,
   setDelegationStakeInfo,
   setQVaultMinimumTimeLock,
-  setQVaultTimeLocks,
   setQVBalance,
   setVaultBalance,
   setVotingLockingEnd,
@@ -47,8 +46,6 @@ export function useQVault () {
   const qvBalance = useAppSelector(({ qVault }) => qVault.qvBalance);
 
   const qVaultMinimumTimeLock = useAppSelector(({ qVault }) => qVault.qVaultMinimumTimeLock);
-  const qVaultTimeLocks = useAppSelector(({ qVault }) => qVault.qVaultTimeLocks);
-  const qVaultTimeLocksLoading = useAppSelector(({ qVault }) => qVault.qVaultTimeLocksLoading);
 
   async function loadWalletBalance () {
     try {
@@ -311,16 +308,6 @@ export function useQVault () {
     }
   }
 
-  async function loadQVaultTimeLocks (address: string) {
-    try {
-      const contract = await getQVaultInstance();
-      const timeLocks = await contract.getTimeLocks(address);
-      dispatch(setQVaultTimeLocks(timeLocks));
-    } catch (error) {
-      captureError(error);
-    }
-  }
-
   return {
     vaultBalance,
     walletBalance,
@@ -331,8 +318,6 @@ export function useQVault () {
     delegationInfo,
     qvBalance,
     qVaultMinimumTimeLock,
-    qVaultTimeLocks,
-    qVaultTimeLocksLoading,
     delegationStakeInfo,
     delegationStakeInfoLoading,
 
@@ -354,6 +339,5 @@ export function useQVault () {
     announceNewVotingAgent: useCallback(announceNewVotingAgent, []),
     setNewVotingAgent: useCallback(setNewVotingAgent, []),
     loadMinimumQVaultTimeLock: useCallback(loadMinimumQVaultTimeLock, []),
-    loadQVaultTimeLocks: useCallback(loadQVaultTimeLocks, [])
   };
 }

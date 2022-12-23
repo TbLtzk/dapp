@@ -23,10 +23,19 @@ interface Props {
   contract: TimeLockContractType;
   isLoadingTimeLocks?: boolean;
   isDepositsLimitReached?: boolean;
+  timeLockBalance: string;
+  balance: string;
   onSubmit: () => void;
 }
 
-function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached, onSubmit }: Props) {
+function LockActions ({
+  contract,
+  isLoadingTimeLocks,
+  isDepositsLimitReached,
+  onSubmit,
+  timeLockBalance,
+  balance,
+}: Props) {
   const { t } = useTranslation();
 
   const { address: userAddress } = useUser();
@@ -75,6 +84,8 @@ function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached, on
         onClose={() => setWithdrawModalOpen(false)}
       >
         <WithdrawForm
+          balance={balance}
+          timeLockBalance={timeLockBalance}
           onSubmit={() => {
             onSubmit();
             setWithdrawModalOpen(false);

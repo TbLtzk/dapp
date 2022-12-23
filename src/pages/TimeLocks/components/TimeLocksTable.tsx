@@ -9,8 +9,9 @@ import { fromWei } from 'web3-utils';
 import Button from 'ui/Button';
 import Table from 'ui/Table';
 
-import { useLockedAmount } from 'store/locked-amount/hooks';
 import { useTransaction } from 'store/transaction/hooks';
+
+import { purgeTimeLocks } from 'contracts/helpers/locked-amount-helper';
 
 import { TimeLockStatus } from 'constants/statuses';
 import { compareDates, formatDate, unixToDate } from 'utils/date';
@@ -49,7 +50,6 @@ function TimeLocksTable ({
 }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { purgeTimeLocks } = useLockedAmount();
 
   const statusToText: Record<TimeLockStatus, string> = {
     locked: t('LOCKED'),
