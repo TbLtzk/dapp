@@ -7,8 +7,12 @@ import { TimeLockContractType } from 'typings/contracts';
 import Button from 'ui/Button';
 import Modal from 'ui/Modal';
 
+import { useTimeLocksAddress } from '../TimeLocks';
+
 import DepositForm from './DepositForm';
 import WithdrawForm from './WithdrawForm';
+
+import { useUser } from 'store/user/hooks';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -19,10 +23,14 @@ interface Props {
   contract: TimeLockContractType;
   isLoadingTimeLocks?: boolean;
   isDepositsLimitReached?: boolean;
+  onSubmit: () => void;
 }
 
-function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached }: Props) {
+function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached, onSubmit }: Props) {
   const { t } = useTranslation();
+
+  const { address: userAddress } = useUser();
+  const { address } = useTimeLocksAddress();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
@@ -37,7 +45,10 @@ function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached }: 
       </Button>
 
       {contract === 'vesting' && (
-        <Button onClick={() => setWithdrawModalOpen(true)}>
+        <Button
+          disabled={userAddress !== address}
+          onClick={() => setWithdrawModalOpen(true)}
+        >
           {t('WITHDRAW')}
         </Button>
       )}
@@ -51,7 +62,10 @@ function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached }: 
         <DepositForm
           isDepositsLimitReached={isDepositsLimitReached}
           contract={contract}
-          onSubmit={() => setDepositModalOpen(false)}
+          onSubmit={() => {
+            onSubmit();
+            setDepositModalOpen(false);
+          }}
         />
       </Modal>
 
@@ -60,7 +74,12 @@ function LockActions ({ contract, isLoadingTimeLocks, isDepositsLimitReached }: 
         open={withdrawModalOpen}
         onClose={() => setWithdrawModalOpen(false)}
       >
-        <WithdrawForm onSubmit={() => setWithdrawModalOpen(false)} />
+        <WithdrawForm
+          onSubmit={() => {
+            onSubmit();
+            setWithdrawModalOpen(false);
+          }}
+        />
       </Modal>
     </StyledWrapper>
   );

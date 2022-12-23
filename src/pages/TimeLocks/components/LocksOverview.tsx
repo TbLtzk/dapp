@@ -65,6 +65,7 @@ interface Props {
   timeLockBalance: string;
   isLoadingTimeLocks?: boolean;
   isDepositsLimitReached?: boolean;
+  onSubmit: () => void;
 }
 
 function LocksOverview ({
@@ -74,6 +75,7 @@ function LocksOverview ({
   timeLockBalance,
   isLoadingTimeLocks,
   isDepositsLimitReached,
+  onSubmit,
 }: Props) {
   const { t } = useTranslation();
   const { address } = useTimeLocksAddress();
@@ -90,6 +92,7 @@ function LocksOverview ({
           contract={contract}
           isLoadingTimeLocks={isLoadingTimeLocks}
           isDepositsLimitReached={isDepositsLimitReached}
+          onSubmit={onSubmit}
         />
       </div>
 

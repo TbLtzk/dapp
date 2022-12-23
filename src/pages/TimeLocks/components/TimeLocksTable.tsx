@@ -37,6 +37,7 @@ interface Props {
   lockAmountData: TimeLockEntry[];
   address: string;
   isLoading?: boolean;
+  onSubmit: () => void;
 }
 
 function TimeLocksTable ({
@@ -44,6 +45,7 @@ function TimeLocksTable ({
   lockAmountData,
   address,
   isLoading,
+  onSubmit,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
@@ -66,7 +68,8 @@ function TimeLocksTable ({
             look="secondary"
             onClick={() => submitTransaction({
               successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
-              submitFn: () => purgeTimeLocks({ address, contractType: contract })
+              submitFn: () => purgeTimeLocks({ address, contractType: contract }),
+              onSuccess: () => onSubmit()
             })}
           >
             {t('PURGE_UNLOCKED')}

@@ -86,13 +86,17 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
     }
   });
 
-  const updateMaxAmount = async () => {
+  const getMaxAmount = async () => {
     const depositAmount = await getQVaultDepositAmount(user.address);
-    setMaxAmount(Number(depositAmount) < 0 ? '0' : String(depositAmount));
+    return Number(depositAmount) < 0 ? '0' : String(depositAmount);
   };
 
   useEffect(() => {
-    updateMaxAmount();
+    getMaxAmount().then(setMaxAmount);
+
+    return () => {
+      setMaxAmount('0');
+    };
   }, [walletBalance]);
 
   return (

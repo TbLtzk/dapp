@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
-import useInterval from 'hooks/useInterval';
-
+import useQVaultTimeLocks from '../../hooks/useQVaultTimeLocks';
 import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
-
-import { useQVault } from 'store/q-vault/hooks';
 
 function QVaultTab () {
   const { t } = useTranslation();
@@ -19,23 +15,19 @@ function QVaultTab () {
     vaultBalance,
     qVaultMinimumTimeLock,
     qVaultTimeLocks,
+    qVaultTimeLocksLoading,
+    loadMinimumQVaultTimeLock,
     loadVaultBalance,
     loadQVaultTimeLocks,
-    loadMinimumQVaultTimeLock,
-    qVaultTimeLocksLoading,
-  } = useQVault();
-
-  useInterval(() => {
-    loadMinimumQVaultTimeLock(address);
-  }, 5000);
-
-  useEffect(() => {
-    loadVaultBalance(address);
-    loadMinimumQVaultTimeLock(address);
-    loadQVaultTimeLocks(address);
-  }, [address]);
+  } = useQVaultTimeLocks(address);
 
   const isDepositsLimitReached = useTimeLockLimits(qVaultTimeLocks);
+
+  const loadAll = () => {
+    loadMinimumQVaultTimeLock();
+    loadVaultBalance();
+    loadQVaultTimeLocks();
+  };
 
   return (
     <div>
@@ -46,6 +38,7 @@ function QVaultTab () {
         timeLockBalance={qVaultMinimumTimeLock}
         isLoadingTimeLocks={qVaultTimeLocksLoading}
         isDepositsLimitReached={isDepositsLimitReached}
+        onSubmit={loadAll}
       />
 
       <TimeLocksTable
@@ -53,6 +46,7 @@ function QVaultTab () {
         contract="qVault"
         lockAmountData={qVaultTimeLocks}
         isLoading={qVaultTimeLocksLoading}
+        onSubmit={loadAll}
       />
     </div>
   );
