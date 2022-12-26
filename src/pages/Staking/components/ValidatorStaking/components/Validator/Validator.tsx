@@ -92,7 +92,8 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
     loading: validatorLoading,
     error: validatorError,
     refetchValidator,
-    updateCompoundRate
+    updateCompoundRate,
+    updateCompoundRateLoading,
   } = useFetchValidatorData(address);
 
   if (validatorLoading && !validator.address) {
@@ -134,8 +135,10 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
             <DelegationInfo />
             <RewardStats
               validator={validator}
+              buttonLoading={updateCompoundRateLoading}
               onButtonClick={() => submitTransaction({
                 successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
+                hideLoading: true,
                 submitFn: updateCompoundRate
               })}
             />

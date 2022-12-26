@@ -142,7 +142,8 @@ export function useBorrowingVaults () {
     const contract = await getBorrowingCoreInstance();
     const receipt = await contract.createVault(asset, { from: getUserAddress() });
 
-    getBorrowingVaults();
+    receipt.promiEvent.once('receipt', () => { getBorrowingVaults(); });
+
     return receipt;
   }
 

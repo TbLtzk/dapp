@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { t } from 'i18next';
-import { TransactionReceipt } from 'web3-eth';
 
 import { reset, setErrorMessage, setHash, setLoading, setSuccessMessage } from './reducer';
 
@@ -26,7 +25,7 @@ export function useTransaction () {
     onSuccess = () => {},
     onError = () => {},
   }: {
-    submitFn: () => Promise<SubmitTransactionResponse | undefined>;
+    submitFn: () => Promise<SubmitTransactionResponse | void | undefined>;
     successMessage?: string;
     hideLoading?: boolean;
     onSuccess?: () => void;
@@ -38,20 +37,15 @@ export function useTransaction () {
       }
       const submitResponse = await submitFn();
 
-      if (!submitResponse) return;
-
-      const promise = new Promise((resolve, reject) => {
+      if (submitResponse?.promiEvent) {
         submitResponse.promiEvent
-          .once('transactionHash', (txHash: string) => { dispatch(setHash(txHash)); })
-          .once('receipt', (receipt: TransactionReceipt) => {
-            onSuccess();
-            dispatch(setSuccessMessage(successMessage || t('TRANSACTION_SUCCESS')));
-            resolve(receipt);
-          })
-          .on('error', (e: unknown) => { reject(e); });
-      });
+          .once('transactionHash', (txHash: string) => { dispatch(setHash(txHash)); });
 
-      await promise;
+        await submitResponse.promiEvent;
+      }
+
+      onSuccess();
+      dispatch(setSuccessMessage(successMessage || t('TRANSACTION_SUCCESS')));
     } catch (error) {
       captureError(error);
       dispatch(setErrorMessage(getErrorMessage(error)));
@@ -90,7 +84,7 @@ function getErrorMessage (err: unknown): string {
       return t('ERROR_TRANSACTION_REVERTED_BY_EVM');
     }
 
-    return t('ERROR_UNKNOWN');
+    return error.message || t('ERROR_UNKNOWN');
   }
 
   if (error.message === 'execution reverted') {
