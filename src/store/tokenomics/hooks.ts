@@ -50,21 +50,18 @@ export function useTokenomics () {
 
   async function allocateDefaultProxyRewards () {
     dispatch(setDefaultAllocationProxyLoading(true));
-    try {
-      const contract = await getDefaultAllocationProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+    const contract = await getDefaultAllocationProxyInstance();
+    const receipt = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => {
-          getDefaultAllocationProxy();
-          getRootNodeRewardProxy();
-          getValidationRewardProxy();
-        });
+    receipt.promiEvent
+      .once('receipt', () => {
+        getDefaultAllocationProxy();
+        getRootNodeRewardProxy();
+        getValidationRewardProxy();
+      })
+      .finally(() => dispatch(setDefaultAllocationProxyLoading(false)));
 
-      return receipt;
-    } finally {
-      dispatch(setDefaultAllocationProxyLoading(false));
-    }
+    return receipt;
   }
 
   async function getRootNodeRewardProxy () {
@@ -79,19 +76,14 @@ export function useTokenomics () {
 
   async function allocateRootNodeProxyRewards () {
     dispatch(setRootNodeRewardProxyLoading(true));
-    try {
-      const contract = await getRootNodeRewardProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+    const contract = await getRootNodeRewardProxyInstance();
+    const receipt = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => {
-          getRootNodeRewardProxy();
-        });
+    receipt.promiEvent
+      .once('receipt', () => { getRootNodeRewardProxy(); })
+      .finally(() => dispatch(setRootNodeRewardProxyLoading(false)));
 
-      return receipt;
-    } finally {
-      dispatch(setRootNodeRewardProxyLoading(false));
-    }
+    return receipt;
   }
 
   async function getValidationRewardProxy () {
@@ -106,19 +98,14 @@ export function useTokenomics () {
 
   async function allocateValidationProxyRewards () {
     dispatch(setValidationRewardProxyLoading(true));
-    try {
-      const contract = await getValidationRewardProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+    const contract = await getValidationRewardProxyInstance();
+    const receipt = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => {
-          getValidationRewardProxy();
-        });
+    receipt.promiEvent
+      .once('receipt', () => { getValidationRewardProxy(); })
+      .finally(() => dispatch(setValidationRewardProxyLoading(false)));
 
-      return receipt;
-    } finally {
-      dispatch(setValidationRewardProxyLoading(false));
-    }
+    return receipt;
   }
 
   async function getQHolderUpdateTime () {
@@ -134,22 +121,17 @@ export function useTokenomics () {
 
   async function allocateQHolderRewards () {
     dispatch(setQHolderUpdateTimeLoading(true));
-    try {
-      const contract = await getQVaultInstance();
-      const receipt = await contract.updateCompoundRate({
-        from: getUserAddress(),
-        gasBuffer: 1.2,
-      });
+    const contract = await getQVaultInstance();
+    const receipt = await contract.updateCompoundRate({
+      from: getUserAddress(),
+      gasBuffer: 1.2,
+    });
 
-      receipt.promiEvent
-        .once('receipt', () => {
-          getQHolderUpdateTime();
-        });
+    receipt.promiEvent
+      .once('receipt', () => { getQHolderUpdateTime(); })
+      .finally(() => dispatch(setQHolderUpdateTimeLoading(false)));
 
-      return receipt;
-    } finally {
-      dispatch(setQHolderUpdateTimeLoading(false));
-    }
+    return receipt;
   }
 
   return {
