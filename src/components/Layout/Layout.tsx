@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 
-import TransactionModal from 'components/TransactionModal';
+import TransactionLoader from 'components/TransactionLoader';
 import Header from 'navigation/Header';
 import Sidebar from 'navigation/Sidebar';
 import Toast from 'ui/Toast';
@@ -47,7 +47,7 @@ function Layout ({ children }: Props) {
           </main>
         </div>
       </AppContainer>
-      <TransactionModal/>
+      <TransactionLoader />
     </AlertProvider>
   );
 }

@@ -3,20 +3,19 @@ import { useDispatch } from 'react-redux';
 
 import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { t } from 'i18next';
+import uniqueId from 'lodash/uniqueId';
 
-import { reset, setErrorMessage, setHash, setLoading, setSuccessMessage } from './reducer';
+import { PendingTransaction, setPendingTransactions } from './reducer';
 
-import { useAppSelector } from 'store';
+import { getState, useAppSelector } from 'store';
 
 import { captureError } from 'utils/errors';
+import { eventBus, getTxEventName } from 'utils/event-bus';
 
 export function useTransaction () {
   const dispatch = useDispatch();
 
-  const transactionLoading = useAppSelector(({ transaction }) => transaction.isLoading);
-  const transactionHash = useAppSelector(({ transaction }) => transaction.hash);
-  const successMessage = useAppSelector(({ transaction }) => transaction.successMessage);
-  const errorMessage = useAppSelector(({ transaction }) => transaction.errorMessage);
+  const pendingTransactions = useAppSelector(({ transaction }) => transaction.pendingTransactions);
 
   async function submitTransaction ({
     submitFn,
@@ -31,40 +30,46 @@ export function useTransaction () {
     onSuccess?: () => void;
     onError?: (error?: unknown) => void;
   }) {
+    const transaction: PendingTransaction = {
+      id: uniqueId(),
+      hideLoading,
+      title: successMessage || t('TRANSACTION_SUCCESS')
+    };
+
+    const { pendingTransactions } = getState().transaction;
+    dispatch(setPendingTransactions([...pendingTransactions, transaction]));
+
     try {
-      if (!hideLoading) {
-        dispatch(setLoading(true));
-      }
       const submitResponse = await submitFn();
 
       if (submitResponse?.promiEvent) {
         submitResponse.promiEvent
-          .once('transactionHash', (txHash: string) => { dispatch(setHash(txHash)); });
+          .once('transactionHash', (txHash: string) => {
+            eventBus.emit(getTxEventName(transaction.id, 'hash'), txHash);
+          });
 
         await submitResponse.promiEvent;
       }
 
       onSuccess();
-      dispatch(setSuccessMessage(successMessage || t('TRANSACTION_SUCCESS')));
+
+      eventBus.emit(getTxEventName(transaction.id, 'success'), transaction.title);
     } catch (error) {
       captureError(error);
-      dispatch(setErrorMessage(getErrorMessage(error)));
       onError(error);
-    } finally {
-      dispatch(setLoading(false));
+      eventBus.emit(getTxEventName(transaction.id, 'error'), getErrorMessage(error));
     }
   }
 
-  return {
-    transactionLoading,
-    transactionHash,
-    successMessage,
-    errorMessage,
+  const removeTransaction = (id: string) => {
+    const { pendingTransactions } = getState().transaction;
+    dispatch(setPendingTransactions(pendingTransactions.filter(tx => tx.id !== id)));
+  };
 
+  return {
+    pendingTransactions,
     submitTransaction: useCallback(submitTransaction, []),
-    setTransactionLoading: useCallback((isLoading: boolean) => dispatch(setLoading(isLoading)), []),
-    setTransactionError: useCallback((errorMessage: string) => dispatch(setErrorMessage(errorMessage)), []),
-    resetTransaction: useCallback(() => dispatch(reset()), []),
+    removeTransaction: useCallback(removeTransaction, []),
   };
 }
 

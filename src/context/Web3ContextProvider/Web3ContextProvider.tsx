@@ -1,5 +1,6 @@
 import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useState } from 'react';
 
+import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
 import { useWeb3React } from '@web3-react/core';
 import { getWallet, WalletType } from 'connectors';
 import { motion } from 'framer-motion';
@@ -138,7 +139,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       } else {
         const provider = getProvider(selectedWallet);
         const chainId = await getChainId(provider);
-        if (!chainIdToNetworkMap[chainId]) {
+        const network = chainIdToNetworkMap[chainId];
+        if (!network) {
           // wrong network
           window.web3 = httpProvider;
         } else {
@@ -151,6 +153,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             setAddress(accounts[0]);
             setLoadType(LOAD_TYPES.loaded);
           }
+
+          BaseContractInstance.DEFAULT_GASBUFFER = networkConfigsMap[network].gasBuffer;
         }
         setChainId(Number(chainId));
       }

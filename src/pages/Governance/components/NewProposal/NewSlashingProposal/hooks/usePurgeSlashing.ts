@@ -29,7 +29,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
 
   const user = useUser();
   const { getActiveProposalsByType } = useProposals();
-  const { successMessage, submitTransaction } = useTransaction();
+  const { pendingTransactions, submitTransaction } = useTransaction();
 
   const [shouldPurge, setShouldPurge] = useState(false);
   const [hasActiveProposal, setHasActiveProposal] = useState(false);
@@ -64,7 +64,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
       setShouldPurge(false);
       setHasActiveProposal(false);
     };
-  }, [address, successMessage, isRootSlashing, proposalEvents.length]);
+  }, [address, pendingTransactions.length, isRootSlashing, proposalEvents.length]);
 
   const checkRootNodesSlashing = async () => {
     const instance = await getRootNodesInstance();

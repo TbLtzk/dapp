@@ -24,7 +24,7 @@ function AccountAliasing () {
   const { loadAliases } = useAliases();
   const { loadAliasEvents } = useAliasEvents();
   const user = useUser();
-  const { successMessage } = useTransaction();
+  const { pendingTransactions } = useTransaction();
 
   const [currentAddress, setCurrentAddress] = useState(user.address);
   const [selectedAlias, setSelectedAlias] = useState<Alias | null>(null);
@@ -45,12 +45,12 @@ function AccountAliasing () {
   }, []);
 
   useEffect(() => {
-    if (!successMessage) return;
+    if (pendingTransactions.length) return;
 
     setSelectedAlias(null);
     setIsReserveModalShown(false);
     init(currentAddress);
-  }, [successMessage]);
+  }, [pendingTransactions.length]);
 
   return (
     <PageLayout

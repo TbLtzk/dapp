@@ -18,7 +18,7 @@ const useFetchValidatorData = (address: string) => {
   const { t } = useTranslation();
   const { chainId } = useUser();
   const { indexerUrl } = useNetworkConfig();
-  const { successMessage } = useTransaction();
+  const { pendingTransactions } = useTransaction();
 
   const [validator, setValidator] = useState<Validator>({} as Validator);
   const [isValidator, setIsValidator] = useState(true);
@@ -63,15 +63,10 @@ const useFetchValidatorData = (address: string) => {
   };
 
   useEffect(() => {
-    fetchValidatorData();
-
-    return () => {
-      setValidator({} as Validator);
-      setIsValidator(true);
-      setError(null);
-      setLoading(true);
-    };
-  }, [successMessage]);
+    if (!pendingTransactions.length) {
+      fetchValidatorData();
+    }
+  }, [pendingTransactions.length]);
 
   return {
     isValidator,

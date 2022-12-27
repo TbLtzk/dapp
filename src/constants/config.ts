@@ -17,6 +17,7 @@ interface NetworkConfig {
   constitutionUrl: string;
   constitutionUpdatedAt: number;
   collaterals: Asset[];
+  gasBuffer: number;
   featureFlags: {
     aliases: boolean;
   };
@@ -49,6 +50,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.q.org',
     constitutionUpdatedAt: 1657120401000,
     collaterals: ['QBTC'],
+    gasBuffer: 1,
     featureFlags: { aliases: false },
   },
   testnet: {
@@ -65,6 +67,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.qtestnet.org',
     constitutionUpdatedAt: 1657120425000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI'],
+    gasBuffer: 1.5,
     featureFlags: { aliases: true },
   },
   devnet: {
@@ -81,6 +84,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'http://34.248.83.162:8999',
     constitutionUpdatedAt: 1652719113000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
+    gasBuffer: 1,
     featureFlags: { aliases: true },
   },
 };
