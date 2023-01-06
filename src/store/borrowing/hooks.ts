@@ -50,7 +50,7 @@ export function useBorrowing () {
 
   async function updateBorrowingCompoundRate (asset: Asset) {
     const contract = await getBorrowingCoreInstance();
-    return contract.updateCompoundRate(asset, { from: getUserAddress(), gasBuffer: 1.2 });
+    return contract.updateCompoundRate(asset, { from: getUserAddress() });
   }
 
   return {

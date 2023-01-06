@@ -120,7 +120,7 @@ export function useSaving () {
 
   async function updateSavingCompoundRate () {
     const contract = await getSavingInstance();
-    return contract.updateCompoundRate({ from: getUserAddress(), gasBuffer: 1.2 });
+    return contract.updateCompoundRate({ from: getUserAddress() });
   }
 
   async function getTotalSavingBalance () {

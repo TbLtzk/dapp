@@ -51,12 +51,12 @@ function ManageStakeReward () {
   } = useValidators();
 
   useEffect(() => {
-    if (isValidator && compoundRateKeeperExists) {
+    if (compoundRateKeeperExists) {
       getVRPPoolInfo();
       getVRPBalance();
       getVRPLastUpdateOfCompoundRate();
     }
-  }, [isValidator, compoundRateKeeperExists]);
+  }, [compoundRateKeeperExists]);
 
   useEffect(() => {
     loadCompoundRateKeeperExists();
