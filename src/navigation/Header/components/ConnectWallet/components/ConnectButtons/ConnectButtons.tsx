@@ -76,6 +76,7 @@ function ConnectButtons () {
           </a>
         )}
 
+      {/* TODO: display after fix connect
       {Boolean(window.ethereum) && (
         <Button
           alwaysEnabled
@@ -89,7 +90,7 @@ function ConnectButtons () {
           />
           <span>{t('CONNECT_WITH_COINBASE')}</span>
         </Button>
-      )}
+      )} */}
 
       {/* TODO: add bridge between dApp and connect to wallet
        <Button
