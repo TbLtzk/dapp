@@ -34,6 +34,7 @@
     "@web3-react/types": "8.0.19-beta.0",
     "@web3-react/url": "8.0.24-beta.0",
     "@web3-react/walletconnect": "8.0.34-beta.0",
+    "axios": "^1.2.2",
     "bignumber.js": "^9.0.1",
     "buffer": "^6.0.3",
     "chart.js": "^3.8.0",

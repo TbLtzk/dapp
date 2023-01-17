@@ -3,11 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { ProposalStatus, SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import axios from 'axios';
 import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType, Proposal, ProposalType, VotingType } from 'typings/proposals';
 
-import { setBaseVotingWeightInfo, setConstitutionHash, setMinimalActiveBlock, setProposals } from './reducer';
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
+import { setBaseVotingWeightInfo, setConstitutionHash, setConstitutionUpdateDate, setMinimalActiveBlock, setProposals } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
@@ -47,10 +50,12 @@ function isProposalActive (item: ProposalEvent, minBlock: number) {
 }
 
 export function useBaseVotingWeightInfo () {
+  const { constitutionUrl } = useNetworkConfig();
   const dispatch = useDispatch();
 
   const newParameter = useAppSelector(({ proposals }) => proposals.newParameter);
   const constitutionHash = useAppSelector(({ proposals }) => proposals.constitutionHash);
+  const constitutionUpdateDate = useAppSelector(({ proposals }) => proposals.constitutionUpdateDate);
   const baseVotingWeightInfo = useAppSelector(({ proposals }) => proposals.baseVotingWeightInfo);
 
   async function getConstitutionHash () {
@@ -58,6 +63,21 @@ export function useBaseVotingWeightInfo () {
       const contract = await getConstitutionVotingInstance();
       const hash = await contract.constitutionHash();
       dispatch(setConstitutionHash(hash));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
+  async function getConstitutionUpdateDate () {
+    try {
+      const contract = await getConstitutionVotingInstance();
+      const constitutionCaller = axios.create({ baseURL: constitutionUrl });
+      const [constitutionsHash, constitutionsRes] = await Promise.all([
+        await contract.constitutionHash(),
+        constitutionCaller.get('/constitution/list')
+      ]);
+      const constitution = constitutionsRes.data.find(({ hash }: { hash: string }) => constitutionsHash === `0x${hash}`);
+      dispatch(setConstitutionUpdateDate(constitution.time * 1000));
     } catch (error) {
       captureError(error);
     }
@@ -79,7 +99,9 @@ export function useBaseVotingWeightInfo () {
     baseVotingWeightInfo,
 
     getConstitutionHash,
-    getBaseVotingWeightInfo
+    getBaseVotingWeightInfo,
+    getConstitutionUpdateDate,
+    constitutionUpdateDate,
   };
 }
 

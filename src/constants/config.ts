@@ -15,7 +15,6 @@ interface NetworkConfig {
   qBridgeUrl: string;
   docsUrl: string;
   constitutionUrl: string;
-  constitutionUpdatedAt: number;
   collaterals: Asset[];
   gasBuffer: number;
   featureFlags: {
@@ -48,7 +47,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.q.org',
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
-    constitutionUpdatedAt: 1673342775000,
     collaterals: ['QBTC'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true },
@@ -65,7 +63,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.qtestnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
-    constitutionUpdatedAt: 1673342801000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     gasBuffer: 2,
     featureFlags: { aliases: true },
@@ -82,7 +79,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'http://63.34.190.209:8080',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'http://34.248.83.162:8999',
-    constitutionUpdatedAt: 1673272778000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true },

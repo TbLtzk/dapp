@@ -15,6 +15,7 @@ interface ProposalsState {
   proposalsMap: Record<ProposalType, ProposalItem>;
   minimalActiveBlock: number;
   constitutionHash: string;
+  constitutionUpdateDate: number;
   newParameter: boolean;
 }
 
@@ -24,6 +25,7 @@ function getDefaultProposalItem (): ProposalItem {
 
 const initialState: ProposalsState = {
   constitutionHash: '',
+  constitutionUpdateDate: 0,
   newParameter: false,
   minimalActiveBlock: 0,
   baseVotingWeightInfo: {
@@ -65,6 +67,10 @@ const proposalsSlice = createSlice({
       state.constitutionHash = payload;
     },
 
+    setConstitutionUpdateDate: (state, { payload }: PayloadAction<number>) => {
+      state.constitutionUpdateDate = payload;
+    },
+
     setNewParameter: (state, { payload }: PayloadAction<boolean>) => {
       state.newParameter = payload;
     },
@@ -80,6 +86,7 @@ export const {
   setMinimalActiveBlock,
   setConstitutionHash,
   setNewParameter,
-  setBaseVotingWeightInfo
+  setBaseVotingWeightInfo,
+  setConstitutionUpdateDate,
 } = proposalsSlice.actions;
 export default proposalsSlice.reducer;
