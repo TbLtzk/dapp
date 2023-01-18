@@ -668,6 +668,7 @@
   "ERROR_005013": "Permission denied - only the ValidatorsSlashingVoting contract has access.",
   "ERROR_005014": "Total locked amount must not exceed stake.",
   "ERROR_005015": "Withdrawal prevented by timelock(s).",
+  "ERROR_005017": "Not enough stake to enter the short list.",
   "ERROR_006000": "The candidate does not have any stake to slash.",
   "ERROR_006001": "Voting is only possible on PENDING proposals.",
   "ERROR_006002": "Invalid percentage parameter, slashing proposal creation failed.",

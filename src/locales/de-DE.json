@@ -668,6 +668,7 @@
   "ERROR_005013": "Erlaubnis abgelehnt - nur der ValidatorsSlashingvoting -Vertrag hat Zugriff.",
   "ERROR_005014": "Der Gesamtbetrag muss den Einsatz nicht überschreiten.",
   "ERROR_005015": "Auszug durch Zeitabzug (en).",
+  "ERROR_005017": "Nicht genug Einsatz, um in die engere Wahl zu kommen.",
   "ERROR_006000": "Der Kandidat hat keinen Anteil zum Slash.",
   "ERROR_006001": "Die Abstimmung ist nur bei anhängigen Vorschlägen möglich.",
   "ERROR_006002": "Ungültiger prozentualer Parameter, die Erstellung von Schrägvorschlägen ist fehl.",
