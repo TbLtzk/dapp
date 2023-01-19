@@ -1032,7 +1032,7 @@
   "MANAGE_STAKE_REWARD_POOL": "Verwalten Sie Stake Reward Pool",
   "VALIDATOR_TOKENOMICS": "Validator Tokenomics",
   "NOTICE_YOU_ARE_NOT_A_VALIDATOR": "Beachten Sie, Sie sind kein Validator",
-  "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Einsatzbetrag unter dem Minimum, um einen neuen Zinssatz anzuwenden, alter Zinssatz angewendet.",
+  "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Delegationen werden nicht verlängert, weil kein Bonus an die Delegierten ausgeschüttet wurde oder der delegierte Anteil nicht ausreicht",
   "SUCCESS_ENTERING_VALIDATOR_RANK": "Erfolg beim Validator -Ranking",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Zeit seit der letzten Aktualisierung von Benutzerdelegationen",
   "VALIDATOR_MANAGE": "Validator verwalten",

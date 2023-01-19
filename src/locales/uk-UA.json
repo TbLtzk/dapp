@@ -1032,7 +1032,7 @@
   "MANAGE_STAKE_REWARD_POOL": "Керувати пулом нагород стейкінгу",
   "VALIDATOR_TOKENOMICS": "Токеноміка валідаторів",
   "NOTICE_YOU_ARE_NOT_A_VALIDATOR": "Зверніть увагу, ви не валідатор",
-  "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Сума стейкінгу нижче мінімуму для застосування нової ставки, застосована стара ставка.",
+  "STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE": "Делегування не оновлюються через нульову розподілену винагороду делегату або недостатню делеговану частку",
   "SUCCESS_ENTERING_VALIDATOR_RANK": "Успішно додано до рейтингу валідатора",
   "TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS": "Час з останнього оновлення делегацій користувачів",
   "VALIDATOR_MANAGE": "Керувати валідатором",
