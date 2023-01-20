@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,7 @@ import MonitoringInfo from './components/MonitoringInfo';
 import RewardStats from './components/RewardStats';
 import { useFetchValidatorData } from './hooks';
 
+import { useParameters } from 'store/parameters/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -85,6 +86,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const params = new URLSearchParams(search);
 
   const { t } = useTranslation();
+  const { getConstitutionParameters, constitutionParametersLoading } = useParameters();
   const { submitTransaction } = useTransaction();
   const {
     isValidator,
@@ -96,7 +98,11 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
     updateCompoundRateLoading,
   } = useFetchValidatorData(address);
 
-  if (validatorLoading && !validator.address) {
+  useEffect(() => {
+    getConstitutionParameters();
+  }, []);
+
+  if ((validatorLoading || constitutionParametersLoading) && !validator.address) {
     return (
       <CenteredContainer>
         <Spinner size={100} thickness={4} />

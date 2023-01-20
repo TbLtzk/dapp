@@ -17,7 +17,8 @@ import { getIndexerInstance, getValidatorsInstance } from 'contracts/contract-in
 import { captureError } from 'utils/errors';
 
 const useGetValidatorRank = () => {
-  const [validatorRank, setValidatorRank] = useState('...');
+  const [validatorRankFormatted, setValidatorRankFormatted] = useState('...');
+  const [validatorRank, setValidatorRank] = useState(0);
   const user = useUser();
 
   const getValidatoRank = async () => {
@@ -25,7 +26,8 @@ const useGetValidatorRank = () => {
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
       const validatorRank = shortList.findIndex((val) => val.address === user.address);
-      setValidatorRank(validatorRank === -1 ? '-' : String(`#${validatorRank + 1}`));
+      setValidatorRank(validatorRank + 1);
+      setValidatorRankFormatted(validatorRank === -1 ? '-' : String(`#${validatorRank + 1}`));
     } catch (error) {
       captureError(error);
     }
@@ -33,10 +35,10 @@ const useGetValidatorRank = () => {
 
   useEffect(() => {
     getValidatoRank();
-    return () => setValidatorRank('...');
+    return () => setValidatorRankFormatted('...');
   }, []);
 
-  return validatorRank;
+  return { validatorRank, validatorRankFormatted };
 };
 
 const useIsUserActiveValidator = () => {

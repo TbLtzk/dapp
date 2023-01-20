@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import { ProgressBarWrapper } from 'components/Base/ProgressBar/styles';
+import StatusBar, { StatusType } from 'components/Base/StatusBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Button from 'ui/Button';
 
 import { useEnterShortList, useGetValidatorRank, useIsUserActiveValidator } from '../hooks';
 
+import { useParameters } from 'store/parameters/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
@@ -36,20 +37,34 @@ function ValidatorInfo () {
   const { t } = useTranslation();
   const user = useUser();
   const { walletBalance } = useQVault();
-  const { isValidator, checkIsValidator } = useValidators();
+  const { isValidator, checkIsValidator, isValidatorInLongList } = useValidators();
+  const { constitutionParameters } = useParameters();
 
-  const validatorRank = useGetValidatorRank();
+  const maxNValidators = useMemo(() => {
+    const maxNValidatorsType = constitutionParameters?.find(i => i.key === 'constitution.maxNValidators');
+    return Number(maxNValidatorsType?.value || 0);
+  }, [constitutionParameters]);
+
+  const { validatorRank, validatorRankFormatted } = useGetValidatorRank();
   const isUserActiveValidator = useIsUserActiveValidator();
   const enterShortList = useEnterShortList();
 
-  const validator = useMemo(() => {
-    if (isValidator) {
-      return isUserActiveValidator
-        ? { status: t('ACTIVE_VALIDATOR'), value: 1 }
-        : { status: t('INACTIVE_VALIDATOR'), value: 81 };
+  const validatorStatus = useMemo<{text: string; status: StatusType}>(() => {
+    if (isValidatorInLongList) {
+      if (validatorRank) {
+        if (validatorRank <= maxNValidators) {
+          return isUserActiveValidator
+            ? { text: t('ACTIVE_VALIDATOR'), status: 'success' }
+            : { text: t('INACTIVE_VALIDATOR'), status: 'danger' };
+        }
+
+        return { text: t('BACKUP_VALIDATOR'), status: 'warning' };
+      }
+
+      return { text: t('NOT_IN_SHORTLIST'), status: 'info' };
     }
-    return { status: t('NOT_A_VALIDATOR'), value: 100 };
-  }, [isUserActiveValidator, isValidator, user, t]);
+    return { text: t('NOT_A_VALIDATOR'), status: 'info' };
+  }, [isUserActiveValidator, isValidatorInLongList, validatorRank, t, maxNValidators]);
 
   useEffect(() => {
     checkIsValidator();
@@ -68,14 +83,13 @@ function ValidatorInfo () {
       <div className="block__content">
         <div>
           <p className="color-secondary text-md">{t('STATUS')}</p>
-          <ProgressBarWrapper value={validator.value}>
-            <span />
-            <p className="text-lg">{validator.status}</p>
-          </ProgressBarWrapper>
+          <StatusBar status={validatorStatus.status}>
+            <p className="text-lg">{validatorStatus.text}</p>
+          </StatusBar>
         </div>
         <div>
           <p className="color-secondary text-md">{t('CURRENT_RANK')}</p>
-          <p className="text-lg">{validatorRank}</p>
+          <p className="text-lg">{validatorRankFormatted}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('AVAILABLE_Q_BALANCE')}</p>

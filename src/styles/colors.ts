@@ -87,6 +87,7 @@ export const darkColors = {
   success: COLORS.green200,
   warning: COLORS.yellow100,
   error: COLORS.red400,
+  info: COLORS.grey300,
 };
 
 export const lightColors = {
@@ -117,6 +118,7 @@ export const lightColors = {
   success: COLORS.green300,
   warning: COLORS.yellow100,
   error: COLORS.red400,
+  info: COLORS.grey300,
 };
 
 export function getColorFn<T extends string> (

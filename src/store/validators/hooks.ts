@@ -11,6 +11,7 @@ import {
   setDelegatedStake,
   setInactiveCount,
   setIsValidator,
+  setIsValidatorInLongList,
   setTotalStake,
   setValidatorAddressesLongList,
   setValidators,
@@ -49,6 +50,7 @@ export function useValidators () {
   const inactiveValidatorsCountLoading = useAppSelector(({ validators }) => validators.inactiveCountLoading);
 
   const isValidator = useAppSelector(({ validators }) => validators.isValidator);
+  const isValidatorInLongList = useAppSelector(({ validators }) => validators.isValidatorInLongList);
   const validatorWithdrawalInfo = useAppSelector(({ validators }) => validators.withdrawalInfo);
   const compoundRateKeeperExists = useAppSelector(({ validators }) => validators.compoundRateKeeperExists);
 
@@ -183,9 +185,12 @@ export function useValidators () {
     try {
       const userAddress = getUserAddress();
       const contract = await getValidatorsInstance();
-      const isInShortList = await contract.isInShortList(userAddress);
-      const isInLongList = await contract.isInLongList(userAddress);
+      const [isInShortList, isInLongList] = await Promise.all([
+        contract.isInShortList(userAddress),
+        contract.isInLongList(userAddress)
+      ]);
       dispatch(setIsValidator(isInShortList && isInLongList));
+      dispatch(setIsValidatorInLongList(isInLongList));
     } catch (error) {
       captureError(error);
       dispatch(setIsValidator(false));
@@ -229,6 +234,7 @@ export function useValidators () {
     inactiveValidatorsCountLoading,
 
     isValidator,
+    isValidatorInLongList,
     validatorWithdrawalInfo,
     compoundRateKeeperExists,
 

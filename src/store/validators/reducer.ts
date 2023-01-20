@@ -7,6 +7,7 @@ type MonitoringValidatorWithAlias = ValidatorWithAlias & ValidatorMonitoring & {
 
 interface ValidatorsState {
   isValidator: boolean;
+  isValidatorInLongList: boolean;
   compoundRateKeeperExists: boolean;
 
   totalStake: string;
@@ -33,6 +34,7 @@ interface ValidatorsState {
 
 const initialState: ValidatorsState = {
   isValidator: false,
+  isValidatorInLongList: false,
   compoundRateKeeperExists: false,
 
   totalStake: '0',
@@ -66,6 +68,10 @@ const validatorsSlice = createSlice({
   reducers: {
     setIsValidator: (state, { payload }: PayloadAction<boolean>) => {
       state.isValidator = payload;
+    },
+
+    setIsValidatorInLongList: (state, { payload }: PayloadAction<boolean>) => {
+      state.isValidatorInLongList = payload;
     },
 
     setCompoundRateKeeperExists: (state, { payload }: PayloadAction<boolean>) => {
@@ -120,6 +126,7 @@ const validatorsSlice = createSlice({
 
 export const {
   setIsValidator,
+  setIsValidatorInLongList,
   setCompoundRateKeeperExists,
   setTotalStake,
   setDelegatedStake,
