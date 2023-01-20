@@ -7,6 +7,8 @@ import { useInterval } from '@q-dev/react-hooks';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import packageJson from '../../../../../package.json';
 
 import { VersionsContainer } from './styles';
@@ -20,6 +22,7 @@ interface Props {
 
 function VersionModal ({ open, onClose }: Props) {
   const { t, i18n } = useTranslation();
+  const { rpcUrl } = useNetworkConfig();
   const web3Adapter = new Web3Adapter(window.web3);
 
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -52,7 +55,7 @@ function VersionModal ({ open, onClose }: Props) {
           name: t('YOUR_CURRENT_TIME'),
           value: formatDateGMT(currentDate, i18n.language),
         },
-      ]
+      ],
     },
     {
       title: t('MODULES'),
@@ -72,7 +75,7 @@ function VersionModal ({ open, onClose }: Props) {
       items: [
         {
           name: 'RPC URL',
-          value: connectionInfo?.rpcUrl,
+          value: rpcUrl,
         },
         {
           name: t('NETWORK') + ' ID',
@@ -83,7 +86,7 @@ function VersionModal ({ open, onClose }: Props) {
           value: connectionInfo?.nodeInfo,
         },
       ],
-    }
+    },
   ];
 
   return (
@@ -95,10 +98,7 @@ function VersionModal ({ open, onClose }: Props) {
     >
       <VersionsContainer>
         {versionGroups.map((group, i) => (
-          <div
-            key={String(i)}
-            className="version-group"
-          >
+          <div key={String(i)} className="version-group">
             <h3 className="text-h3">{group.title}</h3>
             <div className="version-group-items">
               {group.items.map((item) => (

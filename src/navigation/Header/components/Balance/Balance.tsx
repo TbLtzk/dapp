@@ -31,7 +31,7 @@ function Balance () {
       trigger={
         <Button alwaysEnabled look="secondary">
           <div className="balance">
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance, 2)}</p>
             <QLogo width={22} margin="0 0 0 2px">
               <img src="/logo.png" alt="q" />
             </QLogo>
@@ -56,20 +56,20 @@ function Balance () {
             </QLogo>
             <p className="text-lg color-secondary">{t('BALANCE')}</p>
           </div>
-          <p className="text-xl color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
+          <p className="text-xl color-primary font-semibold">{formatNumberCompact(walletBalance, 2)}</p>
         </div>
 
         <Link to={RoutePaths.qVault}>
           <div className="balance balance-action">
             <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')} </p>
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(vaultBalance)}</p>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(vaultBalance, 2)}</p>
           </div>
         </Link>
 
         <Link to={RoutePaths.governance}>
           <div className="balance balance-action">
             <p className="text-md color-secondary">{t('VOTING_WEIGHT')}</p>
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight)}</p>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(totalVotingWeight, 2)}</p>
           </div>
         </Link>
       </div>
