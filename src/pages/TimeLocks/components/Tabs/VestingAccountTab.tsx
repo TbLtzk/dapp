@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
 import useTimeLockLimits from '../../hooks/useTimeLockLimits';
+import useVestingTimeLocks from '../../hooks/useVestingTimeLocks';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
-
-import { useVesting } from 'store/vesting/hooks';
 
 function VestingAccountTab () {
   const { t } = useTranslation();
@@ -23,19 +19,15 @@ function VestingAccountTab () {
     getMinimumVestingTimeLock,
     getVestingTimeLocks,
     vestingTimeLocksLoading,
-  } = useVesting();
-
-  useInterval(() => {
-    getMinimumVestingTimeLock(address);
-  }, 5000);
-
-  useEffect(() => {
-    getVestingBalance(address);
-    getMinimumVestingTimeLock(address);
-    getVestingTimeLocks(address);
-  }, [address]);
+  } = useVestingTimeLocks(address);
 
   const isDepositsLimitReached = useTimeLockLimits(vestingTimeLocks);
+
+  const loadAll = () => {
+    getVestingBalance();
+    getMinimumVestingTimeLock();
+    getVestingTimeLocks();
+  };
 
   return (
     <div>
@@ -46,6 +38,7 @@ function VestingAccountTab () {
         timeLockBalance={vestingMinimumTimeLock}
         isLoadingTimeLocks={vestingTimeLocksLoading}
         isDepositsLimitReached={isDepositsLimitReached}
+        onSubmit={loadAll}
       />
 
       <TimeLocksTable
@@ -53,6 +46,7 @@ function VestingAccountTab () {
         contract="vesting"
         lockAmountData={vestingTimeLocks}
         isLoading={vestingTimeLocksLoading}
+        onSubmit={loadAll}
       />
     </div>
   );

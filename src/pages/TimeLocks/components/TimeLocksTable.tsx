@@ -9,8 +9,9 @@ import { fromWei } from 'web3-utils';
 import Button from 'components/Button';
 import Table from 'components/Table';
 
-import { useLockedAmount } from 'store/locked-amount/hooks';
 import { useTransaction } from 'store/transaction/hooks';
+
+import { purgeTimeLocks } from 'contracts/helpers/locked-amount-helper';
 
 import { TimeLockStatus } from 'constants/statuses';
 import { compareDates, formatDate, unixToDate } from 'utils/date';
@@ -37,6 +38,7 @@ interface Props {
   lockAmountData: TimeLockEntry[];
   address: string;
   isLoading?: boolean;
+  onSubmit: () => void;
 }
 
 function TimeLocksTable ({
@@ -44,10 +46,10 @@ function TimeLocksTable ({
   lockAmountData,
   address,
   isLoading,
+  onSubmit,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { purgeTimeLocks } = useLockedAmount();
 
   const statusToText: Record<TimeLockStatus, string> = {
     locked: t('LOCKED'),
@@ -66,7 +68,8 @@ function TimeLocksTable ({
             look="secondary"
             onClick={() => submitTransaction({
               successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
-              submitFn: () => purgeTimeLocks({ address, contractType: contract })
+              submitFn: () => purgeTimeLocks({ address, contractType: contract }),
+              onSuccess: () => onSubmit()
             })}
           >
             {t('PURGE_UNLOCKED')}

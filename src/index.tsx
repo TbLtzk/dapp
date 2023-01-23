@@ -47,17 +47,17 @@ const connectors: [MetaMask | WalletConnect | CoinbaseWallet | Network, Web3Reac
 ReactDOM.render(
   <Provider store={store}>
     <StyleProvider>
-      <Web3ReactProvider connectors={connectors}>
-        <Web3ContextProvider>
-          <LanguageProvider>
+      <LanguageProvider>
+        <Web3ReactProvider connectors={connectors}>
+          <Web3ContextProvider>
             <BrowserRouter>
               <Layout>
                 <Routes />
               </Layout>
             </BrowserRouter>
-          </LanguageProvider>
-        </Web3ContextProvider>
-      </Web3ReactProvider>
+          </Web3ContextProvider>
+        </Web3ReactProvider>
+      </LanguageProvider>
     </StyleProvider>
   </Provider>,
   document.getElementById('root')

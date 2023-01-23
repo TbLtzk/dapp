@@ -1,23 +1,33 @@
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import ContentLoader from 'react-content-loader';
 import { useTranslation } from 'react-i18next';
 
 import { Form, useForm } from '@q-dev/form-hooks';
-import { Select, Tip } from '@q-dev/q-ui-kit';
+import { COLORS, Tip } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
-import { Validator } from 'typings/validator';
+import styled, { useTheme } from 'styled-components';
 
 import Input from 'components/Input';
 
+import { getValidatorDelegatorShare } from 'contracts/helpers/validators-helper';
+
+import { captureError } from 'utils/errors';
 import { address, max, required } from 'utils/validators';
 
 interface Props {
   onChange: (form: Form<{ address: string; amount: string }>) => void;
-  validators: Validator[];
-  availableValidators: Validator[];
+  validators: string[];
   delegatedStake: string;
   maxAmount: string;
   addresses: string[];
 }
+
+const DelegationFormContainer = styled.form`
+  .delegation-form__inputs {
+    display: grid;
+    grid-gap: 15px;
+  }
+`;
 
 const duplicateAddress = (addresses: string[]) => (address: string) => {
   return {
@@ -26,15 +36,34 @@ const duplicateAddress = (addresses: string[]) => (address: string) => {
   };
 };
 
-const validator = (validators: Validator[]) => (val: string) => {
+const validator = (validators: string[]) => (val: string) => {
   return {
-    isValid: validators.some(({ address }) => address === val),
+    isValid: validators.some((address) => address === val),
     message: 'Not a validator'
   };
 };
 
-function DelegationForm ({ onChange, validators, availableValidators, delegatedStake, maxAmount, addresses }: Props) {
+async function loadDelegatorShare (
+  address: string,
+  setDelegatorShare: Dispatch<SetStateAction<number>>,
+  setIsLoaded: Dispatch<SetStateAction<boolean>>
+) {
+  setIsLoaded(false);
+  try {
+    const delegatorShare = await getValidatorDelegatorShare(address);
+    setDelegatorShare(delegatorShare);
+  } catch (e) {
+    setDelegatorShare(0);
+    captureError(e);
+  }
+  setIsLoaded(true);
+}
+
+function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addresses }: Props) {
   const { t } = useTranslation();
+  const { palette } = useTheme();
+  const [delegatorShare, setDelegatorShare] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const form = useForm({
     initialValues: { address: '', amount: '' },
@@ -48,33 +77,59 @@ function DelegationForm ({ onChange, validators, availableValidators, delegatedS
     onChange(form);
   }, [form.values, onChange]);
 
-  const options = availableValidators.map(({ address }) => ({ label: address, value: address }));
-  const chosenAddress = validators.find(({ address }) => address === form.values.address);
+  useEffect(() => {
+    if (validators.some((address) => address === form.values.address)) {
+      loadDelegatorShare(form.values.address, setDelegatorShare, setIsLoaded);
+    }
+  }, [form.values.address]);
+
+  const chosenAddress = validators.find(address => address === form.values.address);
 
   return (
-    <form
+    <DelegationFormContainer
       noValidate
-      className="delegation-form_container"
       onSubmit={(e) => e.preventDefault()}
     >
-      <div className="delegation-form_inputs">
-        <Select
+      <div className="delegation-form__inputs">
+        <Input
           {...form.fields.address}
-          combobox
           label={t('VALIDATOR_ADDRESS')}
           placeholder={t('ADDRESS')}
-          options={options}
-          style={{ marginBottom: '15px' }}
         />
         {chosenAddress !== undefined && (
-          <Tip compact style={{ marginBottom: '10px' }}>
-            <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(chosenAddress.delegatorsShare, '%')}`}</p>
-            <p className="text-md">
-              {`${t('DELEGATION_EFFICIENCY')} : ${formatAsset(chosenAddress.delegationEfficiency, '%')}`}
-            </p>
-            <p className="text-md">
-              {`${t('DELEGATED_STAKE')} : ${formatAsset(delegatedStake, 'Q')}`}
-            </p>
+          <Tip compact>
+            {isLoaded
+              ? <>
+                <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(delegatorShare, '%')}`}</p>
+                <p className="text-md">
+                  {`${t('DELEGATED_STAKE')} : ${formatAsset(delegatedStake, 'Q')}`}
+                </p>
+              </>
+              : <ContentLoader
+                speed={2}
+                width="100%"
+                height={40}
+                backgroundColor={palette === 'dark' ? COLORS.grey800 : COLORS.grey100}
+                foregroundColor={palette === 'dark' ? COLORS.grey600 : COLORS.grey200}
+              >
+                <rect
+                  x="0"
+                  y="0"
+                  rx="3"
+                  ry="3"
+                  width="250"
+                  height="18"
+                />
+                <rect
+                  x="0"
+                  y="22"
+                  rx="3"
+                  ry="3"
+                  width="250"
+                  height="18"
+                />
+              </ContentLoader>
+            }
           </Tip>
         )}
         <Input
@@ -85,7 +140,7 @@ function DelegationForm ({ onChange, validators, availableValidators, delegatedS
           max={maxAmount}
         />
       </div>
-    </form>
+    </DelegationFormContainer>
   );
 }
 

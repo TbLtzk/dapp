@@ -15,8 +15,8 @@ interface NetworkConfig {
   qBridgeUrl: string;
   docsUrl: string;
   constitutionUrl: string;
-  constitutionUpdatedAt: number;
   collaterals: Asset[];
+  gasBuffer: number;
   featureFlags: {
     aliases: boolean;
   };
@@ -47,9 +47,9 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.q.org',
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
-    constitutionUpdatedAt: 1657120401000,
     collaterals: ['QBTC'],
-    featureFlags: { aliases: false },
+    gasBuffer: 1.5,
+    featureFlags: { aliases: true },
   },
   testnet: {
     chainId: 35443,
@@ -63,9 +63,9 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.qtestnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
-    constitutionUpdatedAt: 1657120425000,
-    collaterals: ['QBTC', 'QUSDC', 'QDAI'],
-    featureFlags: { aliases: false },
+    collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
+    gasBuffer: 2,
+    featureFlags: { aliases: true },
   },
   devnet: {
     chainId: 35442,
@@ -73,14 +73,14 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     networkName: 'devnet',
     dAppUrl: 'http://63.34.190.209:8000',
     rpcUrl: 'http://63.34.190.209:8545',
-    indexerUrl: 'http://63.34.190.209:4000',
+    indexerUrl: 'http://54.73.188.73:4000',
     explorerUrl: 'http://54.73.188.73:8080',
     gnosisSafeUrl: 'http://63.34.190.209:8020',
     qBridgeUrl: 'http://63.34.190.209:8080',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'http://34.248.83.162:8999',
-    constitutionUpdatedAt: 1652719113000,
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
+    gasBuffer: 1.5,
     featureFlags: { aliases: true },
   },
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal, Tooltip } from '@q-dev/q-ui-kit';
@@ -13,6 +13,8 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { checkConfirmedDecision } from 'contracts/helpers/voting/slashing';
+
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { ObjectionStatus } from 'constants/slashing';
 
@@ -23,6 +25,7 @@ interface Props {
 function DecisionActions ({ proposal }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { address } = useUser();
   const {
     confirmDecision,
     recallDecision,
@@ -32,18 +35,29 @@ function DecisionActions ({ proposal }: Props) {
   const { isRootNode } = useRootNodes();
   const user = useUser();
 
+  const [hasConfirmed, setHasConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { objection, decision } = proposal.objEscrow;
+  const isDecisionEnded = decision.endDate.getTime() < Date.now() || objection.status === ObjectionStatus.EXECUTED;
+  const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
+  const canProposeDecision = decision.proposer !== user.address &&
+    (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
+    objection.status === ObjectionStatus.PENDING;
+
+  useEffect(() => {
+    checkConfirmedDecision({ proposal, address }).then(setHasConfirmed);
+    return () => setHasConfirmed(false);
+  }, []);
+
   const handleClose = () => {
     setModalOpen(false);
   };
 
-  const decision = proposal.objEscrow.decision;
-
-  const isDecisionEnded = decision.endDate.getTime() < Date.now();
-  const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
-  const canProposeDecision = decision.proposer !== user.address &&
-    (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
-    proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
+  const handleDecisionSubmit = () => {
+    handleClose();
+    setHasConfirmed(true);
+  };
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -73,13 +87,14 @@ function DecisionActions ({ proposal }: Props) {
             <Button
               compact
               look="secondary"
-              disabled={!isRootNode}
+              disabled={hasConfirmed || !isRootNode}
               onClick={() => submitTransaction({
                 successMessage: t('VOTE_TO_CONFIRM_DECISION_SUCCESS'),
+                onSuccess: () => setHasConfirmed(true),
                 submitFn: () => confirmDecision(proposal.id),
               })}
             >
-              {t('VOTE_TO_CONFIRM_DECISION')}
+              {hasConfirmed ? t('YOU_VOTED') : t('VOTE_TO_CONFIRM_DECISION')}
             </Button>
           )}
         >
@@ -131,7 +146,7 @@ function DecisionActions ({ proposal }: Props) {
         tip={t('PROPOSE_DECISION_MODAL_TIP')}
         onClose={handleClose}
       >
-        <ProposeDecisionForm proposal={proposal} onSubmit={handleClose} />
+        <ProposeDecisionForm proposal={proposal} onSubmit={handleDecisionSubmit} />
       </Modal>
     </div>
   );

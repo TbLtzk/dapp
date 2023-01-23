@@ -31,7 +31,7 @@ function prepareSystemDebtAuctionInfo (
   completedInfo.bidder = info.bidder;
   completedInfo.endTime = String(dateToUnix(info.endTime));
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : '0';
-  completedInfo.status = (status);
+  completedInfo.status = status;
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.highestBid = fromWei(info.highestBid);
   completedInfo.lot = fromWei(info.lot);

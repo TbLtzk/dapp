@@ -1,17 +1,17 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import orderBy from 'lodash/orderBy';
-import round from 'lodash/round';
-import sumBy from 'lodash/sumBy';
+import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { orderBy, round, sumBy } from 'lodash';
 import { fromWei, toWei } from 'web3-utils';
 
-import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTimeLocks, setTotalStake, setWithdrawalInfo } from './reducer';
+import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTotalStake, setWithdrawalInfo } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { getState, getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
+import { getAliasMap } from 'contracts/helpers/aliases-helper';
 
 import { dateToUnix } from 'utils/date';
 import { captureError } from 'utils/errors';
@@ -30,19 +30,20 @@ export function useRootNodes () {
   const rootMembersLoading = useAppSelector(({ rootNodes }) => rootNodes.isMembersLoading);
 
   const rootMinimumTimeLock = useAppSelector(({ rootNodes }) => rootNodes.minimumTimeLock);
-  const rootTimeLocks = useAppSelector(({ rootNodes }) => rootNodes.timeLocks);
-  const rootTimeLocksLoading = useAppSelector(({ rootNodes }) => rootNodes.timeLocksLoading);
 
   async function commitRootNodeStake (amount: string) {
     const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
     const receipt = await contract.commitStake({ from: userAddress, value: toWei(amount) });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }
@@ -52,11 +53,14 @@ export function useRootNodes () {
     const contract = await getRootNodesInstance();
     const receipt = await contract.announceWithdrawal(toWei(amount), { from: userAddress });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }
@@ -66,11 +70,14 @@ export function useRootNodes () {
     const contract = await getRootNodesInstance();
     const receipt = await contract.withdraw(toWei(amount), userAddress, { from: userAddress });
 
-    loadWalletBalance();
-    getRootNodeStakes(userAddress);
-    getRootWithdrawalInfo(userAddress);
-    getMinimumRootTimeLock(userAddress);
-    getRootMembers();
+    receipt.promiEvent
+      .once('receipt', () => {
+        loadWalletBalance();
+        getRootNodeStakes(userAddress);
+        getRootWithdrawalInfo(userAddress);
+        getMinimumRootTimeLock(userAddress);
+        getRootMembers();
+      });
 
     return receipt;
   }
@@ -78,8 +85,15 @@ export function useRootNodes () {
   async function getRootMembers () {
     try {
       const contract = await getRootNodesInstance();
-      const members = await contract.getMembers();
-      const stakes = await contract.getStakes();
+      const [members, stakes] = await Promise.all([
+        contract.getMembers(),
+        contract.getStakes()
+      ]);
+      const aliasesMap = await getAliasMap(
+        members,
+        getState().user.chainId,
+        AliasPurpose.ROOT_NODE_OPERATION
+      );
 
       const membersWithAmount = members.map((address) => {
         const memberWithStake = stakes.find(({ root }) => root === address);
@@ -92,6 +106,7 @@ export function useRootNodes () {
         address,
         stakeAmount,
         share: totalStake ? round(Number(stakeAmount) / totalStake * 100, 2) : 0,
+        alias: aliasesMap[address],
       }));
 
       dispatch(setMembers(orderBy(membersWithShare, 'stakeAmount', 'desc')));
@@ -141,26 +156,14 @@ export function useRootNodes () {
     }
   }
 
-  async function getRootTimeLocks (address: string) {
-    try {
-      const contract = await getRootNodesInstance();
-      const timeLocks = await contract.getTimeLocks(address);
-      dispatch(setTimeLocks(timeLocks));
-    } catch (error) {
-      captureError(error);
-    }
-  }
-
   return {
     withdrawalInfo,
     isRootNode,
     rootNodeStake,
     rootMinimumTimeLock,
-    rootTimeLocks,
     rootTotalStake,
     rootMembers,
     rootMembersLoading,
-    rootTimeLocksLoading,
 
     commitRootNodeStake: useCallback(commitRootNodeStake, []),
     announceRootStakeWithdrawal: useCallback(announceRootStakeWithdrawal, []),
@@ -169,7 +172,6 @@ export function useRootNodes () {
     getRootNodeStakes: useCallback(getRootNodeStakes, []),
     getRootWithdrawalInfo: useCallback(getRootWithdrawalInfo, []),
     getMinimumRootTimeLock: useCallback(getMinimumRootTimeLock, []),
-    getRootTimeLocks: useCallback(getRootTimeLocks, []),
     checkRootNodeMembership: useCallback(checkRootNodeMembership, []),
   };
 }

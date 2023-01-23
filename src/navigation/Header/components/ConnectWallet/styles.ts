@@ -22,14 +22,14 @@ export const StyledConnectWalletModal = styled.div`
     }
   }
 
-  .connect_buttons {
+  .connect-buttons {
     display: grid;
     gap: 8px;
-   
-    img {
-      width: 23px;
-      height: auto;
-    }
+  }
+
+  .connect-buttons__icon {
+    width: 24px;
+    height: auto;
   }
 
   .connect {

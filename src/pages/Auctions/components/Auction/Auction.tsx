@@ -54,12 +54,14 @@ function Auction ({ match, }: RouteComponentProps<{
 
   useEffect(() => {
     loadOneAuction();
+
     return () => {
       setAuction(null);
       setAuctionLoading(true);
       setAuctionError(null);
     };
   }, []);
+
   if (auctionLoading || auctionError || !auction) {
     return (
       <AuctionContainer>

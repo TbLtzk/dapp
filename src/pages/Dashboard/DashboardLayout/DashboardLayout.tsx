@@ -9,7 +9,7 @@ import PageLayout from 'components/PageLayout';
 
 import BlockHeight from './components/BlockHeight';
 import ConstitutionBlock from './components/ConstitutionBlock';
-import RootNodesChart from './components/RootNodesChart';
+import RootNodesBlock from './components/RootNodesBlock';
 import SavingBorrowingBlock from './components/SavingBorrowingBlock';
 import TokenomicsBlock from './components/TokenomicsBlock';
 import TotalRootNodes from './components/TotalRootNodes';
@@ -81,7 +81,7 @@ function DashboardLayout () {
         <TotalValidators />
         <TokenomicsBlock />
         <SavingBorrowingBlock />
-        <RootNodesChart />
+        <RootNodesBlock />
         <ValidatorsChart />
       </StyledWrapper>
     </PageLayout>

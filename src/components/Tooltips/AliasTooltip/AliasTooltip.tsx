@@ -9,7 +9,7 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { AliasIcon, TooltipContent } from './styles';
 
-function AliasTooltip ({ alias = '' }) {
+function AliasTooltip ({ alias = '', isRootNode = false }) {
   const { featureFlags } = useNetworkConfig();
   const { t } = useTranslation();
 
@@ -17,7 +17,7 @@ function AliasTooltip ({ alias = '' }) {
     ? (
       <Tooltip trigger={<AliasIcon>A</AliasIcon>}>
         <TooltipContent>
-          <span>{t('THIS_VALIDATOR_USES_ALIAS')}</span>
+          <span>{isRootNode ? t('THIS_ROOT_NODE_USES_ALIAS') : t('THIS_VALIDATOR_USES_ALIAS')}</span>
           <br />
           <div className="tooltip-address">
             <ExplorerAddress
@@ -26,7 +26,7 @@ function AliasTooltip ({ alias = '' }) {
               address={alias}
             />
           </div>
-          <span>{t('FOR_BLOCK_SEALING')} </span>
+          <span>{isRootNode ? t('FOR_ROOT_NODE_OPERATION') : t('FOR_BLOCK_SEALING')}</span>
         </TooltipContent>
       </Tooltip>
     )

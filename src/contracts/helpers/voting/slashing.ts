@@ -1,4 +1,6 @@
+import { RootNodeSlashingEscrowInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodeSlashingEscrowInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
+import { ValidatorSlashingEscrowInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorSlashingEscrowInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
 import { getFixedPercentage, transformToPercentage } from '@q-dev/utils';
 import flatten from 'lodash/flatten';
@@ -91,14 +93,16 @@ export async function getSlashingEscrow (
   id: string,
   contractType: ProposalContractType
 ): Promise<SlashingProposal['objEscrow']> {
-  const contract = contractType === 'validatorsSlashingVoting'
-    ? await getValidatorSlashingEscrowInstance()
-    : await getRootNodeSlashingEscrowInstance();
-
-  const status = await contract.instance.methods.getStatus(id).call();
-  const escrowArbitrationInfo = await contract.arbitrationInfos(id);
-  const [confirmations, requiredConfirmations, percentage] =
-    await contract.instance.methods.getDecisionStats(id).call();
+  const contract = await getEscrowInstance(contractType);
+  const [
+    status,
+    escrowArbitrationInfo,
+    [confirmations, requiredConfirmations, percentage]
+  ] = await Promise.all([
+    contract.instance.methods.getStatus(id).call(),
+    contract.arbitrationInfos(id),
+    contract.instance.methods.getDecisionStats(id).call(),
+  ]);
 
   return {
     objection: {
@@ -121,4 +125,20 @@ export async function getSlashingEscrow (
       currentConfirmationPercentage: transformToPercentage(percentage),
     }
   };
+}
+
+export async function checkConfirmedDecision ({ proposal, address }: {
+  proposal: SlashingProposal;
+  address: string;
+}): Promise<boolean> {
+  const contract = await getEscrowInstance(proposal.contract);
+  return contract.instance.methods
+    .hasAlreadyConfirmedDecision(proposal.id, address).call();
+}
+
+function getEscrowInstance (contractType: ProposalContractType):
+Promise<RootNodeSlashingEscrowInstance | ValidatorSlashingEscrowInstance> {
+  return contractType === 'validatorsSlashingVoting'
+    ? getValidatorSlashingEscrowInstance()
+    : getRootNodeSlashingEscrowInstance();
 }

@@ -35,10 +35,12 @@ function ProvideInfoStep () {
       <Input
         {...form.fields.vaultId}
         label={t('PROVIDE_THE_VAULT_ID_TO_BE_LIQUIDATED')}
-        placeholder="Vault ID"
+        type="number"
+        placeholder={t('VAULT_ID')}
       />
       <Input
         {...form.fields.bid}
+        type="number"
         label={t('PROVIDE_YOUR_INITIAL_BID_IN_QUSD')}
         placeholder={t('BID')}
       />

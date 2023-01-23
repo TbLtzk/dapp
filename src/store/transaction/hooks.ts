@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { t } from 'i18next';
 import uniqueId from 'lodash/uniqueId';
-import { TransactionReceipt } from 'web3-eth';
 
 import { PendingTransaction, setPendingTransactions } from './reducer';
 
@@ -24,7 +24,7 @@ export function useTransaction () {
     onSuccess = () => {},
     onError = () => {},
   }: {
-    submitFn: () => Promise<TransactionReceipt>;
+    submitFn: () => Promise<SubmitTransactionResponse | void | undefined>;
     successMessage?: string;
     hideLoading?: boolean;
     onSuccess?: () => void;
@@ -40,10 +40,19 @@ export function useTransaction () {
     dispatch(setPendingTransactions([...pendingTransactions, transaction]));
 
     try {
-      const receipt = await submitFn();
+      const submitResponse = await submitFn();
+
+      if (submitResponse?.promiEvent) {
+        submitResponse.promiEvent
+          .once('transactionHash', (txHash: string) => {
+            eventBus.emit(getTxEventName(transaction.id, 'hash'), txHash);
+          });
+
+        await submitResponse.promiEvent;
+      }
+
       onSuccess();
 
-      eventBus.emit(getTxEventName(transaction.id, 'hash'), receipt.transactionHash);
       eventBus.emit(getTxEventName(transaction.id, 'success'), transaction.title);
     } catch (error) {
       captureError(error);
@@ -76,6 +85,10 @@ function getErrorMessage (err: unknown): string {
   }
 
   if (!error.message?.includes('Internal JSON-RPC error')) {
+    if (error.message?.includes('Transaction has been reverted by the EVM')) {
+      return t('ERROR_TRANSACTION_REVERTED_BY_EVM');
+    }
+
     return error.message || t('ERROR_UNKNOWN');
   }
 

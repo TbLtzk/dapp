@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 
-import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from '@q-dev/utils';
 import parametersJson from 'json/parameters.json';
 import { ParameterValue } from 'typings/parameters';
@@ -16,7 +15,6 @@ import { formatDuration } from 'utils/date';
 const parametersDictionary = parametersJson as {
   [key: string]: {
     type: string;
-    name: string;
   };
 };
 
@@ -27,6 +25,17 @@ interface Props {
 
 function ParametersTable ({ parameters, simplified }: Props) {
   const { t } = useTranslation();
+
+  const renderKey = (item: ParameterValue) => {
+    return simplified
+      ? t(item.key)
+      : (
+        <div>
+          <span>{item.key}</span>
+          <CopyToClipboard value={item.key} />
+        </div>
+      );
+  };
 
   const renderValue = (item: ParameterValue) => {
     const type = parametersDictionary[item.key]?.type;
@@ -75,17 +84,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
         <tbody>
           {parameters.map((item, index) => (
             <tr key={item.key + index}>
-              <td className="parameter-key-cell">
-                <span className="font-semibold">
-                  {(simplified && parametersDictionary[item.key]?.name) || item.key}
-                </span>
-                {!simplified && <CopyToClipboard className="parameter-key-copy" value={item.key} />}
-                {item.verifiedName && (
-                  <Tooltip trigger={<Icon name="check-circle" className="color-success text-lg" />}>
-                    {t('VERIFIED')} <span className="font-semibold">{item.verifiedName}</span>
-                  </Tooltip>
-                )}
-              </td>
+              <td>{renderKey(item)}</td>
               <td>{renderValue(item)}</td>
               {!simplified && <td>{item.type.toUpperCase()}</td>}
             </tr>

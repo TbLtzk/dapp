@@ -12,7 +12,7 @@ function TxHashLink ({ hash }:Props) {
 
   return (
     <a
-      style={{ marginTop: '10px' }}
+      style={{ marginTop: '10px', display: 'block' }}
       href={`${explorerUrl}/tx/${hash}`}
       target="_blank"
       className="text-md font-light color-secondary"

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
 import Table, { TableColumn } from 'components/Table';
+import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
 import DashboardLink from '../components/DashboardLink';
 
@@ -32,13 +33,24 @@ function RootNodesMonitoring () {
       headerStyle: () => ({ minWidth: '180px' }),
       dataField: 'address',
       text: t('ROOT_NODE_ADDRESS'),
-      filterValue: cell => cell.props.address,
+      formatter: (cell, row) => (
+        <div style={{ display: 'flex' }}>
+          <ExplorerAddress
+            short
+            iconed
+            semibold
+            address={cell}
+          />
+          <AliasTooltip isRootNode alias={row.alias} />
+        </div>
+      ),
     },
     {
       headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
       dataField: 'amount',
       text: t('STAKED_AMOUNT'),
       sort: true,
+      formatter: (cell) => formatAsset(cell, 'Q'),
     },
     {
       headerStyle: () => ({ minWidth: '190px' }),
@@ -61,17 +73,14 @@ function RootNodesMonitoring () {
           columns={columns}
           loading={rootMembersLoading}
           emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
-          table={rootMembers.map((rootNode, i) => ({
-            id: i,
-            address: <ExplorerAddress
-              short
-              iconed
-              semibold
-              address={rootNode.address}
-            />,
-            amount: formatAsset(rootNode.stakeAmount, 'Q'),
+          keyField="address"
+          searchFormatted={false}
+          table={rootMembers.map((rootNode) => ({
+            address: rootNode.address,
+            amount: rootNode.stakeAmount,
             offChain: 'n/a',
             onChain: 'n/a',
+            alias: rootNode.alias
           }))}
         />
       </PageLayout>

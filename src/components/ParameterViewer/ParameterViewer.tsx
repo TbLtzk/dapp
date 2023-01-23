@@ -33,7 +33,7 @@ function ParameterViewer ({
   return (
     <ParameterViewerContainer $block={block} {...rest}>
       <p className={block ? 'text-lg font-semibold' : 'text-md'}>
-        Parameter {index + 1}
+        {t('PARAMETER_INDEX', { index: index + 1 })}
       </p>
 
       {parameter.isNew && (

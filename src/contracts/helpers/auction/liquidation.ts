@@ -1,5 +1,4 @@
 import { AuctionStatus, LiquidationAuctionInfo as SdkLiquidationAuctionInfo } from '@q-dev/q-js-sdk';
-import { toBigNumber } from '@q-dev/utils';
 import {
   AuctionInfos,
   CreateLiquidationAuction,
@@ -9,12 +8,14 @@ import {
   LiquidationAuctionInfo,
   LiquidationCompletedInfo,
 } from 'typings/auctions';
+import { Asset } from 'typings/defi';
 import { fromWei, toWei } from 'web3-utils';
 
 import { getAuctionStatusState } from './index';
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatusTransformation } from '.';
 
-import { getBorrowingCoreInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
+import { getBorrowingCoreInstance, getBorrowingInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
+import { convertFromBigAmount } from 'contracts/helpers/borrow-assets-helper';
 
 import { dateToUnix } from 'utils/date';
 
@@ -27,7 +28,11 @@ async function prepareLiquidationAuctionInfo (
   if (!auctionEvent) return completedInfo;
 
   const borrowingCoreInstance = await getBorrowingCoreInstance();
+
   const vault = await borrowingCoreInstance.userVaults(auctionEvent.vaultOwner, auctionEvent.vaultId);
+  const borrowingInstance = await getBorrowingInstance(vault.colKey as Asset);
+
+  const decimals = await borrowingInstance.methods.decimals().call();
   const status = getStatusTransformation(info.status);
 
   completedInfo.lotAsset = 'QUSD';
@@ -41,9 +46,9 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.endTime = info.endTime.toString();
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
-  completedInfo.colAsset = toBigNumber(vault.colAsset).dividedBy(1e8).toFixed();
+  completedInfo.colAsset = convertFromBigAmount(decimals)(vault.colAsset);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
-  completedInfo.status = (status);
+  completedInfo.status = status;
 
   completedInfo.isBidTime = Number(info.endTime) >= dateToUnix();
   completedInfo.isAuctionEnded = (info.status as AuctionStatus) === '2';

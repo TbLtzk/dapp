@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { Icon, media, Spinner } from '@q-dev/q-ui-kit';
@@ -79,6 +79,9 @@ const ValidatorContext = createContext({
 
 function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const { address } = match.params;
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const {
@@ -87,13 +90,14 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
     loading: validatorLoading,
     error: validatorError,
     refetchValidator,
-    updateCompoundRate
+    updateCompoundRate,
+    updateCompoundRateLoading,
   } = useFetchValidatorData(address);
 
   if (validatorLoading && !validator.address) {
     return (
       <CenteredContainer>
-        <Spinner size={100} />
+        <Spinner size={100} thickness={4} />
       </CenteredContainer>
     );
   }
@@ -110,7 +114,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
 
   return (
     <ValidatorContext.Provider value={{ validator, refetchValidator }}>
-      <Link to={RoutePaths.stakingValidators}>
+      <Link to={params.get('from') || RoutePaths.stakingValidators}>
         <Button
           alwaysEnabled
           compact
@@ -118,7 +122,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
           style={{ marginBottom: '24px' }}
         >
           <Icon name="arrow-left" />
-          <span>{t('GO_TO_VALIDATOR_STAKING')}</span>
+          <span>{t('STAKING')}</span>
         </Button>
       </Link>
       <PageLayout title={`${t('VALIDATOR')} ${trimString(address)}`}>
@@ -129,8 +133,10 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
             <DelegationInfo />
             <RewardStats
               validator={validator}
+              buttonLoading={updateCompoundRateLoading}
               onButtonClick={() => submitTransaction({
                 successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
+                hideLoading: true,
                 submitFn: updateCompoundRate
               })}
             />

@@ -1,4 +1,4 @@
-import { AddressWithBalance, TimeLockEntry, ValidatorsWithdrawalInfo } from '@q-dev/q-js-sdk';
+import { AddressWithBalance, ValidatorsWithdrawalInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Validator, ValidatorMonitoring } from 'typings/validator';
 
@@ -20,6 +20,8 @@ interface ValidatorsState {
   validators: ValidatorWithAlias[];
   validatorsLoading: boolean;
 
+  validatorAddressesLongList: string[];
+
   validatorStats: Validator[];
   validatorStatsLoading: boolean;
 
@@ -27,9 +29,6 @@ interface ValidatorsState {
   validatorsMonitoringLoading: boolean;
 
   withdrawalInfo: ValidatorsWithdrawalInfo;
-  timeLocks: TimeLockEntry[];
-  timeLocksLoading: boolean;
-  minimumTimeLock: string;
 }
 
 const initialState: ValidatorsState = {
@@ -52,15 +51,13 @@ const initialState: ValidatorsState = {
   validators: [],
   validatorsLoading: true,
 
+  validatorAddressesLongList: [],
+
   validatorStats: [],
   validatorStatsLoading: true,
 
   validatorsMonitoring: [],
   validatorsMonitoringLoading: true,
-
-  timeLocks: [],
-  timeLocksLoading: true,
-  minimumTimeLock: '0',
 };
 
 const validatorsSlice = createSlice({
@@ -115,13 +112,8 @@ const validatorsSlice = createSlice({
       state.validatorsMonitoringLoading = false;
     },
 
-    setTimeLocks: (state, { payload }: PayloadAction<TimeLockEntry[]>) => {
-      state.timeLocks = payload;
-      state.timeLocksLoading = false;
-    },
-
-    setMinimumTimeLock: (state, { payload }: PayloadAction<string>) => {
-      state.minimumTimeLock = payload;
+    setValidatorAddressesLongList: (state, { payload }: PayloadAction<string[]>) => {
+      state.validatorAddressesLongList = payload;
     }
   }
 });
@@ -138,7 +130,6 @@ export const {
   setValidators,
   setValidatorStats,
   setValidatorsMonitoring,
-  setTimeLocks,
-  setMinimumTimeLock,
+  setValidatorAddressesLongList,
 } = validatorsSlice.actions;
 export default validatorsSlice.reducer;

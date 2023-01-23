@@ -8,10 +8,10 @@ import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 
-import { useTimeLocksAddress } from '../TimeLocks';
-
 import { useTransaction } from 'store/transaction/hooks';
-import { useVesting } from 'store/vesting/hooks';
+import { useUser } from 'store/user/hooks';
+
+import { withdrawVesting } from 'contracts/helpers/vesting-helper';
 
 import { amount, required } from 'utils/validators';
 
@@ -25,15 +25,20 @@ const StyledForm = styled.form`
   }
 `;
 
-function WithdrawForm ({ onSubmit }: { onSubmit: () => void }) {
+interface Props {
+  timeLockBalance: string;
+  balance: string;
+  onSubmit: () => void;
+}
+
+function WithdrawForm ({ onSubmit, balance, timeLockBalance }: Props) {
   const { t } = useTranslation();
-  const { address } = useTimeLocksAddress();
+  const { address } = useUser();
 
   const { submitTransaction } = useTransaction();
-  const { vestingBalance, vestingMinimumTimeLock, withdrawVesting } = useVesting();
 
-  const maxAmont = toBigNumber(vestingBalance)
-    .minus(vestingMinimumTimeLock)
+  const maxAmont = toBigNumber(balance)
+    .minus(timeLockBalance)
     .toString();
 
   const form = useForm({
@@ -42,7 +47,7 @@ function WithdrawForm ({ onSubmit }: { onSubmit: () => void }) {
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('WITHDRAW_FROM_VESTING_SUCCESS'),
-        submitFn: () => withdrawVesting(amount),
+        submitFn: () => withdrawVesting(address, amount),
         onSuccess: () => onSubmit()
       });
     }

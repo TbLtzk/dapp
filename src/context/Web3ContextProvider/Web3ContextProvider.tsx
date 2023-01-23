@@ -1,5 +1,6 @@
 import { createContext, FC, ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
 import { useLocalStorage } from '@q-dev/react-hooks';
 import { useWeb3React } from '@web3-react/core';
 import { getWallet, WalletType } from 'connectors';
@@ -146,7 +147,8 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         const chainId = await getChainId(provider);
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
-        const isHttpProvider = !chainIdToNetworkMap[chainId] || !accounts.length || !selectedWallet;
+        const network = chainIdToNetworkMap[chainId];
+        const isHttpProvider = !network || !accounts.length || !selectedWallet;
         window.web3 = isHttpProvider
           ? httpProvider
           : web3;
@@ -155,6 +157,9 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
           setAddress(accounts[0]);
           await connectWallet(selectedWallet, false);
           setSelectedChainId(Number(chainId));
+        }
+        if (network) {
+          BaseContractInstance.DEFAULT_GASBUFFER = networkConfigsMap[network].gasBuffer;
         }
         setChainId(isHttpProvider ? selectedChainId : Number(chainId));
       }

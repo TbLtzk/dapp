@@ -12,9 +12,10 @@ import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 interface Props {
   onButtonClick: () => void;
   validator: Validator;
+  buttonLoading: boolean;
 }
 
-function RewardStats ({ validator, onButtonClick }: Props) {
+function RewardStats ({ validator, onButtonClick, buttonLoading }: Props) {
   const { t, i18n } = useTranslation();
 
   const rewardStatsArray = [
@@ -45,7 +46,11 @@ function RewardStats ({ validator, onButtonClick }: Props) {
     <StyledWrapper gridArea="reward-stats" className="block">
       <div className="block__header">
         <h3 className="text-h3">{t('REWARD_STATS')}</h3>
-        <Button compact onClick={onButtonClick}>
+        <Button
+          compact
+          loading={buttonLoading}
+          onClick={onButtonClick}
+        >
           {t('ALLOCATE_REWARDS')}
         </Button>
       </div>

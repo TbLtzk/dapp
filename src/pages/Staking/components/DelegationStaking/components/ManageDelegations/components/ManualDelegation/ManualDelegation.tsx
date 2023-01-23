@@ -29,7 +29,7 @@ function ManageDelegations () {
     loadDelegationList,
     loadDelegationStakeInfo
   } = useQVault();
-  const { validatorStats } = useValidators();
+  const { validatorAddressesLongList, loadValidatorAddressesLongList } = useValidators();
 
   const formArray = useFormArray({
     minCount: 1,
@@ -49,6 +49,7 @@ function ManageDelegations () {
   useEffect(() => {
     loadDelegationList();
     loadDelegationStakeInfo();
+    loadValidatorAddressesLongList();
   }, []);
 
   const [
@@ -72,12 +73,6 @@ function ManageDelegations () {
     ];
   }, [formArray.forms, delegationStakeInfo, delegationList]);
 
-  const availableValidators = useMemo(() => {
-    return validatorStats.filter(({ address }) =>
-      !formArray.forms.find(i => i?.values?.address === address)
-    );
-  }, [formArray.forms, validatorStats]);
-
   function getDelegatedStake (address: string) {
     const delegate = delegationList.find(i => i.validator === address);
     return delegate?.actualStake ?? '0';
@@ -95,11 +90,11 @@ function ManageDelegations () {
         <div className="delegation-info_container">
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('CURRENT_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('AVAILABLE_TO_DELEGATE')}</p>
-            <p className="text-xl font-semibold">
+            <p className="text-xl font-semibold ellipsis">
               {
                 toBigNumber(availableAmountToDelegate).isNegative()
                   ? '0 Q'
@@ -109,7 +104,7 @@ function ManageDelegations () {
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('NEW_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold">{formatAsset(newDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(newDelegatedStake, 'Q')}</p>
           </div>
         </div>
 
@@ -121,8 +116,7 @@ function ManageDelegations () {
             onAction={() => formArray.removeForm(form.id)}
           >
             <DelegationForm
-              validators={validatorStats}
-              availableValidators={availableValidators}
+              validators={validatorAddressesLongList}
               delegatedStake={getDelegatedStake(form?.values?.address)}
               maxAmount={getMaxAmountFromForm(form)}
               addresses={

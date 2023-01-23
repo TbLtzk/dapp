@@ -3,33 +3,32 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Spinner } from '@q-dev/q-ui-kit';
-import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import AddressIcon from 'components/Custom/AddressIcon';
-import DonutChart from 'components/DonutChart';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
+
+import RootNodesList from './RootNodesList';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 const StyledWrapper = styled.div`
   grid-area: root;
 
-  .root-nodes__header {
+  .root-nodes-block__header {
     margin-right: -8px;
   }
 
-  .root-nodes__loading-wrp {
+  .root-nodes-block__loading-wrp {
     display: grid;
     place-content: center;
     padding: 40px;
   }
 `;
 
-function RootNodesChart () {
+function RootNodesBlock () {
   const { t } = useTranslation();
-  const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
+  const { rootMembersLoading, getRootMembers } = useRootNodes();
 
   useEffect(() => {
     getRootMembers();
@@ -37,9 +36,9 @@ function RootNodesChart () {
 
   return (
     <StyledWrapper className="block">
-      <div className="root-nodes__header block__header">
+      <div className="root-nodes-block__header block__header">
         <h3 className="text-h3">
-          <span>{t('ROOT_NODE_STAKING')}</span>
+          <span>{t('ROOT_NODE_LIST')}</span>
           <InfoTooltip topic="root-node-panel" />
         </h3>
 
@@ -58,25 +57,15 @@ function RootNodesChart () {
       <div className="block__content">
         {rootMembersLoading
           ? (
-            <div className="root-nodes__loading-wrp">
+            <div className="root-nodes-block__loading-wrp">
               <Spinner size={96} thickness={4} />
             </div>
           )
-          : (
-            <DonutChart
-              totalLabel={t('TOTAL_STAKE')}
-              formatValue={(val) => `${formatNumber(val, 2)} Q`}
-              options={rootMembers.map((item) => ({
-                label: item.address,
-                value: Number(item.stakeAmount),
-                icon: <AddressIcon address={item.address} />,
-                isAddress: true
-              }))}
-            />
-          )}
+          : <RootNodesList />
+        }
       </div>
     </StyledWrapper>
   );
 }
 
-export default RootNodesChart;
+export default RootNodesBlock;

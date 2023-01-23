@@ -32,6 +32,7 @@ function Proposal ({ match }: RouteComponentProps<{
   useInterval(loadProposal, 60_000);
   useEffect(() => {
     if (!pendingTransactions.length) {
+      setProposal(null);
       loadProposal();
     }
   }, [pendingTransactions.length]);

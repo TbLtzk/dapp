@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { formatNumber } from '@q-dev/utils';
+import BigNumber from 'bignumber.js';
 import styled from 'styled-components';
 import { Asset, VaultWithId } from 'typings/defi';
 
@@ -44,9 +45,14 @@ function RepayForm ({ vault }: {vault: VaultWithId}) {
   const { borrowVault, allowanceRepay, repayBorrowing, approveBorrowing } = useBorrowAssets();
   const { borrowingDetails } = borrowVault;
 
+  const maxRepayAmount = BigNumber.min(
+    borrowingDetails.availableRepay,
+    borrowingDetails.outstandingDebt
+  ).toString();
+
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(borrowingDetails?.availableRepay)] },
+    validators: { amount: [required, amount(maxRepayAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('REPAY_BORROWED_ASSET_SUCCESS'),
@@ -71,7 +77,7 @@ function RepayForm ({ vault }: {vault: VaultWithId}) {
         type="number"
         label={t('AMOUNT_TO_REPAY')}
         prefix={borrowingDetails.borrowingAsset}
-        max={borrowingDetails.availableRepay}
+        max={maxRepayAmount}
         labelTip={t('DEBT_AMOUNT', { amount: formatNumber(borrowingDetails.outstandingDebt) })}
         placeholder="0.00"
       />

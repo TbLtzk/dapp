@@ -1,13 +1,16 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { ProposalStatus } from '@q-dev/q-js-sdk';
+import { ProposalStatus, SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import axios from 'axios';
 import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType, Proposal, ProposalType, VotingType } from 'typings/proposals';
-import { TransactionReceipt } from 'web3-eth';
 
-import { setBaseVotingWeightInfo, setConstitutionHash, setMinimalActiveBlock, setProposals } from './reducer';
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
+import { setBaseVotingWeightInfo, setConstitutionHash, setConstitutionUpdateDate, setMinimalActiveBlock, setProposals } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
@@ -47,10 +50,12 @@ function isProposalActive (item: ProposalEvent, minBlock: number) {
 }
 
 export function useBaseVotingWeightInfo () {
+  const { constitutionUrl } = useNetworkConfig();
   const dispatch = useDispatch();
 
   const newParameter = useAppSelector(({ proposals }) => proposals.newParameter);
   const constitutionHash = useAppSelector(({ proposals }) => proposals.constitutionHash);
+  const constitutionUpdateDate = useAppSelector(({ proposals }) => proposals.constitutionUpdateDate);
   const baseVotingWeightInfo = useAppSelector(({ proposals }) => proposals.baseVotingWeightInfo);
 
   async function getConstitutionHash () {
@@ -58,6 +63,21 @@ export function useBaseVotingWeightInfo () {
       const contract = await getConstitutionVotingInstance();
       const hash = await contract.constitutionHash();
       dispatch(setConstitutionHash(hash));
+    } catch (error) {
+      captureError(error);
+    }
+  }
+
+  async function getConstitutionUpdateDate () {
+    try {
+      const contract = await getConstitutionVotingInstance();
+      const constitutionCaller = axios.create({ baseURL: constitutionUrl });
+      const [constitutionsHash, constitutionsRes] = await Promise.all([
+        await contract.constitutionHash(),
+        constitutionCaller.get('/constitution/list')
+      ]);
+      const constitution = constitutionsRes.data.find(({ hash }: { hash: string }) => constitutionsHash === `0x${hash}`);
+      dispatch(setConstitutionUpdateDate(constitution.time * 1000));
     } catch (error) {
       captureError(error);
     }
@@ -79,11 +99,14 @@ export function useBaseVotingWeightInfo () {
     baseVotingWeightInfo,
 
     getConstitutionHash,
-    getBaseVotingWeightInfo
+    getBaseVotingWeightInfo,
+    getConstitutionUpdateDate,
+    constitutionUpdateDate,
   };
 }
 
 export function useProposals () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { loadDelegationInfo, loadLockInfo } = useQVault();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
@@ -133,11 +156,14 @@ export function useProposals () {
     const userAddress = getUserAddress();
     const receipt = await createProposal(form, userAddress);
 
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
+    receipt.promiEvent
+      .once('receipt', () => {
+        getBaseVotingWeightInfo();
+        loadDelegationInfo(userAddress);
 
-    const proposalType = getProposalTypeFromFormType(form.type);
-    getProposals(proposalType);
+        const proposalType = getProposalTypeFromFormType(form.type);
+        getProposals(proposalType);
+      });
 
     return receipt;
   }
@@ -150,16 +176,21 @@ export function useProposals () {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt = {} as TransactionReceipt;
+    let receipt: SubmitTransactionResponse | undefined;
+    let methodError: string | undefined;
     switch (type) {
       case 'approve':
         if ('aprove' in contract) {
           receipt = await contract.aprove(proposal.id, { from: userAddress });
+        } else {
+          methodError = 'aprove';
         }
         break;
       case 'constitution':
         if ('veto' in contract) {
           receipt = await contract.veto(proposal.id, { from: userAddress });
+        } else {
+          methodError = 'veto';
         }
         break;
       case 'basic':
@@ -167,31 +198,51 @@ export function useProposals () {
           receipt = isVotedFor
             ? await contract.voteFor(proposal.id, { from: userAddress })
             : await contract.voteAgainst(proposal.id, { from: userAddress });
+        } else {
+          methodError = isVotedFor ? 'voteFor' : 'voteAgainst';
         }
         break;
     }
 
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
-    loadLockInfo(userAddress);
+    if (methodError && !receipt) {
+      throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: methodError }));
+    }
 
-    return receipt;
+    receipt?.promiEvent
+      .once('receipt', () => {
+        getBaseVotingWeightInfo();
+        loadDelegationInfo(userAddress);
+        loadLockInfo(userAddress);
+      });
+
+    return receipt as SubmitTransactionResponse;
   }
 
   async function executeProposal (proposal: Proposal) {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt = {} as TransactionReceipt;
+    let receipt: SubmitTransactionResponse | undefined;
     const promiseStatus = await contract.getStatus(proposal.id);
 
-    if (promiseStatus === ProposalStatus.PASSED && 'execute' in contract) {
-      receipt = await contract.execute(proposal.id, { from: userAddress });
-    }
+    if (promiseStatus === ProposalStatus.PASSED) {
+      if ('execute' in contract) {
+        receipt = await contract.execute(proposal.id, { from: userAddress });
 
-    getProposalsByContract(proposal.contract);
-    getBaseVotingWeightInfo();
-    loadDelegationInfo(userAddress);
+        receipt.promiEvent
+          .once('receipt', () => {
+            getProposalsByContract(proposal.contract);
+            getBaseVotingWeightInfo();
+            loadDelegationInfo(userAddress);
+          });
+      } else {
+        throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: 'execute' }));
+      }
+    } else {
+      getProposalsByContract(proposal.contract);
+      getBaseVotingWeightInfo();
+      loadDelegationInfo(userAddress);
+    }
 
     return receipt;
   }

@@ -34,6 +34,15 @@ const StyledWrapper = styled.div`
     align-items: center;
     gap: 4px;
   }
+
+  .table {
+    thead th {
+      &:nth-child(5),
+      &:last-child {
+        white-space: pre-line;
+      }
+    }
+  }
 `;
 
 function ValidatorsMonitoring () {

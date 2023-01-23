@@ -16,7 +16,8 @@ function useSetDelegatorsShare () {
     const contract = await getValidationRewardPoolsInstance();
     const receipt = await contract.setDelegatorsShare(getFixedPercentage(amount));
 
-    getVRPDelegatorsShare();
+    receipt.promiEvent.once('receipt', () => { getVRPDelegatorsShare(); });
+
     return receipt;
   };
 
@@ -44,6 +45,7 @@ function useUpdateValidatorCompoundRate () {
       setLoading(true);
       const contract = await getValidationRewardPoolsInstance();
       const receipt = await contract.updateValidatorsCompoundRate(user.address);
+      await receipt.promiEvent;
       const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(user.address);
       if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
         throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));

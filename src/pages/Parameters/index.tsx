@@ -54,7 +54,7 @@ function ManageParameters () {
 
   return (
     <PageLayout
-      title="Q Parameters"
+      title={t('Q_PARAMETERS')}
       action={
         <div style={{ display: 'flex', gap: '16px' }}>
           <Link to="/">
@@ -64,7 +64,7 @@ function ManageParameters () {
               look="secondary"
             >
               <Icon name="dashboard" />
-              <span>Dashboard</span>
+              <span>{t('DASHBOARD')}</span>
             </Button>
           </Link>
         </div>

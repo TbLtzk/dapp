@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import {
   AuctionBid,
   AuctionExecute,
@@ -13,7 +14,6 @@ import {
   LiquidationAuctionBid,
   LiquidationAuctionExecute
 } from 'typings/auctions';
-import { TransactionReceipt } from 'web3-eth';
 
 import { setAuctions } from './reducer';
 
@@ -89,7 +89,7 @@ export function useAuctions () {
     auctionType: AuctionType;
   }) {
     const userAddress = getUserAddress();
-    let receipt: TransactionReceipt;
+    let receipt: SubmitTransactionResponse;
     switch (auctionType) {
       case 'liquidation': {
         receipt = await createLiquidationAuction(form as CreateLiquidationAuction, userAddress);
@@ -105,7 +105,8 @@ export function useAuctions () {
       }
     }
 
-    getAuctions(auctionType);
+    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
+
     return receipt;
   }
 
@@ -115,7 +116,7 @@ export function useAuctions () {
   }) {
     const userAddress = getUserAddress();
 
-    let receipt: TransactionReceipt;
+    let receipt: SubmitTransactionResponse;
     switch (auctionType) {
       case 'liquidation':
         receipt = await bidForLiquidationAuction(form as LiquidationAuctionBid, userAddress);
@@ -128,14 +129,15 @@ export function useAuctions () {
         break;
     }
 
-    getAuctions(auctionType);
+    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
+
     return receipt;
   }
 
   async function executeAuction ({ form, auctionType }: { form: ExecuteAuctionForm; auctionType: AuctionType }) {
     const userAddress = getUserAddress();
 
-    let receipt: TransactionReceipt;
+    let receipt: SubmitTransactionResponse;
     switch (auctionType) {
       case 'liquidation': {
         receipt = await executeLiquidationAuction(form as LiquidationAuctionExecute, userAddress);
@@ -150,8 +152,8 @@ export function useAuctions () {
         break;
       }
     }
+    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
 
-    getAuctions(auctionType);
     return receipt;
   }
 

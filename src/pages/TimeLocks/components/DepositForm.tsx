@@ -14,11 +14,11 @@ import Input from 'components/Input';
 
 import { useTimeLocksAddress } from '../TimeLocks';
 
-import { useLockedAmount } from 'store/locked-amount/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { depositTimeLock } from 'contracts/helpers/locked-amount-helper';
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
 
 import { futureDate, max, min, required } from 'utils/validators';
@@ -56,7 +56,6 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   const { address } = useTimeLocksAddress();
 
   const { submitTransaction } = useTransaction();
-  const { depositTimeLock } = useLockedAmount();
 
   const { walletBalance } = useQVault();
   const user = useUser();
@@ -83,13 +82,17 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
     }
   });
 
-  const updateMaxAmount = async () => {
+  const getMaxAmount = async () => {
     const depositAmount = await getQVaultDepositAmount(user.address);
-    setMaxAmount(Number(depositAmount) < 0 ? '0' : String(depositAmount));
+    return Number(depositAmount) < 0 ? '0' : String(depositAmount);
   };
 
   useEffect(() => {
-    updateMaxAmount();
+    getMaxAmount().then(setMaxAmount);
+
+    return () => {
+      setMaxAmount('0');
+    };
   }, [walletBalance]);
 
   return (
@@ -113,6 +116,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
           value={form.values.startDate as Date}
           label={t('START_DATE')}
           placeholder={t('CHOOSE_DATE_AND_TIME')}
+          timeCaption={t('TIME')}
           startDate={form.values.startDate ? new Date(form.values.startDate) : null}
           endDate={form.values.endDate ? new Date(form.values.endDate) : null}
           minDate={new Date()}
@@ -126,6 +130,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
           value={form.values.endDate as Date}
           label={t('END_DATE')}
           placeholder={t('CHOOSE_DATE_AND_TIME')}
+          timeCaption={t('TIME')}
           disabled={!form.values.startDate || isDepositsLimitReached}
           startDate={form.values.startDate as Date}
           endDate={form.values.endDate as Date}

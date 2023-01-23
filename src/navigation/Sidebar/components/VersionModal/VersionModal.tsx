@@ -104,10 +104,10 @@ function VersionModal ({ open, onClose }: Props) {
               {group.items.map((item) => (
                 <div key={item.name}>
                   <p className="text-md font-light">{item.name}</p>
-                  <p className="text-md">
+                  <div className="text-md">
                     <span>{item.value}</span>
                     <CopyToClipboard value={item.name + '-' + item.value} />
-                  </p>
+                  </div>
                 </div>
               ))}
             </div>

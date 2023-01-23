@@ -70,6 +70,7 @@ function Table<T> ({
     return (
       <PaginationProvider
         pagination={paginationFactory({
+          page: 1,
           custom: true,
           sizePerPage: perPage,
           totalSize: table.length,

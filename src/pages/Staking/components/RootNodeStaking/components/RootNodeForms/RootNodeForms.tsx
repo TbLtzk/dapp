@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
+import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { toBigNumber } from '@q-dev/utils';
-import { TransactionReceipt } from 'web3-eth';
 import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
@@ -52,7 +52,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
     validators: { amount: [required, amount(getMaxAmount())] },
     onSubmit: ({ amount }) => {
       let successMessage: string;
-      let submitFn: () => Promise<TransactionReceipt>;
+      let submitFn: () => Promise<SubmitTransactionResponse>;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
           successMessage = t('STAKE_TO_PANEL_SUCCESS');

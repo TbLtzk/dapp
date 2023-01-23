@@ -47,6 +47,10 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
     onSubmit: (values) => {
       submitTransaction({
         successMessage: t('BID_FOR_AUCTION_SUCCESS'),
+        onSuccess: () => {
+          handleHide();
+          onSubmit();
+        },
         submitFn: () => bidForAuction({
           auctionType: auction.auctionType,
           form: {
@@ -92,11 +96,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
     await submitTransaction({
       successMessage: t('APPROVE_SUCCESS'),
       submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: user.address }),
-      onSuccess: () => {
-        setIsApproved(true);
-        handleHide();
-        onSubmit();
-      },
+      onSuccess: () => setIsApproved(true),
       onError: () => setIsApproved(false)
     });
   }

@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
 import useTimeLockLimits from '../../hooks/useTimeLockLimits';
+import useValidatorStakeTimeLocks from '../../hooks/useValidatorStakeTimeLocks';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
-
-import { useValidators } from 'store/validators/hooks';
 
 function ValidatorStakeTab () {
   const { t } = useTranslation();
@@ -23,19 +19,15 @@ function ValidatorStakeTab () {
     loadValidatorMinimumTimeLock,
     loadValidatorTimeLocks,
     validatorsTimeLocksLoading,
-  } = useValidators();
-
-  useInterval(() => {
-    loadValidatorMinimumTimeLock(address);
-  }, 5000);
-
-  useEffect(() => {
-    loadValidatorAccountableSelfStake(address);
-    loadValidatorMinimumTimeLock(address);
-    loadValidatorTimeLocks(address);
-  }, [address]);
+  } = useValidatorStakeTimeLocks(address);
 
   const isDepositsLimitReached = useTimeLockLimits(validatorsTimeLocks);
+
+  const loadAll = () => {
+    loadValidatorAccountableSelfStake();
+    loadValidatorMinimumTimeLock();
+    loadValidatorTimeLocks();
+  };
 
   return (
     <div>
@@ -46,6 +38,7 @@ function ValidatorStakeTab () {
         timeLockBalance={validatorsMinimumTimeLock}
         isLoadingTimeLocks={validatorsTimeLocksLoading}
         isDepositsLimitReached={isDepositsLimitReached}
+        onSubmit={loadAll}
       />
 
       <TimeLocksTable
@@ -53,6 +46,7 @@ function ValidatorStakeTab () {
         contract="validators"
         lockAmountData={validatorsTimeLocks}
         isLoading={validatorsTimeLocksLoading}
+        onSubmit={loadAll}
       />
     </div>
   );

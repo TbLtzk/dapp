@@ -1,621 +1,471 @@
 {
   "constitution.blockSubsidy": {
-    "type": "Q",
-    "name": "Block subsidy"
+    "type": "Q"
   },
   "constitution.blockInterval": {
-    "type": "period",
-    "name": "Block interval"
+    "type": "period"
   },
   "constitution.maxNRootNodes": {
-    "type": "number",
-    "name": "Maximal number of Root Nodes"
+    "type": "number"
   },
   "constitution.maxNValidators": {
-    "type": "number",
-    "name": "Maximal number of active validators"
+    "type": "number"
   },
   "constitution.maxNStandbyValidators": {
-    "type": "number",
-    "name": "Maximal number of standby validators"
+    "type": "number"
   },
   "constitution.rootSlashingReward": {
-    "type": "fraction",
-    "name": "The fraction of slashing amount awarded to proposer"
+    "type": "fraction"
   },
   "constitution.valSlashingReward": {
-    "type": "fraction",
-    "name": "The fraction of slashing amount awarded to proposer"
+    "type": "fraction"
   },
   "constitution.rootWithdrawP": {
-    "type": "period",
-    "name": "Target duration for withdrawal of root node stake"
+    "type": "period"
   },
   "constitution.valWithdrawP": {
-    "type": "period",
-    "name": "Target duration for withdrawal of validator stake"
+    "type": "period"
   },
   "constitution.rootSlashingAppealP": {
-    "type": "period",
-    "name": "Target duration for root node slashing appeal period"
+    "type": "period"
   },
   "constitution.valSlashingAppealP": {
-    "type": "period",
-    "name": "Target duration for validator slashing appeal period"
+    "type": "period"
   },
   "constitution.proposalExecutionP": {
-    "type": "period",
-    "name": "Proposal execution period"
+    "type": "period"
   },
   "constitution.EPQFI.maxNExperts": {
-    "type": "number",
-    "name": "Maximal number of Experts for F&I"
+    "type": "number"
   },
   "constitution.EPDR.maxNExperts": {
-    "type": "number",
-    "name": "Maximal number of Experts for D&R"
+    "type": "number"
   },
   "constitution.rewardShareQTokenHolders": {
-    "type": "fraction",
-    "name": "Q Token Holder reward share"
+    "type": "fraction"
   },
   "constitution.rewardShareQIDHolders": {
-    "type": "fraction",
-    "name": "Q ID Holder reward share"
+    "type": "fraction"
   },
   "constitution.rewardShareValidatorNodes": {
-    "type": "fraction",
-    "name": "Validator Node reward share"
+    "type": "fraction"
   },
   "constitution.rewardShareRootNodes": {
-    "type": "fraction",
-    "name": "Root Node reward share"
+    "type": "fraction"
   },
 
 
   "governed.EPQFI.txFee": {
-    "type": "QUSD",
-    "name": "Transaction fee"
+    "type": "QUSD"
   },
   "governed.EPQFI.normalizedTransactionSize": {
-    "type": "gas",
-    "name": "Normalized Transaction Size"
+    "type": "gas"
   },
   "governed.EPQFI.maximumDelegationTargets": {
-    "type": "number",
-    "name": "Maximum delegation targets"
+    "type": "number"
   },
   "governed.EPQFI.stakeDelegationFactor": {
-    "type": "factor",
-    "name": "Validator stake delegation factor"
+    "type": "factor"
   },
   "governed.EPQFI.QID_rewardPoolMaxClaimP": {
-    "type": "period",
-    "name": "Q reward maximum claimable period"
+    "type": "period"
   },
   "governed.EPQFI.Q_QUSD_source": {
-    "type": "string",
-    "name": "Q to Q USD oracle source"
+    "type": "string"
   },
   "governed.EPQFI.Q_reserveShare": {
-    "type": "fraction",
-    "name": "Q reserve share"
+    "type": "fraction"
   },
   "governed.EPQFI.Q_rewardPoolInterest": {
-    "type": "rate",
-    "name": "Q holder reward pool interest rate"
+    "type": "rate"
   },
   "governed.EPQFI.QID_rewardPoolInterest": {
-    "type": "rate",
-    "name": "QID holder reward pool interest rate"
+    "type": "rate"
   },
   "governed.EPQFI.reserveCoolDownThreshold": {
-    "type": "Q",
-    "name": "System reserve cool down threshold"
+    "type": "Q"
   },
   "governed.EPQFI.reserveCoolDownP": {
-    "type": "period",
-    "name": "System reserve cool down period"
+    "type": "period"
   },
 
   "governed.EPDR.QUSD_savingRate": {
-    "type": "rate",
-    "name": "QUSD savings rate"
+    "type": "rate"
   },
   "governed.EPDR.QUSD_surplusThreshold": {
-    "type": "QUSD",
-    "name": "QUSD surplus threshold"
+    "type": "QUSD"
   },
   "governed.EPDR.QUSD_surplusLot": {
-    "type": "QUSD",
-    "name": "QUSD surplus lot"
+    "type": "QUSD"
   },
   "governed.EPDR.QUSD_debtThreshold": {
-    "type": "QUSD",
-    "name": "QUSD debt threshold"
+    "type": "QUSD"
   },
   "governed.EPDR.reserveLot": {
-    "type": "Q",
-    "name": "Reserve lot"
+    "type": "Q"
   },
   "governed.EPDR.liquidationAuctionP": {
-    "type": "period",
-    "name": "Liquidation auction period"
+    "type": "period"
   },
   "governed.EPDR.surplusAuctionP": {
-    "type": "period",
-    "name": "Surplus auction period"
+    "type": "period"
   },
   "governed.EPDR.debtAuctionP": {
-    "type": "period",
-    "name": "Debt auction period"
+    "type": "period"
   },
   "governed.EPDR.auctionMinIncrement": {
-    "type": "fraction",
-    "name": "Auction minimum increment"
+    "type": "fraction"
   },
   "governed.EPDR.QUSD_step": {
-    "type": "QUSD",
-    "name": "QUSD step"
+    "type": "QUSD"
   },
 
   "governed.EPDR.QBTC_address": {
-    "type": "address",
-    "name": "QBTC collateral address"
+    "type": "address"
   },
   "governed.EPDR.QBTC_QUSD_oracle": {
-    "type": "string",
-    "name": "Oracle for QBTC collateral"
+    "type": "string"
   },
   "governed.EPDR.QBTC_QUSD_ceiling": {
-    "type": "QUSD",
-    "name": "QBTC collateral ceiling"
+    "type": "QUSD"
   },
   "governed.EPDR.QBTC_QUSD_collateralizationRatio": {
-    "type": "fraction",
-    "name": "QBTC collateralization ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QBTC_QUSD_liquidationRatio": {
-    "type": "fraction",
-    "name": "QBTC liquidation ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QBTC_QUSD_liquidationFee": {
-    "type": "fraction",
-    "name": "QBTC liquidation fee"
+    "type": "fraction"
   },
   "governed.EPDR.QBTC_QUSD_interestRate": {
-    "type": "rate",
-    "name": "QBTC borrowing interest rate"
+    "type": "rate"
   },
 
   "governed.EPDR.QDAI_address": {
-    "type": "address",
-    "name": "QDAI collateral address"
+    "type": "address"
   },
   "governed.EPDR.QDAI_QUSD_oracle": {
-    "type": "string",
-    "name": "Oracle for QDAI collateral"
+    "type": "string"
   },
   "governed.EPDR.QDAI_QUSD_ceiling": {
-    "type": "QUSD",
-    "name": "QDAI collateral ceiling"
+    "type": "QUSD"
   },
   "governed.EPDR.QDAI_QUSD_collateralizationRatio": {
-    "type": "fraction",
-    "name": "QDAI collateralization ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QDAI_QUSD_liquidationRatio": {
-    "type": "fraction",
-    "name": "QDAI liquidation ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QDAI_QUSD_liquidationFee": {
-    "type": "fraction",
-    "name": "QDAI liquidation fee"
+    "type": "fraction"
   },
   "governed.EPDR.QDAI_QUSD_interestRate": {
-    "type": "rate",
-    "name": "QDAI borrowing interest rate"
+    "type": "rate"
   },
 
   "governed.EPDR.QUSDC_address": {
-    "type": "address",
-    "name": "QUSDC collateral address"
+    "type": "address"
   },
   "governed.EPDR.QUSDC_QUSD_oracle": {
-    "type": "string",
-    "name": "Oracle for QUSDC collateral"
+    "type": "string"
   },
   "governed.EPDR.QUSDC_QUSD_ceiling": {
-    "type": "QUSD",
-    "name": "QUSDC collateral ceiling"
+    "type": "QUSD"
   },
   "governed.EPDR.QUSDC_QUSD_collateralizationRatio": {
-    "type": "fraction",
-    "name": "QUSDC collateralization ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QUSDC_QUSD_liquidationRatio": {
-    "type": "fraction",
-    "name": "QUSDC liquidation ratio"
+    "type": "fraction"
   },
   "governed.EPDR.QUSDC_QUSD_liquidationFee": {
-    "type": "fraction",
-    "name": "QUSDC liquidation fee"
+    "type": "fraction"
   },
   "governed.EPDR.QUSDC_QUSD_interestRate": {
-    "type": "rate",
-    "name": "QUSDC borrowing interest rate"
+    "type": "rate"
   },
 
 
   "constitution.voting.addorRemRootEP": {
-    "type": "string",
-    "name": "Add or remove root node eligible proposer"
+    "type": "string"
   },
   "constitution.voting.rootSlashingEP": {
-    "type": "string",
-    "name": "Root slashing eligible proposer"
+    "type": "string"
   },
   "constitution.voting.valSlashingEP": {
-    "type": "string",
-    "name": "Validator slashing eligible proposer"
+    "type": "string"
   },
   "constitution.voting.fundQSectionEP": {
-    "type": "string",
-    "name": "Fundamental section eligible proposer"
+    "type": "string"
   },
   "constitution.voting.basicQSectionEP": {
-    "type": "string",
-    "name": "Basic section eligible proposer"
+    "type": "string"
   },
   "constitution.voting.detailedQSectionEP": {
-    "type": "string",
-    "name": "Detailed section eligible proposer"
+    "type": "string"
   },
   "constitution.voting.changeQnotConstEP": {
-    "type": "string",
-    "name": "Not constitutional change eligible proposer"
+    "type": "string"
   },
   "constitution.voting.emgQUpdateEP": {
-    "type": "string",
-    "name": "Emergency update eligible proposer"
+    "type": "string"
   },
   "constitution.voting.EPQFI.addorRemExpertEP": {
-    "type": "string",
-    "name": "Add or remove F&I expert eligible proposer"
+    "type": "string"
   },
   "constitution.voting.EPDR.addorRemExpertEP": {
-    "type": "string",
-    "name": "Add or remove D&R expert eligible proposer"
+    "type": "string"
   },
   "constitution.voting.EPQFI.changeParamEP": {
-    "type": "string",
-    "name": "Change F&I parameter eligible proposer"
+    "type": "string"
   },
   "constitution.voting.EPDR.changeParamEP": {
-    "type": "string",
-    "name": "Change D&R parameter eligible proposer"
+    "type": "string"
   },
 
   "constitution.voting.addOrRemRootEV": {
-    "type": "string",
-    "name": "Add or remove root node eligible voter"
+    "type": "string"
   },
   "constitution.voting.rootSlashingEV": {
-    "type": "string",
-    "name": "Root slashing eligible voter"
+    "type": "string"
   },
   "constitution.voting.valSlashingEV": {
-    "type": "string",
-    "name": "Validator slashing eligible voter"
+    "type": "string"
   },
   "constitution.voting.fundQSectionEV": {
-    "type": "string",
-    "name": "Fundamental section eligible voter"
+    "type": "string"
   },
   "constitution.voting.basicQSectionEV": {
-    "type": "string",
-    "name": "Basic section eligible voter"
+    "type": "string"
   },
   "constitution.voting.detailedQSectionEV": {
-    "type": "string",
-    "name": "Detailed section eligible voter"
+    "type": "string"
   },
   "constitution.voting.changeQnotConstEV": {
-    "type": "string",
-    "name": "Not constitutional change eligible voter"
+    "type": "string"
   },
   "constitution.voting.emgQUpdateEV": {
-    "type": "string",
-    "name": "Emergency update eligible voter"
+    "type": "string"
   },
   "constitution.voting.EPQFI.addOrRemExpertEV": {
-    "type": "string",
-    "name": "Add or remove F&I expert eligible voter"
+    "type": "string"
   },
   "constitution.voting.EPDR.addOrRemExpertEV": {
-    "type": "string",
-    "name": "Add or remove D&R expert eligible voter"
+    "type": "string"
   },
   "constitution.voting.EPQFI.changeParamEV": {
-    "type": "string",
-    "name": "Change F&I parameter eligible voter"
+    "type": "string"
   },
   "constitution.voting.EPDR.changeParamEV": {
-    "type": "string",
-    "name": "Change D&R parameter eligible voter"
+    "type": "string"
   },
 
   "constitution.voting.addOrRemRootVP": {
-    "type": "period",
-    "name": "Add or remove root node voting period"
+    "type": "period"
   },
   "constitution.voting.rootSlashingVP": {
-    "type": "period",
-    "name": "Root slashing voting period"
+    "type": "period"
   },
   "constitution.voting.valSlashingVP": {
-    "type": "period",
-    "name": "Validator slashing voting period"
+    "type": "period"
   },
   "constitution.voting.fundQSectionVP": {
-    "type": "period",
-    "name": "Fundamental section voting period"
+    "type": "period"
   },
   "constitution.voting.basicQSectionVP": {
-    "type": "period",
-    "name": "Basic section voting period"
+    "type": "period"
   },
   "constitution.voting.detailedQSectionVP": {
-    "type": "period",
-    "name": "Detailed section voting period"
+    "type": "period"
   },
   "constitution.voting.changeQnotConstVP": {
-    "type": "period",
-    "name": "Not constitutional change voting period"
+    "type": "period"
   },
   "constitution.voting.emgQUpdateVP": {
-    "type": "period",
-    "name": "Emergency update voting period"
+    "type": "period"
   },
   "constitution.voting.EPQFI.addOrRemExpertVP": {
-    "type": "period",
-    "name": "Add or remove F&I expert voting period"
+    "type": "period"
   },
   "constitution.voting.EPDR.addOrRemExpertVP": {
-    "type": "period",
-    "name": "Add or remove D&R expert voting period"
+    "type": "period"
   },
   "constitution.voting.EPQFI.changeParamVP": {
-    "type": "period",
-    "name": "Change F&I parameter voting period"
+    "type": "period"
   },
   "constitution.voting.EPDR.changeParamVP": {
-    "type": "period",
-    "name": "Change D&R parameter voting period"
+    "type": "period"
   },
 
   "constitution.voting.addOrRemRootQRM": {
-    "type": "fraction",
-    "name": "Add or remove root node quorum"
+    "type": "fraction"
   },
   "constitution.voting.rootSlashingQRM": {
-    "type": "fraction",
-    "name": "Root slashing quorum"
+    "type": "fraction"
   },
   "constitution.voting.valSlashingQRM": {
-    "type": "fraction",
-    "name": "Validator slashing quorum"
+    "type": "fraction"
   },
   "constitution.voting.fundQSectionQRM": {
-    "type": "fraction",
-    "name": "Fundamental section quorum"
+    "type": "fraction"
   },
   "constitution.voting.basicQSectionQRM": {
-    "type": "fraction",
-    "name": "Basic section quorum"
+    "type": "fraction"
   },
   "constitution.voting.detailedQSectionQRM": {
-    "type": "fraction",
-    "name": "Detailed section quorum"
+    "type": "fraction"
   },
   "constitution.voting.changeQnotConstQRM": {
-    "type": "fraction",
-    "name": "Not constitutional change quorum"
+    "type": "fraction"
   },
   "constitution.voting.emgQUpdateQRM": {
-    "type": "fraction",
-    "name": "Emergency update quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPQFI.addOrRemExpertQRM": {
-    "type": "fraction",
-    "name": "Add or remove F&I expert quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPDR.addOrRemExpertQRM": {
-    "type": "fraction",
-    "name": "Add or remove D&R expert quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPQFI.changeParamQRM": {
-    "type": "fraction",
-    "name": "Change F&I parameter quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPDR.changeParamQRM": {
-    "type": "fraction",
-    "name": "Change D&R parameter quorum"
+    "type": "fraction"
   },
 
   "constitution.voting.addOrRemRootRMAJ": {
-    "type": "fraction",
-    "name": "Add or remove root node required majority"
+    "type": "fraction"
   },
   "constitution.voting.rootSlashingRMAJ": {
-    "type": "fraction",
-    "name": "Root slashing required majority"
+    "type": "fraction"
   },
   "constitution.voting.valSlashingRMAJ": {
-    "type": "fraction",
-    "name": "Validator slashing required majority"
+    "type": "fraction"
   },
   "constitution.voting.fundQSectionRMAJ": {
-    "type": "fraction",
-    "name": "Fundamental section required majority"
+    "type": "fraction"
   },
   "constitution.voting.basicQSectionRMAJ": {
-    "type": "fraction",
-    "name": "Basic section required majority"
+    "type": "fraction"
   },
   "constitution.voting.detailedQSectionRMAJ": {
-    "type": "fraction",
-    "name": "Detailed section required majority"
+    "type": "fraction"
   },
   "constitution.voting.changeQnotConstRMAJ": {
-    "type": "fraction",
-    "name": "Not constitutional change required majority"
+    "type": "fraction"
   },
   "constitution.voting.emgQUpdateRMAJ": {
-    "type": "fraction",
-    "name": "Emergency update required majority"
+    "type": "fraction"
   },
   "constitution.voting.EPQFI.addOrRemExpertRMAJ": {
-    "type": "fraction",
-    "name": "Add or remove F&I expert required majority"
+    "type": "fraction"
   },
   "constitution.voting.EPDR.addOrRemExpertRMAJ": {
-    "type": "fraction",
-    "name": "Add or remove D&R expert required majority"
+    "type": "fraction"
   },
   "constitution.voting.EPQFI.changeParamRMAJ": {
-    "type": "fraction",
-    "name": "Change F&I parameter required majority"
+    "type": "fraction"
   },
   "constitution.voting.EPDR.changeParamRMAJ": {
-    "type": "fraction",
-    "name": "Change D&R parameter required majority"
+    "type": "fraction"
   },
 
   "constitution.voting.addOrRemRootSQRM": {
-    "type": "fraction",
-    "name": "Add or remove root node quorum required for supermajority"
+    "type": "fraction"
   },
   "constitution.voting.rootSlashingSQRM": {
-    "type": "fraction",
-    "name": "Root slashing quorum required for supermajority"
+    "type": "fraction"
   },
 
   "constitution.voting.addOrRemRootSMAJ": {
-    "type": "fraction",
-    "name": "Add or remove root node required supermajority"
+    "type": "fraction"
   },
   "constitution.voting.rootSlashingSMAJ": {
-    "type": "fraction",
-    "name": "Root slashing required supermajority"
+    "type": "fraction"
   },
 
   "constitution.voting.addOrRemRootRNVALP": {
-    "type": "period",
-    "name": "Add or remove root node root node validation period"
+    "type": "period"
   },
   "constitution.voting.rootSlashingRNVALP": {
-    "type": "period",
-    "name": "Root slashing root node validation period"
+    "type": "period"
   },
   "constitution.voting.fundQSectionRNVALP": {
-    "type": "period",
-    "name": "Fundamental section root node validation period"
+    "type": "period"
   },
   "constitution.voting.basicQSectionRNVALP": {
-    "type": "period",
-    "name": "Basic section root node validation period"
+    "type": "period"
   },
   "constitution.voting.detailedQSectionRNVALP": {
-    "type": "period",
-    "name": "Detailed section root node validation period"
+    "type": "period"
   },
   "constitution.voting.changeQnotConstRNVALP": {
-    "type": "period",
-    "name": "Not constitutional change root node validation period"
+    "type": "period"
   },
   "constitution.voting.EPQFI.addOrRemExpertRNVALP": {
-    "type": "period",
-    "name": "Add or remove F&I expert root node validation period"
+    "type": "period"
   },
   "constitution.voting.EPDR.addOrRemExpertRNVALP": {
-    "type": "period",
-    "name": "Add or remove D&R expert root node validation period"
+    "type": "period"
   },
   "constitution.voting.EPQFI.changeParamRNVALP": {
-    "type": "period",
-    "name": "Change F&I parameter root node validation period"
+    "type": "period"
   },
   "constitution.voting.EPDR.changeParamRNVALP": {
-    "type": "period",
-    "name": "Change D&R parameter root node validation period"
+    "type": "period"
   },
 
   "constitution.voting.addOrRemRootQIDVTP": {
-    "type": "period",
-    "name": "Add or remove root node QID veto period"
+    "type": "period"
   },
   "constitution.voting.fundQSectionQIDVTP": {
-    "type": "period",
-    "name": "Fundamental section QID veto period"
+    "type": "period"
   },
   "constitution.voting.basicQSectionQIDVTP": {
-    "type": "period",
-    "name": "Basic section QID veto period"
+    "type": "period"
   },
   "constitution.voting.detailedQSectionQIDVTP": {
-    "type": "period",
-    "name": "Detailed section QID veto period"
+    "type": "period"
   },
   "constitution.voting.EPQFI.addOrRemExpertQIDVTP": {
-    "type": "period",
-    "name": "Add or remove F&I expert QID veto period"
+    "type": "period"
   },
   "constitution.voting.EPDR.addOrRemExpertQIDVTP": {
-    "type": "period",
-    "name": "Add or remove D&R expert QID veto period"
+    "type": "period"
   },
 
   "constitution.voting.addOrRemRootQIDVTQRM": {
-    "type": "fraction",
-    "name": "Add or remove root node QID veto quorum"
+    "type": "fraction"
   },
   "constitution.voting.fundQSectionQIDVTQRM": {
-    "type": "fraction",
-    "name": "Fundamental section QID veto quorum"
+    "type": "fraction"
   },
   "constitution.voting.basicQSectionQIDVTQRM": {
-    "type": "fraction",
-    "name": "Basic section QID veto quorum"
+    "type": "fraction"
   },
   "constitution.voting.detailedQSectionQIDVTQRM": {
-    "type": "fraction",
-    "name": "Detailed section QID veto quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPQFI.addOrRemExpertQIDVTQRM": {
-    "type": "fraction",
-    "name": "Add or remove F&I expert QID veto quorum"
+    "type": "fraction"
   },
   "constitution.voting.EPDR.addOrRemExpertQIDVTQRM": {
-    "type": "fraction",
-    "name": "Add or remove D&R expert QID veto quorum"
+    "type": "fraction"
   },
 
   "constitution.voting.rootSlashingEOBJ": {
-    "type": "string",
-    "name": "Root slashing eligible objector"
+    "type": "string"
   },
   "constitution.voting.valslashingEOBJ": {
-    "type": "string",
-    "name": "Validator slashing eligible objector"
+    "type": "string"
   },
 
   "constitution.voting.rootSlashingOBJP": {
-    "type": "period",
-    "name": "Root slashing objection period"
+    "type": "period"
   },
   "constitution.voting.valSlashingOBJP": {
-    "type": "period",
-    "name": "Validator slashing objection period"
+    "type": "period"
   }
 }

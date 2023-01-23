@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { useInterval } from '@q-dev/react-hooks';
 
 import { useTimeLocksAddress } from 'pages/TimeLocks/TimeLocks';
 
+import useRootStakeTimeLocks from '../../hooks/useRootStakeTimeLocks';
 import useTimeLockLimits from '../../hooks/useTimeLockLimits';
 import LocksOverview from '../LocksOverview';
 import TimeLocksTable from '../TimeLocksTable';
-
-import { useRootNodes } from 'store/root-nodes/hooks';
 
 function RootStakeTab () {
   const { t } = useTranslation();
@@ -23,19 +19,15 @@ function RootStakeTab () {
     getRootNodeStakes,
     getRootTimeLocks,
     rootTimeLocksLoading,
-  } = useRootNodes();
-
-  useInterval(() => {
-    getMinimumRootTimeLock(address);
-  }, 5000);
-
-  useEffect(() => {
-    getRootNodeStakes(address);
-    getMinimumRootTimeLock(address);
-    getRootTimeLocks(address);
-  }, [address]);
+  } = useRootStakeTimeLocks(address);
 
   const isDepositsLimitReached = useTimeLockLimits(rootTimeLocks);
+
+  const loadAll = () => {
+    getRootNodeStakes();
+    getMinimumRootTimeLock();
+    getRootTimeLocks();
+  };
 
   return (
     <div>
@@ -46,6 +38,7 @@ function RootStakeTab () {
         timeLockBalance={rootMinimumTimeLock}
         isLoadingTimeLocks={rootTimeLocksLoading}
         isDepositsLimitReached={isDepositsLimitReached}
+        onSubmit={loadAll}
       />
 
       <TimeLocksTable
@@ -53,6 +46,7 @@ function RootStakeTab () {
         contract="rootNodes"
         lockAmountData={rootTimeLocks}
         isLoading={rootTimeLocksLoading}
+        onSubmit={loadAll}
       />
     </div>
   );

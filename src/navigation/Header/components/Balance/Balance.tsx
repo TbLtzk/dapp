@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { useInterval } from '@q-dev/react-hooks';
 import { formatNumberCompact } from '@q-dev/utils';
 import { motion } from 'framer-motion';
 import { fromWei } from 'web3-utils';
@@ -20,7 +21,9 @@ function Balance () {
   const { t } = useTranslation();
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
-  const { vaultBalance, walletBalance } = useQVault();
+  const { vaultBalance, walletBalance, loadAllBalances } = useQVault();
+
+  useInterval(loadAllBalances, 5000);
 
   const [balanceOpen, setBalanceOpen] = useState(false);
 
