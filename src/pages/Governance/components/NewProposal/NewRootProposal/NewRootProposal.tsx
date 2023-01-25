@@ -42,8 +42,8 @@ function NewRootProposal () {
     onConfirm: (form) => {
       submitTransaction({
         successMessage: form.type === 'exit-root-node'
-          ? t('CREATE_PROPOSAL_SUCCESS')
-          : t('YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL'),
+          ? t('YOU_SUCCESSFULLY_LEFT_ROOT_NODE_PANEL')
+          : t('CREATE_PROPOSAL_SUCCESS'),
         submitFn: () => createNewProposal(form.type === 'exit-root-node' ? ({ ...form, address: user.address }) : form),
         onSuccess: () => history.push(RoutePaths.rootNodePanel),
       });
