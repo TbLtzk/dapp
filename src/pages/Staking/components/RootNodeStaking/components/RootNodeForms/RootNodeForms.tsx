@@ -15,7 +15,7 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { toBigNumber } from 'utils/numbers';
-import { amount, required } from 'utils/validators';
+import { amount, max, required } from 'utils/validators';
 
 interface Props {
   formType: string | null;
@@ -48,9 +48,15 @@ function RootNodeForms ({ formType, onReset }: Props) {
     }
   };
 
+  const maxRootAmount = () => {
+    return formType === FORM_TYPES.announceWithdrawal
+      ? max(getMaxAmount())
+      : amount(getMaxAmount());
+  };
+
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(getMaxAmount())] },
+    validators: { amount: [required, maxRootAmount()] },
     onSubmit: ({ amount }) => {
       let successMessage: string;
       let submitFn: () => Promise<SubmitTransactionResponse>;

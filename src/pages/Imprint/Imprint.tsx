@@ -14,8 +14,8 @@ function Imprint () {
         </div>
 
         <ul className="privacy-list privacy-block">
-          <li className="text-md">Landstrasse 40</li>
-          <li className="text-md">9495 Triesen</li>
+          <li className="text-md">Rhigass 1</li>
+          <li className="text-md">9487 Gamprin-Bendern</li>
           <li className="text-md">Liechtenstein</li>
           <li className="text-md">FL-Nummer: FL-000.2.643.198-4</li>
           <li className="text-md">(Commercial Register of Liechtenstein)</li>

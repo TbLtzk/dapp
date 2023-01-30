@@ -16,7 +16,7 @@ function DataPrivacy () {
           <h3 className="text-h3">1. Contact</h3>
           <p className="text-md">
             For all enquiries regarding data protection, please contact us at info@qdev.li or Q Development AG,
-            Landstrasse 40 in 9495 Triesen, Liechtenstein.
+            Rhigass 1 in 9487 Gamprin-Bendern, Liechtenstein.
           </p>
         </div>
 

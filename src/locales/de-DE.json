@@ -1022,7 +1022,7 @@
   "DELEGATE": "Delegieren",
   "MAIN_INFO": "Hauptinfo",
   "INACTIVE_VALIDATOR": "Inaktiver Validator",
-  "NOT_IN_SHORTLIST": "Nicht in der engeren Auswahl",
+  "NOT_IN_SHORTLIST": "Nicht im Ranking",
   "BACKUP_VALIDATOR": "Backup-Validator",
   "VALIDATOR_STATUS": "Validatorstatus",
   "TIME_OF_LAST_VALIDATED_BLOCK": "Zeit des letzten validierten Blocks",

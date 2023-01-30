@@ -1022,7 +1022,7 @@
   "DELEGATE": "Делегувати",
   "MAIN_INFO": "Основна інформація",
   "INACTIVE_VALIDATOR": "Неактивний валідатор",
-  "NOT_IN_SHORTLIST": "Немає в короткому списку",
+  "NOT_IN_SHORTLIST": "Немає в рейтингу",
   "BACKUP_VALIDATOR": "Резервний валідатор",
   "VALIDATOR_STATUS": "Статус валідатора",
   "TIME_OF_LAST_VALIDATED_BLOCK": "Час останнього затвердженого блоку",
