@@ -12,8 +12,14 @@ export const ProposalLayoutContainer = styled.div`
   .proposal-layout__voting {
     display: flex;
     gap: 24px;
+
+    ${media.lessThan('large')} {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
     
     ${media.lessThan('medium')} {
+      display: flex;
       flex-wrap: wrap;
     }
   }

@@ -4,7 +4,7 @@ import { media } from 'styles/media';
 export const StyledProposalVoting = styled.div`
   max-width: 50%;
 
-  ${media.lessThan('medium')} {
+  ${media.lessThan('large')} {
     max-width: 100%;
   }
 

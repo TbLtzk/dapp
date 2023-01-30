@@ -78,6 +78,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
         prefix="Q"
         label={t('LOCKED_AMOUNT')}
         placeholder="0.0"
+        maxLength={10}
         max={vaultBalance}
         hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(votingWeight, 4)} Q`}
       />
