@@ -12,17 +12,20 @@ import { LOAD_TYPES } from 'constants/statuses';
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string;
   disabled?: boolean;
+  alwaysEnabled?: boolean;
   onChange: (val: string) => void;
 }
 
 function Search ({
   value,
   disabled,
+  alwaysEnabled,
   onChange,
   ...rest
 }: Props) {
   const { loadType } = useUser();
-  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
+  const isDisabled = disabled ||
+    (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
 
   return (
     <SearchContainer className="search-container" $disabled={isDisabled}>

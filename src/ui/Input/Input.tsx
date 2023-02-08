@@ -17,6 +17,7 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   error?: string;
   hint?: string;
   disabled?: boolean;
+  alwaysEnabled?: boolean;
   type?: HTMLInputTypeAttribute;
   max?: string;
   decimals?: number;
@@ -32,17 +33,21 @@ function Input ({
   error,
   type = 'text',
   disabled,
+  alwaysEnabled,
   hint,
   max,
   decimals = 18,
   prefix,
   labelTip,
   children,
-  onChange = () => {},
+  onChange = () => { },
   ...rest
 }: Props) {
   const { loadType } = useUser();
-  const isDisabled = disabled || loadType !== LOAD_TYPES.loaded;
+
+  const isDisabled = disabled ||
+    (!alwaysEnabled && loadType !== LOAD_TYPES.loaded);
+
   const inputId = `input-${uniqueId()}`;
 
   const handleChange = (e: ChangeEvent) => {

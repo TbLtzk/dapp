@@ -86,7 +86,10 @@ function ProposalsList ({ type, status }: { type: ProposalType; status: Proposal
 
       {filteredProposals.length > list.length && (
         <ListNextContainer>
-          <Button onClick={handleNextProposals}>{t('SHOW_MORE')}</Button>
+          <Button
+            alwaysEnabled
+            onClick={handleNextProposals}
+          >{t('SHOW_MORE')}</Button>
         </ListNextContainer>
       )}
     </>
