@@ -22,12 +22,14 @@ export function useTransaction () {
     successMessage,
     hideLoading = false,
     onSuccess = () => {},
+    onConfirm = () => {},
     onError = () => {},
   }: {
     submitFn: () => Promise<SubmitTransactionResponse | void | undefined>;
     successMessage?: string;
     hideLoading?: boolean;
     onSuccess?: () => void;
+    onConfirm?: () => void;
     onError?: (error?: unknown) => void;
   }) {
     const transaction: PendingTransaction = {
@@ -46,6 +48,7 @@ export function useTransaction () {
         submitResponse.promiEvent
           .once('transactionHash', (txHash: string) => {
             eventBus.emit(getTxEventName(transaction.id, 'hash'), txHash);
+            onConfirm();
           });
 
         await submitResponse.promiEvent;

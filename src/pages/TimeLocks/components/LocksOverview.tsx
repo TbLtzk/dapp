@@ -110,6 +110,7 @@ function LocksOverview ({
             <Button
               compact
               icon
+              alwaysEnabled
               look="secondary"
               className="lock-address-btn"
               onClick={() => setAddressModalOpen(true)}

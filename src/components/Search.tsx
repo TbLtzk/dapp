@@ -6,6 +6,7 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string;
   disabled?: boolean;
+  alwaysEnabled?: boolean;
   onChange: (val: string) => void;
 }
 
@@ -13,10 +14,11 @@ function Search ({
   value,
   disabled,
   onChange,
+  alwaysEnabled,
   ...rest
 }: Props) {
   const { isConnected, isRightNetwork } = useWeb3Context();
-  const isDisabled = disabled || !isConnected || !isRightNetwork;
+  const isDisabled = disabled || (!alwaysEnabled && (!isConnected || !isRightNetwork));
 
   return (
     <UiSearch

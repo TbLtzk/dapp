@@ -36,6 +36,7 @@ export function useQVault () {
 
   const votingWeight = useAppSelector(({ qVault }) => qVault.votingWeight);
   const votingLockingEnd = useAppSelector(({ qVault }) => qVault.votingLockingEnd);
+  const isVotingWeightUnlocked = useAppSelector(({ qVault }) => Number(qVault.votingLockingEnd) < dateToUnix());
 
   const delegationList = useAppSelector(({ qVault }) => qVault.delegationList);
   const loadingDelegationList = useAppSelector(({ qVault }) => qVault.loadingDelegationList);
@@ -313,6 +314,7 @@ export function useQVault () {
     walletBalance,
     votingWeight,
     votingLockingEnd,
+    isVotingWeightUnlocked,
     delegationList,
     loadingDelegationList,
     delegationInfo,

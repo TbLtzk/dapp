@@ -9,6 +9,7 @@ import ValidatorCharts from '../../../ValidatorCharts';
 import StakingInfo from './components/StakingInfo';
 import ValidatorInfo from './components/ValidatorInfo';
 
+import { useParameters } from 'store/parameters/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
 
@@ -44,6 +45,7 @@ const StyledWrapper = styled.div`
 function ManageBalance () {
   const { isConnected } = useWeb3Context();
   const { delegatorsShare, getVRPDelegatorsShare } = useValidationRewards();
+  const { getConstitutionParameters } = useParameters();
 
   const {
     validatorAccountableSelfStake: selfStake,
@@ -67,6 +69,7 @@ function ManageBalance () {
     loadValidatorDelegatedStake();
     loadValidatorAccountableTotalStake();
     loadValidatorAccountableSelfStake();
+    getConstitutionParameters();
   }, []);
 
   return (

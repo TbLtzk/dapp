@@ -16,6 +16,7 @@ interface Props extends Omit<InputProps, 'onChange' | 'prefix' | 'value'> {
   prefix?: ReactNode;
   children?: ReactNode;
   labelTip?: string;
+  alwaysEnabled?: boolean;
   onChange: (val: string) => void;
 }
 
@@ -32,10 +33,11 @@ function Input ({
   labelTip,
   children,
   onChange,
+  alwaysEnabled,
   ...rest
 }: Props) {
   const { isConnected, isRightNetwork } = useWeb3Context();
-  const isDisabled = disabled || !isConnected || !isRightNetwork;
+  const isDisabled = disabled || (!alwaysEnabled && (!isConnected || !isRightNetwork));
 
   return (
     <UiInput

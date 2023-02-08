@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
@@ -34,9 +35,39 @@ function WithdrawForm () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { vaultBalance, qVaultMinimumTimeLock, withdrawFromVault } = useQVault();
+  const {
+    vaultBalance,
+    qVaultMinimumTimeLock,
+    withdrawFromVault,
+    votingWeight,
+    isVotingWeightUnlocked,
+    delegationStakeInfo,
+    loadLockInfo,
+    loadDelegationStakeInfo
+  } = useQVault();
   const user = useUser();
-  const maxAmount = toBigNumber(vaultBalance).minus(qVaultMinimumTimeLock).toString();
+
+  useEffect(() => {
+    loadLockInfo(user.address);
+    loadDelegationStakeInfo();
+  }, []);
+
+  const maxAmount = useMemo(() => {
+    return toBigNumber(vaultBalance)
+      .minus(qVaultMinimumTimeLock)
+      .minus(
+        isVotingWeightUnlocked || toBigNumber(delegationStakeInfo.totalDelegatedStake).isGreaterThan(votingWeight)
+          ? delegationStakeInfo.totalDelegatedStake
+          : votingWeight
+      )
+      .toString();
+  }, [
+    vaultBalance,
+    qVaultMinimumTimeLock,
+    votingWeight,
+    isVotingWeightUnlocked,
+    delegationStakeInfo
+  ]);
 
   const form = useForm({
     initialValues: { amount: '' },

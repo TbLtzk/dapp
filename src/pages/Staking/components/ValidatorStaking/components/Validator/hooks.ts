@@ -66,13 +66,6 @@ const useFetchValidatorData = (address: string) => {
     if (!pendingTransactions.length) {
       fetchValidatorData();
     }
-
-    return () => {
-      setValidator({} as Validator);
-      setIsValidator(true);
-      setError(null);
-      setLoading(true);
-    };
   }, [pendingTransactions.length]);
 
   return {

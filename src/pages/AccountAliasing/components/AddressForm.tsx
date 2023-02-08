@@ -49,10 +49,12 @@ function AddressForm ({ selectedAddress, onSubmit }: Props) {
         <WrapContainer>
           <Input
             {...form.fields.address}
+            alwaysEnabled
             label={t('DISPLAY_ALIASES_FOR_ADDRESS')}
             hint={`${t('SELECTED_ADDRESS')} ${trimString(selectedAddress)}`}
           />
           <Button
+            alwaysEnabled
             type="submit"
             disabled={!form.isValid}
             style={{ marginTop: '34px' }}

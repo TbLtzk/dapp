@@ -1022,6 +1022,8 @@
   "DELEGATE": "Делегувати",
   "MAIN_INFO": "Основна інформація",
   "INACTIVE_VALIDATOR": "Неактивний валідатор",
+  "NOT_IN_SHORTLIST": "Немає в рейтингу",
+  "BACKUP_VALIDATOR": "Резервний валідатор",
   "VALIDATOR_STATUS": "Статус валідатора",
   "TIME_OF_LAST_VALIDATED_BLOCK": "Час останнього затвердженого блоку",
   "AVERAGE_AVAILABILITY": "Середня доступність",

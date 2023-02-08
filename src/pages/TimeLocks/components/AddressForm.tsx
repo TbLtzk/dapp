@@ -38,10 +38,12 @@ function AddressForm ({ onSubmit }: { onSubmit: () => void }) {
     >
       <Input
         {...form.fields.address}
+        alwaysEnabled
         label={t('DISPLAY_TIME_LOCKS_FOR_ADDRESS')}
       />
 
       <Button
+        alwaysEnabled
         type="submit"
         className="address-form-btn"
         disabled={!form.isValid}

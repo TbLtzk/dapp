@@ -108,7 +108,11 @@ function Table<T> ({
                 <>
                   {!tiny && !hideSearch && (
                     <div className="head-elements">
-                      <Search value={props.searchProps.searchText} onChange={props.searchProps.onSearch} />
+                      <Search
+                        alwaysEnabled
+                        value={props.searchProps.searchText}
+                        onChange={props.searchProps.onSearch}
+                      />
                       {buttons}
                     </div>
                   )}
