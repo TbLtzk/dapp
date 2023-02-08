@@ -39,7 +39,7 @@ function NewExpertProposal () {
     initialValues: DEFAULT_VALUES,
     onConfirm: (form) => {
       submitTransaction({
-        successMessage: t('CREATE_PROPOSAL_SUCCESS'),
+        successMessage: t('CREATE_PROPOSAL_TX'),
         submitFn: () => createNewProposal(form),
         onSuccess: () => history.push(RoutePaths.expertProposals)
       });

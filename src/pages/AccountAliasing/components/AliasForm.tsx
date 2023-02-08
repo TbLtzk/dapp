@@ -28,7 +28,7 @@ function AliasForm ({ alias }: { alias: Alias | null }) {
     },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('RESERVE_ALIAS_SUCCESS'),
+        successMessage: t('RESERVE_ALIAS_TX'),
         submitFn: () => setAlias({
           address: form.address,
           purpose: form.purpose as AliasPurpose,

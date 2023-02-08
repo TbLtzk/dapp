@@ -31,7 +31,7 @@ function DelegationsTable () {
 
   const removeOneDelegation = (address: string) => {
     submitTransaction({
-      successMessage: t('REMOVE_STAKE_SUCCESSFUL'),
+      successMessage: t('REMOVE_STAKE_TX'),
       submitFn: () => delegateStake({
         addresses: [address],
         stakes: ['0'],
@@ -44,7 +44,7 @@ function DelegationsTable () {
     const zerosAmount = fillArray(addressesToRemove.length).map((_) => '0');
 
     submitTransaction({
-      successMessage: t('REMOVE_ALL_STAKES_SUCCESS'),
+      successMessage: t('REMOVE_ALL_STAKES_TX'),
       submitFn: () => delegateStake({
         addresses: addressesToRemove,
         stakes: zerosAmount,

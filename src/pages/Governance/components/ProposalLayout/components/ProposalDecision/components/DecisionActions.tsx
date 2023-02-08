@@ -68,7 +68,7 @@ function DecisionActions ({ proposal }: Props) {
               compact
               look="ghost"
               onClick={() => submitTransaction({
-                successMessage: t('RECALL_DECISION_SUCCESS'),
+                successMessage: t('RECALL_DECISION_TX'),
                 submitFn: () => recallDecision(proposal.id)
               })}
             >
@@ -89,7 +89,7 @@ function DecisionActions ({ proposal }: Props) {
               look="secondary"
               disabled={hasConfirmed || !isRootNode}
               onClick={() => submitTransaction({
-                successMessage: t('VOTE_TO_CONFIRM_DECISION_SUCCESS'),
+                successMessage: t('VOTE_TO_CONFIRM_DECISION_TX'),
                 onSuccess: () => setHasConfirmed(true),
                 submitFn: () => confirmDecision(proposal.id),
               })}
@@ -110,7 +110,7 @@ function DecisionActions ({ proposal }: Props) {
               look="secondary"
               disabled={!isRootNode}
               onClick={() => submitTransaction({
-                successMessage: t('EXECUTE_DECISION_SUCCESS'),
+                successMessage: t('EXECUTE_DECISION_TX'),
                 submitFn: () => executeDecision(proposal.id),
               })}
             >

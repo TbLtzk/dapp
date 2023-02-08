@@ -14,13 +14,13 @@ function Settings () {
   const { t } = useTranslation();
 
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [languageOpen, setLanguageOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
   const handleSettingsToggle = (val: boolean) => {
     setSettingsOpen(val);
     if (!val) return;
 
-    setLanguageOpen(false);
+    setIsLanguageOpen(false);
   };
 
   return (
@@ -42,18 +42,16 @@ function Settings () {
       onToggle={handleSettingsToggle}
     >
       <div className="settings-content">
-        <h3 className="settings-title text-xl font-semibold">{languageOpen ? t('LANGUAGE') : t('SETTINGS')}</h3>
-
-        <div className="settings-main">
-          {languageOpen
-            ? (
-              <Languages onBack={() => setLanguageOpen(false)} />
-            )
-            : (
-              <SettingsMenu onLanguageOpen={() => setLanguageOpen(true)} />
-            )}
-        </div>
+        <h3 className="settings-title text-xl font-semibold">{isLanguageOpen ? t('LANGUAGE') : t('SETTINGS')}</h3>
+        {isLanguageOpen
+          ? (
+            <Languages onBack={() => setIsLanguageOpen(false)} />
+          )
+          : (
+            <SettingsMenu onLanguageOpen={() => setIsLanguageOpen(true)} />
+          )}
       </div>
+
     </SettingsDropdown>
   );
 }

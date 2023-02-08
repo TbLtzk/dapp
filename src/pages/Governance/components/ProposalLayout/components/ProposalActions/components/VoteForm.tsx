@@ -35,7 +35,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
     validators: { vote: [required] },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('VOTE_SUCCESS'),
+        successMessage: t('VOTE_TX'),
         onConfirm: () => onSubmit(),
         submitFn: () => voteForProposal({
           type: 'basic',

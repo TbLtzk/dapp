@@ -47,7 +47,7 @@ function TransferForm () {
     validators: { amount: [required, amount(maxAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('TRANSFER_INTO_Q_VAULT_SUCCESS'),
+        successMessage: t('TRANSFER_INTO_Q_VAULT_TX'),
         submitFn: () => depositToVault({ address: user.address, amount }),
         onSuccess: () => form.reset(),
       });

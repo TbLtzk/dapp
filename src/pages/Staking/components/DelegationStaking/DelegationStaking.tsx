@@ -47,7 +47,7 @@ function DelegationStaking () {
                   disabled={!isMoreThanZero}
                   className="claim-btn"
                   onClick={() => submitTransaction({
-                    successMessage: t('ON_OUTSTANDING_DELEGATION_REWARDS_SUCCESS'),
+                    successMessage: t('ON_OUTSTANDING_DELEGATION_REWARDS_TX'),
                     submitFn: claimStakeDelegatorReward
                   })}
                 >

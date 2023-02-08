@@ -37,7 +37,7 @@ function AuctionActions ({ auction, auctionType, onSubmit }: Props) {
 
   function handleExecuteAuction () {
     submitTransaction({
-      successMessage: t('AUCTION_EXECUTION_SUCCESS'),
+      successMessage: t('AUCTION_EXECUTION_TX'),
       onSuccess: () => onSubmit(),
       submitFn: () => executeAuction({
         auctionType,

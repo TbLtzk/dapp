@@ -61,16 +61,16 @@ function RootNodeForms ({ formType, onReset }: Props) {
       let submitFn: () => Promise<SubmitTransactionResponse>;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          successMessage = t('STAKE_TO_PANEL_SUCCESS');
+          successMessage = t('STAKE_TO_PANEL_TX');
           submitFn = () => commitRootNodeStake(amount);
           break;
         case FORM_TYPES.announceWithdrawal:
-          successMessage = t('ANNOUNCE_WITHDRAWAL_SUCCESS');
+          successMessage = t('ANNOUNCE_WITHDRAWAL_TX');
           submitFn = () => announceRootStakeWithdrawal(amount);
           break;
         case FORM_TYPES.withdrawFromRanking:
         default:
-          successMessage = t('WITHDRAW_FROM_PANEL_SUCCESS');
+          successMessage = t('WITHDRAW_FROM_PANEL_TX');
           submitFn = () => withdrawRootStake(amount);
           break;
       }

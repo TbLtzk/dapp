@@ -75,7 +75,7 @@ const StyledContainer = styled.div`
 
 const ValidatorContext = createContext({
   validator: {} as Validator,
-  refetchValidator: () => {}
+  refetchValidator: () => { }
 });
 
 function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
@@ -141,8 +141,8 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
               validator={validator}
               buttonLoading={updateCompoundRateLoading}
               onButtonClick={() => submitTransaction({
-                successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
-                hideLoading: true,
+                successMessage: t('REFRESH_OF_USER_DELEGATIONS_TX'),
+                isClosedModal: true,
                 submitFn: updateCompoundRate
               })}
             />

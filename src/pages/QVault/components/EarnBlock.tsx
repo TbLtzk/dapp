@@ -86,7 +86,7 @@ function EarnBlock () {
         className="update-reward-action"
         loading={qHolderUpdateTimeLoading}
         onClick={() => submitTransaction({
-          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_SUCCESS'),
+          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX'),
           submitFn: allocateQHolderRewards
         })}
       >

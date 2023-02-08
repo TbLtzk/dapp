@@ -36,7 +36,7 @@ function ManageDelegations () {
     maxCount: 30,
     onSubmit: (forms: FormDelegation[]) => {
       submitTransaction({
-        successMessage: t('UPDATE_DELEGATION_SUCCESS'),
+        successMessage: t('DELEGATION_UPDATE_TX'),
         onSuccess: () => formArray.reset(),
         submitFn: () => delegateStake({
           addresses: forms.map((f) => f.address),
@@ -128,7 +128,7 @@ function ManageDelegations () {
             />
           </FormBlock>
         ))}
-        <ClaimTip/>
+        <ClaimTip />
 
         <div className="delegation-buttons">
           <Button look="ghost" onClick={formArray.appendForm}>

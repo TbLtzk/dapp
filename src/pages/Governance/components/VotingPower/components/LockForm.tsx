@@ -36,7 +36,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
     validators: { amount: [required, max(vaultBalance)] },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('UPDATE_LOCK_AMOUNT_SUCCESS'),
+        successMessage: t('UPDATE_LOCK_AMOUNT_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => {
           const delta = toBigNumber(form.amount).minus(toBigNumber(votingWeight));

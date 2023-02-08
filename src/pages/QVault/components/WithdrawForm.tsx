@@ -74,7 +74,7 @@ function WithdrawForm () {
     validators: { amount: [required, amount(maxAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('WITHDRAW_FROM_Q_VAULT_SUCCESS'),
+        successMessage: t('WITHDRAW_FROM_Q_VAULT_TX'),
         submitFn: async () => withdrawFromVault({ amount, address: user.address }),
         onSuccess: () => form.reset(),
       });

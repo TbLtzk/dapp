@@ -73,7 +73,7 @@ function ProposalActions ({ proposal, title }: Props) {
   const isVetoShown = proposal.status === ProposalStatus.ACCEPTED && !isContractWithoutVeto && !isApprovalContract;
 
   const voteText = isApprovalContract ? t('APPROVE') : t('VOTE');
-  const voteTextForTransaction = isApprovalContract ? t('APPROVE_SUCCESS') : t('VOTE_SUCCESS');
+  const voteTextForTransaction = isApprovalContract ? t('APPROVE_TX') : t('VOTE_TX');
 
   const handleVote = () => {
     if (isApprovalContract) {
@@ -117,7 +117,7 @@ function ProposalActions ({ proposal, title }: Props) {
               style={{ width: '160px' }}
               disabled={proposal.userVetoed || !isRootNode}
               onClick={() => submitTransaction({
-                successMessage: t('VETO_SUCCESS'),
+                successMessage: t('VETO_TX'),
                 submitFn: () => voteForProposal({ type: 'constitution', proposal })
               })}
             >
@@ -132,7 +132,7 @@ function ProposalActions ({ proposal, title }: Props) {
       {proposal.status === ProposalStatus.PASSED && (
         <Button
           onClick={() => submitTransaction({
-            successMessage: t('EXECUTE_SUCCESS'),
+            successMessage: t('EXECUTE_TX'),
             submitFn: () => executeProposal(proposal)
           })}
         >

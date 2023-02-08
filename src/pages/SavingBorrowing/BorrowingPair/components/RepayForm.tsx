@@ -35,7 +35,7 @@ const StyledForm = styled.form`
   }
 `;
 
-function RepayForm ({ vault }: {vault: VaultWithId}) {
+function RepayForm ({ vault }: { vault: VaultWithId }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
@@ -55,7 +55,7 @@ function RepayForm ({ vault }: {vault: VaultWithId}) {
     validators: { amount: [required, amount(maxRepayAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('REPAY_BORROWED_ASSET_SUCCESS'),
+        successMessage: t('REPAY_BORROWED_ASSET_TX'),
         submitFn: () => repayBorrowing({ amount, vaultId: vault.id }),
         onSuccess: () => {
           form.reset();

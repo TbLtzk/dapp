@@ -57,8 +57,8 @@ function DebtViewer ({ asset }: { asset: Asset }) {
   const handleRefreshDebt = async () => {
     setTimeLoading(true);
     await submitTransaction({
-      successMessage: t('TIME_SINCE_LAST_REFRESH_SUCCESS'),
-      hideLoading: true,
+      successMessage: t('TIME_SINCE_LAST_REFRESH_TX'),
+      isClosedModal: true,
       submitFn: () => updateBorrowingCompoundRate(asset)
     });
 

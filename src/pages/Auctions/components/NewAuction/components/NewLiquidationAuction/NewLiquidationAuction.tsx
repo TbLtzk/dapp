@@ -15,7 +15,7 @@ import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
-const DEFAULT_VALUES:CreateLiquidationAuction = {
+const DEFAULT_VALUES: CreateLiquidationAuction = {
   vaultOwner: '',
   vaultId: '',
   bid: '',
@@ -35,7 +35,7 @@ function NewLiquidationAuction () {
     initialValues: DEFAULT_VALUES,
     onConfirm: (form) => {
       submitTransaction({
-        successMessage: t('CREATE_LIQUIDATION_AUCTION_SUCCESS'),
+        successMessage: t('CREATE_LIQUIDATION_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'liquidation', form }),
         onSuccess: () => history.push(RoutePaths.liquidation)
       });

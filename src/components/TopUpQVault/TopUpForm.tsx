@@ -41,7 +41,7 @@ function TopUpForm ({ onSubmit }: { onSubmit: () => void }) {
     },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('TRANSFER_INTO_Q_VAULT_SUCCESS'),
+        successMessage: t('TRANSFER_INTO_Q_VAULT_TX'),
         submitFn: () => depositToVault({ address: user.address, amount: form.amount }),
         onSuccess: () => onSubmit()
       });

@@ -55,8 +55,8 @@ function AllocationBlocks () {
         loading={defaultAllocationProxyLoading}
         title={t('DEFAULT_ALLOCATION_PROXY')}
         onAllocate={() => submitTransaction({
-          successMessage: t('DEFAULT_ALLOCATION_PROXY_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('DEFAULT_ALLOCATION_PROXY_TX'),
+          isClosedModal: true,
           submitFn: allocateDefaultProxyRewards
         })}
       />
@@ -65,8 +65,8 @@ function AllocationBlocks () {
         loading={validationRewardProxyLoading}
         title={t('VALIDATION_REWARD_PROXY')}
         onAllocate={() => submitTransaction({
-          successMessage: t('VALIDATON_REWARD_PROXY_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('VALIDATON_REWARD_PROXY_TX'),
+          isClosedModal: true,
           submitFn: allocateValidationProxyRewards
         })}
       />
@@ -75,8 +75,8 @@ function AllocationBlocks () {
         loading={rootNodeRewardProxyLoading}
         title={t('ROOT_NODE_REWARD_PROXY')}
         onAllocate={() => submitTransaction({
-          successMessage: t('ROOT_NODE_REWARD_PROXY_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('ROOT_NODE_REWARD_PROXY_TX'),
+          isClosedModal: true,
           submitFn: allocateRootNodeProxyRewards
         })}
       />

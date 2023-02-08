@@ -53,7 +53,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
     validators: { amount: [required, amount(savingAvailableToDeposit)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('DEPOSIT_SAVING_ASSET_SUCCESS'),
+        successMessage: t('DEPOSIT_SAVING_ASSET_TX'),
         submitFn: () => depositSaving(amount),
         onSuccess: () => form.reset(),
       });

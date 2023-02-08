@@ -46,7 +46,7 @@ function WithdrawForm ({ onSubmit, balance, timeLockBalance }: Props) {
     validators: { amount: [required, amount(maxAmont)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('WITHDRAW_FROM_VESTING_SUCCESS'),
+        successMessage: t('WITHDRAW_FROM_VESTING_TX'),
         submitFn: () => withdrawVesting(address, amount),
         onSuccess: () => onSubmit()
       });

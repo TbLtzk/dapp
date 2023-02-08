@@ -1,28 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface PendingTransaction {
+export type TxStatus = 'waitingConfirmation' | 'sending' | 'success' | 'error';
+
+export interface Transaction {
   id: string;
-  title: string;
-  hideLoading: boolean;
+  message: string;
+  status: TxStatus;
+  hash?: string;
+  isClosedModal?: boolean;
+}
+
+export interface TransactionEditableParams {
+  title?: string;
+  status?: TxStatus;
+  isConfirmed?: boolean;
+  isClosedModal?: boolean;
+  hash?: string;
 }
 
 interface TransactionState {
-  pendingTransactions: PendingTransaction[];
+  transactions: Transaction[];
 }
 
 const initialState: TransactionState = {
-  pendingTransactions: [],
+  transactions: [],
 };
 
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
   reducers: {
-    setPendingTransactions: (state, { payload }: PayloadAction<PendingTransaction[]>) => {
-      state.pendingTransactions = payload;
+    setTransactions: (state, { payload }: PayloadAction<Transaction[]>) => {
+      state.transactions = payload;
     },
-  }
+  },
+
 });
 
-export const { setPendingTransactions } = transactionSlice.actions;
+export const { setTransactions } = transactionSlice.actions;
 export default transactionSlice.reducer;

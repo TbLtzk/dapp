@@ -26,7 +26,7 @@ function ProposerRemarkForm ({ proposal, onSubmit }: Props) {
     validators: { proposerRemark: [required] },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('CONFIRM_APPEAL_SUCCESS'),
+        successMessage: t('CONFIRM_APPEAL_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => proposeRemark({
           remark: form.proposerRemark,

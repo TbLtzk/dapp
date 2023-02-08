@@ -31,7 +31,7 @@ function ReserveForm () {
     validators: { address: [required, address] },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('RESERVE_ALIAS_SUCCESS'),
+        successMessage: t('RESERVE_ALIAS_TX'),
         submitFn: () => reserveAlias(form.address)
       });
     },
@@ -39,7 +39,7 @@ function ReserveForm () {
 
   const unreserveAlias = () => {
     submitTransaction({
-      successMessage: t('UNRESERVE_ALIAS_SUCCESS'),
+      successMessage: t('UNRESERVE_ALIAS_TX'),
       submitFn: () => reserveAlias(ZERO_ADDRESS)
     });
   };

@@ -32,7 +32,7 @@ function DelegateStakeForm ({ delegation, onSubmit }: Props) {
     validators: { amount: [required, max(delegationStakeInfo.delegatableAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('SUCCESSFUL_STAKE_UPDATE'),
+        successMessage: t('STAKE_UPDATE_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => delegateStake({
           addresses: [delegation.address],
@@ -69,7 +69,7 @@ function DelegateStakeForm ({ delegation, onSubmit }: Props) {
         max={delegationStakeInfo.delegatableAmount}
       />
 
-      <ClaimTip/>
+      <ClaimTip />
 
       <Button
         type="submit"

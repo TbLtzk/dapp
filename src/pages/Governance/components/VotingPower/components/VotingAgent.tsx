@@ -70,7 +70,7 @@ function VotingAgent ({ disabled }: { disabled: boolean }) {
             compact
             disabled={!canConfirmAgent}
             onClick={() => submitTransaction({
-              successMessage: t('DELEGATE_VOTING_POWER_SUCCESS'),
+              successMessage: t('DELEGATE_VOTING_POWER_TX'),
               submitFn: setNewVotingAgent
             })}
           >
@@ -88,7 +88,7 @@ function VotingAgent ({ disabled }: { disabled: boolean }) {
             disabled={disabled}
             look="danger"
             onClick={() => submitTransaction({
-              successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),
+              successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_TX'),
               submitFn: () => announceNewVotingAgent(user.address)
             })}
           >

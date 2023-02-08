@@ -142,7 +142,7 @@ function AuctionStats () {
           <Button
             look="secondary"
             onClick={() => submitTransaction({
-              hideLoading: true,
+              isClosedModal: true,
               submitFn: performNetting
             })}
           >

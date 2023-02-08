@@ -17,7 +17,7 @@ import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { RoutePaths } from 'constants/routes';
 
-const DEFAULT_VALUES:CreateAuction = {
+const DEFAULT_VALUES: CreateAuction = {
   bid: '',
 };
 
@@ -35,7 +35,7 @@ function NewSystemDebtAuction () {
     initialValues: DEFAULT_VALUES,
     onConfirm: (form) => {
       submitTransaction({
-        successMessage: t('CREATE_SYSTEM_DEBT_AUCTION_SUCCESS'),
+        successMessage: t('CREATE_SYSTEM_DEBT_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'systemDebt', form }),
         onSuccess: () => history.push(RoutePaths.systemDebt),
       });
@@ -55,14 +55,14 @@ function NewSystemDebtAuction () {
       id: 'type',
       name: t('AUCTION_TYPE'),
       title: t('CREATE_SYSTEM_DEBT_AUCTION'),
-      children: <ProvideInfoStep reserveLot={reserveLot}/>
+      children: <ProvideInfoStep reserveLot={reserveLot} />
     },
     {
       id: 'confirm',
       name: t('CONFIRMATION'),
       title: t('CONFIRMATION'),
       tip: t('CHECK_THE_DATA_AND_SUBMIT_YOUR_AUCTION'),
-      children: <ConfirmationStep reserveLot={reserveLot}/>
+      children: <ConfirmationStep reserveLot={reserveLot} />
     }
   ];
 

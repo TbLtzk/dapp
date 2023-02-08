@@ -26,7 +26,7 @@ function CastObjectionForm ({ proposal, onSubmit }: Props) {
     validators: { externalLink: [url] },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('CAST_OBJECTION_SUCCESS'),
+        successMessage: t('CAST_OBJECTION_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => castObjection({
           remark: form.externalLink,

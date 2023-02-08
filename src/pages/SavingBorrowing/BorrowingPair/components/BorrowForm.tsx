@@ -58,7 +58,7 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
     validators: { amount: [required, min(minAmount), amount(borrowVault.borrowingDetails?.availableBorrow)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('BORROW_ASSET_SUCCESS'),
+        successMessage: t('BORROW_ASSET_TX'),
         submitFn: () => borrowAsset({ amount, vaultId: vault.id }),
         onSuccess: () => {
           form.reset();

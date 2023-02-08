@@ -38,7 +38,7 @@ const StyledForm = styled.form`
   }
 `;
 
-function DepositForm ({ vault }: {vault: VaultWithId}) {
+function DepositForm ({ vault }: { vault: VaultWithId }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
@@ -58,7 +58,7 @@ function DepositForm ({ vault }: {vault: VaultWithId}) {
     validators: { amount: [required, amount(collateralDetails?.availableDeposit)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('DEPOSIT_COLLATERAL_SUCCESS'),
+        successMessage: t('DEPOSIT_COLLATERAL_TX'),
         submitFn: () => depositCollateral({
           amount,
           vaultId: vault.id,

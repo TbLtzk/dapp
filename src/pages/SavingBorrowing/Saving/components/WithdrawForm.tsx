@@ -31,7 +31,7 @@ function WithdrawForm ({ asset }: { asset: string }) {
     validators: { amount: [required, amount(savingBalanceDetails.currentBalance)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('WITHDRAW_SAVING_ASSET_SUCCESS'),
+        successMessage: t('WITHDRAW_SAVING_ASSET_TX'),
         submitFn: () => withdrawSaving(amount),
         onSuccess: () => form.reset(),
       });

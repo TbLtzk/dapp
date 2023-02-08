@@ -56,8 +56,8 @@ function ValidatorAllocation () {
         loading={defaultAllocationProxyLoading}
         title={t('DEFAULT_ALLOCATION_PROXY')}
         onClick={() => submitTransaction({
-          successMessage: t('DEFAULT_ALLOCATION_PROXY_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('DEFAULT_ALLOCATION_PROXY_TX'),
+          isClosedModal: true,
           submitFn: allocateDefaultProxyRewards
         })}
       >
@@ -69,8 +69,8 @@ function ValidatorAllocation () {
         loading={validationRewardProxyLoading}
         title={t('VALIDATION_REWARD_PROXY')}
         onClick={() => submitTransaction({
-          successMessage: t('VALIDATON_REWARD_PROXY_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('VALIDATON_REWARD_PROXY_TX'),
+          isClosedModal: true,
           submitFn: allocateValidationProxyRewards
         })}
       >
@@ -83,8 +83,8 @@ function ValidatorAllocation () {
         loading={compoundRateLoading}
         title={t('TIME_SINCE_LAST_REFRESH_OF_USER_DELEGATIONS')}
         onClick={() => submitTransaction({
-          successMessage: t('REFRESH_OF_USER_DELEGATIONS_SUCCESS'),
-          hideLoading: true,
+          successMessage: t('REFRESH_OF_USER_DELEGATIONS_TX'),
+          isClosedModal: true,
           submitFn: updateCompoundRate
         })}
       >

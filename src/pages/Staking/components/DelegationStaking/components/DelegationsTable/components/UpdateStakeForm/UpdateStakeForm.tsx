@@ -34,7 +34,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
     validators: { amount: [required, min(0), max(maxAmountToDelegate)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('SUCCESS_STAKE_UPDATE'),
+        successMessage: t('UPDATE_STAKE_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => delegateStake({
           addresses: [delegation.validator],
@@ -71,7 +71,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
         max={String(maxAmountToDelegate)}
         hint={`${t('CURRENT_DELEGATION')} ${formatAsset(delegation.actualStake, 'Q')}`}
       />
-      <ClaimTip/>
+      <ClaimTip />
       <Button
         type="submit"
         style={{ width: '100%', marginTop: '15px' }}

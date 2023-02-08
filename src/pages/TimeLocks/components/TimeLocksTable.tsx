@@ -67,7 +67,7 @@ function TimeLocksTable ({
           <Button
             look="secondary"
             onClick={() => submitTransaction({
-              successMessage: t('PURGE_EXPIRED_TIME_LOCKS_SUCCESS'),
+              successMessage: t('PURGE_EXPIRED_TIME_LOCKS_TX'),
               submitFn: () => purgeTimeLocks({ address, contractType: contract }),
               onSuccess: () => onSubmit()
             })}

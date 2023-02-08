@@ -38,7 +38,7 @@ function WithdrawForm ({ vault }: { vault: VaultWithId }) {
     validators: { amount: [required, amount(collateralDetails.availableWithdraw)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('WITHDRAW_COLLATERAL_SUCCESS'),
+        successMessage: t('WITHDRAW_COLLATERAL_TX'),
         submitFn: () => withdrawCollateral({
           amount,
           vaultId: vault.id,

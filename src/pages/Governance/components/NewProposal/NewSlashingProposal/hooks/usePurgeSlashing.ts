@@ -98,7 +98,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
     if (!shouldPurge) return;
 
     submitTransaction({
-      successMessage: t('PURGE_SUCCESS'),
+      successMessage: t('PURGE_TX'),
       submitFn: async () => purgeSlashingAction(address)
     });
   };

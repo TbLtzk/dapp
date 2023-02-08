@@ -50,7 +50,7 @@ function SendForm () {
     },
     onSubmit: (values) => {
       submitTransaction({
-        successMessage: t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_SUCCESS'),
+        successMessage: t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_TX'),
         submitFn: () => sendToVault(values),
         onSuccess: () => form.reset(),
       });

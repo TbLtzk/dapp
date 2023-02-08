@@ -35,7 +35,7 @@ function ProposeDecisionForm ({ proposal, onSubmit }: Props) {
     },
     onSubmit: (form) => {
       submitTransaction({
-        successMessage: t('PROPOSE_DECISION_SUCCESS'),
+        successMessage: t('PROPOSE_DECISION_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => proposeDecision({
           externalLink: form.externalLink as string,

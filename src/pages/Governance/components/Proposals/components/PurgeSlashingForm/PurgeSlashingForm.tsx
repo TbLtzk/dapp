@@ -29,7 +29,7 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
     },
     onSubmit: ({ address }) => {
       submitTransaction({
-        successMessage: t('PURGE_SUCCESS'),
+        successMessage: t('PURGE_TX'),
         submitFn: () => purgeSlashing(address),
         onSuccess: () => onClose(),
       });

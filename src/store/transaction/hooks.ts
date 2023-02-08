@@ -1,45 +1,54 @@
 import { useCallback } from 'react';
+import { useAlert } from 'react-alert';
 import { useDispatch } from 'react-redux';
 
 import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { t } from 'i18next';
 import uniqueId from 'lodash/uniqueId';
 
-import { PendingTransaction, setPendingTransactions } from './reducer';
+import { setTransactions, Transaction, TransactionEditableParams } from './reducer';
 
 import { getState, useAppSelector } from 'store';
+import { useQVault } from 'store/q-vault/hooks';
 
 import { captureError } from 'utils/errors';
-import { eventBus, getTxEventName } from 'utils/event-bus';
 
 export function useTransaction () {
   const dispatch = useDispatch();
+  const alert = useAlert();
+  const { loadAllBalances } = useQVault();
 
-  const pendingTransactions = useAppSelector(({ transaction }) => transaction.pendingTransactions);
+  const pendingTransactions = useAppSelector(({ transaction }) => {
+    return transaction.transactions.filter((item: Transaction) =>
+      item.status === 'sending' || item.status === 'waitingConfirmation');
+  });
+
+  const transactions = useAppSelector(({ transaction }) => transaction.transactions);
 
   async function submitTransaction ({
     submitFn,
     successMessage,
-    hideLoading = false,
+    isClosedModal = false,
     onSuccess = () => {},
     onConfirm = () => {},
     onError = () => {},
   }: {
     submitFn: () => Promise<SubmitTransactionResponse | void | undefined>;
     successMessage?: string;
-    hideLoading?: boolean;
+    isClosedModal?: boolean;
     onSuccess?: () => void;
     onConfirm?: () => void;
     onError?: (error?: unknown) => void;
   }) {
-    const transaction: PendingTransaction = {
+    const transaction: Transaction = {
       id: uniqueId(),
-      hideLoading,
-      title: successMessage || t('TRANSACTION_SUCCESS')
+      isClosedModal,
+      message: successMessage || t('DEFAULT_MESSAGE_TX'),
+      status: 'waitingConfirmation',
     };
 
-    const { pendingTransactions } = getState().transaction;
-    dispatch(setPendingTransactions([...pendingTransactions, transaction]));
+    const { transactions } = getState().transaction;
+    dispatch(setTransactions([{ ...transaction }, ...transactions]));
 
     try {
       const submitResponse = await submitFn();
@@ -47,32 +56,50 @@ export function useTransaction () {
       if (submitResponse?.promiEvent) {
         submitResponse.promiEvent
           .once('transactionHash', (txHash: string) => {
-            eventBus.emit(getTxEventName(transaction.id, 'hash'), txHash);
+            updateTransaction(transaction.id, { hash: txHash, status: 'sending' });
             onConfirm();
           });
 
         await submitResponse.promiEvent;
       }
-
       onSuccess();
-
-      eventBus.emit(getTxEventName(transaction.id, 'success'), transaction.title);
+      updateTransaction(transaction.id, { status: 'success' });
+      await alertTxStatus(transaction.id, 'success', transaction.message);
     } catch (error) {
       captureError(error);
       onError(error);
-      eventBus.emit(getTxEventName(transaction.id, 'error'), getErrorMessage(error));
+      updateTransaction(transaction.id, { status: 'error' });
+      await alertTxStatus(transaction.id, 'error', getErrorMessage(error));
     }
   }
 
-  const removeTransaction = (id: string) => {
-    const { pendingTransactions } = getState().transaction;
-    dispatch(setPendingTransactions(pendingTransactions.filter(tx => tx.id !== id)));
+  const getTxById = (id: string) => {
+    const { transactions } = getState().transaction;
+    return transactions.find((tx: Transaction) => tx.id === id);
+  };
+
+  const updateTransaction = (id: string, params: TransactionEditableParams) => {
+    const { transactions } = getState().transaction;
+    const txIndex = transactions.findIndex((tx: Transaction) => tx.id === id);
+    if (txIndex === -1) return;
+    const newTxs = [...transactions];
+    newTxs[txIndex] = { ...newTxs[txIndex], ...params };
+    dispatch(setTransactions(newTxs));
+  };
+
+  const alertTxStatus = async (id: string, type: 'success' | 'error', message: string) => {
+    const currentTx = getTxById(id);
+    if (currentTx?.isClosedModal) {
+      alert[type](message);
+    }
+    await loadAllBalances();
   };
 
   return {
     pendingTransactions,
+    transactions,
     submitTransaction: useCallback(submitTransaction, []),
-    removeTransaction: useCallback(removeTransaction, []),
+    updateTransaction: useCallback(updateTransaction, []),
   };
 }
 

@@ -17,7 +17,7 @@ import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
 import { RoutePaths } from 'constants/routes';
 
-const DEFAULT_VALUES:CreateAuction = {
+const DEFAULT_VALUES: CreateAuction = {
   bid: '',
 };
 
@@ -35,7 +35,7 @@ function NewSystemSurplusAuction () {
     initialValues: DEFAULT_VALUES,
     onConfirm: (form) => {
       submitTransaction({
-        successMessage: t('CREATE_SYSTEM_SURPLUS_AUCTION_SUCCESS'),
+        successMessage: t('CREATE_SYSTEM_SURPLUS_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'systemSurplus', form }),
         onSuccess: () => history.push(RoutePaths.systemSurplus),
       });
@@ -55,14 +55,14 @@ function NewSystemSurplusAuction () {
       id: 'type',
       name: t('AUCTION_TYPE'),
       title: t('CREATE_SYSTEM_SURPLUS_AUCTION'),
-      children: <ProvideInfoStep surplusLot={surplusLot}/>
+      children: <ProvideInfoStep surplusLot={surplusLot} />
     },
     {
       id: 'confirm',
       name: t('CONFIRMATION'),
       title: t('CONFIRMATION'),
       tip: t('CHECK_THE_DATA_AND_SUBMIT_YOUR_AUCTION'),
-      children: <ConfirmationStep surplusLot={surplusLot}/>
+      children: <ConfirmationStep surplusLot={surplusLot} />
     }
   ];
 

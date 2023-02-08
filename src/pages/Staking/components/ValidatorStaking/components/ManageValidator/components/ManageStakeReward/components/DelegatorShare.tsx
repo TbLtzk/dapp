@@ -35,7 +35,7 @@ function DelegatorsShare () {
     validators: { amount: [required, max(100)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('SET_DELEGATOR_SHARE_SUCCESS'),
+        successMessage: t('SET_DELEGATOR_SHARE_TX'),
         submitFn: () => setDelegatorsShare(amount),
         onSuccess: () => form.reset(),
       });

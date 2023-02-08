@@ -81,8 +81,8 @@ function BalanceOverview () {
     setLoadingTimeSinceRefreshBalance(true);
 
     await submitTransaction({
-      hideLoading: true,
-      successMessage: t('SAVING_TIME_SINSE_REFRESH_SUCCESS'),
+      isClosedModal: true,
+      successMessage: t('SAVING_TIME_SINSE_REFRESH_TX'),
       submitFn: updateSavingCompoundRate,
     });
 

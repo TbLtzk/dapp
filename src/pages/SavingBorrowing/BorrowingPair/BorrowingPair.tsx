@@ -108,7 +108,7 @@ function BorrowingPair ({ match }: RouteComponentProps<{
 
         <Button
           onClick={() => submitTransaction({
-            successMessage: t('CREATE_ASSET_VAULT_SUCCESS'),
+            successMessage: t('CREATE_ASSET_VAULT_TX'),
             submitFn: () => createVault(collateral),
           })}
         >

@@ -35,7 +35,7 @@ const LocalStateContext = createContext(
   {} as ReturnType<typeof useMultiStepForm<typeof DEFAULT_VALUES>>
 );
 
-function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
+function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { bidForAuction } = useAuctions();
@@ -46,7 +46,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
     validators: { bid: [required, min(auction.raisingBid), max('1000000000000000')] },
     onSubmit: (values) => {
       submitTransaction({
-        successMessage: t('BID_FOR_AUCTION_SUCCESS'),
+        successMessage: t('BID_FOR_AUCTION_TX'),
         onSuccess: () => {
           handleHide();
           onSubmit();
@@ -94,7 +94,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }:Props) {
     const { address } = await getAuctionInstance(auction.auctionType);
 
     await submitTransaction({
-      successMessage: t('APPROVE_SUCCESS'),
+      successMessage: t('APPROVE_TX'),
       submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: user.address }),
       onSuccess: () => setIsApproved(true),
       onError: () => setIsApproved(false)

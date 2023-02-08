@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useAlert } from 'react-alert';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, Modal, Spinner } from '@q-dev/q-ui-kit';
@@ -13,30 +12,25 @@ import { ToastType, toastTypes } from 'components/Toast/Toast';
 
 import TxHashLink from './TxHashLink';
 
-import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { PendingTransaction } from 'store/transaction/reducer';
+import { Transaction, TxStatus } from 'store/transaction/reducer';
 
-import { eventBus, getTxEventName } from 'utils/event-bus';
-
-export type TxState = 'loading' | 'hash' | 'success' | 'error';
-
-const TransactionModalContainer = styled.div<{ txState: TxState }>`
+const TransactionModalContainer = styled.div<{ txState: TxStatus }>`
   display: flex;
   height: 250px;
   width: 100%;
   padding-top: ${({ txState }) => (txState === 'error' ? '30px' : '10px')};
 
-  .tx-loading {
+  .transaction-modal__loading {
     margin-top: 10px;
     height: 100%;
   }
 
-  .tx-text {
+  .transaction-modal__text {
     padding-top: 10px;
   }
 
-  .tx-centered {
+  .transaction-modal__centered {
     text-align: center;
     width: 100%;
     display: flex;
@@ -45,122 +39,78 @@ const TransactionModalContainer = styled.div<{ txState: TxState }>`
     justify-content: space-between;
   }
 
-  .tx-icon {
+  .transaction-modal__icon {
     color: ${({ theme, txState }) =>
-      includes(toastTypes, txState) && getToastColor(theme, txState as ToastType)};
+    includes(toastTypes, txState) && getToastColor(theme, txState as ToastType)};
     font-size: 70px;
   }
 `;
 
 interface Props {
-  transaction: PendingTransaction;
+  tx: Transaction;
 }
 
-function TransactionModal ({ transaction }: Props) {
+function TransactionModal ({ tx }: Props) {
   const { t } = useTranslation();
-  const alert = useAlert();
 
-  const { removeTransaction } = useTransaction();
-  const { loadAllBalances } = useQVault();
+  const { updateTransaction } = useTransaction();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [txState, setTxState] = useState<TxState>('loading');
-  const [txHash, setTxHash] = useState('');
-  const [txMessage, setTxMessage] = useState('');
-
-  useEffect(() => {
-    if (!transaction.hideLoading) {
-      setModalOpen(true);
-    }
-  }, [transaction]);
-
-  useEffect(() => {
-    const txId = transaction.id;
-    eventBus.once(getTxEventName(txId, 'hash'), handleHash);
-    eventBus.once(getTxEventName(txId, 'success'), (message) => handleType('success', message));
-    eventBus.once(getTxEventName(txId, 'error'), (message) => handleType('error', message));
-
-    return () => {
-      eventBus.off(getTxEventName(txId, 'hash'));
-      eventBus.off(getTxEventName(txId, 'success'));
-      eventBus.off(getTxEventName(txId, 'error'));
-    };
-  }, [transaction, modalOpen]);
-
-  const handleHash = (hash: string) => {
-    setTxState('hash');
-    setTxHash(hash);
-  };
-
-  const handleType = async (type: 'success' | 'error', message: string) => {
-    setTxState(type);
-    setTxMessage(message);
-
-    if (!modalOpen) {
-      alert[type](message);
-      removeTransaction(transaction.id);
-    }
-
-    await loadAllBalances();
-  };
+  const [modalOpen, setModalOpen] = useState(true);
 
   const handleClose = () => {
     setModalOpen(false);
-    if (txState === 'success' || txState === 'error') {
-      setTimeout(() => removeTransaction(transaction.id), 300);
-    }
+    updateTransaction(tx.id, { isClosedModal: true });
   };
 
-  const txStateTitles: Record<TxState, string> = {
-    loading: t('WAITING_FOR_CONFIRMATION'),
-    hash: t('WAITING_FOR_SUCCESS'),
+  const txStateTitles: Record<TxStatus, string> = {
+    waitingConfirmation: t('WAITING_FOR_CONFIRMATION'),
+    sending: t('WAITING_FOR_SUCCESS'),
     success: t('TRANSACTION_SUCCESS'),
     error: t('TRANSACTION_REJECTED'),
   };
 
   return (
     <Modal
-      title={txStateTitles[txState]}
+      title={txStateTitles[tx.status]}
       open={modalOpen}
       onClose={handleClose}
     >
-      <TransactionModalContainer txState={txState}>
+      <TransactionModalContainer txState={tx.status}>
         <AnimatePresence exitBeforeEnter>
           <motion.div
-            key={txState}
+            key={tx.status}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="tx-centered"
+            className="transaction-modal__centered"
           >
-            {txState === 'loading' && (
-              <div className="tx-loading tx-centered">
+            {tx.status === 'waitingConfirmation' && (
+              <div className="transaction-modal__loading transaction-modal__centered">
                 <Spinner size={160} thickness={4} />
-                <p className="text-md break-word color-primary tx-text">
+                <p className="text-md break-word color-primary transaction-modal__text">
                   {t('WAITING_FOR_A_TRANSACTION_TO_BE_CONFIRMED')}
                 </p>
               </div>
             )}
 
-            {txState === 'hash' && (
+            {(tx.hash && tx.status === 'sending') && (
               <>
                 <Spinner size={110} thickness={4} />
                 <div>
-                  <p className="text-xl break-word color-primary tx-text">
+                  <p className="text-xl break-word color-primary transaction-modal__text">
                     {t('TRANSACTION_CONFIRMED')}
                   </p>
-                  <span>{t('WAITING_FOR_SUCCESS')}</span>
-                  <TxHashLink hash={txHash} />
+                  <TxHashLink hash={tx.hash} />
                 </div>
               </>
             )}
 
-            {(txState === 'success' || txState === 'error') && (
+            {(tx.status === 'success' || tx.status === 'error') && (
               <>
                 <div>
-                  <Icon name={txState === 'success' ? 'double-check' : 'cross'} className="tx-icon" />
-                  <p className="text-xl break-word color-primary tx-text">{txMessage}</p>
-                  {txState === 'success' && <TxHashLink hash={txHash} />}
+                  <Icon name={tx.status === 'success' ? 'double-check' : 'cross'} className="transaction-modal__icon" />
+                  <p className="text-xl break-word color-primary transaction-modal__text">{tx.message}</p>
+                  {tx.hash && <TxHashLink hash={tx.hash} />}
                 </div>
                 <Button style={{ width: '100%' }} onClick={handleClose}>
                   {t('CLOSE')}

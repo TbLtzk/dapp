@@ -113,7 +113,7 @@ function useEnterShortList () {
 
   const enterShortList = async () => {
     await submitTransaction({
-      successMessage: t('SUCCESS_ENTERING_VALIDATOR_RANK'),
+      successMessage: t('ENTERING_VALIDATOR_RANK_TX'),
       submitFn: async () => {
         const contract = await getValidatorsInstance();
         return contract.enterShortList({ from: user.address });

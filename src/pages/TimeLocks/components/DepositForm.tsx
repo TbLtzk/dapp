@@ -75,7 +75,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
     },
     onSubmit: (values) => {
       submitTransaction({
-        successMessage: t('TIME_LOCKS_DEPOSIT_SUCCESS'),
+        successMessage: t('TIME_LOCKS_DEPOSIT_TX'),
         submitFn: () => depositTimeLock({ ...values, contract, address } as TimeLockForm),
         onSuccess: () => onSubmit()
       });
@@ -151,7 +151,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         disabled={isDepositsLimitReached}
       />
 
-      { isDepositsLimitReached &&
+      {isDepositsLimitReached &&
         <Tip compact type="info">
           {t('MAX_TIME_LOCK_DEPOSIT_MESSAGE')}
         </Tip>

@@ -31,7 +31,7 @@ function AnnounceForm ({ onSubmit }: { onSubmit: () => void }) {
     validators: { address: [required, nonZeroAddress] },
     onSubmit: ({ address }) => {
       submitTransaction({
-        successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_SUCCESS'),
+        successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_TX'),
         submitFn: () => announceNewVotingAgent(address),
         onSuccess: () => onSubmit()
       });

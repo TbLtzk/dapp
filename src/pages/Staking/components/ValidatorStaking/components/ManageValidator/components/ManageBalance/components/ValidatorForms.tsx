@@ -60,14 +60,14 @@ function ValidatorForms ({ formType, onClose }: Props) {
       let successMessage: string;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
-          successMessage = t('STAKE_TO_RANKING_SUCCESS');
+          successMessage = t('STAKE_TO_RANKING_TX');
           break;
         case FORM_TYPES.announceWithdrawal:
-          successMessage = t('ANNOUNCE_WITHDRAWAL_SUCCESS');
+          successMessage = t('ANNOUNCE_WITHDRAWAL_TX');
           break;
         case FORM_TYPES.withdrawFromRanking:
         default:
-          successMessage = t('WITHDRAW_FROM_RANKING_SUCCESS');
+          successMessage = t('WITHDRAW_FROM_RANKING_TX');
           break;
       }
 
