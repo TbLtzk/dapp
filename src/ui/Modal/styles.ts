@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import { getModalColor } from './colors';
-
 export const ModalContainer = styled(motion.div)<{ $width: number }>`
   position: fixed;
   z-index: 10000;
@@ -15,7 +13,7 @@ export const ModalContainer = styled(motion.div)<{ $width: number }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${({ theme }) => getModalColor(theme, 'overlay')};
+    background-color: ${({ theme }) => theme.colors.backdropOverlay};
     pointer-events: all;
   }
 

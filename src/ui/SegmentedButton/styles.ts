@@ -1,15 +1,12 @@
 
 import styled from 'styled-components';
 
-import { getSegmentedButtonColor } from './colors';
-
 export const SegmentedButtonContainer = styled.div<{ $light?: boolean }>`
   display: flex;
   border-radius: 32px;
   background-color: ${({ theme, $light }) => $light
-    ? getSegmentedButtonColor(theme, 'bgLight')
-    : getSegmentedButtonColor(theme, 'bg')
-  };
+    ? theme.colors.backgroundPrimary
+    : theme.colors.backgroundSecondary};
   padding: 2px;
   
   .segmented-button-item {
@@ -21,21 +18,21 @@ export const SegmentedButtonContainer = styled.div<{ $light?: boolean }>`
     display: flex;
     height: max-content;
     background-color: transparent;
-    color: ${({ theme }) => getSegmentedButtonColor(theme, 'text')};
+    color: ${({ theme }) => theme.colors.textAdditional};
     border-radius: 32px;
     transition: all 150ms ease-out;
 
     &.active {
-      color: ${({ theme }) => getSegmentedButtonColor(theme, 'textActive')};
+      color: ${({ theme }) => theme.colors.textNeutral};
       font-weight: 600;
     }
 
     &:focus-visible {
-      box-shadow: inset 0 0 0 2px ${({ theme }) => getSegmentedButtonColor(theme, 'focus')};
+      box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.borderMain};
     }
 
     &.active:focus-visible > .segmented-button-item-active {
-      box-shadow: inset 0 0 0 2px ${({ theme }) => getSegmentedButtonColor(theme, 'focusActive')};
+      box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
     }
   }
 
@@ -51,6 +48,6 @@ export const SegmentedButtonContainer = styled.div<{ $light?: boolean }>`
     height: 100%;
     border-radius: 32px;
     transition: box-shadow 150ms ease-out;
-    background-color: ${({ theme }) => getSegmentedButtonColor(theme, 'bgActive')};
+    background-color: ${({ theme }) => theme.colors.primaryMain};
   }
 `;

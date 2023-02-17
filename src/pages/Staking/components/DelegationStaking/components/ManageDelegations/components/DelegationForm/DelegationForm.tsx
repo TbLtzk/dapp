@@ -3,7 +3,6 @@ import ContentLoader from 'react-content-loader';
 import { useTranslation } from 'react-i18next';
 
 import styled, { useTheme } from 'styled-components';
-import { COLORS } from 'styles/colors';
 
 import Input from 'ui/Input';
 import Tip from 'ui/Tip';
@@ -64,7 +63,7 @@ async function loadDelegatorShare (
 
 function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addresses }: Props) {
   const { t } = useTranslation();
-  const { palette } = useTheme();
+  const { colors } = useTheme();
   const [delegatorShare, setDelegatorShare] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -112,8 +111,8 @@ function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addr
                 speed={2}
                 width="100%"
                 height={40}
-                backgroundColor={palette === 'dark' ? COLORS.grey800 : COLORS.grey100}
-                foregroundColor={palette === 'dark' ? COLORS.grey600 : COLORS.grey200}
+                backgroundColor={colors.tertiaryMiddle}
+                foregroundColor={colors.tertiaryLight}
               >
                 <rect
                   x="0"

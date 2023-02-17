@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getSwitchColor } from './colors';
-
 export const SwitchContainer = styled.div<{
   $checked: boolean;
   $disabled: boolean;
@@ -27,7 +25,7 @@ export const SwitchContainer = styled.div<{
   }
 
   .switch-label {
-    color: ${({ theme }) => getSwitchColor(theme, 'label')};
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   .switch-background {
@@ -37,22 +35,22 @@ export const SwitchContainer = styled.div<{
     border-radius: 36px;
     transition: all 150ms ease-out;
     background-color: ${({ theme, $checked }) => $checked
-      ? getSwitchColor(theme, 'bgChecked')
-      : getSwitchColor(theme, 'bg')
+      ? theme.colors.primaryMain
+      : theme.colors.backgroundPrimary
     };
     border: 2px solid ${({ theme, $checked }) => $checked
       ? 'transparent'
-      : getSwitchColor(theme, 'border')
+      : theme.colors.secondaryMain
     };
 
     ${({ theme, $disabled, $checked }) => $disabled && css`
       background-color: ${$checked
-        ? getSwitchColor(theme, 'bgDisabledChecked')
-        : getSwitchColor(theme, 'bgDisabled')
+        ? theme.colors.disableSecondary
+        : theme.colors.disablePrimary
       };
       border-color: ${$checked
         ? 'transparent'
-        : getSwitchColor(theme, 'borderDisabled')
+        : theme.colors.disablePrimary
       };
     `}
   }
@@ -61,25 +59,22 @@ export const SwitchContainer = styled.div<{
     .switch-input:focus-visible ~ .switch-background,
     &:hover .switch-background {
       background-color: ${$checked
-        ? getSwitchColor(theme, 'bgCheckedHover')
-        : getSwitchColor(theme, 'bgHover')
+        ? theme.colors.primaryMiddle
+        : theme.colors.tertiaryMain
       };
     }
   `}
 
   .switch-input:focus-visible ~ .switch-background {
-    border-color: ${({ theme, $checked }) => $checked
-      ? getSwitchColor(theme, 'focusOutlineChecked')
-      : getSwitchColor(theme, 'focusOutline')
-    };
+    border-color: ${({ theme }) => theme.colors.primaryLight};
   }
 
   .switch-circle {
     position: absolute;
     border-radius: 50%;
     background-color: ${({ theme, $checked }) => $checked
-      ? getSwitchColor(theme, 'circleChecked')
-      : getSwitchColor(theme, 'circle')
+      ? theme.colors.naturalAdditional
+      : theme.colors.secondaryMain
     };
 
     ${({ $checked }) => $checked
@@ -99,8 +94,9 @@ export const SwitchContainer = styled.div<{
       `
     }
 
-    ${({ theme, $disabled, $checked }) => $disabled && !$checked && css`
-      background-color: ${getSwitchColor(theme, 'circleDisabled')}
-    `}
+    ${({ theme, $disabled, $checked }) => $disabled && $checked
+      ? theme.colors.disablePrimary
+      : theme.colors.disableSecondary
+    }
   }
 `;

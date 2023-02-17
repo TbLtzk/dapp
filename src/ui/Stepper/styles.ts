@@ -1,8 +1,6 @@
 
 import styled from 'styled-components';
 
-import { getStepperColor } from './colors';
-
 export const StepperContainer = styled.div`
   display: grid;
   gap: 32px;
@@ -21,7 +19,7 @@ export const StepperContainer = styled.div`
         position: absolute;
         top: calc(100% + 2px);
         left: 50%;
-        background-color: ${({ theme }) => getStepperColor(theme, 'regular')};
+        background-color: ${({ theme }) => theme.colors.borderAdditional};
         transform: translateX(-50%);
         width: 2px;
         height: 48px;
@@ -29,7 +27,7 @@ export const StepperContainer = styled.div`
       }
 
       &.passed::after {
-        background-color: ${({ theme }) => getStepperColor(theme, 'passed')};
+        background-color: ${({ theme }) => theme.colors.primaryMain};
       }
     }
   }
@@ -39,17 +37,17 @@ export const StepperContainer = styled.div`
     display: flex;
     padding: 4px;
     border-radius: 50%;
-    box-shadow: inset 0 0 0 4px ${({ theme }) => getStepperColor(theme, 'regular')};
-    color: ${({ theme }) => getStepperColor(theme, 'icon')};
+    box-shadow: inset 0 0 0 4px ${({ theme }) => theme.colors.borderAdditional};
+    color: ${({ theme }) => theme.colors.backgroundSecondary};
     transition: all 150ms ease-out;
 
     &.current,
     &.passed {
-      box-shadow: inset 0 0 0 4px ${({ theme }) => getStepperColor(theme, 'passed')};
+      box-shadow: inset 0 0 0 4px ${({ theme }) => theme.colors.primaryMain};
     }
 
     &.passed {
-      background-color: ${({ theme }) => getStepperColor(theme, 'passed')};
+      background-color: ${({ theme }) => theme.colors.primaryMain};
 
       .stepper__step-check-icon {
         opacity: 1;

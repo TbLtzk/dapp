@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ProposalCardLink = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   transition: all 150ms ease-out;
 
   &:hover,
   &:focus-visible {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.blockBorderHover};
+    border-color: ${({ theme }) => theme.colors.borderMain};
   }
 
   .proposal-card__head {

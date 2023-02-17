@@ -25,7 +25,7 @@ const StyledForm = styled.form`
   .repay-balance {
     display: flex;
     justify-content: space-between;
-    background-color: ${({ theme }) => theme.colors.blockInside};
+    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
     padding: 12px 16px;
     border-radius: 8px;
   }
@@ -36,7 +36,7 @@ const StyledForm = styled.form`
   }
 `;
 
-function RepayForm ({ vault }: {vault: VaultWithId}) {
+function RepayForm ({ vault }: { vault: VaultWithId }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 

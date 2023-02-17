@@ -11,9 +11,9 @@ export const ProgressBarWrapper = styled.span<{ value: number }>`
     width: 8px;
     margin-right: 4px;
     background-color: ${(props) => {
-      if (props.value <= 80) return props.theme.colors.success;
-      if (props.value <= 98) return props.theme.colors.warning;
-      return props.theme.colors.error;
+      if (props.value <= 80) return props.theme.colors.successMain;
+      if (props.value <= 98) return props.theme.colors.warningPrimary;
+      return props.theme.colors.errorMain;
     }};
   }
 `;

@@ -23,7 +23,7 @@ const StyledForm = styled.form`
   .deposit-balances {
     display: grid;
     gap: 8px;
-    background-color: ${({ theme }) => theme.colors.blockInside};
+    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
     padding: 12px 16px;
     border-radius: 8px;
   }
@@ -39,7 +39,7 @@ const StyledForm = styled.form`
   }
 `;
 
-function DepositForm ({ vault }: {vault: VaultWithId}) {
+function DepositForm ({ vault }: { vault: VaultWithId }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 

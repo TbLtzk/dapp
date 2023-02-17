@@ -3,8 +3,7 @@ import styled from 'styled-components';
 export const TooltipWrapper = styled.span`
   display: inline-flex;
   font-size: 12px;
-  // TODO: Colors
-  color: #7B96B5;
+  color: ${({ theme }) => theme.colors.iconSecondary};
 
   .tooltip-content {
     padding: 8px;

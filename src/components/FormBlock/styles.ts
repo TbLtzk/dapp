@@ -5,9 +5,9 @@ export const StyledFormBlock = styled.div<{ $disabled: boolean }>`
   padding: 24px;
   border-radius: 8px;
   border: 1px solid ${({ theme, $disabled }) => $disabled
-    ? theme.colors.blockBorderDisabled
-    : theme.colors.blockBorderAccent
-  };
+    ? theme.colors.disableSecondary
+    : theme.colors.borderSecondary
+  }; 
 
   .form-block__edit-btn {
     position: absolute;
@@ -24,7 +24,7 @@ export const StyledFormBlock = styled.div<{ $disabled: boolean }>`
 
   ${({ theme, $disabled }) => $disabled && css`
     .form-block__title {
-      color: ${theme.colors.textDisabled};
+      color: ${theme.colors.disableSecondary};
     }
   `};
 `;

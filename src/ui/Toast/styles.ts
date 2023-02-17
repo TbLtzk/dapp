@@ -1,16 +1,15 @@
 
 import styled from 'styled-components';
 
-import { getToastColor } from './colors';
 import { ToastType } from './Toast';
 
 export const ToastContainer = styled.div<{
   $type: ToastType;
 }>`
-  background-color: ${({ theme }) => theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   box-shadow:
-    0 8px 12px 6px ${({ theme }) => getToastColor(theme, 'shadowDark')},
-    0 4px 4px ${({ theme }) => getToastColor(theme, 'shadowLight')};
+    0 8px 12px 6px ${({ theme }) => theme.colors.blockShadowDark},
+    0 4px 4px ${({ theme }) => theme.colors.blockShadowLight};
   border-radius: 16px;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -23,11 +22,29 @@ export const ToastContainer = styled.div<{
     display: flex;
     width: 14px;
     height: 100%;
-    background-color: ${({ theme, $type }) => getToastColor(theme, $type)};
+    background-color: ${({ theme, $type }) => {
+      switch ($type) {
+        case 'success':
+          return theme.colors.successMain;
+        case 'error':
+          return theme.colors.errorMain;
+        case 'info':
+          return theme.colors.infoPrimary;
+      }
+    }};
   }
 
   .toast-icon-wrp {
-    color: ${({ theme, $type }) => getToastColor(theme, $type)};
+    color: ${({ theme, $type }) => {
+      switch ($type) {
+        case 'success':
+          return theme.colors.successMain;
+        case 'error':
+          return theme.colors.errorMain;
+        case 'info':
+          return theme.colors.infoPrimary;
+      }
+    }};
     
     i {
       font-size: 32px;
@@ -39,7 +56,7 @@ export const ToastContainer = styled.div<{
   }
 
   .toast-main {
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     border-left: none;
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -61,17 +78,17 @@ export const ToastContainer = styled.div<{
     height: max-content;
     margin-top: 4px;
     background-color: transparent;
-    color: ${({ theme }) => getToastColor(theme, 'closeBtn')};
+    color: ${({ theme }) => theme.colors.iconAdditional};
     transition: all 100ms ease-out;
 
     &:hover,
     &:focus-visible {
-      color: ${({ theme }) => getToastColor(theme, 'closeBtnHover')};
+      color: ${({ theme }) => theme.colors.iconPrimary};
       transform: scale(1.1);
     }
 
     &:focus-visible {
-      outline: 2px solid ${({ theme }) => getToastColor(theme, 'closeBtnFocus')};
+      outline: 2px solid ${({ theme }) => theme.colors.primaryLight};
     }
   }
 `;

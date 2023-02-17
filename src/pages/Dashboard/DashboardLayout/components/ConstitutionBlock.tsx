@@ -21,12 +21,13 @@ const StyledWrapper = styled.div`
   padding: 16px 16px 16px 24px;
 
   .constitution__menu {
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     display: grid;
     width: max-content;
     min-width: 156px;
     padding: 4px 0;
     border-radius: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.borderSecondary};
     box-shadow:
       0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
@@ -40,7 +41,7 @@ const StyledWrapper = styled.div`
     transition: background-color 100ms ease-out;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 
@@ -50,11 +51,11 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
   }
 
-  .constutition__hash {
+  .constitution__hash {
     margin-top: 4px;
   }
 
-  .constutition__date {
+  .constitution__date {
     margin-top: 16px;
   }
 `;
@@ -123,12 +124,12 @@ function ConstitutionBlock () {
         </Dropdown>
       </div>
 
-      <div className="constutition__hash text-xl font-semibold">
+      <div className="constitution__hash text-xl font-semibold">
         <span>{trimAddress(constitutionHash)}</span>
         <CopyToClipboard value={constitutionHash} />
       </div>
 
-      <p className="constutition__date text-sm font-light">
+      <p className="constitution__date text-sm font-light">
         {t('LAST_UPDATE', { date: constitutionUpdateDate ? formatDateDMY(constitutionUpdateDate, i18n.language) : '-' })}
       </p>
     </StyledWrapper>

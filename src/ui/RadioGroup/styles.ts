@@ -2,8 +2,6 @@
 import styled, { css } from 'styled-components';
 import { media } from 'styles/media';
 
-import { getRadioGroupColor } from './colors';
-
 export const RadioGroupContainer = styled.div<{
   $row: boolean;
   $disabled: boolean;
@@ -12,8 +10,8 @@ export const RadioGroupContainer = styled.div<{
   .radio-group-lbl {
     margin-bottom: 8px;
     color: ${({ theme, $disabled }) => $disabled
-      ? getRadioGroupColor(theme, 'labelDisabled')
-      : getRadioGroupColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textSecondary
     };
   }
 
@@ -35,6 +33,6 @@ export const RadioGroupContainer = styled.div<{
 
   .radio-group-error {
     margin-top: 4px;
-    color: ${({ theme }) => getRadioGroupColor(theme, 'error')};
+    color: ${({ theme }) => theme.colors.errorMain};
   }
 `;

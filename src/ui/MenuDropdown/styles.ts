@@ -9,11 +9,11 @@ export const MenuContainer = styled(Dropdown)`
     padding-top: 5px;
     padding-bottom: 5px;
 
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     box-shadow: 0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
     border-radius: 8px;
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
 
     .menu-option {
       display: flex;
@@ -25,7 +25,7 @@ export const MenuContainer = styled(Dropdown)`
 
       &:hover {
         transition: all 0.15s ease-in-out;
-        background-color: ${({ theme }) => theme.colors.blockBorder};
+        background-color: ${({ theme }) => theme.colors.borderPrimary};
       }
     }
   }

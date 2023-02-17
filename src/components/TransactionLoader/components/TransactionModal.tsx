@@ -3,15 +3,12 @@ import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { includes } from 'lodash';
 import styled from 'styled-components';
 
 import Button from 'ui/Button';
 import Icon from 'ui/Icon';
 import Modal from 'ui/Modal';
 import Spinner from 'ui/Spinner';
-import { getToastColor } from 'ui/Toast/colors';
-import { ToastType, toastTypes } from 'ui/Toast/Toast';
 
 import TxHashLink from './TxHashLink';
 
@@ -48,8 +45,16 @@ const TransactionModalContainer = styled.div<{ txState: TxState }>`
   }
 
   .tx-icon {
-    color: ${({ theme, txState }) =>
-      includes(toastTypes, txState) && getToastColor(theme, txState as ToastType)};
+    color: ${({ theme, txState }) => {
+    switch (txState) {
+      case 'success':
+        return theme.colors.successMain;
+      case 'error':
+        return theme.colors.errorMain;
+      case 'loading':
+        return theme.colors.infoPrimary;
+    }
+  }};
     font-size: 70px;
   }
 `;

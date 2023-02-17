@@ -1,21 +1,19 @@
 import styled from 'styled-components';
 
-import { getEmptyListColor } from './colors';
-
 export const StyledEmptyList = styled.svg`
   .bg {
-    fill: ${({ theme }) => getEmptyListColor(theme, 'bg')};
+    fill: ${({ theme }) => theme.colors.listBackgroundPrimary};
   }
 
   .item-bg {
-    fill: ${({ theme }) => getEmptyListColor(theme, 'itemBg')};
+    fill: ${({ theme }) => theme.colors.listBackgroundSecondary};
   }
 
   .item-primary {
-    fill: ${({ theme }) => getEmptyListColor(theme, 'itemPrimary')};
+    fill: ${({ theme }) => theme.colors.listPrimary};
   }
 
   .item-secondary {
-    fill: ${({ theme }) => getEmptyListColor(theme, 'itemSecondary')};
+    fill: ${({ theme }) => theme.colors.listSecondary};
   }
 `;

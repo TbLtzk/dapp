@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getTooltipColor } from './colors';
-
 export const TooltipWrapper = styled.div<{ $disabled: boolean }>`
   display: inline-flex;
   align-self: center;
@@ -18,8 +16,8 @@ export const TooltipWrapper = styled.div<{ $disabled: boolean }>`
     pointer-events: none;
     padding: 12px;
     padding: 12px;
-    background-color: ${({ theme }) => getTooltipColor(theme, 'bg')};
-    color: ${({ theme }) => getTooltipColor(theme, 'text')};
+    background-color: ${({ theme }) => theme.colors.tertiaryMain};
+    color: ${({ theme }) => theme.colors.textPrimary};
     max-width: 280px;
     width: max-content;
     border-radius: 8px;

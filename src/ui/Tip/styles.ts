@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import { getTipColor } from './colors';
 import { TipType } from '.';
 
 export const TipWrapper = styled.div<{
@@ -14,7 +13,14 @@ export const TipWrapper = styled.div<{
   gap: ${({ $compact }) => $compact ? '8px' : '16px'};
   padding: ${({ $compact }) => $compact ? '12px 16px' : '16px'};
   border-radius: 8px;
-  background-color: ${({ theme, $type }) => getTipColor(theme, `${$type}Bg`)};
+  background-color: ${({ theme, $type }) => {
+    switch ($type) {
+      case 'info':
+        return theme.colors.tertiaryMain;
+      case 'warning':
+        return theme.colors.errorTertiary;
+    }
+  }};
 
   ${media.lessThan('tablet')} {
     grid-template: "icon text" "action action" / auto 1fr;
@@ -24,16 +30,27 @@ export const TipWrapper = styled.div<{
   
   .tip-icon {
     grid-area: icon;
-    color: ${({ theme, $type }) => getTipColor(theme, `${$type}Icon`)};
+    color: ${({ theme, $type }) => {
+      switch ($type) {
+        case 'info':
+          return theme.colors.infoPrimary;
+        case 'warning':
+          return theme.colors.iconError;
+      }
+    }};
     align-self: center;
   }
 
   .tip-text {
     grid-area: text;
-    color: ${({ theme, $type }) => $type === 'warning'
-      ? getTipColor(theme, 'textWarning')
-      : getTipColor(theme, 'text')
-    };
+    color: ${({ theme, $type }) => {
+      switch ($type) {
+        case 'info':
+          return theme.colors.textPrimary;
+        case 'warning':
+          return theme.colors.textNeutral;
+      }
+    }};
     align-self: start;
   }
 

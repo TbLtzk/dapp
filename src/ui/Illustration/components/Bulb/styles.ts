@@ -1,37 +1,35 @@
 import styled from 'styled-components';
 
-import { getBulbColor } from './colors';
-
 export const StyledBulb = styled.svg`
   .bg {
-    fill: ${({ theme }) => getBulbColor(theme, 'bg')};
+    fill: ${({ theme }) => theme.colors.bulbBackground};
   }
 
   .circle {
-    fill: ${({ theme }) => getBulbColor(theme, 'circle')};
+    fill: ${({ theme }) => theme.colors.bulbBackground};
   }
 
   .gradient-a {
-    stop-color: ${({ theme }) => getBulbColor(theme, 'gradientA')};
+    stop-color: ${({ theme }) => theme.colors.bulbGradientA};
   }
 
   .gradient-b {
-    stop-color: ${({ theme }) => getBulbColor(theme, 'gradientB')};
+    stop-color: ${({ theme }) => theme.colors.bulbGradientB};
   }
 
   .inner-dark {
-    fill: ${({ theme }) => getBulbColor(theme, 'innerDark')};
+    fill: ${({ theme }) => theme.colors.bulbInnerDark};
   }
 
   .inner-medium {
-    fill: ${({ theme }) => getBulbColor(theme, 'innerMedium')};
+    fill: ${({ theme }) => theme.colors.bulbInnerMedium};
   }
 
   .inner-stroke-medium {
-    stroke: ${({ theme }) => getBulbColor(theme, 'innerMedium')};
+    stroke: ${({ theme }) => theme.colors.bulbInnerMedium};
   }
 
   .inner-stroke-light {
-    stroke: ${({ theme }) => getBulbColor(theme, 'innerLight')};
+    stroke: ${({ theme }) => theme.colors.bulbInnerLight};
   }
 `;

@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getCalendarColor } from './colors';
-
 export const CalendarWrapper = styled.div<{
   $error?: string;
   $disabled: boolean;
@@ -11,14 +9,14 @@ export const CalendarWrapper = styled.div<{
   .calendar-lbl {
     margin-bottom: 8px;
     color: ${({ theme, $disabled }) => $disabled
-      ? getCalendarColor(theme, 'labelDisabled')
-      : getCalendarColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 
   .calendar-error {
     margin-top: 4px;
-    color: ${({ theme }) => getCalendarColor(theme, 'error')};
+    color: ${({ theme }) => theme.colors.errorMain};
   }
 
   // React DatePicker override
@@ -31,22 +29,25 @@ export const CalendarWrapper = styled.div<{
     transition: all 100ms ease-out;
     cursor: ${({ $disabled }) => $disabled ? 'not-allowed' : 'initial'};
     background-color: ${({ theme, $disabled }) => $disabled
-      ? getCalendarColor(theme, 'containerBgDisabled')
-      : getCalendarColor(theme, 'containerBg')
+      ? theme.colors.disablePrimary
+      : 'transparent'
     };
     border: 1px solid ${({ theme, $disabled }) => $disabled
-      ? getCalendarColor(theme, 'containerBorderDisabled')
-      : getCalendarColor(theme, 'containerBorder')
+      ? theme.colors.disableSecondary
+      : theme.colors.borderTertiary
     };
     color: ${({ theme, $disabled }) => $disabled
-      ? getCalendarColor(theme, 'containerTextDisabled')
-      : getCalendarColor(theme, 'containerText')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
 
     ${({ $disabled }) => !$disabled && css`
-      &:focus-within,
       &:hover {
-        border-color: ${({ theme }) => getCalendarColor(theme, 'containerBorderHover')};
+          border-color: ${({ theme }) => theme.colors.borderAdditional};
+        }
+
+      &:focus-within {
+        border-color: ${({ theme }) => theme.colors.primaryMain};
       }
     `}
 
@@ -54,7 +55,7 @@ export const CalendarWrapper = styled.div<{
       &,
       &:focus-within,
       &:hover {
-        border-color: ${({ theme }) => getCalendarColor(theme, 'containerBorderError')};
+        border-color: ${({ theme }) => theme.colors.errorMain};
       }
     `}
   }
@@ -72,8 +73,8 @@ export const CalendarWrapper = styled.div<{
 
     &::placeholder {
       color: ${({ theme, $disabled }) => $disabled
-        ? getCalendarColor(theme, 'placeholderDisabled')
-        : getCalendarColor(theme, 'placeholder')
+        ? theme.colors.disableSecondary
+        : theme.colors.textTertiary
       };
     }
 
@@ -92,31 +93,31 @@ export const CalendarWrapper = styled.div<{
 
   .react-datepicker {
     font-family: inherit;
-    background-color: ${({ theme }) => theme.colors.block};
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     border-radius: 8px;
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   .react-datepicker__navigation--next {
-    border-left-color: ${({ theme }) => theme.colors.blockBorderAccent};
+    border-left-color: ${({ theme }) => theme.colors.iconAdditional};
 
     &:hover {
-      border-left-color: ${({ theme }) => theme.colors.blockBorderHover};
+      border-left-color: ${({ theme }) => theme.colors.iconPrimary};
     }
   }
 
   .react-datepicker__navigation--previous {
-    border-right-color: ${({ theme }) => theme.colors.blockBorderAccent};
+    border-right-color: ${({ theme }) => theme.colors.iconAdditional};
 
     &:hover {
-      border-right-color: ${({ theme }) => theme.colors.blockBorderHover};
+      border-right-color: ${({ theme }) => theme.colors.iconPrimary};
     }
   }
 
   .react-datepicker__header {
     background-color: transparent;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderPrimary};
   }
 
   .react-datepicker__current-month {
@@ -131,28 +132,28 @@ export const CalendarWrapper = styled.div<{
     color: ${({ theme }) => theme.colors.textPrimary};
 
     &--disabled {
-      color: ${({ theme }) => theme.colors.textDisabled};
+      color: ${({ theme }) => theme.colors.disableSecondary};
     }
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover} !important;
+      background-color: ${({ theme }) => theme.colors.tertiaryLight} !important;
     }
 
     &--in-range,
     &--in-selecting-range,
     &--in-range:hover {
-      background-color: ${({ theme }) => getCalendarColor(theme, 'rangeBg')} !important;
+      background-color: ${({ theme }) => theme.colors.tertiaryMain} !important;
     }
 
     &--selected,
     &--selected:hover {
-      background-color: ${({ theme }) => getCalendarColor(theme, 'selectedBg')} !important;
-      color: ${({ theme }) => getCalendarColor(theme, 'selectedText')} !important;
+      background-color: ${({ theme }) => theme.colors.primaryMain} !important;
+      color: ${({ theme }) => theme.colors.textPrimary} !important;
       font-weight: 600;
     }
 
     &--keyboard-selected {
-      background-color: ${({ theme }) => getCalendarColor(theme, 'rangeBg')} !important;
+      background-color: ${({ theme }) => theme.colors.tertiaryMain} !important;
     }
 
     &--disabled:hover {
@@ -161,10 +162,10 @@ export const CalendarWrapper = styled.div<{
   }
 
   .react-datepicker__time-container {
-    border-left: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border-left: 1px solid ${({ theme }) => theme.colors.borderPrimary};
 
     .react-datepicker__time {
-      background-color: ${({ theme }) => theme.colors.block};
+      background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     }
 
     .react-datepicker-time__header {
@@ -175,17 +176,17 @@ export const CalendarWrapper = styled.div<{
       color: ${({ theme }) => theme.colors.textPrimary};
 
       &--disabled {
-        color: ${({ theme }) => theme.colors.textDisabled} !important;
+        color: ${({ theme }) => theme.colors.disableSecondary} !important;
       }
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.blockHover} !important;
+        background-color: ${({ theme }) => theme.colors.tertiaryLight} !important;
       }
 
       &--selected,
       &--selected:hover {
-        background-color: ${({ theme }) => getCalendarColor(theme, 'selectedBg')} !important;
-        color: ${({ theme }) => getCalendarColor(theme, 'selectedText')} !important;
+        background-color: ${({ theme }) => theme.colors.primaryMain} !important;
+        color: ${({ theme }) => theme.colors.textPrimary} !important;
         font-weight: 600;
       }
 

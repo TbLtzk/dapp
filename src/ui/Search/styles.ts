@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getSearchColor } from './colors';
-
 export const SearchContainer = styled.div<{
   $disabled: boolean;
 }>`
@@ -14,23 +12,23 @@ export const SearchContainer = styled.div<{
   transition: all 100ms ease-out;
   cursor: ${({ $disabled }) => $disabled ? 'not-allowed' : 'initial'};
   background-color: ${({ theme, $disabled }) => $disabled
-    ? getSearchColor(theme, 'bgDisabled')
-    : getSearchColor(theme, 'bg')
+    ? theme.colors.backgroundSecondary
+    : theme.colors.naturalLight
   };
   border: 1px solid ${({ theme, $disabled }) => $disabled
-    ? getSearchColor(theme, 'borderDisabled')
-    : getSearchColor(theme, 'border')
+    ? theme.colors.disableSecondary
+    : 'transparent'
   };
   color: ${({ theme, $disabled }) => $disabled
-    ? getSearchColor(theme, 'textDisabled')
-    : getSearchColor(theme, 'text')
+    ? theme.colors.disableSecondary
+    : theme.colors.textPrimary
   };
 
   .search-icon {
     transition: all 100ms ease-out;
     color: ${({ theme, $disabled }) => $disabled
-      ? getSearchColor(theme, 'iconDisabled')
-      : getSearchColor(theme, 'icon')
+      ? theme.colors.disableSecondary
+      : theme.colors.iconAdditional
     };
   }
 
@@ -46,8 +44,8 @@ export const SearchContainer = styled.div<{
 
     &::placeholder {
       color: ${({ theme, $disabled }) => $disabled
-        ? getSearchColor(theme, 'placeholderDisabled')
-        : getSearchColor(theme, 'placeholder')
+        ? theme.colors.disableSecondary
+        : theme.colors.textTertiary
       };
     }
 
@@ -68,17 +66,17 @@ export const SearchContainer = styled.div<{
 
   ${({ $disabled }) => !$disabled && css`
     &:hover {
-      border-color: ${({ theme }) => getSearchColor(theme, 'borderHover')};
+      border-color: ${({ theme }) => theme.colors.borderAdditional};
     }
 
     &:focus-within {
-      border-color: ${({ theme }) => getSearchColor(theme, 'borderFocus')};
+      border-color: ${({ theme }) => theme.colors.primaryMain};
     }
 
     &:focus-within,
     &:hover {
       .search-icon {
-        color: ${({ theme }) => getSearchColor(theme, 'iconHover')};
+        color: ${({ theme }) => theme.colors.iconPrimary};
       }
     }
   `}

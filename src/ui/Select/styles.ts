@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { getSelectColor } from './colors';
-
 export const SelectContainer = styled.div<{
   $open: boolean;
   $disabled?: boolean;
@@ -15,12 +13,12 @@ export const SelectContainer = styled.div<{
     border: none;
     background-color: transparent;
     color: ${({ theme, $disabled }) => $disabled
-      ? getSelectColor(theme, 'disabled')
-      : getSelectColor(theme, 'enabled')
+      ? theme.colors.disableSecondary
+      : theme.colors.iconPrimary
     };
 
     &:focus-visible {
-      box-shadow: inset 0 0 0 2px ${({ theme }) => getSelectColor(theme, 'optionFocusBorder')};
+      box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
     }
   }
 
@@ -34,11 +32,11 @@ export const SelectContainer = styled.div<{
   }
 
   .select-options {
-    background: ${({ theme }) => theme.colors.block};
+    background: ${({ theme }) => theme.colors.backgroundPrimary};
     box-shadow:
-      0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
-      0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
-    border: 1px solid ${({ theme }) => getSelectColor(theme, 'border')};
+      0px 4px 4px  ${({ theme }) => theme.colors.shadowMain},
+      0px -1px 2px ${({ theme }) => theme.colors.shadowMain};
+    border: 1px solid ${({ theme }) => theme.colors.borderSecondary};
     border-radius: 8px;
     padding: 4px 0;
     display: grid;
@@ -57,20 +55,20 @@ export const SelectContainer = styled.div<{
     outline: none;
     gap: 8px;
     color: ${({ theme, $disabled }) => $disabled
-      ? getSelectColor(theme, 'disabled')
-      : getSelectColor(theme, 'enabled')
+       ? theme.colors.disableSecondary
+       : theme.colors.textPrimary
     };
 
     &:hover {
-      background-color: ${({ theme }) => getSelectColor(theme, 'optionBgHover')};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
 
     &:focus-visible {
-      box-shadow: inset 0 0 0 2px ${({ theme }) => getSelectColor(theme, 'optionFocusBorder')};
+      box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
     }
 
     &.active {
-      background-color: ${({ theme }) => getSelectColor(theme, 'optionBgSelected')};
+      background-color: ${({ theme }) => theme.colors.tertiaryMain};
     }
   }
 
@@ -89,6 +87,6 @@ export const SelectContainer = styled.div<{
 
   .select-error {
     margin-top: 4px;
-    color: ${({ theme }) => getSelectColor(theme, 'error')};
+    color: ${({ theme }) => theme.colors.errorMain};
   }
 `;

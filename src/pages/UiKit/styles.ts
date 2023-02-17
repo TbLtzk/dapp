@@ -4,7 +4,7 @@ export const UiKitContainer = styled.div`
   display: grid;
   gap: 24px;
   padding: 32px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
   color: ${({ theme }) => theme.colors.textPrimary};
   height: calc(100vh - 72px);
   overflow-y: auto;
@@ -13,7 +13,7 @@ export const UiKitContainer = styled.div`
   .block {
     padding: 24px 32px;
     border-radius: 16px;
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   }
 
   .block-content {
@@ -29,7 +29,7 @@ export const UiKitContainer = styled.div`
   .color-item {
     width: 48px;
     height: 48px;
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     border-radius: 4px;
   }
 
@@ -72,9 +72,12 @@ export const UiKitContainer = styled.div`
     font-size: 12px;
     padding: 16px;
     min-width: 240px;
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     color: ${({ theme }) => theme.colors.textPrimary};
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
+    box-shadow:
+      0 8px 12px 6px ${({ theme }) => theme.colors.blockShadowDark},
+      0 4px 4px ${({ theme }) => theme.colors.blockShadowLight};
     border-radius: 8px;
   }
 

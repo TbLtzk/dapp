@@ -1,7 +1,6 @@
 
 import styled from 'styled-components';
 
-import { getTagColor } from './colors';
 import { TagState } from '.';
 
 export const TagContainer = styled.p<{ $state: TagState }>`
@@ -9,6 +8,15 @@ export const TagContainer = styled.p<{ $state: TagState }>`
   border-radius: 32px;
   display: grid;
   place-content: center;
-  background-color: ${({ theme, $state }) => getTagColor(theme, $state)};
-  color: ${({ theme }) => getTagColor(theme, 'text')};
+  background-color: ${({ theme, $state }) => {
+    switch ($state) {
+      case 'rejected':
+        return theme.colors.errorAdditional;
+      case 'approved':
+        return theme.colors.successMain;
+      case 'pending':
+        return theme.colors.warningSecondary;
+    }
+  }};
+  color: ${({ theme }) => theme.colors.textNeutral};
 `;

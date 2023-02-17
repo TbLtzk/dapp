@@ -54,7 +54,7 @@ export const StakingContainer = styled.div`
           padding: 8px 0;
 
           &:nth-child(even) {
-            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+            border-left: 1px solid ${({ theme }) => theme.colors.borderSecondary};
 
             ${media.lessThan('medium')} {
               border-left: none;
@@ -62,7 +62,7 @@ export const StakingContainer = styled.div`
           }
 
           &:nth-child(odd) {
-            border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+            border-left: 1px solid ${({ theme }) => theme.colors.borderSecondary};
 
             ${media.lessThan('medium')} {
               border-left: none;
@@ -98,7 +98,7 @@ export const StakingContainer = styled.div`
 
       &:not(:first-child) {
         ${media.greaterThan('medium')} {
-          border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+          border-left: 1px solid ${({ theme }) => theme.colors.borderSecondary};
         }
       }
     }

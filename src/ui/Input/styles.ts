@@ -2,8 +2,6 @@ import { HTMLInputTypeAttribute } from 'react';
 
 import styled, { css } from 'styled-components';
 
-import { getInputColor } from './colors';
-
 export const InputWrapper = styled.div<{
   $error?: string;
   $disabled: boolean;
@@ -20,8 +18,8 @@ export const InputWrapper = styled.div<{
 
   label {
     color: ${({ theme, $disabled }) => $disabled
-      ? getInputColor(theme, 'labelDisabled')
-      : getInputColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 
@@ -34,22 +32,25 @@ export const InputWrapper = styled.div<{
     transition: all 100ms ease-out;
     cursor: ${({ $disabled }) => $disabled ? 'not-allowed' : 'initial'};
     background-color: ${({ theme, $disabled }) => $disabled
-      ? getInputColor(theme, 'containerBgDisabled')
-      : getInputColor(theme, 'containerBg')
+      ? theme.colors.disablePrimary
+      : 'transparent'
     };
     border: 1px solid ${({ theme, $disabled }) => $disabled
-      ? getInputColor(theme, 'containerBorderDisabled')
-      : getInputColor(theme, 'containerBorder')
+      ? theme.colors.disableSecondary
+      : theme.colors.borderTertiary
     };
     color: ${({ theme, $disabled }) => $disabled
-      ? getInputColor(theme, 'containerTextDisabled')
-      : getInputColor(theme, 'containerText')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
 
     ${({ $disabled }) => !$disabled && css`
-      &:focus-within,
       &:hover {
-        border-color: ${({ theme }) => getInputColor(theme, 'containerBorderHover')};
+        border-color: ${({ theme }) => theme.colors.borderAdditional};
+      }
+    
+      &:focus-within{
+        border-color: ${({ theme }) => theme.colors.primaryMain};
       }
     `}
 
@@ -57,7 +58,7 @@ export const InputWrapper = styled.div<{
       &,
       &:focus-within,
       &:hover {
-        border-color: ${({ theme }) => getInputColor(theme, 'containerBorderError')};
+        border-color: ${({ theme }) => theme.colors.errorMain};
       }
     `}
   }
@@ -77,8 +78,8 @@ export const InputWrapper = styled.div<{
 
     &::placeholder {
       color: ${({ theme, $disabled }) => $disabled
-        ? getInputColor(theme, 'placeholderDisabled')
-        : getInputColor(theme, 'placeholder')
+        ? theme.colors.disableSecondary
+        : theme.colors.textTertiary
       };
     }
 
@@ -97,7 +98,10 @@ export const InputWrapper = styled.div<{
   .input-extra {
     margin-right: -4px;
     display: flex;
-    color: inherit;
+    color: ${({ theme, $disabled }) => $disabled
+      ? theme.colors.disableSecondary
+      : theme.colors.iconSecondary
+    };
   }
 
   .input-error,
@@ -106,13 +110,16 @@ export const InputWrapper = styled.div<{
   }
 
   .input-error {
-    color: ${({ theme }) => getInputColor(theme, 'error')};
+    color: ${({ theme, $disabled }) => $disabled
+      ? theme.colors.disableSecondary
+      : theme.colors.errorMain
+    };
   }
 
   .input-hint {
     color: ${({ theme, $disabled }) => $disabled
-      ? getInputColor(theme, 'hintDisabled')
-      : getInputColor(theme, 'hint')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 `;

@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 import { media } from 'styles/media';
 
-import { getSidebarColor } from 'navigation/Sidebar/colors';
-
 export const ReferencesContainer = styled.div`
   display: grid;
-  border-top: 1px solid ${({ theme }) => theme.colors.blockBorder};
+  border-top: 1px solid ${({ theme }) => theme.colors.borderSecondary};
   padding-top: 16px;
 
   // TODO: Remove when aliasing link is removed from sidebar
@@ -18,17 +16,15 @@ export const ReferencesContainer = styled.div`
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    color: ${({ theme }) => getSidebarColor(theme, 'linkText')};
+    color: ${({ theme }) => theme.colors.textPrimary};
     outline: none;
-
-    &:hover,
-    &:focus-visible {
-      text-decoration: none;
-      color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
-    }
 
     &:hover .reference-link-text {
       text-decoration: underline;
+    }
+
+    &:focus-visible {
+      border: 1px solid ${({ theme }) => theme.colors.primaryLight};
     }
   }
 

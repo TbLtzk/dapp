@@ -27,9 +27,14 @@ const StatusMark = styled.span<{ status: TimeLockStatus }>`
   margin-right: 8px;
   border-radius: 50%;
   background-color: ${({ status, theme }) => {
-    if (status === TimeLockStatus.unlocked) return theme.colors.success;
-    if (status === TimeLockStatus.unlocking) return theme.colors.warning;
-    return theme.colors.error;
+    switch (status) {
+      case TimeLockStatus.unlocked:
+        return theme.colors.successMain;
+      case TimeLockStatus.unlocking:
+        return theme.colors.warningPrimary;
+      case TimeLockStatus.locked:
+        return theme.colors.errorMain;
+    }
   }};
 `;
 

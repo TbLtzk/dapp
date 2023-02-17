@@ -97,11 +97,11 @@ export const TextStyle = createGlobalStyle`
   }
 
   .color-success {
-    color: ${({ theme }) => theme.colors.success};
+    color: ${({ theme }) => theme.colors.successMain};
   }
 
   .color-error {
-    color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.errorMain};
   }
 
   .ellipsis {

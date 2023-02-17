@@ -19,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${(props) => props.theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
     color: ${({ theme }) => theme.colors.textPrimary};
     overflow-x: auto;
     overflow-y: hidden;
@@ -39,8 +39,8 @@ export const GlobalStyle = createGlobalStyle`
 
   .block {
     width: 100%;
-    background-color: ${({ theme }) => theme.colors.block};
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
+    border: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     border-radius: 16px;
     padding: 24px 32px;
     box-shadow: 0 4px 16px ${({ theme }) => theme.colors.blockShadow};
@@ -91,12 +91,12 @@ export const GlobalStyle = createGlobalStyle`
       margin: 8px 0;
       width: 100%;
       height: 1px;
-      background-color: ${({ theme }) => theme.colors.blockDivider};
+      background-color: ${({ theme }) => theme.colors.borderSecondary};
     }
   }
 
   .link {
-    color: ${({ theme }) => theme.colors.link};
+    color: ${({ theme }) => theme.colors.textPrimary};
     display: inline-flex;
     align-items: baseline;
     gap: 8px;
@@ -108,23 +108,25 @@ export const GlobalStyle = createGlobalStyle`
       line-height: inherit !important;
     }
 
-    &:hover,
-    &:active {
-      & > *:not(i) {
-        text-decoration: underline;
-      }
+    & > *:not(i) {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border: 2px solid ${({ theme }) => theme.colors.primaryLight};
     }
 
     &:hover {
-      color: ${({ theme }) => theme.colors.linkHover};
+      color: ${({ theme }) => theme.colors.textActive};
     }
 
     &:active {
-      color: ${({ theme }) => theme.colors.linkActive};
+      color: ${({ theme }) => theme.colors.primaryDark};
     }
 
     &:disabled {
-      color: ${({ theme }) => theme.colors.linkDisabled};
+      color: ${({ theme }) => theme.colors.disableSecondary};
     }
   }
 

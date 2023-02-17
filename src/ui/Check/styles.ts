@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getCheckColor } from './colors';
-
 export const CheckContainer = styled.div<{
   $checked: boolean;
   $disabled: boolean;
@@ -34,21 +32,21 @@ export const CheckContainer = styled.div<{
     transition: all 150ms ease-out;
     border: 2px solid ${({ theme, $checked }) => $checked
       ? 'transparent'
-      : getCheckColor(theme, 'frame')
+      : theme.colors.iconPrimary
     };
     background-color: ${({ theme, $checked }) => $checked
-      ? getCheckColor(theme, 'frame')
+      ? theme.colors.primaryMain
       : 'transparent'
     };
 
     ${({ theme, $disabled, $checked }) => $disabled && css`
       background-color: ${$checked
-        ? getCheckColor(theme, 'frameDisabled')
+        ? theme.colors.disableSecondary
         : 'transparent'
       };
       border-color: ${$checked
         ? 'transparent'
-        : getCheckColor(theme, 'frameDisabled')
+        : theme.colors.disableSecondary
       };
     `}
   }
@@ -57,17 +55,17 @@ export const CheckContainer = styled.div<{
     &:hover .check-frame {
       border-color: ${$checked
         ? 'transparent'
-        : getCheckColor(theme, 'frameHover')
+        : theme.colors.iconAdditional
       };
       background-color: ${$checked
-        ? getCheckColor(theme, 'frameHover')
+        ? theme.colors.primaryMiddle
         : 'transparent'
       };
     }
   `}
 
   .check-input:focus-visible ~ .check-frame {
-    outline: 2px solid ${({ theme }) => getCheckColor(theme, 'focusOutline')};
+    outline: 2px solid ${({ theme }) => theme.colors.primaryLight};
   }
 
   .check-icon {
@@ -75,16 +73,13 @@ export const CheckContainer = styled.div<{
   }
 
   .check-path {
-    stroke: ${({ theme, $disabled }) => $disabled
-      ? getCheckColor(theme, 'iconDisabled')
-      : getCheckColor(theme, 'icon')
-    };
+    stroke: ${({ theme }) => theme.colors.backgroundPrimary};
   }
 
   .check-label {
     color: ${({ theme, $disabled }) => $disabled
-      ? getCheckColor(theme, 'labelDisabled')
-      : getCheckColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 `;

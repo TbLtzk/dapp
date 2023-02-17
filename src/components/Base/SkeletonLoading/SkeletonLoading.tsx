@@ -1,12 +1,11 @@
 import ContentLoader from 'react-content-loader';
 
 import { useTheme } from 'styled-components';
-import { COLORS } from 'styles/colors';
 
 import { SkeletonLoadingWrapper } from './styles';
 
 export function SkeletonTableLoading ({ tiny = false }) {
-  const { palette } = useTheme();
+  const { colors } = useTheme();
 
   const generateSize = (nRow: number) =>
     tiny
@@ -18,8 +17,8 @@ export function SkeletonTableLoading ({ tiny = false }) {
       width="100%"
       height={tiny ? 210 : 410}
       speed={2}
-      backgroundColor={palette === 'dark' ? COLORS.blue700 : COLORS.grey000}
-      foregroundColor={palette === 'dark' ? COLORS.blue600 : COLORS.grey100}
+      backgroundColor={colors.tertiaryMiddle}
+      foregroundColor={colors.tertiaryLight}
     >
       <rect width="100%" {...generateSize(0)} />
       <rect width="100%" {...generateSize(1)} />
@@ -33,7 +32,7 @@ export function SkeletonTableLoading ({ tiny = false }) {
 }
 
 export function SkeletonAuctionLoading () {
-  const { palette } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <SkeletonLoadingWrapper>
@@ -41,8 +40,8 @@ export function SkeletonAuctionLoading () {
         speed={2}
         width="100%"
         height="1000"
-        backgroundColor={palette === 'dark' ? COLORS.blue700 : COLORS.grey000}
-        foregroundColor={palette === 'dark' ? COLORS.blue600 : COLORS.grey100}
+        backgroundColor={colors.tertiaryMiddle}
+        foregroundColor={colors.tertiaryLight}
       >
         <rect
           x="5"

@@ -1,8 +1,6 @@
 import styled, { css } from 'styled-components';
 import { media } from 'styles/media';
 
-import { getTableColor } from './colors';
-
 export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolean }>`
   .react-bootstrap-table {
     width: 100%;
@@ -61,7 +59,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       line-height: 17px;
       border-style: none;
       padding: ${({ tiny }) => (tiny ? '8px' : '16px 16px 8px')};
-      color: ${({ theme }) => getTableColor(theme, 'tableHeader')};
+      color: ${({ theme }) => theme.colors.textPrimary};
       background: transparent;
       white-space: nowrap;
       vertical-align: bottom;
@@ -81,17 +79,17 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
-        color: ${({ theme }) => getTableColor(theme, 'tableText')};
+        color: ${({ theme }) => theme.colors.textPrimary};
         background: ${({ theme, tiny }) => tiny
           ? 'transparent'
-          : getTableColor(theme, 'tableBg')
+          : theme.colors.naturalLight
         };
         margin-bottom: ${({ tiny }) => (tiny ? 0 : 10)}px;
         gap: 20px;
         height: ${({ tiny }) => (tiny ? 'auto' : 60)}px;
 
         ${({ tiny }) => !tiny && css`
-          box-shadow: inset 0 0 1px 1px ${({ theme }) => theme.colors.blockHover};
+          box-shadow: inset 0 0 1px 1px ${({ theme }) => theme.colors.borderPrimary};
         `}
 
         td {
@@ -108,7 +106,7 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       padding: ${({ tiny }) => (tiny ? 10 : 15)}px;
 
       ${({ tiny }) => tiny && css`
-        border-top: 1px solid ${({ theme }) => theme.colors.blockHover} !important;
+        border-top: 1px solid ${({ theme }) => theme.colors.borderSecondary} !important;
         border-radius: 0 !important;
       `}
     }
@@ -137,12 +135,11 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
           padding: 0;
           border: none;
           border-radius: 4px;
-          color: ${({ theme }) => getTableColor(theme, 'link')};
+          color: ${({ theme }) => theme.colors.textSecondary};
           background: transparent;
 
           &:hover {
-            color: ${({ theme }) => getTableColor(theme, 'linkHover')};
-            background: ${({ theme }) => getTableColor(theme, 'linkBgHover')};
+            background: ${({ theme }) => theme.colors.tertiaryMain};
           }
         }
       }
@@ -150,18 +147,19 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       .active {
         border-radius: 4px;
         .page-link {
-          color: ${({ theme }) => getTableColor(theme, 'linkActive')};
-          background: ${({ theme }) => getTableColor(theme, 'linkBgActive')};
+          color: ${({ theme }) => theme.colors.textPrimary};
+          background: ${({ theme }) => theme.colors.tertiaryMiddle};
+
           &:focus {
             box-shadow: none;
-            color: ${({ theme }) => getTableColor(theme, 'linkFocus')};
-            background: ${({ theme }) => getTableColor(theme, 'linkBgFocus')};
-            border: 2px solid ${({ theme }) => getTableColor(theme, 'linkBorderFocus')};
-            border-radius: 4px;
+            color: ${({ theme }) => theme.colors.textSecondary};
+            background: ${({ theme }) => theme.colors.tertiaryMain};
+            border: 2px solid ${({ theme }) => theme.colors.borderMain};
           }
+
           &:hover {
-            color: ${({ theme }) => getTableColor(theme, 'linkActive')};
-            background: ${({ theme }) => getTableColor(theme, 'linkBgActive')};
+            color: ${({ theme }) => theme.colors.textPrimary};
+            background: ${({ theme }) => theme.colors.tertiaryMiddle};
           }
         }
       }
@@ -196,12 +194,12 @@ export const SortCaretIcon = styled.svg<{ $order?: string }>`
   path {
     &:first-child {
       fill: ${({ theme, $order }) =>
-        $order === 'desc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret')};
+        $order === 'desc' ? theme.colors.secondaryMain : theme.colors.disableSecondary};
     }
 
     &:last-child {
       fill: ${({ theme, $order }) =>
-        $order === 'asc' ? getTableColor(theme, 'caretActive') : getTableColor(theme, 'caret')};
+        $order === 'asc' ? theme.colors.secondaryMain : theme.colors.disableSecondary};
     }
   }
 `;

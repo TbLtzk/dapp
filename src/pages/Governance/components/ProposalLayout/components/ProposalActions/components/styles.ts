@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { getVoteFormColor } from './colors';
-
 export const StyledVoteForm = styled.form<{ $selectedOption: 'for' | 'against' }>`
   display: grid;
   gap: 24px;
@@ -14,49 +12,57 @@ export const StyledVoteForm = styled.form<{ $selectedOption: 'for' | 'against' }
     
     &:first-child {
       border-color: ${({ theme, $selectedOption }) => $selectedOption === 'for'
-        ? getVoteFormColor(theme, 'voteForBorderActive')
-        : getVoteFormColor(theme, 'voteForBorder')
+        ? theme.colors.primaryMain
+        : theme.colors.primaryMiddle
       };
 
       &:hover {
-        border-color: ${({ theme }) => getVoteFormColor(theme, 'voteForBorderActive')};
+        border-color: ${({ theme }) => theme.colors.primaryMain};
       }
 
       .radio-frame,
       .radio-input:focus-visible ~ .radio-frame {
-        border-color: ${({ theme }) => getVoteFormColor(theme, 'voteForFrame')};
+        border-color: ${({ theme }) => theme.colors.primaryMain};
 
         .radio-circle {
-          background-color: ${({ theme }) => getVoteFormColor(theme, 'voteForFrame')};
+          background-color: ${({ theme }) => theme.colors.primaryMain};
         }
       }
 
+      .radio-input:focus-visible ~ .radio-frame::after {
+        outline: 1px solid ${({ theme }) => theme.colors.primaryLight};
+      }
+
       .radio-label {
-        color: ${({ theme }) => getVoteFormColor(theme, 'voteForFrame')};
+        color: ${({ theme }) => theme.colors.primaryMain};
       }
     }
 
     &:last-child {
       border-color: ${({ theme, $selectedOption }) => $selectedOption === 'against'
-        ? getVoteFormColor(theme, 'voteAgainstBorderActive')
-        : getVoteFormColor(theme, 'voteAgainstBorder')
+        ? theme.colors.errorMain
+        : theme.colors.errorPrimary
       };
 
       &:hover {
-        border-color: ${({ theme }) => getVoteFormColor(theme, 'voteAgainstBorderActive')};
+        border-color: ${({ theme }) => theme.colors.errorMain};
       }
 
       .radio-frame,
       .radio-input:focus-visible ~ .radio-frame {
-        border-color: ${({ theme }) => getVoteFormColor(theme, 'voteAgainstFrame')};
+        border-color: ${({ theme }) => theme.colors.errorMain};
 
         .radio-circle {
-          background-color: ${({ theme }) => getVoteFormColor(theme, 'voteAgainstFrame')};
+          background-color: ${({ theme }) => theme.colors.errorMain};
         }
       }
 
+      .radio-input:focus-visible ~ .radio-frame::after {
+        outline: 1px solid ${({ theme }) => theme.colors.errorSecondary};
+      }
+
       .radio-label {
-        color: ${({ theme }) => getVoteFormColor(theme, 'voteAgainstFrame')};
+        color: ${({ theme }) => theme.colors.errorMain};
       }
     }
   }

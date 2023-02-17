@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { getRangeColor } from './colors';
-
 export const RangeContainer = styled.div<{
   $disabled: boolean;
   $percent: number;
@@ -14,8 +12,8 @@ export const RangeContainer = styled.div<{
 
   .range-label {
     color: ${({ theme, $disabled }) => $disabled
-      ? getRangeColor(theme, 'labelDisabled')
-      : getRangeColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 
@@ -35,7 +33,7 @@ export const RangeContainer = styled.div<{
     display: flex;
     gap: 4px;
     color: ${({ theme, $disabled }) => $disabled
-      ? getRangeColor(theme, 'labelDisabled')
+      ? theme.colors.disableSecondary
       : theme.colors.textPrimary
     };
   }
@@ -46,13 +44,13 @@ export const RangeContainer = styled.div<{
     width: 100%;
     height: 8px;
     background-color: ${({ theme, $disabled }) => $disabled
-      ? getRangeColor(theme, 'trackDisabled')
-      : getRangeColor(theme, 'track')
+        ? theme.colors.disablePrimary
+        : theme.colors.tertiaryMain
     };
     border-radius: 10px;
     background-image: linear-gradient(
-      ${({ theme }) => getRangeColor(theme, 'thumbBorder')},
-      ${({ theme }) => getRangeColor(theme, 'thumbBorder')}
+      ${({ theme }) => theme.colors.secondaryMain},
+      ${({ theme }) => theme.colors.secondaryMain}
     );
     background-size: ${({ $percent }) => $percent}% 100%;
     background-repeat: no-repeat;
@@ -60,8 +58,8 @@ export const RangeContainer = styled.div<{
     &:disabled {
       cursor: not-allowed;
       background-image: linear-gradient(
-        ${({ theme }) => getRangeColor(theme, 'thumbBorderDisabled')},
-        ${({ theme }) => getRangeColor(theme, 'thumbBorderDisabled')}
+        ${({ theme }) => theme.colors.disableSecondary},
+        ${({ theme }) => theme.colors.disableSecondary}
       );
     }
 
@@ -70,7 +68,7 @@ export const RangeContainer = styled.div<{
     }
 
     &:focus-visible::-webkit-slider-runnable-track {
-      outline: 2px solid ${({ theme }) => getRangeColor(theme, 'trackOutline')};
+      outline: 2px solid ${({ theme }) => theme.colors.borderMain};
       border-radius: 2px;
     }
 
@@ -78,10 +76,10 @@ export const RangeContainer = styled.div<{
       -webkit-appearance: none;
       width: 20px;
       height: 20px;
-      background: ${({ theme }) => getRangeColor(theme, 'thumbBg')};
+      background: ${({ theme }) => theme.colors.tertiaryMain};
       border: 4px solid ${({ theme, $disabled }) => $disabled
-        ? getRangeColor(theme, 'thumbBorderDisabled')
-        : getRangeColor(theme, 'thumbBorder')
+        ? theme.colors.disableSecondary
+        : theme.colors.secondaryMain
       };
       border-radius: 50%;
     }
@@ -95,6 +93,6 @@ export const RangeContainer = styled.div<{
   }
 
   .range-error {
-    color: ${({ theme }) => getRangeColor(theme, 'error')};
+    color: ${({ theme }) => theme.colors.errorMain};
   }
 `;

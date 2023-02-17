@@ -8,7 +8,6 @@ import Tooltip from 'ui/Tooltip';
 
 import useEndTime from '../../hooks/useEndTime';
 
-import { getVotingColor } from './colors';
 import { StyledProposalVoting } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
@@ -51,15 +50,15 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
           className="proposal-voting__progress"
           value={Number(proposal.votesFor || 0)}
           max={totalVotes}
-          trackColor={getVotingColor(theme, 'voteAgainst')}
-          valueColor={getVotingColor(theme, 'voteFor')}
+          trackColor={theme.colors.errorMain}
+          valueColor={theme.colors.successMain}
         />
 
         <div className="proposal-voting__votes">
           <div className="proposal-voting__vote">
             <div
               className="proposal-voting__vote-bg"
-              style={{ backgroundColor: getVotingColor(theme, 'voteFor') }}
+              style={{ backgroundColor: theme.colors.successMain }}
             />
             <p className="text-md">
               {isUpdateContract ? t('VOTED') : t('YES')}
@@ -75,7 +74,7 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
           <div className="proposal-voting__vote">
             <div
               className="proposal-voting__vote-bg"
-              style={{ backgroundColor: getVotingColor(theme, 'voteAgainst') }}
+              style={{ backgroundColor: theme.colors.errorMain }}
             />
             <p className="text-md">
               {isUpdateContract ? t('DID_NOT_VOTE') : t('NO')}

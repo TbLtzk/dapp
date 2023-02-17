@@ -6,12 +6,12 @@ export const AddressDropdown = styled(Dropdown)`
   .address-content {
     min-width: 227px;
     padding-bottom: 12px;
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     box-shadow:
       0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
     border-radius: 8px;
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderSecondary};
   }
 
   .address-title {
@@ -19,7 +19,7 @@ export const AddressDropdown = styled(Dropdown)`
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     display: flex;
     align-items: center;
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -36,7 +36,7 @@ export const AddressDropdown = styled(Dropdown)`
     white-space: nowrap;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 `;

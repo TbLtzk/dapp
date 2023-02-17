@@ -3,9 +3,9 @@ import { media } from 'styles/media';
 
 export const StyledHeader = styled.header`
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderPrimary};
   height: 72px;
-  background-color: ${(props) => props.theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   
   .header__content {
     display: flex;

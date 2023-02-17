@@ -24,7 +24,7 @@ function StyleProvider ({ children }: Props) {
   return (
     <ThemeProvider
       theme={{
-        palette: theme,
+        currentTheme: theme,
         isDarkTheme,
         colors: isDarkTheme ? darkColors : lightColors,
         onChangeTheme: handleChangeTheme,

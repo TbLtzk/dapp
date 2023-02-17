@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { getRadioColor } from './colors';
-
 export const RadioContainer = styled.div<{
   $checked: boolean;
   $disabled: boolean;
@@ -23,14 +21,14 @@ export const RadioContainer = styled.div<{
     column-gap: 12px;
     row-gap: 8px;
     border: 1px solid ${$checked
-      ? getRadioColor(theme, 'borderActive')
-      : getRadioColor(theme, 'border')
+      ? theme.colors.primaryMain
+      : theme.colors.secondaryMain
     };
     border-radius: 8px;
     transition: all 150ms ease-out;
 
     ${$disabled && css`
-      border-color: ${getRadioColor(theme, 'frameDisabled')};
+      border-color: ${theme.colors.disableSecondary};
     `};
   `};
 
@@ -58,27 +56,37 @@ export const RadioContainer = styled.div<{
     margin: ${({ $extended }) => $extended ? '4px 2px' : '2px'};
     padding: 2px;
     transition: all 150ms ease-out;
-    border: 2px solid ${({ theme }) => getRadioColor(theme, 'frame')
-    };
+    border: 2px solid ${({ theme, $checked }) => $checked
+    ? theme.colors.primaryMiddle
+    : theme.colors.secondaryMain};
 
     ${({ theme, $disabled }) => $disabled && css`
-      border-color: ${getRadioColor(theme, 'frameDisabled')};
+      border-color: ${theme.colors.disableSecondary};
     `}
   }
 
-  ${({ theme, $disabled, $extended }) => !$disabled && css`
+  ${({ theme, $disabled, $extended, $checked }) => !$disabled && css`
     &:hover .radio-frame,
     .radio-input:focus-visible ~ .radio-frame {
-      border-color: ${getRadioColor(theme, 'frameHover')};
+      border-color: ${$checked
+        ? theme.colors.primaryMiddle
+        : theme.colors.textAdditional
+      };
 
       .radio-circle {
-        background-color: ${getRadioColor(theme, 'frameHover')};
+        background-color:  ${$checked
+          ? theme.colors.primaryMiddle
+          : theme.colors.textAdditional
+        };
       }
     }
 
     ${$extended && css`
       &:hover {
-        border-color: ${getRadioColor(theme, 'frameHover')};
+        border-color:  ${$checked
+          ? theme.colors.primaryMiddle
+          : theme.colors.textAdditional
+        };
       }
     `}
   `}
@@ -91,7 +99,7 @@ export const RadioContainer = styled.div<{
     width: calc(100% + 6px);
     height: calc(100% + 6px);
     border-radius: 50%;
-    outline: 1px solid ${({ theme }) => getRadioColor(theme, 'focusOutline')};
+    outline: 1px solid ${({ theme }) => theme.colors.primaryLight};
   }
 
   .radio-circle {
@@ -100,10 +108,10 @@ export const RadioContainer = styled.div<{
     border-radius: 50%;
     transition: all 150ms ease-out;
     opacity: ${({ $checked }) => $checked ? 1 : 0};
-    background-color: ${({ theme }) => getRadioColor(theme, 'frame')};
+    background-color: ${({ theme }) => theme.colors.primaryMain};
 
     ${({ theme, $disabled }) => $disabled && css`
-      background-color: ${getRadioColor(theme, 'frameDisabled')};
+      background-color: ${theme.colors.disableSecondary};
     `}
   }
 
@@ -112,16 +120,16 @@ export const RadioContainer = styled.div<{
     display: flex;
     gap: 4px;
     color: ${({ theme, $disabled }) => $disabled
-      ? getRadioColor(theme, 'labelDisabled')
-      : getRadioColor(theme, 'label')
+      ? theme.colors.disableSecondary
+      : theme.colors.textPrimary
     };
   }
 
   .radio-tip {
     grid-area: tip;
     color: ${({ theme, $disabled }) => $disabled
-      ? getRadioColor(theme, 'labelDisabled')
-      : getRadioColor(theme, 'tip')
+      ? theme.colors.disableSecondary
+      : theme.colors.textAdditional
     };
   }
 `;

@@ -1,8 +1,6 @@
 
 import styled from 'styled-components';
 
-import { getProgressColor } from './colors';
-
 export const ProgressContainer = styled.div<{
   $percent: number;
   $trackColor?: string;
@@ -10,7 +8,7 @@ export const ProgressContainer = styled.div<{
 }>`
   position: relative;
   display: flex;
-  background-color: ${({ theme, $trackColor }) => $trackColor || getProgressColor(theme, 'bgTrack')};
+  background-color: ${({ theme, $trackColor }) => $trackColor || theme.colors.tertiaryMain};
   height: 8px;
   width: 100%;
   overflow: hidden;
@@ -24,7 +22,7 @@ export const ProgressContainer = styled.div<{
     width: ${({ $percent }) => `${$percent}%`};
     height: 100%;
     border-radius: 8px;
-    background-color: ${({ theme, $valueColor }) => $valueColor || getProgressColor(theme, 'bgProgress')};
+    background-color: ${({ theme, $valueColor }) => $valueColor || theme.colors.secondaryMain};
     transition: width 150ms ease-out;
   }
 `;

@@ -36,8 +36,8 @@ function Balance () {
         <Button alwaysEnabled look="secondary">
           <div className="balance">
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
-            <QLogo width={22} margin="0 0 0 2px">
-              <img src="/logo.png" alt="q" />
+            <QLogo width={28}>
+              <img src="/logo-white.png" alt="q" />
             </QLogo>
           </div>
           <motion.span
@@ -55,7 +55,7 @@ function Balance () {
       <div className="balance-content">
         <div className="balance-q">
           <div className="balance">
-            <QLogo width={30} margin="0 5px 0 0">
+            <QLogo width={28} margin="0 5px 0 0">
               <img src="/logo.png" alt="q" />
             </QLogo>
             <p className="text-lg color-secondary">{t('BALANCE')}</p>

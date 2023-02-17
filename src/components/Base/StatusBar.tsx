@@ -22,17 +22,17 @@ export const StatusBarWrapper = styled.span<{ status: StatusType }>`
     width: 8px;
     margin-right: 4px;
     background-color: ${(props) => {
-      switch (props.status) {
-        case 'success':
-          return props.theme.colors.success;
-        case 'warning':
-          return props.theme.colors.warning;
-        case 'danger':
-          return props.theme.colors.error;
-        case 'info':
-          return props.theme.colors.info;
-      }
-    }};
+    switch (props.status) {
+      case 'success':
+        return props.theme.colors.successMain;
+      case 'warning':
+        return props.theme.colors.warningPrimary;
+      case 'danger':
+        return props.theme.colors.errorMain;
+      case 'info':
+        return props.theme.colors.infoPrimary;
+    }
+  }};
   }
 `;
 
