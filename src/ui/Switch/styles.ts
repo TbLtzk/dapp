@@ -94,9 +94,12 @@ export const SwitchContainer = styled.div<{
       `
     }
 
-    ${({ theme, $disabled, $checked }) => $disabled && $checked
-      ? theme.colors.disablePrimary
-      : theme.colors.disableSecondary
+    ${({ $disabled, $checked }) => $disabled &&
+      css`
+        background-color: ${({ theme, }) => $checked
+          ? theme.colors.disablePrimary
+          : theme.colors.disableSecondary
+      };`
     }
   }
 `;

@@ -49,7 +49,7 @@ export const InputWrapper = styled.div<{
         border-color: ${({ theme }) => theme.colors.borderAdditional};
       }
     
-      &:focus-within{
+      &:focus-within {
         border-color: ${({ theme }) => theme.colors.primaryMain};
       }
     `}

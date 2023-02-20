@@ -54,7 +54,7 @@ export const COLORS = {
   frenchSkyBlue: '#2567E7'
 };
 
-export const darkColors = {
+export const DARK_COLORS = {
   // Brand colors
   primaryMain: COLORS.appleGreen,
   primaryDark: COLORS.cloudyCamouflage,
@@ -152,7 +152,7 @@ export const darkColors = {
   backdropOverlay: 'rgba(46, 46, 51, 0.64)',
 };
 
-export const lightColors = {
+export const LIGHT_COLORS = {
   // Brand colors
   primaryMain: COLORS.appleGreen,
   primaryDark: COLORS.cloudyCamouflage,

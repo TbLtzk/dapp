@@ -10,10 +10,10 @@ export const ProgressBarWrapper = styled.span<{ value: number }>`
     height: 8px;
     width: 8px;
     margin-right: 4px;
-    background-color: ${(props) => {
-      if (props.value <= 80) return props.theme.colors.successMain;
-      if (props.value <= 98) return props.theme.colors.warningPrimary;
-      return props.theme.colors.errorMain;
+    background-color: ${({ theme, value }) => {
+      if (value <= 80) return theme.colors.successMain;
+      if (value <= 98) return theme.colors.warningPrimary;
+      return theme.colors.errorMain;
     }};
   }
 `;

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
+import { useTheme } from 'styled-components';
 import { fromWei } from 'web3-utils';
 
 import Button from 'ui/Button';
@@ -23,6 +24,7 @@ function Balance () {
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
   const { vaultBalance, walletBalance, loadAllBalances } = useQVault();
+  const { isDarkTheme } = useTheme();
 
   useInterval(loadAllBalances, 5000);
 
@@ -37,7 +39,7 @@ function Balance () {
           <div className="balance">
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance)}</p>
             <QLogo width={28}>
-              <img src="/logo-white.png" alt="q" />
+              <img src={isDarkTheme ? '/logo-white.png' : '/logo-dark.png'} alt="q" />
             </QLogo>
           </div>
           <motion.span

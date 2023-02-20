@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ThemeProvider } from 'styled-components';
-import { darkColors, lightColors, THEMES } from 'styles/colors';
+import { DARK_COLORS, LIGHT_COLORS, THEMES } from 'styles/colors';
 import { GlobalStyle } from 'styles/globalStyle';
 import { ResetStyle } from 'styles/reset';
 import { TextStyle } from 'styles/text';
@@ -26,7 +26,7 @@ function StyleProvider ({ children }: Props) {
       theme={{
         currentTheme: theme,
         isDarkTheme,
-        colors: isDarkTheme ? darkColors : lightColors,
+        colors: isDarkTheme ? DARK_COLORS : LIGHT_COLORS,
         onChangeTheme: handleChangeTheme,
       }}
     >

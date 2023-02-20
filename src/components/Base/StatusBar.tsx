@@ -21,16 +21,16 @@ export const StatusBarWrapper = styled.span<{ status: StatusType }>`
     height: 8px;
     width: 8px;
     margin-right: 4px;
-    background-color: ${(props) => {
-    switch (props.status) {
+    background-color: ${({ status, theme }) => {
+    switch (status) {
       case 'success':
-        return props.theme.colors.successMain;
+        return theme.colors.successMain;
       case 'warning':
-        return props.theme.colors.warningPrimary;
+        return theme.colors.warningPrimary;
       case 'danger':
-        return props.theme.colors.errorMain;
+        return theme.colors.errorMain;
       case 'info':
-        return props.theme.colors.infoPrimary;
+        return theme.colors.infoPrimary;
     }
   }};
   }
