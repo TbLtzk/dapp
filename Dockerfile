@@ -29,6 +29,8 @@ RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
         chown -R nginx:nginx /etc/nginx/conf.d
 RUN touch /var/run/nginx.pid && \
         chown -R nginx:nginx /var/run/nginx.pid
+RUN touch /var/log/nginx/error.log && \
+        chown -R nginx:nginx /var/log/nginx/error.log
 
 ## switch to non-root user
 USER nginx
