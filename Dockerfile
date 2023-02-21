@@ -23,16 +23,5 @@ COPY --from=builder /app/dist /app
 COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./config/nginx/conf.d/app.conf /etc/nginx/conf.d/app.conf
 
-RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
-        chown -R nginx:nginx /var/cache/nginx && \
-        chown -R nginx:nginx /var/log/nginx && \
-        chown -R nginx:nginx /etc/nginx/conf.d
-RUN touch /var/run/nginx.pid && \
-        chown -R nginx:nginx /var/run/nginx.pid
-RUN touch /var/log/nginx/error.log && \
-        chown -R nginx:nginx /var/log/nginx/error.log
-RUN chmod 766 /var/log/nginx/error.log
-## switch to non-root user
-USER nginx
 
 RUN nginx -t
