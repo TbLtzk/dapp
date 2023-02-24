@@ -443,7 +443,7 @@
   "MANAGE_Q_VAULT": "Q Vault verwalten",
   "PROPOSAL_ID": "Proposal ID",
   "QUORUM": "Quorum {{quorum}}",
-  "LEFT_QUORUM": "{{quorum}} übrig",
+  "REQUIRED_QUORUM": "{{quorum}} erforderlich",
   "PROPOSAL_STATUS_ALL": "Alle",
   "PROPOSAL_STATUS_ACTIVE": "Aktiv",
   "PROPOSAL_STATUS_ENDED": "Beendet",

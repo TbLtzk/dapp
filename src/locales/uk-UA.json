@@ -443,7 +443,7 @@
   "MANAGE_Q_VAULT": "Управляти сховищем",
   "PROPOSAL_ID": "ID пропозиції",
   "QUORUM": "Кворум {{quorum}}",
-  "LEFT_QUORUM": "{{quorum}} залишилось",
+  "REQUIRED_QUORUM": "{{quorum}} необхідно",
   "PROPOSAL_STATUS_ALL": "Усі",
   "PROPOSAL_STATUS_ACTIVE": "Активні",
   "PROPOSAL_STATUS_ENDED": "Закінчені",

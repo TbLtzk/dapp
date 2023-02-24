@@ -5,9 +5,9 @@ import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
-import Icon from 'ui/Icon';
 import Progress from 'ui/Progress';
 import Tag from 'ui/Tag';
+import Tooltip from 'ui/Tooltip';
 
 import ProposalCardSkeleton from '../ProposalCardSkeleton';
 import VotingPeriods from '../VotingPeriods';
@@ -37,11 +37,6 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
     const result = await getProposal(proposal.contract, proposal.id);
     setProposalInfo(result);
   }
-
-  const leftQuorum = Math.max(
-    Number(proposalInfo?.requiredQuorum) - Number(proposalInfo?.currentQuorum),
-    0
-  );
 
   const isUpdateContract = [
     CONTRACTS_NAMES.addressVoting,
@@ -81,12 +76,12 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
                 : t('QUORUM', { quorum: formatPercent(proposalInfo.currentQuorum) })
               }
             </p>
-            <p className="text-md">
-              {leftQuorum
-                ? t('LEFT_QUORUM', { quorum: formatPercent(leftQuorum) })
-                : <Icon name="double-check" />
-              }
-            </p>
+            <Tooltip
+              className="text-md"
+              trigger={t('REQUIRED_QUORUM', { quorum: formatPercent(proposalInfo.requiredQuorum, 2) })}
+            >
+              {`${proposalInfo.requiredQuorum} %`}
+            </Tooltip>
           </div>
 
           <Progress
