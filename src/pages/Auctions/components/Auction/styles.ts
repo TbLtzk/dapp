@@ -9,7 +9,7 @@ export const AuctionNotFoundContainer = styled.div`
   height: calc(100vh - 72px);
 `;
 export const AuctionLayoutContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   transition: all 150ms ease-out;
 
   .text-h2 {

@@ -1,12 +1,11 @@
 import ContentLoader from 'react-content-loader';
 
-import { COLORS } from '@q-dev/q-ui-kit';
 import { useTheme } from 'styled-components';
 
 import { SkeletonContainer } from './styles';
 
 function ProposalCardSkeleton () {
-  const { palette } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <SkeletonContainer>
@@ -14,8 +13,8 @@ function ProposalCardSkeleton () {
         speed={2}
         width="100%"
         height={217}
-        backgroundColor={palette === 'dark' ? COLORS.blue700 : COLORS.grey000}
-        foregroundColor={palette === 'dark' ? COLORS.blue600 : COLORS.grey100}
+        backgroundColor={colors.tertiaryMiddle}
+        foregroundColor={colors.tertiaryLight}
       >
         <rect
           x="32"

@@ -2,7 +2,7 @@ import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 export const PageLayoutContainer = styled.div`
-  .page-title-wrp {
+  .page-layout__title-wrapper {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -14,7 +14,7 @@ export const PageLayoutContainer = styled.div`
     }
   }
 
-  .page-title {
+  .page-layout__title {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -25,7 +25,7 @@ export const PageLayoutContainer = styled.div`
     }
 
     // TODO: Remove when page header is passed via props
-    span + .tooltip-wrapper {
+    .page-layout__title-text + .q-ui-tooltip {
       margin-left: -16px;
 
       ${media.lessThan('medium')} {
@@ -34,12 +34,12 @@ export const PageLayoutContainer = styled.div`
     }
   }
 
-  .page-title-actions {
+  .page-layout__title-actions {
     display: flex;
     align-items: center;
   }
 
-  .page-content {
+  .page-layout__content {
     margin-top: 32px;
     max-width: 100%;
     display: grid;
@@ -79,7 +79,7 @@ export const PageLayoutContainer = styled.div`
     }
   }
 
-  .page-top-btn {
+  .page-layout__top-btn {
     position: fixed;
     bottom: 32px;
     right: 32px;

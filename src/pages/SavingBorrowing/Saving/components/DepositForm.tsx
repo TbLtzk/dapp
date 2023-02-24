@@ -21,7 +21,7 @@ const StyledForm = styled.form`
   .deposit-balances {
     display: grid;
     gap: 8px;
-    background-color: ${({ theme }) => theme.colors.blockInside};
+    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
     padding: 12px 16px;
     border-radius: 8px;
   }

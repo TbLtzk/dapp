@@ -10,7 +10,7 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.backgroundSecondary};
   color: ${({ theme }) => theme.colors.textPrimary};
   text-align: center;
 
@@ -18,34 +18,10 @@ export const Wrap = styled.div`
   .breathing-q {
     width: 100px;
     height: 100px;
-
-    img {
-      width: 100%;
-      height: auto;
-      filter: ${({ theme }) => theme.palette === 'dark' ? 'brightness(100)' : 'none'};
-    }
   }
-`;
-
-export const Shadow = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0 0 0 / 54%);
-`;
-
-export const WrapLoading = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const WrapText = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  p {
-    color: #ffffff;
+  
+  .breathing-q__logo {
+    width: 100%;
+    height: auto;
   }
 `;

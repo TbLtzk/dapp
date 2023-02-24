@@ -36,25 +36,25 @@ function PageLayout ({
 
   return (
     <PageLayoutContainer {...rest}>
-      <div className="page-title-wrp">
+      <div className="page-layout__title-wrapper">
         <h1
           ref={titleRef}
-          className="page-title text-h1"
+          className="page-layout__title text-h1"
         >
-          <span>{t(title)}</span>
+          <span className="page-layout__title-text">{t(title)}</span>
           {titleExtra}
         </h1>
 
-        <div className="page-title-actions">{action}</div>
+        <div className="page-layout__title-actions">{action}</div>
       </div>
 
-      <div className="page-content">{children}</div>
+      <div className="page-layout__content">{children}</div>
 
       <Button
         icon
         alwaysEnabled
         look="primary"
-        className="page-top-btn"
+        className="page-layout__top-btn"
         style={{ right: isTitleVisible ? '-50px' : '' }}
         onClick={() => titleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       >

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { getTabColor } from './colors';
-
 export const TabsContainer = styled.nav`
   position: relative;
   display: flex;
@@ -21,7 +19,7 @@ export const TabsContainer = styled.nav`
     bottom: 7px;
     width: 100%;
     height: 1px;
-    background-color: ${({ theme }) => getTabColor(theme, 'border')};
+    background-color: ${({ theme }) => theme.colors.borderAdditional};
   }
 
   &::-webkit-scrollbar {
@@ -35,13 +33,12 @@ export const TabsContainer = styled.nav`
     cursor: pointer;
 
     .tab-label {
-      color: ${({ theme }) => getTabColor(theme, 'inactive')};
+      color: ${({ theme }) => theme.colors.textPrimary};
     }
 
-    &.active,
-    &:hover {
+    &.active {
       .tab-label {
-        color: ${({ theme }) => getTabColor(theme, 'active')};
+        color: ${({ theme }) => theme.colors.textActive};
       }
     }
 
@@ -56,11 +53,11 @@ export const TabsContainer = styled.nav`
     }
 
     .tab-active {
-      background-color: ${({ theme }) => getTabColor(theme, 'borderActive')};
+      background-color: ${({ theme }) => theme.colors.textActive};
     }
 
     &:hover .tab-label::after {
-      background-color: ${({ theme }) => getTabColor(theme, 'borderHover')};
+      background-color: ${({ theme }) => theme.colors.borderTertiary};
     }
 
     &:focus-visible {
@@ -74,7 +71,7 @@ export const TabsContainer = styled.nav`
         right: 0;
         bottom: 1px;
         z-index: 1;
-        box-shadow: 0 0 0 2px ${({ theme }) => getTabColor(theme, 'borderFocus')};
+        box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
       }
     }
   }
@@ -92,7 +89,7 @@ export const TabsContainer = styled.nav`
     border-radius: 8px;
     font-size: 10px;
     font-weight: 600;
-    background-color:  ${({ theme }) => getTabColor(theme, 'countBackground')};
-    color: ${({ theme }) => getTabColor(theme, 'countNumber')};
+    background-color:  ${({ theme }) => theme.colors.primaryMain};
+    color: ${({ theme }) => theme.colors.buttonTextPrimary};
   }
 `;

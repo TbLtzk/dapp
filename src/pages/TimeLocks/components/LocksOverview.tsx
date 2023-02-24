@@ -37,7 +37,7 @@ const StyledWrapper = styled.div`
 
     &:not(:first-child) {
       ${media.greaterThan('medium')} {
-        border-left: 1px solid ${({ theme }) => theme.colors.blockDivider};
+        border-left: 1px solid ${({ theme }) => theme.colors.borderSecondary};
       }
     }
   }

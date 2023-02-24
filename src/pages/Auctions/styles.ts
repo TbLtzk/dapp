@@ -32,12 +32,12 @@ export const AuctionCardBodyContainer = styled.div`
 `;
 
 export const AuctionCardLink = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   transition: all 150ms ease-out;
   &:hover,
   &:focus-visible {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.blockBorderHover};
+    border-color: ${({ theme }) => theme.colors.borderMain};
   }
 
   .auction-card__head {
@@ -82,7 +82,7 @@ export const ListEmptyStub = styled.div`
 `;
 
 export const AuctionContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
   padding: 32px;
   height: calc(100vh - 72px);
   max-height: calc(100vh - 72px);

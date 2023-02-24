@@ -3,12 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { Icon, Modal, Spinner } from '@q-dev/q-ui-kit';
 import { AnimatePresence, motion } from 'framer-motion';
-import { includes } from 'lodash';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import { getToastColor } from 'components/Toast/colors';
-import { ToastType, toastTypes } from 'components/Toast/Toast';
 
 import TxHashLink from './TxHashLink';
 
@@ -40,8 +37,17 @@ const TransactionModalContainer = styled.div<{ txState: TxStatus }>`
   }
 
   .transaction-modal__icon {
-    color: ${({ theme, txState }) =>
-    includes(toastTypes, txState) && getToastColor(theme, txState as ToastType)};
+    color: ${({ theme, txState }) => {
+    switch (txState) {
+      case 'success':
+        return theme.colors.successMain;
+      case 'error':
+        return theme.colors.errorMain;
+      case 'waitingConfirmation':
+      case 'sending':
+        return theme.colors.infoPrimary;
+    }
+  }};
     font-size: 70px;
   }
 `;

@@ -1,8 +1,6 @@
 import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
-import { getSidebarColor } from './colors';
-
 export const SidebarContainer = styled.div<{ $open: boolean }>`
   .sidebar {
     position: relative;
@@ -13,8 +11,8 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
     align-content: space-between;
     gap: 24px;
     padding: 16px 32px;
-    background-color: ${({ theme }) => theme.colors.block};
-    border-right: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
+    border-right: 1px solid ${({ theme }) => theme.colors.borderPrimary};
 
     ${media.lessThan('medium')} {
       position: fixed;
@@ -32,7 +30,7 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${({ theme }) => getSidebarColor(theme, 'overlay')};
+    background-color: ${({ theme }) => theme.colors.backdropOverlay};
     z-index: 1;
     display: block;
     opacity: ${({ $open }) => $open ? '0.5' : '0'};
@@ -57,9 +55,8 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
   }
 
   .sidebar-logo {
-    width: 40px;
-    height: 40px;
-    filter: ${({ theme }) => theme.palette === 'dark' ? 'brightness(100)' : 'none'};
+    width: 64px;
+    height: 64px;
   }
 
   .sidebar-main {
@@ -86,7 +83,7 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
   }
 
   .sidebar-footer-link {
-    color: ${({ theme }) => getSidebarColor(theme, 'linkText')};
+    color: ${({ theme }) => theme.colors.textSecondary};
     background-color: transparent;
     border: none;
     outline: none;
@@ -94,12 +91,13 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
 
     &:hover,
     &:focus-visible {
-      color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
+      color: ${({ theme }) => theme.colors.textPrimary};
+      text-decoration: underline;
     }
 
     &:not(:last-child) {
       padding-right: 8px;
-      border-right: 1px solid ${({ theme }) => theme.colors.blockBorder};
+      border-right: 1px solid ${({ theme }) => theme.colors.borderSecondary};
     }
   }
 

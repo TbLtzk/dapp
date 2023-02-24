@@ -29,7 +29,7 @@ const StyledWrapper = styled.div`
 
   .vault-card-liquidated {
     padding: 4px 12px;
-    background-color: ${({ theme }) => theme.colors.blockHover};
+    background-color: ${({ theme }) => theme.colors.tertiaryLight};
     border-radius: 32px;
   }
 `;

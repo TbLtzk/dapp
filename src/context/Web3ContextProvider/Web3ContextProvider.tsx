@@ -305,7 +305,11 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
               duration: 0.5
             }}
           >
-            <img src="/logo.png" alt="q" />
+            <img
+              className="breathing-q__logo"
+              src="/logo.png"
+              alt="q"
+            />
           </motion.div>
         </Wrap>
       );

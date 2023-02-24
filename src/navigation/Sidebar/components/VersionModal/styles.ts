@@ -5,7 +5,7 @@ export const VersionsContainer = styled.div`
   gap: 8px;
 
   .version-group {
-    border-top: 1px solid ${({ theme }) => theme.colors.blockDivider};
+    border-top: 1px solid ${({ theme }) => theme.colors.borderSecondary};
     padding-top: 8px;
   }
 

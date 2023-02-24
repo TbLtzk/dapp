@@ -6,6 +6,7 @@ import { Icon } from '@q-dev/q-ui-kit';
 import { useInterval } from '@q-dev/react-hooks';
 import { formatNumberCompact } from '@q-dev/utils';
 import { motion } from 'framer-motion';
+import { useTheme } from 'styled-components';
 import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
@@ -22,6 +23,7 @@ function Balance () {
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
   const { vaultBalance, walletBalance, loadAllBalances } = useQVault();
+  const { isDarkTheme } = useTheme();
 
   useInterval(loadAllBalances, 5000);
 
@@ -35,8 +37,8 @@ function Balance () {
         <Button alwaysEnabled look="secondary">
           <div className="balance">
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance, 2)}</p>
-            <QLogo width={22} margin="0 0 0 2px">
-              <img src="/logo.png" alt="q" />
+            <QLogo width={28} margin="0 0 0 2px">
+              <img src={isDarkTheme ? '/logo-white.png' : '/logo-dark.png'} alt="q" />
             </QLogo>
           </div>
           <motion.span

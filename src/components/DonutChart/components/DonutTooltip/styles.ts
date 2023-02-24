@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 
-import { getDonutChartColor } from 'components/DonutChart/colors';
-
 export const StyledDonutTooltip = styled.div`
   pointer-events: none;
   position: absolute;
   display: flex;
   z-index: 2;
   gap: 8px;
-  background-color: ${({ theme }) => getDonutChartColor(theme, 'tooltipBg')};
+  background-color: ${({ theme }) => theme.colors.secondaryMain};
   border-radius: 8px;
   padding: 12px;
   opacity: 0;
@@ -21,7 +19,15 @@ export const StyledDonutTooltip = styled.div`
   .donut-tooltip-lbl,
   .donut-tooltip-val {
     max-width: 120px;
-    color: ${({ theme }) => getDonutChartColor(theme, 'tooltipText')};
+    color: ${({ theme }) => theme.colors.buttonTextPrimary};
+  }
+  
+  .donut-tooltip-lbl {
+    font-weight: 600;
+  }
+
+  .donut-tooltip-val {
+    font-weight: 300;
   }
 
   .donut-tooltip-arrow,

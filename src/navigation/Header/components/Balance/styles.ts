@@ -1,5 +1,5 @@
 import { Dropdown, media } from '@q-dev/q-ui-kit';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const BalanceDropdown = styled(Dropdown)`
   ${media.lessThan('medium')} {
@@ -8,11 +8,11 @@ export const BalanceDropdown = styled(Dropdown)`
 
   .balance-content {
     min-width: 240px;
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     box-shadow: 0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
     border-radius: 8px;
-    border: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border: 1px solid ${({ theme }) => theme.colors.borderSecondary};
   }
 
   .balance {
@@ -29,8 +29,7 @@ export const BalanceDropdown = styled(Dropdown)`
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
-
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderPrimary};
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 
@@ -43,7 +42,7 @@ export const BalanceDropdown = styled(Dropdown)`
     white-space: nowrap;
     cursor: pointer;
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 `;
@@ -56,11 +55,5 @@ export const QLogo = styled.div<{ width?: number; margin?: string }>`
   img {
     max-width: 100%;
     height: auto;
-    ${({ theme }) =>
-      theme.palette === 'dark'
-        ? css`
-            filter: brightness(100);
-          `
-        : null}
   }
 `;

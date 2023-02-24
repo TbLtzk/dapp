@@ -14,13 +14,14 @@ import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
 
 const StyledDropdown = styled(Dropdown)`
   .asset-menu {
-    background-color: ${({ theme }) => theme.colors.block};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     display: grid;
     width: max-content;
     min-width: 156px;
     padding: 4px 0;
     border-radius: 8px;
     overflow: hidden;
+    border: 1px solid ${({ theme }) => theme.colors.borderSecondary};
     box-shadow:
       0 4px 4px ${({ theme }) => theme.colors.blockShadowDark},
       0 -1px 2px ${({ theme }) => theme.colors.blockShadowLight};
@@ -37,7 +38,7 @@ const StyledDropdown = styled(Dropdown)`
     color: ${({ theme }) => theme.colors.textPrimary};
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 

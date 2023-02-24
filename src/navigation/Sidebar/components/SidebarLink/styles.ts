@@ -2,8 +2,6 @@ import { NavLink } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { getSidebarColor } from 'navigation/Sidebar/colors';
-
 export const StyledLink = styled(NavLink)`
   width: 238px;
   display: flex;
@@ -14,20 +12,21 @@ export const StyledLink = styled(NavLink)`
   border-radius: 16px;
   cursor: pointer;
   outline: none;
-  color: ${({ theme }) => getSidebarColor(theme, 'linkText')};
+  color: ${({ theme }) => theme.colors.textSecondary};
 
   &:hover,
   &:focus-visible {
     text-decoration: none;
-    background-color: ${({ theme }) => getSidebarColor(theme, 'linkBgHover')};
-    color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
+    background-color: ${({ theme }) => theme.colors.tertiaryLight};
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   &.active,
   &.active:hover,
   &.active:focus-visible {
-    background-color: ${({ theme }) => getSidebarColor(theme, 'linkBgActive')};
-    color: ${({ theme }) => getSidebarColor(theme, 'linkTextActive')};
+    font-weight: 600;
+    background-color: ${({ theme }) => theme.colors.tertiaryMain};
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   .sidebar-link-group {
@@ -44,7 +43,7 @@ export const StyledLink = styled(NavLink)`
     min-width: 20px;
     height: 20px;
     border-radius: 10px;
-    background-color: ${({ theme }) => getSidebarColor(theme, 'linkIconBg')};
-    color: ${({ theme }) => getSidebarColor(theme, 'linkIconText')};
+    background-color: ${({ theme }) => theme.colors.primaryMain};
+    color: ${({ theme }) => theme.colors.buttonTextPrimary};
   }
 `;

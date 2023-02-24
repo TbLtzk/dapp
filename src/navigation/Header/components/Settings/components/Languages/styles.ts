@@ -11,7 +11,7 @@ export const LanguagesContainer = styled.div`
     cursor: pointer;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockBorder};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 

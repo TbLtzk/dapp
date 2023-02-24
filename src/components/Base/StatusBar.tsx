@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-import { COLORS } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 export type StatusType = 'success' | 'warning' | 'danger' | 'info';
@@ -22,18 +21,18 @@ export const StatusBarWrapper = styled.span<{ status: StatusType }>`
     height: 8px;
     width: 8px;
     margin-right: 4px;
-    background-color: ${(props) => {
-      switch (props.status) {
-        case 'success':
-          return props.theme.colors.success;
-        case 'warning':
-          return props.theme.colors.warning;
-        case 'danger':
-          return props.theme.colors.error;
-        case 'info':
-          return COLORS.grey300;
-      }
-    }};
+    background-color: ${({ status, theme }) => {
+    switch (status) {
+      case 'success':
+        return theme.colors.successMain;
+      case 'warning':
+        return theme.colors.warningPrimary;
+      case 'danger':
+        return theme.colors.errorMain;
+      case 'info':
+        return theme.colors.infoPrimary;
+    }
+  }};
   }
 `;
 

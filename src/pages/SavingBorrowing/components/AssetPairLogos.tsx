@@ -24,7 +24,7 @@ const StyledWrapper = styled.div`
       border-radius: 50%;
       position: absolute;
       top: 0;
-      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.background};
+      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.shadowMain};
     }
 
     .asset-pair-logo-icon {

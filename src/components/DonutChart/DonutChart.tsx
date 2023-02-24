@@ -8,7 +8,6 @@ import { useTheme } from 'styled-components';
 import DonutLegend from './components/DonutLegend';
 import DonutTooltip from './components/DonutTooltip';
 import useDonutTooltip from './hooks/useDonutTooltip';
-import { getDonutChartColor } from './colors';
 import { DonutChartContainer } from './styles';
 import { DonutOption } from './types';
 
@@ -28,16 +27,16 @@ function DonutChart ({
   formatValue = formatNumber,
   ...rest
 }: Props) {
-  const theme = useTheme();
+  const { colors } = useTheme();
   const { tooltipOpts, updateTooltip } = useDonutTooltip();
 
   const arcColors = [
-    getDonutChartColor(theme, 'section1'),
-    getDonutChartColor(theme, 'section2'),
-    getDonutChartColor(theme, 'section3'),
-    getDonutChartColor(theme, 'section4'),
-    getDonutChartColor(theme, 'section5'),
-    getDonutChartColor(theme, 'section6'),
+    colors.primaryDark,
+    colors.primaryMain,
+    colors.primaryMiddle,
+    colors.primaryLight,
+    colors.naturalMain,
+    colors.secondaryLight,
   ];
 
   const chartOptions = useMemo(() => {
@@ -72,8 +71,9 @@ function DonutChart ({
     datasets: [
       {
         data: chartOptions.map(({ value }) => value),
-        borderColor: getDonutChartColor(theme, 'border'),
-        hoverBorderColor: getDonutChartColor(theme, 'border'),
+        borderColor: colors.backgroundPrimary,
+        hoverBorderColor: colors.backgroundPrimary,
+        hoverBorderWidth: 1,
         borderWidth: 4,
         backgroundColor: arcColors,
         hoverBackgroundColor: arcColors,

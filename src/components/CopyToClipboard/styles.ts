@@ -3,11 +3,12 @@ import styled from 'styled-components';
 export const TooltipWrapper = styled.span`
   display: inline-flex;
   font-size: 12px;
-  // TODO: Colors
-  color: #7B96B5;
+  color: ${({ theme }) => theme.colors.iconSecondary};
 
-  .tooltip-content {
+
+  .q-ui-tooltip__content {
     padding: 8px;
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.blockShadow};
   }
 
   .copy-msg {

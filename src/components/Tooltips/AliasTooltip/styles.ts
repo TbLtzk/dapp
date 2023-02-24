@@ -8,11 +8,8 @@ export const AliasIcon = styled.span`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  color: ${(p) => p.theme.colors.textInverted};
-  background-color: ${(p) => p.theme.palette === 'dark'
-    ? p.theme.colors.success
-    : p.theme.colors.textPrimary
-  };
+  color: ${({ theme }) => theme.colors.buttonTextPrimary};
+  background-color: ${({ theme }) => theme.colors.successMain};
   font-weight: 600;
 `;
 

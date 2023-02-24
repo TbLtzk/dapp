@@ -1,9 +1,5 @@
 import { Icon, Spinner } from '@q-dev/q-ui-kit';
-import { includes } from 'lodash';
 import styled from 'styled-components';
-
-import { getToastColor } from 'components/Toast/colors';
-import { ToastType, toastTypes } from 'components/Toast/Toast';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -22,10 +18,10 @@ const TxFieldContainer = styled.div<{ txState: TxStatus }>`
     padding: 8px 16px;
     gap: 2px;
     width: 100%;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockBorder};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderSecondary};
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 
@@ -38,8 +34,17 @@ const TxFieldContainer = styled.div<{ txState: TxStatus }>`
   }
 
   .tx-field__item-icon {
-    color: ${({ theme, txState }) =>
-    includes(toastTypes, txState) && getToastColor(theme, txState as ToastType)};
+    color: ${({ theme, txState }) => {
+    switch (txState) {
+      case 'success':
+        return theme.colors.successMain;
+      case 'error':
+        return theme.colors.errorMain;
+      case 'waitingConfirmation':
+      case 'sending':
+        return theme.colors.infoPrimary;
+    }
+  }};
   }
 `;
 function TxField ({ tx }: Props) {

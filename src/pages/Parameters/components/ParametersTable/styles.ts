@@ -8,7 +8,7 @@ export const TableWrapper = styled.div<{ $simplified: boolean }>`
   }
 
   tr {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderSecondary};
   }
 
   td {

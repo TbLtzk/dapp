@@ -8,7 +8,7 @@ export const ParametersBlockTitle = styled.div`
   grid-gap: 10px;
   grid-template-columns: 1fr max-content;
   padding: 24px 0 16px;
-  background-color: ${({ theme }) => theme.colors.block};
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
 
   ${media.lessThan('tablet')} {
     grid-template-columns: 1fr;

@@ -16,7 +16,7 @@ export const SettingsMenuContainer = styled.div`
     padding: 16px 32px;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 

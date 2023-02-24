@@ -19,7 +19,7 @@ const WalletBaseInfoWrapper = styled.div`
     white-space: nowrap;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.blockHover};
+      background-color: ${({ theme }) => theme.colors.tertiaryLight};
     }
   }
 

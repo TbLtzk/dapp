@@ -26,13 +26,13 @@ const StyledLink = styled(Link)`
   &:hover,
   &:focus-visible {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.blockBorderHover};
+    border-color: ${({ theme }) => theme.colors.borderMain};
   }
 
   .asset-card-header {
     display: grid;
     padding: 24px 24px 16px;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.blockDivider};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderSecondary};
   }
 
   .asset-card-logos {
@@ -41,7 +41,7 @@ const StyledLink = styled(Link)`
     .asset-pair-logo::after {
       width: 32px;
       height: 32px;
-      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.block};
+      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.backgroundPrimary};
     }
 
     .asset-pair-logo-icon {
