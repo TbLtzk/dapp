@@ -419,6 +419,7 @@
   "STATUS_OBSOLETE": "Застаріла",
   "STATUS_OPEN": "Відкрито",
   "STATUS_DECIDED": "Вирішено",
+  "STATUS_ACTIVE": "Активно",
   "CLASSIFICATION_BASIC": "Базова",
   "CLASSIFICATION_DETAILED": "Детальна",
   "CLASSIFICATION_FUNDAMENTAL": "Фундаментальна",

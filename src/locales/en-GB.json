@@ -419,6 +419,7 @@
   "STATUS_OBSOLETE": "Obsolete",
   "STATUS_OPEN": "Open",
   "STATUS_DECIDED": "Decided",
+  "STATUS_ACTIVE": "Active",
   "CLASSIFICATION_BASIC": "Basic",
   "CLASSIFICATION_DETAILED": "Detailed",
   "CLASSIFICATION_FUNDAMENTAL": "Fundamental",
