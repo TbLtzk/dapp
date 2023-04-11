@@ -54,14 +54,16 @@ function WithdrawForm () {
   }, []);
 
   const maxAmount = useMemo(() => {
-    return toBigNumber(vaultBalance)
+    const maxWithdraw = toBigNumber(vaultBalance)
       .minus(qVaultMinimumTimeLock)
       .minus(
         isVotingWeightUnlocked || toBigNumber(delegationStakeInfo.totalDelegatedStake).isGreaterThan(votingWeight)
           ? delegationStakeInfo.totalDelegatedStake
           : votingWeight
-      )
-      .toString();
+      );
+    return maxWithdraw.isNegative()
+      ? '0'
+      : maxWithdraw.toString();
   }, [
     vaultBalance,
     qVaultMinimumTimeLock,
