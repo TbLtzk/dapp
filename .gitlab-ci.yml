@@ -76,6 +76,8 @@ build:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}"
+      --cache=true
+      --cache-repo="${IMAGE}/cache"
       --build-arg BUILD_TOKEN="$NPM_TOKEN"
       --build-arg COMMIT="${CI_COMMIT_SHA}"
       --build-arg VERSION="$CI_COMMIT_SHA"
@@ -102,6 +104,8 @@ build-tag:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}"
+      --cache=true
+      --cache-repo="${IMAGE}/cache"
       --build-arg BUILD_TOKEN="$NPM_TOKEN"
       --build-arg COMMIT="${CI_COMMIT_SHA}"
       --build-arg VERSION="$CI_COMMIT_TAG"
