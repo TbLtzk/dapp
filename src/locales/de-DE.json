@@ -1299,5 +1299,6 @@
   "ROOT_NODES_APR": "Root Node APR",
   "ROOT_NODE_LIST": "Root Node List",
   "THIS_ROOT_NODE_USES_ALIAS": "Dieser Stammknoten verwendet Alias",
-  "FOR_ROOT_NODE_OPERATION": "Für den Stammknotenbetrieb"
+  "FOR_ROOT_NODE_OPERATION": "Für den Stammknotenbetrieb",
+  "FOR_LAYER_ZERO_GOVERNANCE": "Für Layer Zero Governance"
 }

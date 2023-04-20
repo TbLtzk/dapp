@@ -16,7 +16,7 @@ function AliasTooltip ({ alias = '', isRootNode = false }) {
     ? (
       <Tooltip trigger={<AliasIcon>A</AliasIcon>}>
         <TooltipContent>
-          <span>{isRootNode ? t('THIS_ROOT_NODE_USES_ALIAS') : t('THIS_VALIDATOR_USES_ALIAS')}</span>
+          <span className="tooltip-text">{isRootNode ? t('THIS_ROOT_NODE_USES_ALIAS') : t('THIS_VALIDATOR_USES_ALIAS')}</span>
           <br />
           <div className="tooltip-address">
             <ExplorerAddress
@@ -25,7 +25,7 @@ function AliasTooltip ({ alias = '', isRootNode = false }) {
               address={alias}
             />
           </div>
-          <span>{isRootNode ? t('FOR_ROOT_NODE_OPERATION') : t('FOR_BLOCK_SEALING')}</span>
+          <span className="tooltip-text">{isRootNode ? t('FOR_LAYER_ZERO_GOVERNANCE') : t('FOR_BLOCK_SEALING')}</span>
         </TooltipContent>
       </Tooltip>
     )

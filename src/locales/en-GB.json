@@ -1299,5 +1299,6 @@
   "ROOT_NODES_APR": "Root Node APR",
   "ROOT_NODE_LIST": "Root Node List",
   "THIS_ROOT_NODE_USES_ALIAS": "This root node uses alias",
-  "FOR_ROOT_NODE_OPERATION": "for root node operation"
+  "FOR_ROOT_NODE_OPERATION": "for root node operation",
+  "FOR_LAYER_ZERO_GOVERNANCE": "for layer zero governance"
 }

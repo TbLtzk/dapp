@@ -1299,5 +1299,6 @@
   "ROOT_NODES_APR": "APR Кореневих вузлів",
   "ROOT_NODE_LIST": "Список кореневих вузлів",
   "THIS_ROOT_NODE_USES_ALIAS": "Цей кореневий вузол використовує псевдонім",
-  "FOR_ROOT_NODE_OPERATION": "для роботи кореневого вузла"
+  "FOR_ROOT_NODE_OPERATION": "для роботи кореневого вузла",
+  "FOR_LAYER_ZERO_GOVERNANCE": "для управління нульового рівня"
 }
