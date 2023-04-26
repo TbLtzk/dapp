@@ -171,6 +171,10 @@ function Routes () {
         />
 
         {/* Old governance routes for backward compatibility */}
+        <Route exact path="/q-governance">
+          <Redirect to={RoutePaths.governance} />
+        </Route>
+
         <Route exact path="/q-proposals">
           <Redirect to={RoutePaths.qProposals} />
         </Route>
