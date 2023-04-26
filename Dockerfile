@@ -1,4 +1,4 @@
-FROM node:16.10.0 AS builder
+FROM ${PROXY}node:16.10.0 AS builder
 
 RUN mkdir -p /app && chown -R node:node /app
 WORKDIR /app
@@ -16,7 +16,7 @@ COPY --chown=node:node index.html ./
 
 RUN yarn build
 
-FROM nginx:stable-alpine
+FROM ${PROXY}nginx:stable-alpine
 
 COPY --from=builder /app/dist /app
 
