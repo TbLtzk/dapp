@@ -9,10 +9,12 @@ import Input from 'ui/Input';
 
 import useForm from 'hooks/useForm';
 
+import useQVaultLimits from '../hooks/useQVaultLimits';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { toBigNumber } from 'utils/numbers';
+import { formatAsset } from 'utils/numbers';
 import { address, amount, required } from 'utils/validators';
 
 const StyledForm = styled.form`
@@ -40,15 +42,14 @@ const StyledForm = styled.form`
 function SendForm () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { vaultBalance, qVaultMinimumTimeLock, sendToVault } = useQVault();
-
-  const maxAmount = toBigNumber(vaultBalance).minus(qVaultMinimumTimeLock).toString();
+  const { sendToVault } = useQVault();
+  const { maxWithdrawAmount } = useQVaultLimits();
 
   const form = useForm({
     initialValues: { address: '', amount: '' },
     validators: {
       address: [required, address],
-      amount: [required, amount(maxAmount)],
+      amount: [required, amount(maxWithdrawAmount)],
     },
     onSubmit: (values) => {
       submitTransaction({
@@ -82,8 +83,9 @@ function SendForm () {
             type="number"
             label={t('AMOUNT')}
             prefix="Q"
-            max={String(maxAmount)}
+            max={maxWithdrawAmount}
             placeholder="0.0"
+            labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatAsset(maxWithdrawAmount, 'Q') })}
           />
         </div>
 
