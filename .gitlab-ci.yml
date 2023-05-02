@@ -4,7 +4,7 @@ include:
     file: "semantic-release-basic.yml"
 
 variables:
-  IMAGE_NAME: registry.gitlab.com/q-dev/dapp
+  IMAGE: registry.gitlab.com/q-dev/dapp
   RELEASE_IMAGE_NAME: qdevelopment/dapp
 
 
@@ -36,14 +36,14 @@ stages:
   script:
     - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
     - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="$IMAGE_NAME:$CI_COMMIT_SHA" docker-compose pull && IMAGE="$IMAGE_NAME:$CI_COMMIT_SHA" docker-compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="$IMAGE:$CI_COMMIT_SHA" docker-compose pull && IMAGE="$IMAGE:$CI_COMMIT_SHA" docker-compose up -d"
 
 
 .host-deploy: &host-deploy
   script:
     - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
     - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="$IMAGE_NAME:$CI_COMMIT_TAG" docker-compose pull && IMAGE="$IMAGE_NAME:$CI_COMMIT_TAG" docker-compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="$IMAGE:$CI_COMMIT_TAG" docker-compose pull && IMAGE="$IMAGE:$CI_COMMIT_TAG" docker-compose up -d"
 
 test:
   image: node:lts
