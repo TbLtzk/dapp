@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Icon, Progress, Tag } from '@q-dev/q-ui-kit';
+import { Progress, Tag, Tooltip } from '@q-dev/q-ui-kit';
 import { formatPercent } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
@@ -35,11 +35,6 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
     const result = await getProposal(proposal.contract, proposal.id);
     setProposalInfo(result);
   }
-
-  const leftQuorum = Math.max(
-    Number(proposalInfo?.requiredQuorum) - Number(proposalInfo?.currentQuorum),
-    0
-  );
 
   const isUpdateContract = [
     CONTRACTS_NAMES.addressVoting,
@@ -79,12 +74,12 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
                 : t('QUORUM', { quorum: formatPercent(proposalInfo.currentQuorum) })
               }
             </p>
-            <p className="text-md">
-              {leftQuorum
-                ? t('LEFT_QUORUM', { quorum: formatPercent(leftQuorum) })
-                : <Icon name="double-check" />
-              }
-            </p>
+            <Tooltip
+              className="text-md"
+              trigger={t('REQUIRED_QUORUM', { quorum: formatPercent(proposalInfo.requiredQuorum, 2) })}
+            >
+              {`${proposalInfo.requiredQuorum} %`}
+            </Tooltip>
           </div>
 
           <Progress

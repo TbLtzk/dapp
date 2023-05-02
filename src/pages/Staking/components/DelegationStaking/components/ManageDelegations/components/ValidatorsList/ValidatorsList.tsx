@@ -40,6 +40,12 @@ function ValidatorsList () {
           sort: true,
         },
         {
+          headerStyle: () => ({ cursor: 'pointer', minWidth: '170px' }),
+          dataField: 'delegationEfficiency',
+          text: t('DELEGATION_EFFICIENCY'),
+          sort: true,
+        },
+        {
           dataField: 'delegationSaturation',
           text: t('DELEGATION_SATURATION'),
         },
@@ -64,8 +70,9 @@ function ValidatorsList () {
         ),
         totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
         delegatorsShare: formatPercent(validator.delegatorsShare),
+        delegationEfficiency: formatPercent(validator.delegationEfficiency),
         delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
-        chooseValidator: <DelegateModal type="validator-select" delegation={validator}/>,
+        chooseValidator: <DelegateModal type="validator-select" delegation={validator} />,
       }))}
     />
   );

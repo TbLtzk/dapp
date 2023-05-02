@@ -18,4 +18,9 @@ export const TooltipContent = styled.div`
     display: inline-flex;
     font-weight: 600;
   }
+
+  .tooltip-text {
+    display: inline;
+    white-space: pre-wrap;
+  }
 `;

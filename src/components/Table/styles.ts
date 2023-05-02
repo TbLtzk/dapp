@@ -155,7 +155,6 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
             color: ${({ theme }) => theme.colors.textSecondary};
             background: ${({ theme }) => theme.colors.tertiaryMain};
             border: 2px solid ${({ theme }) => theme.colors.borderMain};
-            border-radius: 4px;
           }
 
           &:hover {

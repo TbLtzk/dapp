@@ -419,6 +419,7 @@
   "STATUS_OBSOLETE": "Застаріла",
   "STATUS_OPEN": "Відкрито",
   "STATUS_DECIDED": "Вирішено",
+  "STATUS_ACTIVE": "Активно",
   "CLASSIFICATION_BASIC": "Базова",
   "CLASSIFICATION_DETAILED": "Детальна",
   "CLASSIFICATION_FUNDAMENTAL": "Фундаментальна",
@@ -443,7 +444,7 @@
   "MANAGE_Q_VAULT": "Управляти сховищем",
   "PROPOSAL_ID": "ID пропозиції",
   "QUORUM": "Кворум {{quorum}}",
-  "LEFT_QUORUM": "{{quorum}} залишилось",
+  "REQUIRED_QUORUM": "{{quorum}} необхідно",
   "PROPOSAL_STATUS_ALL": "Усі",
   "PROPOSAL_STATUS_ACTIVE": "Активні",
   "PROPOSAL_STATUS_ENDED": "Закінчені",
@@ -1300,5 +1301,6 @@
   "REMOVE_STAKE_TX": "Видалення делегації",
   "REMOVE_ALL_STAKES_TX": "Видалення усіх делегацій",
   "STAKE_UPDATE_TX": "Оновлення частки",
-  "ENTERING_VALIDATOR_RANK_TX": "Входження до рейтингу валідатора"
+  "ENTERING_VALIDATOR_RANK_TX": "Входження до рейтингу валідатора",
+  "FOR_LAYER_ZERO_GOVERNANCE": "для управління нульового рівня"
 }

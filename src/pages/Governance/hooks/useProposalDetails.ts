@@ -16,7 +16,7 @@ function useProposalDetails (proposal: Proposal | null) {
     [ProposalStatus.EXPIRED]: t('STATUS_EXPIRED'),
     [ProposalStatus.NONE]: t('STATUS_NONE'),
     [ProposalStatus.PASSED]: t('STATUS_PASSED'),
-    [ProposalStatus.PENDING]: t('STATUS_PENDING'),
+    [ProposalStatus.PENDING]: t('STATUS_ACTIVE'),
     [ProposalStatus.REJECTED]: t('STATUS_REJECTED'),
     [ProposalStatus.OBSOLETE]: t('STATUS_OBSOLETE'),
   };

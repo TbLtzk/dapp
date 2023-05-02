@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { Icon, Progress } from '@q-dev/q-ui-kit';
+import { Progress, Tooltip } from '@q-dev/q-ui-kit';
 import { formatNumber, formatPercent } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 
@@ -21,10 +21,6 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
     CONTRACTS_NAMES.emergencyUpdateVoting,
   ].includes(proposal.contract);
 
-  const leftQuorum = Math.max(
-    proposal.requiredQuorum - proposal.currentQuorum,
-    0
-  );
   const totalVotes = Number(proposal.votesFor) + (Number(proposal.votesAgainst) || 0);
 
   return isUpdateContract
@@ -38,12 +34,12 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
             <p className="text-md">
               {t('QUORUM', { quorum: formatPercent(proposal.currentQuorum) })}
             </p>
-            <p className="text-md">
-              {leftQuorum || proposal.currentQuorum === 0
-                ? t('LEFT_QUORUM', { quorum: formatPercent(leftQuorum) })
-                : <Icon name="double-check" />
-              }
-            </p>
+            <Tooltip
+              className="text-md"
+              trigger={t('REQUIRED_QUORUM', { quorum: formatPercent(proposal.requiredQuorum, 2) })}
+            >
+              {`${proposal.requiredQuorum} %`}
+            </Tooltip>
           </div>
 
           <Progress

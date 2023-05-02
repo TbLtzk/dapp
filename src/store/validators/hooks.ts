@@ -21,6 +21,7 @@ import {
 } from './reducer';
 
 import { getState, getUserAddress, useAppSelector } from 'store';
+import { useParameters } from 'store/parameters/hooks';
 
 import {
   getIndexerInstance,
@@ -34,6 +35,7 @@ import { captureError } from 'utils/errors';
 
 export function useValidators () {
   const dispatch = useDispatch();
+  const { getConstitutionParameters } = useParameters();
 
   const validators = useAppSelector(({ validators }) => validators.validators);
   const validatorsLoading = useAppSelector(({ validators }) => validators.validatorsLoading);
@@ -169,11 +171,25 @@ export function useValidators () {
 
   async function loadInactiveValidatorsCount (indexerUrl: string) {
     try {
-      await loadValidatorsShortList();
+      await Promise.all([
+        getConstitutionParameters(),
+        loadValidatorsShortList(),
+      ]);
       const { validators: shortList } = getState().validators;
+      const { constitutionParameters } = getState().parameters;
+
+      const maxNValidatorsType = constitutionParameters?.find(({ key }) => key === 'constitution.maxNValidators');
+      const maxNValidators = Number(maxNValidatorsType?.value || 0);
+
+      if (!maxNValidators) {
+        dispatch(setInactiveCount(0));
+        return;
+      }
 
       const indexer = await getIndexerInstance(indexerUrl);
-      const validatorAddresses = shortList.map((user) => user.address);
+      const validatorAddresses = shortList
+        .slice(0, maxNValidators)
+        .map(user => user.address);
       const inactiveValidators = await indexer.getInactiveValidators(validatorAddresses);
       dispatch(setInactiveCount(inactiveValidators));
     } catch (error) {

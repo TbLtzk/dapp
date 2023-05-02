@@ -21,7 +21,7 @@ function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
     [ObjectionStatus.NONE]: t('STATUS_NONE'),
     [ObjectionStatus.OPEN]: t('STATUS_OPEN'),
     [ObjectionStatus.ACCEPTED]: t('STATUS_ACCEPTED'),
-    [ObjectionStatus.PENDING]: t('STATUS_PENDING'),
+    [ObjectionStatus.PENDING]: t('STATUS_ACTIVE'),
     [ObjectionStatus.DECIDED]: t('STATUS_DECIDED'),
     [ObjectionStatus.EXECUTED]: t('STATUS_EXECUTED'),
   };

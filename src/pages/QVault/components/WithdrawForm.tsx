@@ -1,13 +1,14 @@
-import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { media } from '@q-dev/q-ui-kit';
-import { formatAsset, toBigNumber } from '@q-dev/utils';
+import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
+
+import useQVaultLimits from '../hooks/useQVaultLimits';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
@@ -35,43 +36,13 @@ function WithdrawForm () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const {
-    vaultBalance,
-    qVaultMinimumTimeLock,
-    withdrawFromVault,
-    votingWeight,
-    isVotingWeightUnlocked,
-    delegationStakeInfo,
-    loadLockInfo,
-    loadDelegationStakeInfo
-  } = useQVault();
+  const { withdrawFromVault } = useQVault();
   const user = useUser();
 
-  useEffect(() => {
-    loadLockInfo(user.address);
-    loadDelegationStakeInfo();
-  }, []);
-
-  const maxAmount = useMemo(() => {
-    return toBigNumber(vaultBalance)
-      .minus(qVaultMinimumTimeLock)
-      .minus(
-        isVotingWeightUnlocked || toBigNumber(delegationStakeInfo.totalDelegatedStake).isGreaterThan(votingWeight)
-          ? delegationStakeInfo.totalDelegatedStake
-          : votingWeight
-      )
-      .toString();
-  }, [
-    vaultBalance,
-    qVaultMinimumTimeLock,
-    votingWeight,
-    isVotingWeightUnlocked,
-    delegationStakeInfo
-  ]);
-
+  const { maxWithdrawAmount } = useQVaultLimits();
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(maxAmount)] },
+    validators: { amount: [required, amount(maxWithdrawAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('WITHDRAW_FROM_Q_VAULT_TX'),
@@ -96,9 +67,9 @@ function WithdrawForm () {
           type="number"
           label={t('AMOUNT')}
           prefix="Q"
-          max={String(maxAmount)}
+          max={maxWithdrawAmount}
           placeholder="0.0"
-          hint={t('AVAILABLE_TO_WITHDRAW', { amount: formatAsset(maxAmount, 'Q') })}
+          hint={t('AVAILABLE_TO_WITHDRAW', { amount: formatAsset(maxWithdrawAmount, 'Q') })}
         />
 
         <Button

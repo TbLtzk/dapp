@@ -1451,10 +1451,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@q-dev/q-js-sdk@^2.0.0-rc.0":
-  version "2.0.0-rc.0"
-  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.0.tgz#372b9aebed2791651adc37f766019c53153b6f99"
-  integrity sha1-Nyua6+0nkWUa3Df3ZgGcUxU7b5k=
+"@q-dev/q-js-sdk@^2.0.0-rc.1":
+  version "2.0.0-rc.2"
+  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.2.tgz#dd159db53dee2afd4d49a6dff53b126e222848f5"
+  integrity sha1-3RWdtT3uKv1NSabf9TsSbiIoSPU=
   dependencies:
     "@truffle/hdwallet-provider" "^1.5.0"
     axios "^0.26.1"

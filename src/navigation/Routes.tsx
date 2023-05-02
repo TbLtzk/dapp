@@ -1,5 +1,5 @@
 import { lazy, useEffect } from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
 import { ProposalContractType } from 'typings/contracts';
@@ -80,7 +80,7 @@ function Routes () {
 
           <Route
             exact
-            path={RoutePaths.proposal}
+            path={[RoutePaths.proposal, '/q-governance/proposal/:contract?/:id?']}
             component={(props: RouteComponentProps<{ id: string; contract: ProposalContractType }>) => (
               <Proposal {...props} />
             )}
@@ -159,6 +159,31 @@ function Routes () {
           </Route>
 
           <Route component={NotFound} />
+
+          {/* Old governance routes for backward compatibility */}
+          <Route exact path="/q-governance">
+            <Redirect to={RoutePaths.governance} />
+          </Route>
+
+          <Route exact path="/q-proposals">
+            <Redirect to={RoutePaths.qProposals} />
+          </Route>
+
+          <Route exact path="/q-root-node-panel">
+            <Redirect to={RoutePaths.rootNodePanel} />
+          </Route>
+
+          <Route exact path="/q-expert-proposals">
+            <Redirect to={RoutePaths.expertProposals} />
+          </Route>
+
+          <Route exact path="/slashing-proposals">
+            <Redirect to={RoutePaths.slashingProposals} />
+          </Route>
+
+          <Route exact path="/contract-updates">
+            <Redirect to={RoutePaths.contractUpdates} />
+          </Route>
         </Switch>
       </LazyLoading>
     </ErrorBoundary>

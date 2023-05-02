@@ -56,7 +56,7 @@ function Balance () {
       <div className="balance-content">
         <div className="balance-q">
           <div className="balance">
-            <QLogo width={30} margin="0 5px 0 0">
+            <QLogo width={28} margin="0 5px 0 0">
               <img src="/logo.png" alt="q" />
             </QLogo>
             <p className="text-lg color-secondary">{t('BALANCE')}</p>
