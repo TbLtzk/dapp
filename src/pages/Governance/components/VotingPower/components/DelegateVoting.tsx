@@ -10,10 +10,6 @@ import InfoTooltip from 'components/Tooltips/InfoTooltip';
 import AnnounceForm from './AnnounceForm';
 import VotingAgent from './VotingAgent';
 
-import { useQVault } from 'store/q-vault/hooks';
-
-import { unixToDate } from 'utils/date';
-
 const StyledWrapper = styled.div`
   display: grid;
   gap: 24px;
@@ -29,9 +25,6 @@ const StyledWrapper = styled.div`
 
 function DelegateVoting () {
   const { t } = useTranslation();
-  const { votingLockingEnd } = useQVault();
-  const isLockingEnded = new Date() > unixToDate(votingLockingEnd);
-
   const [announceModalOpen, setAnnounceModalOpen] = useState(false);
 
   return (
@@ -46,11 +39,10 @@ function DelegateVoting () {
         </p>
       </div>
 
-      <VotingAgent disabled={!isLockingEnded} />
+      <VotingAgent />
 
       <Button
         className="delegate-voting-action"
-        disabled={!isLockingEnded}
         onClick={() => setAnnounceModalOpen(true)}
       >
         {t('ANNOUNCE_NEW_AGENT')}

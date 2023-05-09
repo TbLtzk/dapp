@@ -32,7 +32,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function VotingAgent ({ disabled }: { disabled: boolean }) {
+function VotingAgent () {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
 
@@ -85,7 +85,6 @@ function VotingAgent ({ disabled }: { disabled: boolean }) {
         {!isPending && !isUserAgent && (
           <Button
             compact
-            disabled={disabled}
             look="danger"
             onClick={() => submitTransaction({
               successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_TX'),
