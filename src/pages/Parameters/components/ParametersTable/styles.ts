@@ -34,4 +34,8 @@ export const TableWrapper = styled.div<{ $simplified: boolean }>`
   .parameter-key-copy {
     padding: 0;
   }
+
+  .parameter-key-check-icon {
+    color: ${(props) => props.theme.colors.successMain}
+  }
 `;

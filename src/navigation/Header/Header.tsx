@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 
@@ -12,13 +11,8 @@ import Settings from './components/Settings';
 import WalletDropdown from './components/WalletDropdown';
 import { StyledHeader } from './styles';
 
-import { useTransaction } from 'store/transaction/hooks';
-
 function Header ({ onMenuClick }: { onMenuClick: () => void }) {
-  const { t } = useTranslation();
   const { isConnected } = useWeb3Context();
-
-  const { pendingTransactions } = useTransaction();
 
   return (
     <StyledHeader>
@@ -41,15 +35,6 @@ function Header ({ onMenuClick }: { onMenuClick: () => void }) {
           {isConnected
             ? (
               <>
-                {pendingTransactions.length > 0 && (
-                  <Button
-                    loading
-                    look="secondary"
-                    className="header__transactions"
-                  >
-                    {t('COUNT_PENDING', { count: pendingTransactions.length })}
-                  </Button>
-                )}
                 <Balance />
                 <WalletDropdown />
               </>

@@ -80,7 +80,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
                 </span>
                 {!simplified && <CopyToClipboard className="parameter-key-copy" value={item.key} />}
                 {item.verifiedName && (
-                  <Tooltip trigger={<Icon name="check-circle" className="color-success text-lg" />}>
+                  <Tooltip trigger={<Icon name="check-circle" className="parameter-key-check-icon text-lg" />}>
                     {t('VERIFIED')} <span className="font-semibold">{item.verifiedName}</span>
                   </Tooltip>
                 )}

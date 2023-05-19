@@ -38,10 +38,4 @@ export const StyledHeader = styled.header`
     display: flex;
     gap: 8px;
   }
-
-  .header__transactions {
-    ${media.lessThan('large')} {
-      display: none;
-    }
-  }
 `;
