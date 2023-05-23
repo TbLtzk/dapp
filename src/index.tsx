@@ -10,6 +10,7 @@ import { Web3ReactHooks, Web3ReactProvider } from '@web3-react/core';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
 import { WalletConnect } from '@web3-react/walletconnect';
+import BigNumber from 'bignumber.js';
 import {
   coinbaseWallet,
   coinbaseWalletHooks,
@@ -29,6 +30,9 @@ import Routes from 'navigation/Routes';
 import { store } from './store';
 
 import '@mdi/font/css/materialdesignicons.min.css';
+
+// Prevents BigNumber from using exponential notation
+BigNumber.config({ EXPONENTIAL_AT: 1e9 });
 
 Sentry.init({
   dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',

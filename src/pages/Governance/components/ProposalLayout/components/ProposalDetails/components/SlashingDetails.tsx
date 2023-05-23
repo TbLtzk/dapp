@@ -32,6 +32,16 @@ function SlashingDetails ({ proposal }: Props) {
       </div>
 
       <div className="details-item">
+        <p className="text-md color-secondary">{t('PROPOSER')}</p>
+        <ExplorerAddress
+          short
+          iconed
+          className="text-md"
+          address={proposal.proposer}
+        />
+      </div>
+
+      <div className="details-item">
         <p className="text-md color-secondary">{t('EXTERNAL_SOURCE')}</p>
         <LinkViewer link={proposal.remark} />
       </div>
