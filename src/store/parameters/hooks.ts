@@ -4,12 +4,11 @@ import { useDispatch } from 'react-redux';
 import { ParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
 import { ParametersInstance } from 'typings/contracts';
 
-import { setConstitutionParameters, setConstitutionParametersError, setContractRegistry, setContractRegistryError, setEpdrParameters, setEpqfiParameters, setEpqfiParametersError, setEprsParameters, setEprsParametersError } from './reducer';
+import { setContractRegistry, setContractRegistryError, setEpdrParameters, setEpqfiParameters, setEpqfiParametersError, setEprsParameters, setEprsParametersError } from './reducer';
 
 import { useAppSelector } from 'store';
 
 import {
-  getConstitutionInstance,
   getContractRegistryInstance,
   getEpdrParametersInstance,
   getEpqfiParametersInstance,
@@ -36,10 +35,6 @@ export function useParameters () {
   const contractRegistryLoading = useAppSelector(({ parameters }) => parameters.contractRegistryLoading);
   const contractRegistryError = useAppSelector(({ parameters }) => parameters.contractRegistryError);
 
-  const constitutionParameters = useAppSelector(({ parameters }) => parameters.constitutionParameters);
-  const constitutionParametersLoading = useAppSelector(({ parameters }) => parameters.constitutionParametersLoading);
-  const constitutionParametersError = useAppSelector(({ parameters }) => parameters.constitutionParametersError);
-
   const epqfiParameters = useAppSelector(({ parameters }) => parameters.epqfiParameters);
   const epqfiParametersLoading = useAppSelector(({ parameters }) => parameters.epqfiParametersLoading);
   const epqfiParametersError = useAppSelector(({ parameters }) => parameters.epqfiParametersError);
@@ -60,17 +55,6 @@ export function useParameters () {
     } catch (error) {
       captureError(error);
       dispatch(setContractRegistryError('There was an error while loading Contract Registry data'));
-    }
-  }
-
-  async function getConstitutionParameters () {
-    try {
-      const contract = await getConstitutionInstance();
-      const parameters = await getParameters(contract);
-      dispatch(setConstitutionParameters(parameters));
-    } catch (error) {
-      captureError(error);
-      dispatch(setConstitutionParametersError('There was an error while loading Constitution Parameters data'));
     }
   }
 
@@ -112,10 +96,6 @@ export function useParameters () {
     contractRegistryLoading,
     contractRegistryError,
 
-    constitutionParameters,
-    constitutionParametersLoading,
-    constitutionParametersError,
-
     epqfiParameters,
     epqfiParametersLoading,
     epqfiParametersError,
@@ -129,7 +109,6 @@ export function useParameters () {
     eprsParametersError,
 
     getContractRegistry: useCallback(getContractRegistry, []),
-    getConstitutionParameters: useCallback(getConstitutionParameters, []),
     getEpqfiParameters: useCallback(getEpqfiParameters, []),
     getEpdrParameters: useCallback(getEpdrParameters, []),
     getEprsParameters: useCallback(getEprsParameters, [])

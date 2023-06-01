@@ -3,18 +3,18 @@ import { useTranslation } from 'react-i18next';
 
 import ParametersBlock from '../ParametersBlock';
 
-import { useParameters } from 'store/parameters/hooks';
+import { useConstitution } from 'store/constitution/hooks';
 
 import { getConstitutionInstance } from 'contracts/contract-instance';
 
 function QConstitutionParameters () {
   const { t } = useTranslation();
   const {
-    constitutionParameters,
-    constitutionParametersLoading,
-    constitutionParametersError,
+    constitutionParams,
+    isLoadingConstitution,
+    constitutionError,
     getConstitutionParameters
-  } = useParameters();
+  } = useConstitution();
 
   const [constitutionParametersAddress, setConstitutionParametersAddress] = useState('0x00');
 
@@ -32,9 +32,9 @@ function QConstitutionParameters () {
       title={t('Q_CONSTITUTION_PARAMETERS')}
       subtitle={`(${constitutionParametersAddress})`}
       docsId="#q-constitution-parameters"
-      parameters={constitutionParameters}
-      loading={constitutionParametersLoading}
-      errorMsg={constitutionParametersError}
+      parameters={constitutionParams}
+      loading={isLoadingConstitution}
+      errorMsg={constitutionError}
     />
   );
 }

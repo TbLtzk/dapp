@@ -53,8 +53,6 @@
   "constitution.rewardShareRootNodes": {
     "type": "fraction"
   },
-
-
   "governed.EPQFI.txFee": {
     "type": "QUSD"
   },
@@ -88,7 +86,6 @@
   "governed.EPQFI.reserveCoolDownP": {
     "type": "period"
   },
-
   "governed.EPDR.QUSD_savingRate": {
     "type": "rate"
   },
@@ -119,7 +116,6 @@
   "governed.EPDR.QUSD_step": {
     "type": "QUSD"
   },
-
   "governed.EPDR.QBTC_address": {
     "type": "address"
   },
@@ -141,7 +137,6 @@
   "governed.EPDR.QBTC_QUSD_interestRate": {
     "type": "rate"
   },
-
   "governed.EPDR.QDAI_address": {
     "type": "address"
   },
@@ -163,7 +158,6 @@
   "governed.EPDR.QDAI_QUSD_interestRate": {
     "type": "rate"
   },
-
   "governed.EPDR.QUSDC_address": {
     "type": "address"
   },
@@ -185,8 +179,6 @@
   "governed.EPDR.QUSDC_QUSD_interestRate": {
     "type": "rate"
   },
-
-
   "constitution.voting.addorRemRootEP": {
     "type": "string"
   },
@@ -223,7 +215,6 @@
   "constitution.voting.EPDR.changeParamEP": {
     "type": "string"
   },
-
   "constitution.voting.addOrRemRootEV": {
     "type": "string"
   },
@@ -260,7 +251,6 @@
   "constitution.voting.EPDR.changeParamEV": {
     "type": "string"
   },
-
   "constitution.voting.addOrRemRootVP": {
     "type": "period"
   },
@@ -297,7 +287,6 @@
   "constitution.voting.EPDR.changeParamVP": {
     "type": "period"
   },
-
   "constitution.voting.addOrRemRootQRM": {
     "type": "fraction"
   },
@@ -334,7 +323,6 @@
   "constitution.voting.EPDR.changeParamQRM": {
     "type": "fraction"
   },
-
   "constitution.voting.addOrRemRootRMAJ": {
     "type": "fraction"
   },
@@ -371,21 +359,18 @@
   "constitution.voting.EPDR.changeParamRMAJ": {
     "type": "fraction"
   },
-
   "constitution.voting.addOrRemRootSQRM": {
     "type": "fraction"
   },
   "constitution.voting.rootSlashingSQRM": {
     "type": "fraction"
   },
-
   "constitution.voting.addOrRemRootSMAJ": {
     "type": "fraction"
   },
   "constitution.voting.rootSlashingSMAJ": {
     "type": "fraction"
   },
-
   "constitution.voting.addOrRemRootRNVALP": {
     "type": "period"
   },
@@ -416,7 +401,6 @@
   "constitution.voting.EPDR.changeParamRNVALP": {
     "type": "period"
   },
-
   "constitution.voting.addOrRemRootQIDVTP": {
     "type": "period"
   },
@@ -435,7 +419,6 @@
   "constitution.voting.EPDR.addOrRemExpertQIDVTP": {
     "type": "period"
   },
-
   "constitution.voting.addOrRemRootQIDVTQRM": {
     "type": "fraction"
   },
@@ -454,14 +437,12 @@
   "constitution.voting.EPDR.addOrRemExpertQIDVTQRM": {
     "type": "fraction"
   },
-
   "constitution.voting.rootSlashingEOBJ": {
     "type": "string"
   },
   "constitution.voting.valslashingEOBJ": {
     "type": "string"
   },
-
   "constitution.voting.rootSlashingOBJP": {
     "type": "period"
   },

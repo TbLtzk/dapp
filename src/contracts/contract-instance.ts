@@ -114,28 +114,28 @@ export async function getCompoundRateKeeperQVaultInstance () {
   return compoundRateKeeperQVaultInstance;
 }
 
-export const getValidatorMetricsInstance = async () => {
+export const getValidatorMetricsInstance = () => {
   if (!validatorMetricsInstance) {
     validatorMetricsInstance = new ValidatorMetrics();
   }
   return validatorMetricsInstance;
 };
 
-export const getIndexerInstance = async (indexerUrl = networkConfigsMap.testnet.indexerUrl) => {
+export const getIndexerInstance = (indexerUrl = networkConfigsMap.testnet.indexerUrl) => {
   if (!indexerInstance) {
     indexerInstance = new Indexer(indexerUrl);
   }
   return indexerInstance;
 };
 
-const сompoundRateBorrowingInstances: Record<string, ContractValue> = {};
+const compoundRateBorrowingInstances: Record<string, ContractValue> = {};
 
 export async function getCompoundRateBorrowingInstance (asset: Asset) {
-  if (!сompoundRateBorrowingInstances[asset]) {
+  if (!compoundRateBorrowingInstances[asset]) {
     const borrowingCoreInstance = await getBorrowingCoreInstance();
-    сompoundRateBorrowingInstances[asset] = await borrowingCoreInstance.getCompoundRateKeeper(asset);
+    compoundRateBorrowingInstances[asset] = await borrowingCoreInstance.getCompoundRateKeeper(asset);
   }
-  return сompoundRateBorrowingInstances[asset];
+  return compoundRateBorrowingInstances[asset];
 }
 
 const borrowingInstances: Record<string, Contract> = {};

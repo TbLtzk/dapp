@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { toWei } from 'web3-utils';
-
-import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { FORM_TYPES } from './components/ValidatorMenu';
 
@@ -12,56 +10,7 @@ import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
-import { getIndexerInstance, getValidatorsInstance } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
-
-const useGetValidatorRank = () => {
-  const [validatorRankFormatted, setValidatorRankFormatted] = useState('...');
-  const [validatorRank, setValidatorRank] = useState(0);
-  const user = useUser();
-
-  const getValidatoRank = async () => {
-    try {
-      const validatorsInstance = await getValidatorsInstance();
-      const shortList = await validatorsInstance.getShortList();
-      const validatorRank = shortList.findIndex((val) => val.address === user.address);
-      setValidatorRank(validatorRank + 1);
-      setValidatorRankFormatted(validatorRank === -1 ? '-' : String(`#${validatorRank + 1}`));
-    } catch (error) {
-      captureError(error);
-    }
-  };
-
-  useEffect(() => {
-    getValidatoRank();
-    return () => setValidatorRankFormatted('...');
-  }, []);
-
-  return { validatorRank, validatorRankFormatted };
-};
-
-const useIsUserActiveValidator = () => {
-  const user = useUser();
-  const { indexerUrl } = useNetworkConfig();
-  const [isActiveValidator, setIsActiveValidator] = useState(false);
-
-  const getValidatoRank = async () => {
-    try {
-      const indexer = await getIndexerInstance(indexerUrl);
-      const inactiveValidators = await indexer.getInactiveValidators([user.address]);
-      setIsActiveValidator(inactiveValidators === 0);
-    } catch (error) {
-      captureError(error);
-    }
-  };
-  useEffect(() => {
-    getValidatoRank();
-    return () => setIsActiveValidator(false);
-  }, []);
-
-  return isActiveValidator;
-};
+import { getValidatorsInstance } from 'contracts/contract-instance';
 
 const useSendValidatorForms = () => {
   const user = useUser();
@@ -128,4 +77,4 @@ function useEnterShortList () {
   return useCallback(enterShortList, []);
 }
 
-export { useEnterShortList, useGetValidatorRank, useIsUserActiveValidator, useSendValidatorForms };
+export { useEnterShortList, useSendValidatorForms };

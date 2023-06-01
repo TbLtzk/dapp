@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { formatPercent } from '@q-dev/utils';
-import { Validator } from 'typings/validator';
+import { Validator, ValidatorStats } from 'typings/validator';
 import { toWei } from 'web3-utils';
 
 import Button from 'components/Button';
@@ -18,11 +18,11 @@ import { useTransaction } from 'store/transaction/hooks';
 import { max, required } from 'utils/validators';
 
 interface Props {
-  delegation: Validator;
+  validator?: ValidatorStats | Validator;
   onSubmit: () => void;
 }
 
-function DelegateStakeForm ({ delegation, onSubmit }: Props) {
+function DelegateStakeForm ({ validator, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { delegationStakeInfo, delegateStake } = useQVault();
@@ -35,12 +35,14 @@ function DelegateStakeForm ({ delegation, onSubmit }: Props) {
         successMessage: t('STAKE_UPDATE_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => delegateStake({
-          addresses: [delegation.address],
+          addresses: [validator?.address || ''],
           stakes: [toWei(amount)],
         })
       });
     },
   });
+
+  if (!validator) return null;
 
   return (
     <StakeFormContainer noValidate onSubmit={form.submit}>
@@ -50,13 +52,13 @@ function DelegateStakeForm ({ delegation, onSubmit }: Props) {
           <ExplorerAddress
             iconed
             short
-            address={delegation.address}
+            address={validator.address}
           />
         </div>
 
         <div>
           <p className="text-md color-secondary">{t('DELEGATOR_SHARE')}</p>
-          <p className="text-lg">{formatPercent(delegation.delegatorsShare)}</p>
+          <p className="text-lg">{formatPercent(validator.poolInfo.delegatorsShare)}</p>
         </div>
       </div>
 

@@ -34,7 +34,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
     validators: { amount: [required, min(0), max(maxAmountToDelegate)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('UPDATE_STAKE_TX'),
+        successMessage: t('STAKE_UPDATE_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => delegateStake({
           addresses: [delegation.validator],

@@ -45,17 +45,13 @@ function DetailsStep () {
   const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
 
   useEffect(() => {
-    if (isRootType) {
-      getRootMembers();
-    } else {
-      loadValidatorStats();
-    }
+    isRootType ? getRootMembers() : loadValidatorStats();
   }, [isRootType]);
 
   const getCurrentStake = () => {
     const validator = validatorStats.find(v => v.address === form.values.address);
     const rootNode = rootMembers.find(r => r.address === form.values.address);
-    return isRootType ? rootNode?.stakeAmount : validator?.selfStake;
+    return isRootType ? rootNode?.stakeAmount : validator?.poolInfo.selfStake;
   };
 
   const stake = useMemo(() => {

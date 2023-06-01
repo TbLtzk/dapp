@@ -6,10 +6,6 @@ interface ParametersState {
   contractRegistryLoading: boolean;
   contractRegistryError: string;
 
-  constitutionParameters: ParameterValue[];
-  constitutionParametersLoading: boolean;
-  constitutionParametersError: string;
-
   epqfiParameters: ParameterValue[];
   epqfiParametersLoading: boolean;
   epqfiParametersError: string;
@@ -27,10 +23,6 @@ const initialState: ParametersState = {
   contractRegistry: [],
   contractRegistryLoading: true,
   contractRegistryError: '',
-
-  constitutionParameters: [],
-  constitutionParametersLoading: true,
-  constitutionParametersError: '',
 
   epqfiParameters: [],
   epqfiParametersLoading: true,
@@ -58,17 +50,6 @@ const parametersSlice = createSlice({
     setContractRegistryError: (state, { payload }: PayloadAction<string>) => {
       state.contractRegistryLoading = false;
       state.contractRegistryError = payload;
-    },
-
-    setConstitutionParameters: (state, { payload }: PayloadAction<ParameterValue[]>) => {
-      state.constitutionParameters = payload;
-      state.constitutionParametersLoading = false;
-      state.constitutionParametersError = '';
-    },
-
-    setConstitutionParametersError: (state, { payload }: PayloadAction<string>) => {
-      state.constitutionParametersLoading = false;
-      state.constitutionParametersError = payload;
     },
 
     setEpqfiParameters: (state, { payload }: PayloadAction<ParameterValue[]>) => {
@@ -109,8 +90,6 @@ const parametersSlice = createSlice({
 export const {
   setContractRegistry,
   setContractRegistryError,
-  setConstitutionParameters,
-  setConstitutionParametersError,
   setEpqfiParameters,
   setEpqfiParametersError,
   setEpdrParameters,

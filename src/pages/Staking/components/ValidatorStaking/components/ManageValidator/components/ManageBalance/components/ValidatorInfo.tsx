@@ -1,17 +1,18 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
-import StatusBar, { StatusType } from 'components/Base/StatusBar';
+import ValidatorStatusBar from 'components/Base/ValidatorStatusBar';
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
-import { useEnterShortList, useGetValidatorRank, useIsUserActiveValidator } from '../hooks';
+import { useGetValidatorRank, useValidatorStatus } from 'hooks/useValidatorStatus';
 
-import { useParameters } from 'store/parameters/hooks';
+import { useEnterShortList } from '../hooks';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
@@ -35,36 +36,12 @@ const StyledWrapper = styled.div`
 
 function ValidatorInfo () {
   const { t } = useTranslation();
-  const user = useUser();
+  const { address } = useUser();
   const { walletBalance } = useQVault();
-  const { isValidator, checkIsValidator, isValidatorInLongList } = useValidators();
-  const { constitutionParameters } = useParameters();
-
-  const maxNValidators = useMemo(() => {
-    const maxNValidatorsType = constitutionParameters?.find(i => i.key === 'constitution.maxNValidators');
-    return Number(maxNValidatorsType?.value || 0);
-  }, [constitutionParameters]);
-
-  const { validatorRank, validatorRankFormatted } = useGetValidatorRank();
-  const isUserActiveValidator = useIsUserActiveValidator();
+  const { isValidator, checkIsValidator } = useValidators();
+  const { validatorRank } = useGetValidatorRank(address);
+  const validatorStatus = useValidatorStatus(address);
   const enterShortList = useEnterShortList();
-
-  const validatorStatus = useMemo<{text: string; status: StatusType}>(() => {
-    if (isValidatorInLongList) {
-      if (validatorRank) {
-        if (validatorRank <= maxNValidators) {
-          return isUserActiveValidator
-            ? { text: t('ACTIVE_VALIDATOR'), status: 'success' }
-            : { text: t('INACTIVE_VALIDATOR'), status: 'danger' };
-        }
-
-        return { text: t('BACKUP_VALIDATOR'), status: 'warning' };
-      }
-
-      return { text: t('NOT_IN_SHORTLIST'), status: 'info' };
-    }
-    return { text: t('NOT_A_VALIDATOR'), status: 'info' };
-  }, [isUserActiveValidator, isValidatorInLongList, validatorRank, t, maxNValidators]);
 
   useEffect(() => {
     checkIsValidator();
@@ -81,15 +58,18 @@ function ValidatorInfo () {
         )}
       </div>
       <div className="block__content">
-        <div>
-          <p className="color-secondary text-md">{t('STATUS')}</p>
-          <StatusBar status={validatorStatus.status}>
-            <p className="text-lg">{validatorStatus.text}</p>
-          </StatusBar>
-        </div>
+        {
+          validatorStatus &&
+          <div>
+            <p className="color-secondary text-md">{t('STATUS')}</p>
+            <ValidatorStatusBar status={validatorStatus.status}>
+              <p className="text-lg">{validatorStatus.title}</p>
+            </ValidatorStatusBar>
+          </div>
+        }
         <div>
           <p className="color-secondary text-md">{t('CURRENT_RANK')}</p>
-          <p className="text-lg">{validatorRankFormatted}</p>
+          <p className="text-lg">{validatorRank ? `# ${validatorRank}` : '–'}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('AVAILABLE_Q_BALANCE')}</p>
@@ -98,12 +78,12 @@ function ValidatorInfo () {
         <div>
           <p className="color-secondary text-md">{t('ADDRESS')}</p>
           <div className="text-lg">
-            {user.address === ZERO_ADDRESS
+            {address === ZERO_ADDRESS
               ? '-'
               : <ExplorerAddress
                 short
                 iconed
-                address={user.address}
+                address={address}
               />}
           </div>
         </div>

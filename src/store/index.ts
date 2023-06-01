@@ -6,6 +6,7 @@ import aliases from './aliases/reducer';
 import auctions from './auctions/reducer';
 import borrowAssets from './borrow-assets/reducer';
 import borrowing from './borrowing/reducer';
+import constitution from './constitution/reducer';
 import experts from './experts/reducer';
 import parameters from './parameters/reducer';
 import proposals from './proposals/reducer';
@@ -37,6 +38,7 @@ export const store = configureStore({
     validationRewards,
     systemBalance,
     parameters,
+    constitution
   },
 });
 

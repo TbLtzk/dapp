@@ -411,6 +411,7 @@
   "NEW_PROPOSAL": "Нова пропозиція",
   "STATUS_ACCEPTED": "Прийнято",
   "STATUS_EXECUTED": "Виконано",
+  "STATUS_ACTIVE": "Активні",
   "STATUS_EXPIRED": "Закінчено",
   "STATUS_NONE": "Відсутній",
   "STATUS_PASSED": "Пройдено",
@@ -419,7 +420,6 @@
   "STATUS_OBSOLETE": "Застаріла",
   "STATUS_OPEN": "Відкрито",
   "STATUS_DECIDED": "Вирішено",
-  "STATUS_ACTIVE": "Активно",
   "CLASSIFICATION_BASIC": "Базова",
   "CLASSIFICATION_DETAILED": "Детальна",
   "CLASSIFICATION_FUNDAMENTAL": "Фундаментальна",
@@ -445,6 +445,7 @@
   "PROPOSAL_ID": "ID пропозиції",
   "QUORUM": "Кворум {{quorum}}",
   "REQUIRED_QUORUM": "{{quorum}} необхідно",
+  "LEFT_QUORUM": "{{quorum}} залишилось",
   "PROPOSAL_STATUS_ALL": "Усі",
   "PROPOSAL_STATUS_ACTIVE": "Активні",
   "PROPOSAL_STATUS_ENDED": "Закінчені",
@@ -1302,5 +1303,8 @@
   "REMOVE_ALL_STAKES_TX": "Видалення усіх делегацій",
   "STAKE_UPDATE_TX": "Оновлення частки",
   "ENTERING_VALIDATOR_RANK_TX": "Входження до рейтингу валідатора",
-  "FOR_LAYER_ZERO_GOVERNANCE": "для управління нульового рівня"
+  "FOR_LAYER_ZERO_GOVERNANCE": "для управління нульовим рівнем",
+  "STANDBY_VALIDATOR": "Запасний валідатор",
+  "VOTING_BLOCK": "Ви не маєте достатньої ваги голосування",
+  "STANDBY": "Запасний"
 }

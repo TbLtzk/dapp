@@ -18,6 +18,13 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
       align-items: flex-end;
       gap: 12px;
     }
+
+    ${media.lessThan('tablet')} {
+      &  > button {
+        width: 100%;
+        max-width: none;
+      }
+    }
   }
 
   .table {
@@ -37,6 +44,11 @@ export const TableContainer = styled.div<{ tiny: boolean; withPagination: boolea
     .q-ui-search__container {
       width: 100%;
       max-width: 343px;
+     
+      ${media.lessThan('tablet')} {
+        width: 100%;
+        max-width: none;
+      }
     }
 
     .react-bootstrap-table-pagination {

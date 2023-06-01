@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal } from '@q-dev/q-ui-kit';
-import { Delegation, Validator } from 'typings/validator';
+import { Delegation, Validator, ValidatorStats } from 'typings/validator';
 
 import Button from 'components/Button';
 
@@ -12,13 +12,13 @@ import DelegateStakeForm from '../ManageDelegations/components/DelegateStakeForm
 import { useQVault } from 'store/q-vault/hooks';
 
 export interface DelegateModalProps {
-  delegation: Delegation | Validator;
+  delegation?: Delegation;
+  validator?: ValidatorStats | Validator;
   btnTitle?: string;
   onClose?: () => void;
-  type: 'validator-select' | 'delegator-select';
 }
 
-function DelegateModal ({ delegation, type, btnTitle, onClose = () => {} }: DelegateModalProps) {
+function DelegateModal ({ delegation, validator, btnTitle, onClose = () => { } }: DelegateModalProps) {
   const { t } = useTranslation();
 
   const { loadDelegationStakeInfo } = useQVault();
@@ -34,44 +34,41 @@ function DelegateModal ({ delegation, type, btnTitle, onClose = () => {} }: Dele
     onClose();
   };
 
-  const modalTypes = {
-    'delegator-select': {
+  const modalDetails = !validator && delegation
+    ? {
       btnTitle: t('EDIT'),
       title: t('UPDATE_DELEGATION_STAKE'),
       tip: t('INCREASE_REDUCE_REMOVE_YOUR_STAKE'),
       form: (
         <UpdateStakeForm
-          delegation={delegation as Delegation}
+          delegation={delegation}
           onSubmit={handleClose}
         />
       ),
-    },
-    'validator-select': {
+    }
+    : {
       btnTitle: t('SELECT'),
       title: t('STAKE_TOKENS'),
       tip: t('STAKE_YOUR_TOKENS_FOR_CURRENT_VALIDATOR'),
       form: (
         <DelegateStakeForm
-          delegation={delegation as Validator}
+          validator={validator}
           onSubmit={handleClose}
         />),
-    },
-  };
-
-  const modalType = modalTypes[type];
+    };
 
   return (
     <>
       <Button compact onClick={() => setModalOpen(true)}>
-        {btnTitle ?? modalType.btnTitle}
+        {btnTitle ?? modalDetails.btnTitle}
       </Button>
       <Modal
         open={modalOpen}
-        title={modalType.title}
-        tip={modalType.tip}
+        title={modalDetails.title}
+        tip={modalDetails.tip}
         onClose={handleClose}
       >
-        {modalType.form}
+        {modalDetails.form}
       </Modal>
     </>
   );

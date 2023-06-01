@@ -14,7 +14,7 @@ function DelegationInfo () {
   const { t } = useTranslation();
   const user = useUser();
   const { validator, refetchValidator } = useValidator();
-  const { delegationSaturation, delegationEfficiency, payoutPerDelegatedQ, address } = validator;
+  const { metric, payoutPerDelegatedQ, address } = validator;
 
   return (
     <StyledWrapper gridArea="delegation-info" className="block">
@@ -23,8 +23,7 @@ function DelegationInfo () {
         {user.address !== address && (
           <DelegateModal
             btnTitle={t('DELEGATE')}
-            type="validator-select"
-            delegation={validator}
+            validator={validator}
             onClose={refetchValidator}
           />
         )}
@@ -37,13 +36,13 @@ function DelegationInfo () {
 
       <div className="row">
         <p className="color-secondary text-md">{t('DELEGATION_EFFICIENCY')}</p>
-        <p className="color-primary text-md">{formatPercent(delegationEfficiency)}</p>
+        <p className="color-primary text-md">{formatPercent(metric?.delegationEfficiency || '0')}</p>
       </div>
 
       <div className="row">
         <p className="color-secondary text-md">{t('DELEGATION_SATURATION')}</p>
         <p className="color-primary text-md">
-          <ProgressBar value={delegationSaturation} />
+          <ProgressBar value={metric?.delegationSaturation || '0'} />
         </p>
       </div>
     </StyledWrapper>

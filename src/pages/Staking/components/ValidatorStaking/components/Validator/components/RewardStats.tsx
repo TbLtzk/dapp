@@ -22,23 +22,23 @@ function RewardStats ({ validator, onButtonClick, buttonLoading }: Props) {
     {
       id: 'collected-pool',
       label: t('COLLECTED_POOL_REWARDS'),
-      value: formatAsset(validator.validatorPoolBalance, 'Q'),
+      value: formatAsset(validator.poolInfo.validatorPoolBalance, 'Q'),
     },
     {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
-      value: formatAsset(validator.reservedForClaims, 'Q'),
+      value: formatAsset(validator.poolInfo.reservedForClaims, 'Q'),
     },
     {
       id: 'delegator-reward',
       label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(validator.distributableDelegatorsRewards, 'Q'),
+      value: formatAsset(validator.poolInfo.distributableDelegatorsRewards, 'Q'),
     },
     {
       id: 'rewards-allocated',
       label: t('REWARDS_ALLOCATED'),
-      value: formatDateRelative(unixToDate(validator.lastUpdateOfCompoundRate), i18n.language),
-      title: formatDate(unixToDate(validator.lastUpdateOfCompoundRate), i18n.language)
+      value: formatDateRelative(unixToDate(validator.poolInfo.lastUpdateOfCompoundRate), i18n.language),
+      title: formatDate(unixToDate(validator.poolInfo.lastUpdateOfCompoundRate), i18n.language)
     },
   ];
 

@@ -15,7 +15,7 @@ import { formatDate } from 'utils/date';
 function MonitoringInfo () {
   const { t, i18n } = useTranslation();
   const { validator } = useValidator();
-  const { lastBlock, timestamp, availability1000Cycles } = validator;
+  const { lastBlock, timestamp, availability1000Cycles } = validator.monitoring;
 
   return (
     <StyledWrapper gridArea="validator-status" className="block">

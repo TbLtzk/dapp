@@ -9,7 +9,7 @@ import styled, { useTheme } from 'styled-components';
 
 import Input from 'components/Input';
 
-import { getValidatorDelegatorShare } from 'contracts/helpers/validators-helper';
+import { getDelegatorShare } from 'contracts/helpers/validators-helper';
 
 import { captureError } from 'utils/errors';
 import { address, max, required } from 'utils/validators';
@@ -50,7 +50,7 @@ async function loadDelegatorShare (
 ) {
   setIsLoaded(false);
   try {
-    const delegatorShare = await getValidatorDelegatorShare(address);
+    const delegatorShare = await getDelegatorShare(address);
     setDelegatorShare(delegatorShare);
   } catch (e) {
     setDelegatorShare(0);

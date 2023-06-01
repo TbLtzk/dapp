@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { formatAsset } from '@q-dev/utils';
 import sumBy from 'lodash/sumBy';
+import { ValidatorStats } from 'typings/validator';
 
 import { ValidatorsOverviewContainer } from '../../styles';
 
@@ -13,11 +14,11 @@ function ValidatorsOverview () {
   const { validatorStats, validatorStatsLoading } = useValidators();
 
   const totalStake = useMemo(() => {
-    return sumBy(validatorStats, ({ totalStake }: { totalStake: string }) => Number(totalStake));
+    return sumBy(validatorStats, (validator: ValidatorStats) => Number(validator.poolInfo.totalStake));
   }, [validatorStats]);
 
   const totalDelegatedStake = useMemo(() => {
-    return sumBy(validatorStats, ({ delegatedStake }: { delegatedStake: string }) => Number(delegatedStake));
+    return sumBy(validatorStats, (validator: ValidatorStats) => Number(validator.poolInfo.delegatedStake));
   }, [validatorStats]);
 
   return (

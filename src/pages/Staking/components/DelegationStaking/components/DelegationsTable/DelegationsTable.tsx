@@ -124,7 +124,7 @@ function DelegationsTable () {
         reward: formatAsset(delegation.claimableReward, 'Q'),
         manage: (
           <>
-            <DelegateModal type="delegator-select" delegation={delegation} />
+            <DelegateModal delegation={delegation} />
             <Button
               compact
               look="danger"

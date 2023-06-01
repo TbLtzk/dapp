@@ -4,6 +4,13 @@ export const StyledVoteForm = styled.form<{ $selectedOption: 'for' | 'against' }
   display: grid;
   gap: 24px;
 
+  .vote-form__voting-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
   .q-ui-radio-group__option {
     align-items: center;
     grid-template: 'frame label';

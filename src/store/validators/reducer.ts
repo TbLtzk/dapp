@@ -1,6 +1,6 @@
 import { AddressWithBalance, ValidatorsWithdrawalInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Validator, ValidatorMonitoring } from 'typings/validator';
+import { ValidatorMonitoring, ValidatorStats } from 'typings/validator';
 
 type ValidatorWithAlias = AddressWithBalance & { alias: string };
 type MonitoringValidatorWithAlias = ValidatorWithAlias & ValidatorMonitoring & { rank: number };
@@ -23,7 +23,7 @@ interface ValidatorsState {
 
   validatorAddressesLongList: string[];
 
-  validatorStats: Validator[];
+  validatorStats: ValidatorStats[];
   validatorStatsLoading: boolean;
 
   validatorsMonitoring: MonitoringValidatorWithAlias[];
@@ -108,7 +108,7 @@ const validatorsSlice = createSlice({
       state.validatorsLoading = false;
     },
 
-    setValidatorStats: (state, { payload }: PayloadAction<Validator[]>) => {
+    setValidatorStats: (state, { payload }: PayloadAction<ValidatorStats[]>) => {
       state.validatorStats = payload;
       state.validatorStatsLoading = false;
     },

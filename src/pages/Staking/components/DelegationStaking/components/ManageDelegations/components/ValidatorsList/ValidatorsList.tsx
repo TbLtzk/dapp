@@ -68,11 +68,11 @@ function ValidatorsList () {
             <AliasTooltip alias={validator.alias} />
           </div>
         ),
-        totalDelegatedStake: formatAsset(validator.delegatedStake, 'Q'),
-        delegatorsShare: formatPercent(validator.delegatorsShare),
-        delegationEfficiency: formatPercent(validator.delegationEfficiency),
-        delegationSaturation: <ProgressBar value={validator.delegationSaturation} />,
-        chooseValidator: <DelegateModal type="validator-select" delegation={validator} />,
+        totalDelegatedStake: formatAsset(validator.poolInfo.delegatedStake, 'Q'),
+        delegatorsShare: formatPercent(validator.poolInfo.delegatorsShare),
+        delegationEfficiency: formatPercent(validator.metric?.delegationEfficiency || '0'),
+        delegationSaturation: <ProgressBar value={validator.metric?.delegationSaturation || '0'} />,
+        chooseValidator: <DelegateModal validator={validator} />,
       }))}
     />
   );

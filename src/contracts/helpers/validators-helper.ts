@@ -1,8 +1,6 @@
 import { AddressWithBalance, AliasPurpose } from '@q-dev/q-js-sdk';
-import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
-import { ValidationRewardPoolsInstance } from '@q-dev/q-js-sdk/lib/contracts/tokeneconomics/ValidationRewardPoolsInstance';
 import { calculateInterestRate, toBigNumber, transformToPercentage } from '@q-dev/utils';
-import { Validator, ValidatorMonitoring } from 'typings/validator';
+import { Validator, ValidatorMetricStats, ValidatorMonitoring, ValidatorPoolInfo, ValidatorStatsInfo } from 'typings/validator';
 import { fromWei } from 'web3-utils';
 
 import { getAliasMap } from './aliases-helper';
@@ -15,112 +13,104 @@ import {
   getValidatorsInstance,
 } from 'contracts/contract-instance';
 
+import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 import { isAddress } from 'utils/web3';
 
-export async function getValidators (shortList: AddressWithBalance[]) {
-  const metrics = await getValidatorMetricsInstance();
+export async function getValidatorMetrics (shortList: AddressWithBalance[]): Promise<ValidatorMetricStats[]> {
+  const metrics = getValidatorMetricsInstance();
   await metrics.takeSnapshotFromNetwork(getContractRegistryInstance());
 
   const efficiency = await metrics.getDelegationEfficiency();
   const saturation = await metrics.getDelegationSaturation();
 
-  return efficiency.map((validator, idx) => ({
-    ...validator,
-    ...shortList[idx],
+  return efficiency.map((efficiency, idx) => ({
+    ...efficiency,
+    address: shortList[idx].address,
     delegationSaturation: saturation[idx],
-  } as Validator));
+  }));
 }
 
 export async function getValidator (
-  validator: Validator,
-  index: number,
-  validatorsInstance: ValidatorsInstance,
-  validationRewardPoolsInstance: ValidationRewardPoolsInstance
+  address: string,
+  chainId: number
 ): Promise<Validator> {
+  if (!isAddress(address)) throw new Error('Invalid Address');
+  const network = chainIdToNetworkMap[chainId];
+  const indexerUrl = networkConfigsMap[network].indexerUrl;
+  const indexer = getIndexerInstance(indexerUrl);
+  const validatorsInstance = await getValidatorsInstance();
+  const shortList = await validatorsInstance.getShortList();
+  const validatorRank = shortList.findIndex((val) => val.address === address);
+
+  const [
+    inactiveValidators,
+    validatorMetrics,
+    aliasesMap
+  ] = await Promise.all([
+    indexer.getInactiveValidators([address]),
+    getValidatorMetrics(shortList),
+    getAliasMap([address], chainId, AliasPurpose.BLOCK_SEALING),
+  ]);
+
+  const isActiveValidator = inactiveValidators === 0;
+  const metric = validatorMetrics.find((v) => v.address === address);
+
+  const [poolInfo, [monitoring]] = await Promise.all([
+    getPoolInfo(address),
+    getMonitoringValidators([address], indexerUrl)
+  ]);
+
+  return {
+    metric,
+    poolInfo,
+    monitoring,
+    address,
+    isActiveValidator,
+    alias: aliasesMap[address],
+    rank: validatorRank + 1,
+    payoutPerDelegatedQ: fromWei(toBigNumber(metric?.payoutPerDelegatedQ || 0).toFixed()),
+  };
+}
+export async function getPoolInfo (address: string): Promise<ValidatorPoolInfo> {
+  const [
+    validatorsInstance,
+    validationRewardPoolsInstance
+  ] = await Promise.all([
+    getValidatorsInstance(),
+    getValidationRewardPoolsInstance(),
+  ]);
+
   const [
     validatorInfo,
     lastUpdateOfCompoundRate,
     poolInfo,
   ] = await Promise.all([
-    validatorsInstance.getValidatorInfo(validator.address),
-    validationRewardPoolsInstance.getLastUpdateOfCompoundRate(validator.address),
-    validationRewardPoolsInstance.getPoolInfo(validator.address),
+    validatorsInstance.getValidatorInfo(address),
+    validationRewardPoolsInstance.getLastUpdateOfCompoundRate(address),
+    validationRewardPoolsInstance.getPoolInfo(address),
   ]);
   const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
   const reservedForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
   return {
-    ...validator,
-    rank: index + 1,
-    totalStake: validator.balance,
     selfStake: validatorInfo.selfStake,
     delegatedStake: validatorInfo.delegatedStake,
+    totalStake: validatorInfo.totalStake,
     validatorShare: 100 - delegatorsShare,
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
     distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
     poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
-    payoutToDelegators: fromWei(toBigNumber(validator.payoutToDelegators).toFixed()),
-    payoutPerDelegatedQ: fromWei(toBigNumber(validator.payoutPerDelegatedQ).toFixed()),
     delegatorsShare,
     lastUpdateOfCompoundRate,
     reservedForClaims,
   };
 }
 
-export async function getAndCombineValidatorInfo (
-  address: string,
-  network: number,
-  indexerUrl: string
-): Promise<Partial<Validator>> {
-  if (!isAddress(address)) return {};
-  const [
-    indexer,
-    validatorsInstance,
-    validationRewardPoolsInstance
-  ] = await Promise.all([
-    getIndexerInstance(indexerUrl),
-    getValidatorsInstance(),
-    getValidationRewardPoolsInstance(),
-  ]);
-
-  const shortList = await validatorsInstance.getShortList();
-  const validatorRank = shortList.findIndex((val) => val.address === address);
-  if (validatorRank === -1) return {};
-
-  const [
-    inactiveValidators,
-    validators,
-    aliasesMap
-  ] = await Promise.all([
-    indexer.getInactiveValidators([address]),
-    getValidators(shortList),
-    getAliasMap([address], network, AliasPurpose.BLOCK_SEALING),
-  ]);
-
-  const isActiveValidator = inactiveValidators === 0;
-  const ourValidator = validators.find((validator) => validator.address === address);
-
-  const validatorData = await getValidator(
-    ourValidator as Validator,
-    validatorRank,
-    validatorsInstance,
-    validationRewardPoolsInstance,
-  );
-  const [monitoringValidator] = await getMonitoringValidators([address], indexerUrl);
-
-  return {
-    ...validatorData,
-    ...monitoringValidator,
-    alias: aliasesMap[address],
-    isActiveValidator
-  } as Partial<Validator>;
-}
-
 export async function getMonitoringValidators (
   addresses: string[],
   indexerUrl: string
 ): Promise<ValidatorMonitoring[]> {
-  const indexer = await getIndexerInstance(indexerUrl);
+  const indexer = getIndexerInstance(indexerUrl);
   const validatorStats = await indexer.getValidatorStats(addresses);
   const [metrics20, metrics1000] = await Promise.all([
     indexer.getValidatorMetrics(20),
@@ -143,9 +133,30 @@ export async function getMonitoringValidators (
   });
 }
 
-export async function getValidatorDelegatorShare (address: string) {
+export async function getDelegatorShare (address: string): Promise<number> {
   const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
   const poolInfo = await validationRewardPoolsInstance.getPoolInfo(address);
-  const delegatorShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
-  return delegatorShare;
+  return Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+}
+
+export async function getValidatorStats (address: string): Promise<ValidatorStatsInfo> {
+  const validatorsInstance = await getValidatorsInstance();
+  const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
+
+  const [validatorInfo, poolInfo] = await Promise.all([
+    validatorsInstance.getValidatorInfo(address),
+    validationRewardPoolsInstance.getPoolInfo(address),
+  ]);
+  const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+  const reservedForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
+
+  return {
+    ...validatorInfo,
+    reservedForClaims,
+    delegatorsShare,
+    validatorShare: 100 - delegatorsShare,
+    validatorPoolBalance: fromWei(poolInfo.poolBalance),
+    distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
+    poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
+  };
 }

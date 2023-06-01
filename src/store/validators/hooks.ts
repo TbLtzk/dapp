@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { toBigNumber } from '@q-dev/utils';
 import { fromWei } from 'web3-utils';
 
 import {
@@ -21,7 +22,7 @@ import {
 } from './reducer';
 
 import { getState, getUserAddress, useAppSelector } from 'store';
-import { useParameters } from 'store/parameters/hooks';
+import { useConstitution } from 'store/constitution/hooks';
 
 import {
   getIndexerInstance,
@@ -29,13 +30,13 @@ import {
   getValidatorsInstance,
 } from 'contracts/contract-instance';
 import { getAliasMap } from 'contracts/helpers/aliases-helper';
-import { getMonitoringValidators, getValidator, getValidators } from 'contracts/helpers/validators-helper';
+import { getMonitoringValidators, getValidatorMetrics, getValidatorStats } from 'contracts/helpers/validators-helper';
 
 import { captureError } from 'utils/errors';
 
 export function useValidators () {
   const dispatch = useDispatch();
-  const { getConstitutionParameters } = useParameters();
+  const { getConstitutionParameters } = useConstitution();
 
   const validators = useAppSelector(({ validators }) => validators.validators);
   const validatorsLoading = useAppSelector(({ validators }) => validators.validatorsLoading);
@@ -114,11 +115,12 @@ export function useValidators () {
 
   async function loadValidatorsShortList () {
     try {
+      const { chainId } = getState().user;
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
       const aliasesMap = await getAliasMap(
         shortList.map((item) => item.address),
-        getState().user.chainId,
+        chainId,
         AliasPurpose.BLOCK_SEALING
       );
 
@@ -137,17 +139,22 @@ export function useValidators () {
     try {
       await loadValidatorsShortList();
       const { validators: shortList } = getState().validators;
-
-      const validatorsInstance = await getValidatorsInstance();
-      const validators = await getValidators(shortList);
-
-      const validationRewardPoolsInstance = await getValidationRewardPoolsInstance();
+      const metric = await getValidatorMetrics(shortList);
       const stats = await Promise.all(
-        validators.map((validator, idx) =>
-          getValidator(validator, idx, validatorsInstance, validationRewardPoolsInstance)
-        )
+        shortList.map(async (validator, index) => {
+          const poolInfo = await getValidatorStats(
+            validator.address
+          );
+          return {
+            poolInfo,
+            metric: metric[index],
+            address: validator.address,
+            rank: index + 1,
+            alias: validator.alias,
+            payoutPerDelegatedQ: fromWei(toBigNumber(metric[index].payoutPerDelegatedQ || 0).toFixed()),
+          };
+        })
       );
-
       dispatch(setValidatorStats(stats));
     } catch (error) {
       captureError(error);
@@ -176,9 +183,9 @@ export function useValidators () {
         loadValidatorsShortList(),
       ]);
       const { validators: shortList } = getState().validators;
-      const { constitutionParameters } = getState().parameters;
+      const { constitutionParams } = getState().constitution;
 
-      const maxNValidatorsType = constitutionParameters?.find(({ key }) => key === 'constitution.maxNValidators');
+      const maxNValidatorsType = constitutionParams?.find(({ key }) => key === 'constitution.maxNValidators');
       const maxNValidators = Number(maxNValidatorsType?.value || 0);
 
       if (!maxNValidators) {
@@ -186,7 +193,7 @@ export function useValidators () {
         return;
       }
 
-      const indexer = await getIndexerInstance(indexerUrl);
+      const indexer = getIndexerInstance(indexerUrl);
       const validatorAddresses = shortList
         .slice(0, maxNValidators)
         .map(user => user.address);
@@ -199,17 +206,18 @@ export function useValidators () {
 
   async function checkIsValidator () {
     try {
-      const userAddress = getUserAddress();
+      const { address } = getState().user;
       const contract = await getValidatorsInstance();
       const [isInShortList, isInLongList] = await Promise.all([
-        contract.isInShortList(userAddress),
-        contract.isInLongList(userAddress)
+        contract.isInShortList(address),
+        contract.isInLongList(address)
       ]);
       dispatch(setIsValidator(isInShortList && isInLongList));
       dispatch(setIsValidatorInLongList(isInLongList));
     } catch (error) {
       captureError(error);
       dispatch(setIsValidator(false));
+      dispatch(setIsValidatorInLongList(false));
     }
   }
 

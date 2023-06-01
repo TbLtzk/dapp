@@ -1,9 +1,10 @@
 
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { RadioGroup } from '@q-dev/q-ui-kit';
-import { formatAsset } from '@q-dev/utils';
+import { formatAsset, toBigNumber } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 import { fromWei } from 'web3-utils';
 
@@ -11,9 +12,13 @@ import Button from 'components/Button';
 
 import { StyledVoteForm } from './styles';
 
-import { useBaseVotingWeightInfo, useProposals } from 'store/proposals/hooks';
+import { getUserAddress } from 'store';
+import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
+import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
+
+import { captureError } from 'utils/errors';
 import { required } from 'utils/validators';
 
 interface Props {
@@ -26,9 +31,19 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { voteForProposal } = useProposals();
-  const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const [baseWeight, setBaseWeight] = useState('0');
+  const canUserVote = useMemo(() => toBigNumber(baseWeight).isGreaterThan(0), [baseWeight]);
 
-  const weight = formatAsset(fromWei(baseVotingWeightInfo.ownWeight), 'Q');
+  async function getBaseVotingWeightInfo () {
+    try {
+      const contract = await getVotingWeightProxyInstance();
+      const result = await contract.getBaseVotingWeightInfo(getUserAddress(), proposal.votingEndTime.toString());
+      setBaseWeight(fromWei(result.ownWeight));
+    } catch (error) {
+      captureError(error);
+      setBaseWeight('0');
+    }
+  }
 
   const form = useForm({
     initialValues: { vote: '' },
@@ -46,20 +61,30 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
     }
   });
 
+  useEffect(() => {
+    getBaseVotingWeightInfo();
+  }, []);
+
   return (
     <StyledVoteForm
       noValidate
       $selectedOption={form.values.vote === 'yes' ? 'for' : 'against'}
       onSubmit={form.submit}
     >
+      {
+        !canUserVote &&
+        <div className="vote-form__voting-block">
+          <p className="text-md">{t('VOTING_BLOCK')}</p>
+        </div>
+      }
       {!isMemberVoting &&
         <div>
           <p className="text-md">{t('TOTAL_VOTING_WEIGHT')}</p>
           <p
             className="text-xl font-semibold"
-            title={weight}
+            title={baseWeight}
           >
-            {weight}
+            {formatAsset(baseWeight, 'Q')}
           </p>
         </div>
       }
@@ -67,6 +92,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
         {...form.fields.vote}
         extended
         name="vote"
+        disabled={!canUserVote}
         options={[
           { label: t('YES'), value: 'yes' },
           { label: t('NO'), value: 'no' },
@@ -76,7 +102,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
       <Button
         type="submit"
         style={{ width: '100%' }}
-        disabled={!form.isValid}
+        disabled={!form.isValid || !canUserVote}
       >
         {t('SUBMIT')}
       </Button>

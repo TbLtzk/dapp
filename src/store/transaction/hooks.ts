@@ -89,7 +89,7 @@ export function useTransaction () {
 
   const alertTxStatus = async (id: string, type: 'success' | 'error', message: string) => {
     const currentTx = getTxById(id);
-    if (currentTx?.isClosedModal) {
+    if (currentTx?.isClosedModal || type === 'error') {
       alert[type](message);
     }
     await loadAllBalances();
@@ -118,8 +118,11 @@ function getErrorMessage (err: unknown): string {
     if (error.message?.includes('Transaction has been reverted by the EVM')) {
       return t('ERROR_TRANSACTION_REVERTED_BY_EVM');
     }
+    if (error.message?.includes('bad address checksum')) {
+      return t('ERROR_INVALID_ADDRESS');
+    }
 
-    return error.message || t('ERROR_UNKNOWN');
+    return t('ERROR_UNKNOWN');
   }
 
   if (error.message === 'execution reverted') {

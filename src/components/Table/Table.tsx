@@ -26,6 +26,7 @@ interface Props<T> {
   hideSearch?: boolean;
   keyField?: string;
   searchFormatted?: boolean;
+  rowClasses?: ((row: Record<string, string>, rowIndex: number) => string) | string;
 }
 
 function Table<T> ({
@@ -37,6 +38,7 @@ function Table<T> ({
   perPage = 1000,
   emptyTableMessage,
   header,
+  rowClasses,
   tiny = false,
   keyField = 'id',
   hideSearch = false,
@@ -110,6 +112,7 @@ function Table<T> ({
                     <div className="head-elements">
                       <Search
                         alwaysEnabled
+                        className="head-elements__search"
                         value={props.searchProps.searchText}
                         onChange={props.searchProps.onSearch}
                       />
@@ -117,7 +120,11 @@ function Table<T> ({
                     </div>
                   )}
 
-                  <BootstrapTable {...props.baseProps} {...paginationTableProps} />
+                  <BootstrapTable
+                    {...props.baseProps}
+                    {...paginationTableProps}
+                    rowClasses={rowClasses}
+                  />
                   {isEmpty
                     ? (
                       <div className="text-center">

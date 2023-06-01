@@ -20,7 +20,7 @@ import MonitoringInfo from './components/MonitoringInfo';
 import RewardStats from './components/RewardStats';
 import { useFetchValidatorData } from './hooks';
 
-import { useParameters } from 'store/parameters/hooks';
+import { useConstitution } from 'store/constitution/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -84,7 +84,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
   const params = new URLSearchParams(search);
 
   const { t } = useTranslation();
-  const { getConstitutionParameters, constitutionParametersLoading } = useParameters();
+  const { getConstitutionParameters, isLoadingConstitution } = useConstitution();
   const { submitTransaction } = useTransaction();
   const {
     isValidator,
@@ -100,22 +100,16 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
     getConstitutionParameters();
   }, []);
 
-  if ((validatorLoading || constitutionParametersLoading) && !validator.address) {
+  if ((validatorLoading || isLoadingConstitution) && !validator.address) {
     return (
       <CenteredContainer>
         <Spinner size={100} thickness={4} />
       </CenteredContainer>
     );
   }
-  if (validatorError) {
-    return (
-      <CenteredContainer>
-        <p className="text-xl font-semibold">{t('ERROR_PLEASE_TRY_AGAIN')}</p>
-      </CenteredContainer>
-    );
-  }
-  if (!isValidator) {
-    return <NotFound />;
+
+  if (!isValidator || validatorError) {
+    return <NotFound title={validatorError ? t('ERROR_PLEASE_TRY_AGAIN') : ''} />;
   }
 
   return (
@@ -149,7 +143,7 @@ function ValidatorPage ({ match }: RouteComponentProps<{ address: string }>) {
           </div>
 
           <div className="charts">
-            <ValidatorCharts {...validator} />
+            <ValidatorCharts {...validator.poolInfo} />
           </div>
         </StyledContainer>
       </PageLayout>
