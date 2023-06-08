@@ -5,7 +5,6 @@ import { Form, useFormArray } from '@q-dev/form-hooks';
 import { Icon } from '@q-dev/q-ui-kit';
 import { formatAsset, toBigNumber } from '@q-dev/utils';
 import { FormDelegation } from 'typings/forms';
-import { toWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
@@ -17,6 +16,8 @@ import DelegationForm from '../DelegationForm';
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useValidators } from 'store/validators/hooks';
+
+import { toWei } from 'utils/web3';
 
 function ManageDelegations () {
   const { t } = useTranslation();

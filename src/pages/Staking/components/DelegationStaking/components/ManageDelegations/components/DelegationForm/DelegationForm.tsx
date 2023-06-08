@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { Form, useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 import styled, { useTheme } from 'styled-components';
 
 import Input from 'components/Input';
 
 import { getDelegatorShare } from 'contracts/helpers/validators-helper';
 
-import { captureError } from 'utils/errors';
 import { address, max, required } from 'utils/validators';
 
 interface Props {
@@ -54,7 +54,7 @@ async function loadDelegatorShare (
     setDelegatorShare(delegatorShare);
   } catch (e) {
     setDelegatorShare(0);
-    captureError(e);
+    ErrorHandler.processWithoutFeedback(e);
   }
   setIsLoaded(true);
 }

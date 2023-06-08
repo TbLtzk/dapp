@@ -1,7 +1,6 @@
 import { AddressWithBalance, AliasPurpose } from '@q-dev/q-js-sdk';
-import { calculateInterestRate, toBigNumber, transformToPercentage } from '@q-dev/utils';
+import { toBigNumber, transformToPercentage } from '@q-dev/utils';
 import { Validator, ValidatorMetricStats, ValidatorMonitoring, ValidatorPoolInfo, ValidatorStatsInfo } from 'typings/validator';
-import { fromWei } from 'web3-utils';
 
 import { getAliasMap } from './aliases-helper';
 
@@ -14,7 +13,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
-import { isAddress } from 'utils/web3';
+import { fromWei, isAddress } from 'utils/web3';
 
 export async function getValidatorMetrics (shortList: AddressWithBalance[]): Promise<ValidatorMetricStats[]> {
   const metrics = getValidatorMetricsInstance();
@@ -99,7 +98,6 @@ export async function getPoolInfo (address: string): Promise<ValidatorPoolInfo> 
     validatorShare: 100 - delegatorsShare,
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
     distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
-    poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
     delegatorsShare,
     lastUpdateOfCompoundRate,
     reservedForClaims,
@@ -157,6 +155,5 @@ export async function getValidatorStats (address: string): Promise<ValidatorStat
     validatorShare: 100 - delegatorsShare,
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
     distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
-    poolinterestRate: calculateInterestRate(Number(poolInfo.interestRate)),
   };
 }

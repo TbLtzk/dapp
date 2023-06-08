@@ -1,5 +1,6 @@
+import { Chain, CHAIN_TYPES } from '@distributedlab/w3p';
+import { utils } from 'ethers';
 import { Asset } from 'typings/defi';
-import Web3 from 'web3';
 
 export type NetworkName = 'mainnet' | 'testnet' | 'devnet';
 
@@ -19,18 +20,6 @@ interface NetworkConfig {
   gasBuffer: number;
   featureFlags: {
     aliases: boolean;
-  };
-}
-
-interface ConnectorParams {
-  chainId: string;
-  chainName: string;
-  rpcUrls: string[];
-  blockExplorerUrls: string[];
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
   };
 }
 
@@ -92,21 +81,23 @@ export const chainIdToNetworkMap: { [key: string]: NetworkName } = {
 };
 
 export const connectorParametersMap = Object.values(networkConfigsMap)
-  .reduce((acc, config) => {
-    acc[config.chainId] = {
-      chainId: Web3.utils.toHex(config.chainId).replace('0x', ''),
-      chainName: config.name,
-      rpcUrls: [config.rpcUrl],
-      blockExplorerUrls: [config.explorerUrl],
-      nativeCurrency: {
-        name: 'Q',
-        // HACK: MetaMask requires the symbol to have at least 2 characters
-        symbol: 'Q ',
-        decimals: 18,
-      },
-    };
-    return acc;
-  }, {} as { [key: string]: ConnectorParams });
+  .reduce<{ [key: number]: Chain }>((acc, config) => {
+  acc[config.chainId] = {
+    id: utils.hexlify(config.chainId),
+    name: config.name,
+    rpcUrl: config.rpcUrl,
+    explorerUrl: config.explorerUrl,
+    token: {
+      name: 'Q',
+      // HACK: MetaMask requires the symbol to have at least 2 characters
+      symbol: 'Q ',
+      decimals: 18,
+    },
+    type: CHAIN_TYPES.EVM,
+    icon: ''
+  };
+  return acc;
+}, {});
 
 const originToNetworkMap: { [key: string]: NetworkName } = {
   'https://hq.q.org': 'mainnet',

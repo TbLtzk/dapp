@@ -4,7 +4,6 @@ import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import { calculateInterestRate, formatAsset, formatFactor, formatFraction, formatNumber } from '@q-dev/utils';
 import parametersJson from 'json/parameters.json';
 import { ParameterValue } from 'typings/parameters';
-import { fromWei } from 'web3-utils';
 
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -12,6 +11,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import { TableWrapper } from './styles';
 
 import { formatDuration } from 'utils/date';
+import { fromWei } from 'utils/web3';
 
 const parametersDictionary = parametersJson as {
   [key: string]: {

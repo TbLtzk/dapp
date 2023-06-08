@@ -1,4 +1,5 @@
 import { calculateInterestRate } from '@q-dev/utils';
+import { ErrorHandler, requestAddErc20 } from 'helpers';
 import { Asset, BorrowAssetsRateAndFee } from 'typings/defi';
 
 import {
@@ -9,7 +10,6 @@ import {
 } from 'contracts/contract-instance';
 
 import { unixToDate } from 'utils/date';
-import { captureError } from 'utils/errors';
 
 export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAssetsRateAndFee> {
   const contract = await getEpdrParametersInstance();
@@ -17,7 +17,7 @@ export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAss
   try {
     interestRate = await contract.getUint(`governed.EPDR.${asset}_QUSD_interestRate`);
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
   }
 
   return {
@@ -29,25 +29,19 @@ export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAss
 
 export async function addBorrowTokenToWallet (asset: Asset) {
   try {
-    const instance = await getBorrowingInstance(asset);
+    const borrowingInstance = await getBorrowingInstance(asset);
     const [decimals, symbol] = await Promise.all([
-      instance.methods.decimals().call(),
-      instance.methods.symbol().call(),
+      borrowingInstance.decimals(),
+      borrowingInstance.symbol(),
     ]);
 
-    await window.ethereum.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: instance.options.address,
-          symbol,
-          decimals,
-        },
-      }
+    await requestAddErc20({
+      address: borrowingInstance.address,
+      symbol,
+      decimals,
     });
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 
@@ -57,7 +51,7 @@ export async function getSavingCompoundRateLastUpdate () {
     const lastUpdate = await contract.getLastUpdate();
     return unixToDate(lastUpdate);
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return null;
   }
 }
@@ -68,7 +62,7 @@ export async function getBorrowingCompoundRateLastUpdate (asset: Asset) {
     const lastUpdate = await contract.getLastUpdate();
     return unixToDate(lastUpdate);
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return null;
   }
 }

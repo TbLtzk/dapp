@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { formatNumber, toBigNumber } from '@q-dev/utils';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -16,6 +15,7 @@ import { useTransaction } from 'store/transaction/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { amount, max, required } from 'utils/validators';
+import { fromWei } from 'utils/web3';
 
 interface Props {
   formType: string;

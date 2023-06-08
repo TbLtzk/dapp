@@ -8,13 +8,13 @@ import {
   SystemDebtAndSurplusInfo,
   SystemSurplusCompletedInfo,
 } from 'typings/auctions';
-import { fromWei } from 'web3-utils';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
 import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 
 import { dateToUnix } from 'utils/date';
+import { fromWei } from 'utils/web3';
 
 export function prepareAuctionData (
   info: SystemSurplusAuctionInfo,

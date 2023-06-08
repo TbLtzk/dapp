@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useAlert } from 'react-alert';
 import { useDispatch } from 'react-redux';
 
-import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import { ContractTransaction } from 'ethers';
+import { ErrorHandler } from 'helpers';
 import { t } from 'i18next';
 import uniqueId from 'lodash/uniqueId';
 
@@ -11,11 +11,18 @@ import { setTransactions, Transaction, TransactionEditableParams } from './reduc
 import { getState, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
-import { captureError } from 'utils/errors';
+import { Bus } from 'utils/event-bus';
+
+interface TxWithCaller {
+  tx: ContractTransaction;
+  onSuccess: () => void;
+  onFinally?: () => void;
+}
+
+export type SubmitTransactionFn = () => Promise<ContractTransaction | TxWithCaller | void | undefined>;
 
 export function useTransaction () {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { loadAllBalances } = useQVault();
 
   const pendingTransactions = useAppSelector(({ transaction }) => {
@@ -33,13 +40,14 @@ export function useTransaction () {
     onConfirm = () => {},
     onError = () => {},
   }: {
-    submitFn: () => Promise<SubmitTransactionResponse | void | undefined>;
+    submitFn: SubmitTransactionFn;
     successMessage?: string;
     isClosedModal?: boolean;
     onSuccess?: () => void;
     onConfirm?: () => void;
     onError?: (error?: unknown) => void;
   }) {
+    let onFinally: undefined | (() => void);
     const transaction: Transaction = {
       id: uniqueId(),
       isClosedModal,
@@ -53,24 +61,38 @@ export function useTransaction () {
     try {
       const submitResponse = await submitFn();
 
-      if (submitResponse?.promiEvent) {
-        submitResponse.promiEvent
-          .once('transactionHash', (txHash: string) => {
-            updateTransaction(transaction.id, { hash: txHash, status: 'sending' });
-            onConfirm();
-          });
+      if (submitResponse) {
+        const tx = (submitResponse as TxWithCaller)?.tx || submitResponse;
 
-        await submitResponse.promiEvent;
+        updateTransaction(transaction.id, { hash: tx.hash, status: 'sending' });
+        onConfirm();
+        await tx.wait();
+        if ('onSuccess' in submitResponse && typeof submitResponse.onSuccess === 'function') {
+          submitResponse.onSuccess();
+        }
+        if ('onFinally' in submitResponse && typeof submitResponse.onFinally === 'function') {
+          onFinally = submitResponse.onFinally;
+        }
       }
-      onSuccess();
       updateTransaction(transaction.id, { status: 'success' });
-      await alertTxStatus(transaction.id, 'success', transaction.message);
+      onSuccess();
+
+      const currTx = getTxById(transaction.id);
+      if (currTx?.isClosedModal) {
+        Bus.success(currTx.message);
+      }
     } catch (error) {
-      captureError(error);
+      getTxById(transaction.id)?.isClosedModal
+        ? ErrorHandler.process(error)
+        : ErrorHandler.processWithoutFeedback(error);
+
       onError(error);
       updateTransaction(transaction.id, { status: 'error' });
-      await alertTxStatus(transaction.id, 'error', getErrorMessage(error));
+
+      await loadAllBalances();
     }
+
+    onFinally?.();
   }
 
   const getTxById = (id: string) => {
@@ -87,50 +109,10 @@ export function useTransaction () {
     dispatch(setTransactions(newTxs));
   };
 
-  const alertTxStatus = async (id: string, type: 'success' | 'error', message: string) => {
-    const currentTx = getTxById(id);
-    if (currentTx?.isClosedModal || type === 'error') {
-      alert[type](message);
-    }
-    await loadAllBalances();
-  };
-
   return {
     pendingTransactions,
     transactions,
     submitTransaction: useCallback(submitTransaction, []),
     updateTransaction: useCallback(updateTransaction, []),
   };
-}
-
-function getErrorMessage (err: unknown): string {
-  const error = err as {
-    message: string;
-    code?: number;
-    stack?: string;
-  };
-
-  if (error.code === 4001) {
-    return t('ERROR_TRANSACTION_REJECTED');
-  }
-
-  if (!error.message?.includes('Internal JSON-RPC error')) {
-    if (error.message?.includes('Transaction has been reverted by the EVM')) {
-      return t('ERROR_TRANSACTION_REVERTED_BY_EVM');
-    }
-    if (error.message?.includes('bad address checksum')) {
-      return t('ERROR_INVALID_ADDRESS');
-    }
-
-    return t('ERROR_UNKNOWN');
-  }
-
-  if (error.message === 'execution reverted') {
-    return t('ERROR_TRANSACTION_REVERTED');
-  }
-
-  const rpcErrorCode = error.message.match(/\[.+-(.+)\]/)?.at(1);
-  return rpcErrorCode
-    ? t(`ERROR_${rpcErrorCode}`)
-    : t('ERROR_RPC_UNKNOWN');
 }

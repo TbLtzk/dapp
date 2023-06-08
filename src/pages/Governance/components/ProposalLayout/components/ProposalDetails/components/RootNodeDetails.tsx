@@ -2,13 +2,13 @@ import { useTranslation } from 'react-i18next';
 
 import { formatAsset } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
-import { fromWei } from 'web3-utils';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import LinkViewer from '../../LinkViewer';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
+import { fromWei } from 'utils/web3';
 
 interface Props {
   proposal: Proposal;

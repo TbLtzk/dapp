@@ -8,7 +8,6 @@ import flatten from 'lodash/flatten';
 import { ProposalEvent } from 'typings/contracts';
 import { ExpertProposalForm, ExpertType } from 'typings/forms';
 import { Proposal } from 'typings/proposals';
-import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
@@ -20,6 +19,8 @@ import {
   getEprsMembershipVotingInstance,
   getEprsParametersVotingInstance
 } from 'contracts/contract-instance';
+
+import { fromWei } from 'utils/web3';
 
 export async function getExpertProposals (
   proposals: ProposalEvent[],

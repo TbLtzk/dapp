@@ -1,9 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
+import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
+
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 export const StyledWrapper = styled.div`
   position: fixed;
@@ -29,6 +32,15 @@ export const StyledWrapper = styled.div`
 function NetworkWarning () {
   const { t } = useTranslation();
   const { switchNetwork } = useWeb3Context();
+  const { chainId } = useNetworkConfig();
+
+  const handleSwitch = async () => {
+    try {
+      await switchNetwork(chainId);
+    } catch (error) {
+      ErrorHandler.process(error);
+    }
+  };
 
   return (
     <StyledWrapper className="block">
@@ -41,7 +53,7 @@ function NetworkWarning () {
       <Button
         alwaysEnabled
         className="network-warning__button"
-        onClick={() => switchNetwork()}
+        onClick={() => handleSwitch()}
       >
         {t('SWITCH_TO_Q')}
       </Button>

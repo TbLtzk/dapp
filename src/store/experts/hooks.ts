@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ErrorHandler } from 'helpers';
+
 import { setEpdrMember, setEpdrMembers, setEpdrMembersError, setEpqfiMember, setEpqfiMembers, setEpqfiMembersError, setEprsMember, setEprsMembers, setEprsMembersError } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
@@ -10,8 +12,6 @@ import {
   getEpqfiMembershipInstance,
   getEprsMembershipInstance
 } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
 
 export function useExperts () {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export function useExperts () {
       const isMember = await contract.isMember(getUserAddress());
       dispatch(setEpdrMember(isMember));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -48,7 +48,7 @@ export function useExperts () {
       const isMember = await contract.isMember(getUserAddress());
       dispatch(setEpqfiMember(isMember));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -58,7 +58,7 @@ export function useExperts () {
       const isMember = await contract.isMember(getUserAddress());
       dispatch(setEprsMember(isMember));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -68,7 +68,7 @@ export function useExperts () {
       const members = await contract.getMembers();
       dispatch(setEprsMembers(members));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEprsMembersError(error));
     }
   }
@@ -79,7 +79,7 @@ export function useExperts () {
       const members = await contract.getMembers();
       dispatch(setEpdrMembers(members));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEpdrMembersError(error));
     }
   }
@@ -90,7 +90,7 @@ export function useExperts () {
       const members = await contract.getMembers();
       dispatch(setEpqfiMembers(members));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEpqfiMembersError(error));
     }
   }

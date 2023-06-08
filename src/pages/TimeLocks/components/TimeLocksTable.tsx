@@ -4,7 +4,6 @@ import { TimeLockEntry } from '@q-dev/q-js-sdk';
 import { getLockStatus } from 'helpers/time-locks';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import Table from 'components/Table';
@@ -15,6 +14,7 @@ import { purgeTimeLocks } from 'contracts/helpers/locked-amount-helper';
 
 import { TimeLockStatus } from 'constants/statuses';
 import { compareDates, formatDate, unixToDate } from 'utils/date';
+import { fromWei } from 'utils/web3';
 
 const StyledWrapper = styled.div`
   margin-top: 24px;

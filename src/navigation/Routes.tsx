@@ -2,6 +2,7 @@ import { lazy, useEffect } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import * as Sentry from '@sentry/react';
+import { ErrorHandler } from 'helpers';
 import { ProposalContractType } from 'typings/contracts';
 import { Asset } from 'typings/defi';
 
@@ -13,7 +14,6 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import { getState } from 'store';
 
 import { RoutePaths } from 'constants/routes';
-import { captureError } from 'utils/errors';
 
 const TimeLocks = lazy(() => import('pages/TimeLocks'));
 const QVault = lazy(() => import('pages/QVault'));
@@ -43,7 +43,7 @@ function addSentryContext () {
     const { chainId } = getState().user;
     Sentry.setContext('additional', { network: chainId });
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
   }
 }
 

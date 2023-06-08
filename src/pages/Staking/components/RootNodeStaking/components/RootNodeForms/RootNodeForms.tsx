@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
-import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
 import { toBigNumber } from '@q-dev/utils';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -12,9 +10,10 @@ import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
-import { useTransaction } from 'store/transaction/hooks';
+import { SubmitTransactionFn, useTransaction } from 'store/transaction/hooks';
 
 import { amount, max, required } from 'utils/validators';
+import { fromWei } from 'utils/web3';
 
 interface Props {
   formType: string | null;
@@ -58,7 +57,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
     validators: { amount: [required, maxRootAmount()] },
     onSubmit: ({ amount }) => {
       let successMessage: string;
-      let submitFn: () => Promise<SubmitTransactionResponse>;
+      let submitFn: SubmitTransactionFn;
       switch (formType) {
         case FORM_TYPES.stakeToRanking:
           successMessage = t('STAKE_TO_PANEL_TX');

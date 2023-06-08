@@ -28,13 +28,13 @@ export async function prepareVaultdata (vaultStats: VaultStats, userAddress: str
   ]);
 
   const [decimals, stableCoinBalance, borrowingBalance] = await Promise.all([
-    borrowingInstance.methods.decimals().call(),
+    borrowingInstance.decimals(),
     stableCoinInstance.balanceOf(userAddress),
-    borrowingInstance.methods.balanceOf(userAddress).call()
+    borrowingInstance.balanceOf(userAddress)
   ]);
 
   const borrowingFromBigAmount = convertFromBigAmount(18);
-  const collateralFromBigAmount = convertFromBigAmount(decimals);
+  const collateralFromBigAmount = convertFromBigAmount(+decimals);
 
   const liquidationPriceRaw = vaultStats.colStats.liquidationPrice;
   const assetPrice = borrowingFromBigAmount(vaultStats.colStats.price);
@@ -44,7 +44,7 @@ export async function prepareVaultdata (vaultStats: VaultStats, userAddress: str
     collateralDetails: {
       collateralAsset,
       assetPrice,
-      decimals,
+      decimals: +decimals,
       lockedCollateral,
       availableDeposit: collateralFromBigAmount(borrowingBalance),
       availableWithdraw: collateralFromBigAmount(vaultStats.colStats.withdrawableAmount),

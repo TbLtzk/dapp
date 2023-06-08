@@ -3,13 +3,13 @@ import { transformToPercentage } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
 import { RootNodeProposalForm } from 'typings/forms';
 import { Proposal } from 'typings/proposals';
-import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
+import { fromWei } from 'utils/web3';
 
 export async function getRootNodeProposals (
   proposals: ProposalEvent[],

@@ -1,10 +1,10 @@
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
-import { toWei } from 'web3-utils';
 
 import { getInstance } from 'contracts/contract-instance';
 
 import { dateToUnix } from 'utils/date';
+import { toWei } from 'utils/web3';
 
 export async function purgeTimeLocks ({ contractType, address }: {
   contractType: TimeLockContractType;

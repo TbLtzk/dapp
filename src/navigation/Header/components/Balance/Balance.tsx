@@ -7,7 +7,6 @@ import { useInterval } from '@q-dev/react-hooks';
 import { formatNumberCompact } from '@q-dev/utils';
 import { motion } from 'framer-motion';
 import { useTheme } from 'styled-components';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 
@@ -17,6 +16,7 @@ import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { RoutePaths } from 'constants/routes';
+import { fromWei } from 'utils/web3';
 
 function Balance () {
   const { t } = useTranslation();

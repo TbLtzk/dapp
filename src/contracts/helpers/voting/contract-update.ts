@@ -35,7 +35,7 @@ export async function getContractUpdateProposal (
   id: string
 ): Promise<Partial<Proposal>> {
   const proposal = await contract.getProposal(id);
-  const voteCount = await contract.instance.methods.voteCount(id).call();
+  const voteCount = await contract.instance.voteCount(id);
 
   const rootNodesInstance = await getRootNodesInstance();
   const rootNodesNumber = await rootNodesInstance.getSize();

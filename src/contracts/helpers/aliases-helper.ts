@@ -1,14 +1,13 @@
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { ErrorHandler } from 'helpers';
 import orderBy from 'lodash/orderBy';
 import { AliasEvent } from 'typings/validator';
-import { toHex } from 'web3-utils';
 
 import { fetchBlockNumber } from './block-number';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 
 import { chainIdToNetworkMap, networkConfigsMap, ORIGIN_NETWORK_NAME } from 'constants/config';
-import { captureError } from 'utils/errors';
 
 export async function getAliasEvents (): Promise<AliasEvent[]> {
   const contract = await getAccountAliasesInstance();
@@ -19,16 +18,26 @@ export async function getAliasEvents (): Promise<AliasEvent[]> {
   };
 
   const [updatedEvents, reservedEvents] = await Promise.all([
-    contract.instance.getPastEvents('AliasUpdated', opts),
-    contract.instance.getPastEvents('Reserved', opts)
+    contract.instance.queryFilter(
+      contract.instance.filters.AliasUpdated(),
+      opts.fromBlock,
+      opts.toBlock
+    ),
+    contract.instance.queryFilter(
+      contract.instance.filters.Reserved(),
+      opts.fromBlock,
+      opts.toBlock
+    )
   ]);
 
   return orderBy([...updatedEvents, ...reservedEvents], 'blockNumber', 'desc')
     .map(item => ({
-      event: item.event,
-      address: item.returnValues[0],
-      alias: item.returnValues[1],
-      role: toHex(item.returnValues[2]) as AliasPurpose,
+      event: item.event || '',
+      address: item.args._main,
+      alias: item.args._alias,
+      role: 'role' in item.args
+        ? item.args.role.toHexString() as AliasPurpose
+        : undefined
     }));
 }
 
@@ -47,7 +56,7 @@ export async function getAliasMap (addresses: string[] = [], chainId: number, pu
       return acc;
     }, {} as { [address: string]: string });
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return addresses.reduce((acc, address) => {
       acc[address] = '';
       return acc;

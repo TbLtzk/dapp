@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ErrorHandler } from 'helpers';
 import isEmpty from 'lodash/isEmpty';
 import { Validator } from 'typings/validator';
 
@@ -9,8 +10,6 @@ import { useUser } from 'store/user/hooks';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 import { getValidator } from 'contracts/helpers/validators-helper';
-
-import { captureError } from 'utils/errors';
 
 const useFetchValidatorData = (address: string) => {
   const { t } = useTranslation();
@@ -38,7 +37,7 @@ const useFetchValidatorData = (address: string) => {
       await getValidatorInfo();
     } catch (error) {
       setError(error);
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     } finally {
       setLoading(false);
     }
@@ -48,8 +47,8 @@ const useFetchValidatorData = (address: string) => {
     try {
       setUpdateCompoundRateLoading(true);
       const contract = await getValidationRewardPoolsInstance();
-      const receipt = await contract.updateValidatorsCompoundRate(address);
-      await receipt.promiEvent;
+      const tx = await contract.updateValidatorsCompoundRate(address);
+      await tx.wait();
       const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(address);
       if (validator.poolInfo.lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
         throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));

@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { ErrorHandler } from 'helpers';
 import { orderBy, round, sumBy } from 'lodash';
-import { fromWei, toWei } from 'web3-utils';
 
 import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTotalStake, setWithdrawalInfo } from './reducer';
 
@@ -14,7 +14,7 @@ import { getRootNodesInstance } from 'contracts/contract-instance';
 import { getAliasMap } from 'contracts/helpers/aliases-helper';
 
 import { dateToUnix } from 'utils/date';
-import { captureError } from 'utils/errors';
+import { fromWei, toWei } from 'utils/web3';
 
 export function useRootNodes () {
   const dispatch = useDispatch();
@@ -34,52 +34,52 @@ export function useRootNodes () {
   async function commitRootNodeStake (amount: string) {
     const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const receipt = await contract.commitStake({ from: userAddress, value: toWei(amount) });
+    const tx = await contract.commitStake({ from: userAddress, value: toWei(amount) });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         loadWalletBalance();
         getRootNodeStakes(userAddress);
         getRootWithdrawalInfo(userAddress);
         getMinimumRootTimeLock(userAddress);
         getRootMembers();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function announceRootStakeWithdrawal (amount: string) {
     const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const receipt = await contract.announceWithdrawal(toWei(amount), { from: userAddress });
+    const tx = await contract.announceWithdrawal(toWei(amount), { from: userAddress });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         loadWalletBalance();
         getRootNodeStakes(userAddress);
         getRootWithdrawalInfo(userAddress);
         getMinimumRootTimeLock(userAddress);
         getRootMembers();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function withdrawRootStake (amount: string) {
     const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const receipt = await contract.withdraw(toWei(amount), userAddress, { from: userAddress });
+    const tx = await contract.withdraw(toWei(amount), userAddress, { from: userAddress });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         loadWalletBalance();
         getRootNodeStakes(userAddress);
         getRootWithdrawalInfo(userAddress);
         getMinimumRootTimeLock(userAddress);
         getRootMembers();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function getRootMembers () {
@@ -112,17 +112,17 @@ export function useRootNodes () {
       dispatch(setMembers(orderBy(membersWithShare, 'stakeAmount', 'desc')));
       dispatch(setTotalStake(String(totalStake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function checkRootNodeMembership () {
     try {
       const contract = await getRootNodesInstance();
-      const isMember = await contract.instance.methods.isMember(getUserAddress()).call();
+      const isMember = await contract.instance.isMember(getUserAddress());
       dispatch(setIsRootNode(isMember));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -132,7 +132,7 @@ export function useRootNodes () {
       const stake = await contract.getRootNodeStake(address);
       dispatch(setRootNodeStake(fromWei(stake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -142,7 +142,7 @@ export function useRootNodes () {
       const { amount, endTime } = await contract.getWithdrawalInfo(address);
       dispatch(setWithdrawalInfo({ amount, endTime }));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -152,7 +152,7 @@ export function useRootNodes () {
       const minimumBalance = await contract.getMinimumBalance(address, dateToUnix());
       dispatch(setMinimumTimeLock(fromWei(minimumBalance)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

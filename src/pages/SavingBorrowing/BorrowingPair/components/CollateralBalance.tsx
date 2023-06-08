@@ -32,7 +32,7 @@ function CollateralBalance ({ asset }: { asset: Asset }) {
   const collateralBalanceRef = useAnimateNumber(collateralBalance, '');
 
   useEffect(() => {
-    getBorrowingInstance(asset).then(({ options }) => setContractAddress(options.address));
+    getBorrowingInstance(asset).then(({ instance }) => setContractAddress(instance.address));
   }, []);
 
   return (

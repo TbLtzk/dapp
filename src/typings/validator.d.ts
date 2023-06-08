@@ -14,7 +14,7 @@ export interface AliasEvent {
   event: string;
   address: string;
   alias: string;
-  role: AliasPurpose;
+  role?: AliasPurpose;
 }
 
 export interface ValidatorMonitoring {
@@ -38,7 +38,6 @@ export interface ValidatorStatsInfo extends ValidatorInfo {
   validatorShare: number;
   validatorPoolBalance: string;
   distributableDelegatorsRewards: number;
-  poolinterestRate: number;
 }
 
 export interface ValidatorStats {
@@ -57,7 +56,6 @@ export interface ValidatorPoolInfo {
   validatorShare: number;
   validatorPoolBalance: string;
   distributableDelegatorsRewards: number;
-  poolinterestRate: number;
   delegatorsShare: number;
   lastUpdateOfCompoundRate: string;
   reservedForClaims: number;

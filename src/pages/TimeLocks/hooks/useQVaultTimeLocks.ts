@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { TimeLockEntry } from '@q-dev/q-js-sdk';
 import { useInterval } from '@q-dev/react-hooks';
-import { fromWei } from 'web3-utils';
+import { ErrorHandler } from 'helpers';
 
 import { getQVaultInstance } from 'contracts/contract-instance';
 
 import { dateToUnix } from 'utils/date';
-import { captureError } from 'utils/errors';
+import { fromWei } from 'utils/web3';
 
 function useQVaultTimeLocks (address: string) {
   const [qVaultMinimumTimeLock, setQVaultMinimumTimeLock] = useState('0');
@@ -21,7 +21,7 @@ function useQVaultTimeLocks (address: string) {
       const data = await contract.getMinimumBalance(address, dateToUnix());
       setQVaultMinimumTimeLock(fromWei(data));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -31,7 +31,7 @@ function useQVaultTimeLocks (address: string) {
       const balance = await contract.balanceOf(address);
       setVaultBalance(fromWei(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -43,7 +43,7 @@ function useQVaultTimeLocks (address: string) {
       setQVaultTimeLocks(timeLocks);
     } catch (error) {
       setQVaultTimeLocks([]);
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
     setQVaultTimeLocksLoading(false);
   }

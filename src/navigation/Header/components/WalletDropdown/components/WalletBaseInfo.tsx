@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import copy from 'copy-to-clipboard';
+import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 
 import { useUser } from 'store/user/hooks';
@@ -35,10 +36,18 @@ interface Props {
 
 function WalletBaseInfo ({ onClick }: Props) {
   const { t } = useTranslation();
-  const { disconnectWallet } = useWeb3Context();
+  const { disconnect } = useWeb3Context();
   const user = useUser();
 
   const [isCopied, setIsCopied] = useState(false);
+
+  const disconnectWallet = async () => {
+    try {
+      await disconnect();
+    } catch (error) {
+      ErrorHandler.process(error);
+    }
+  };
 
   function copyAddress () {
     copy(user.address);

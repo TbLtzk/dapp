@@ -2,8 +2,10 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { ProposalStatus, SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import { ProposalStatus } from '@q-dev/q-js-sdk';
 import axios from 'axios';
+import { ContractTransaction } from 'ethers';
+import { ErrorHandler } from 'helpers';
 import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType, Proposal, ProposalType, VotingType } from 'typings/proposals';
@@ -20,7 +22,6 @@ import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 import { createProposal, getProposalEvents } from 'contracts/helpers/voting';
 
 import { dateToUnix } from 'utils/date';
-import { captureError } from 'utils/errors';
 
 function getProposalTypeFromFormType (type: CreateProposalForm['type']): FormProposalType {
   switch (type) {
@@ -64,7 +65,7 @@ export function useBaseVotingWeightInfo () {
       const hash = await contract.constitutionHash();
       dispatch(setConstitutionHash(hash));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -79,7 +80,7 @@ export function useBaseVotingWeightInfo () {
       const constitution = constitutionsRes.data.find(({ hash }: { hash: string }) => constitutionsHash === `0x${hash}`);
       dispatch(setConstitutionUpdateDate(constitution.time * 1000));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -89,7 +90,7 @@ export function useBaseVotingWeightInfo () {
       const result = await contract.getBaseVotingWeightInfo(getUserAddress(), String(dateToUnix()));
       dispatch(setBaseVotingWeightInfo({ ...result }));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -148,24 +149,24 @@ export function useProposals () {
       }));
       dispatch(setMinimalActiveBlock(minimalActiveBlockHeight));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function createNewProposal (form: CreateProposalForm) {
     const userAddress = getUserAddress();
-    const receipt = await createProposal(form, userAddress);
+    const tx = await createProposal(form, userAddress);
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         getBaseVotingWeightInfo();
         loadDelegationInfo(userAddress);
 
         const proposalType = getProposalTypeFromFormType(form.type);
         getProposals(proposalType);
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function voteForProposal ({ proposal, type, isVotedFor }: {
@@ -176,26 +177,26 @@ export function useProposals () {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt: SubmitTransactionResponse | undefined;
+    let tx: ContractTransaction | undefined;
     let methodError: string | undefined;
     switch (type) {
       case 'approve':
         if ('aprove' in contract) {
-          receipt = await contract.aprove(proposal.id, { from: userAddress });
+          tx = await contract.aprove(proposal.id, { from: userAddress });
         } else {
           methodError = 'aprove';
         }
         break;
       case 'constitution':
         if ('veto' in contract) {
-          receipt = await contract.veto(proposal.id, { from: userAddress });
+          tx = await contract.veto(proposal.id, { from: userAddress });
         } else {
           methodError = 'veto';
         }
         break;
       case 'basic':
         if ('voteFor' in contract && 'voteAgainst' in contract) {
-          receipt = isVotedFor
+          tx = isVotedFor
             ? await contract.voteFor(proposal.id, { from: userAddress })
             : await contract.voteAgainst(proposal.id, { from: userAddress });
         } else {
@@ -204,37 +205,39 @@ export function useProposals () {
         break;
     }
 
-    if (methodError && !receipt) {
+    if (methodError && !tx) {
       throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: methodError }));
     }
 
-    receipt?.promiEvent
-      .once('receipt', () => {
+    return {
+      tx: tx as ContractTransaction,
+      onSuccess: () => {
         getBaseVotingWeightInfo();
         loadDelegationInfo(userAddress);
         loadLockInfo(userAddress);
-      });
-
-    return receipt as SubmitTransactionResponse;
+      }
+    };
   }
 
   async function executeProposal (proposal: Proposal) {
     const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
-    let receipt: SubmitTransactionResponse | undefined;
+    let tx: ContractTransaction | undefined;
     const promiseStatus = await contract.getStatus(proposal.id);
 
     if (promiseStatus === ProposalStatus.PASSED) {
       if ('execute' in contract) {
-        receipt = await contract.execute(proposal.id, { from: userAddress });
+        tx = await contract.execute(proposal.id, { from: userAddress });
 
-        receipt.promiEvent
-          .once('receipt', () => {
+        return {
+          tx,
+          onSuccess: () => {
             getProposalsByContract(proposal.contract);
             getBaseVotingWeightInfo();
             loadDelegationInfo(userAddress);
-          });
+          }
+        };
       } else {
         throw new Error(t('ERROR_METHOD_MISSING_FROM_CONTRACT', { method: 'execute' }));
       }
@@ -243,8 +246,6 @@ export function useProposals () {
       getBaseVotingWeightInfo();
       loadDelegationInfo(userAddress);
     }
-
-    return receipt;
   }
 
   function getProposalsByContract (type: ContractType) {

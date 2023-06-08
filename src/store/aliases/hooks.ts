@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { ErrorHandler } from 'helpers';
 
 import { setAliases, setAliasesLoading, setAliasEvents, setEventsLoading } from './reducer';
 
@@ -9,8 +10,6 @@ import { useAppSelector } from 'store';
 
 import { getAccountAliasesInstance } from 'contracts/contract-instance';
 import { getAliasEvents } from 'contracts/helpers/aliases-helper';
-
-import { captureError } from 'utils/errors';
 
 export function useAliases () {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ export function useAliases () {
       const aliases = await contract.getAliases(address);
       dispatch(setAliases(aliases));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setAliases([]));
     } finally {
       dispatch(setAliasesLoading(false));
@@ -62,7 +61,7 @@ export function useAliasEvents () {
       const events = await getAliasEvents();
       dispatch(setAliasEvents(events));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setAliasEvents([]));
     } finally {
       dispatch(setEventsLoading(false));

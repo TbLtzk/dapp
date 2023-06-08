@@ -1,7 +1,8 @@
 import orderBy from 'lodash/orderBy';
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
-import { fromWei } from 'web3-utils';
+
+import { fromWei } from 'utils/web3';
 
 export const prepareRootMembersTable = (
   members: string[],

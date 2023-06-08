@@ -6,6 +6,7 @@ import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/root
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { transformToPercentage } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 import merge from 'lodash/merge';
 import uniqBy from 'lodash/uniqBy';
 import { ContractType, ProposalContractType, ProposalEvent, ProposalsContract } from 'typings/contracts';
@@ -43,7 +44,6 @@ import { getState, getUserAddress } from 'store';
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
-import { captureError } from 'utils/errors';
 
 async function checkProposal (contract: ProposalsContract, proposal: ProposalEvent) {
   const status = await contract.getStatus(proposal.id);
@@ -121,7 +121,7 @@ export async function getContractProposals ({
 
     return uniqBy([...proposalsWithStatus, ...proposalsBeforeActiveBlock, ...contractProposals], 'id');
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return [];
   }
 }
@@ -130,11 +130,17 @@ export async function getProposalPastEvents (
   contract: ProposalsContract,
   { fromBlock = 0, toBlock = 'latest', contractName = '' }
 ): Promise<ProposalEvent[]> {
-  const pastEvents = await contract.instance.getPastEvents('ProposalCreated', { fromBlock, toBlock });
+  const pastEvents = await contract.instance.queryFilter(
+    contract.instance.filters.ProposalCreated(),
+    fromBlock,
+    toBlock,
+  );
 
   return pastEvents.map((evt) => ({
     blockNumber: evt.blockNumber,
-    id: evt.returnValues._id || evt.returnValues._proposalId,
+    // TODO: fix types
+    // @ts-ignore-next-line
+    id: evt.args?._id?.toString() || evt.args?._proposalId?.toString(),
     contract: contractName as ProposalContractType,
   }));
 }
@@ -219,7 +225,7 @@ export async function getProposal<T extends ProposalContractType> (
 
     const userVoted = 'hasUserVoted' in contract
       ? await contract.hasUserVoted(id, userAddress)
-      : await contract.instance.methods.voted(id, userAddress).call();
+      : await contract.instance.voted(id, userAddress);
     const userVetoed = 'hasRootVetoed' in contract ? await contract.hasRootVetoed(id, userAddress) : false;
 
     const rootNodesInstance = await getRootNodesInstance();
@@ -252,7 +258,7 @@ export async function getProposal<T extends ProposalContractType> (
       ...proposal,
     } as Proposal;
   } catch (e) {
-    captureError(e);
+    ErrorHandler.processWithoutFeedback(e);
     return null;
   }
 }
@@ -319,7 +325,7 @@ function convertProposalParameters (params: RawParameter[]): FormParameter[] {
     const parameterValueMap: Record<ParameterType, string> = {
       [ParameterType.ADDRESS]: item.addrValue,
       [ParameterType.BOOL]: String(item.boolValue),
-      [ParameterType.BYTE]: item.bytes32value,
+      [ParameterType.BYTE]: item.bytes32Value,
       [ParameterType.UINT]: item.uintValue,
       [ParameterType.STRING]: item.strValue,
       [ParameterType.NONE]: '',

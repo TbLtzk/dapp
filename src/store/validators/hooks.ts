@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { toBigNumber } from '@q-dev/utils';
-import { fromWei } from 'web3-utils';
+import { ErrorHandler } from 'helpers';
 
 import {
   setAccountableSelfStake,
@@ -32,7 +32,7 @@ import {
 import { getAliasMap } from 'contracts/helpers/aliases-helper';
 import { getMonitoringValidators, getValidatorMetrics, getValidatorStats } from 'contracts/helpers/validators-helper';
 
-import { captureError } from 'utils/errors';
+import { fromWei } from 'utils/web3';
 
 export function useValidators () {
   const dispatch = useDispatch();
@@ -68,18 +68,18 @@ export function useValidators () {
       const validatorTotalStake = await contract.getValidatorTotalStake(getUserAddress());
       dispatch(setTotalStake(fromWei(validatorTotalStake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function loadValidatorDelegatedStake () {
     try {
       const contract = await getValidatorsInstance();
-      const validatorDelegatedStake = await contract.instance.methods
-        .getValidatorDelegatedStake(getUserAddress()).call();
+      const validatorDelegatedStake = await contract.instance
+        .getValidatorDelegatedStake(getUserAddress());
       dispatch(setDelegatedStake(fromWei(validatorDelegatedStake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -89,7 +89,7 @@ export function useValidators () {
       const accountableTotalStake = await contract.getAccountableTotalStake(getUserAddress());
       dispatch(setAccountableTotalStake(fromWei(accountableTotalStake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -99,7 +99,7 @@ export function useValidators () {
       const accountableSelfStake = await contract.getAccountableSelfStake(address ?? getUserAddress());
       dispatch(setAccountableSelfStake(fromWei(accountableSelfStake)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -109,7 +109,7 @@ export function useValidators () {
       const withdrawalInfo = await contract.getWithdrawalInfo(getUserAddress());
       dispatch(setWithdrawalInfo(withdrawalInfo));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -131,7 +131,7 @@ export function useValidators () {
 
       dispatch(setValidators(validatorsWithAlias));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -157,7 +157,7 @@ export function useValidators () {
       );
       dispatch(setValidatorStats(stats));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -172,7 +172,7 @@ export function useValidators () {
         ...monitoringValidators[i],
       }))));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -200,7 +200,7 @@ export function useValidators () {
       const inactiveValidators = await indexer.getInactiveValidators(validatorAddresses);
       dispatch(setInactiveCount(inactiveValidators));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -215,7 +215,7 @@ export function useValidators () {
       dispatch(setIsValidator(isInShortList && isInLongList));
       dispatch(setIsValidatorInLongList(isInLongList));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setIsValidator(false));
       dispatch(setIsValidatorInLongList(false));
     }
@@ -227,7 +227,7 @@ export function useValidators () {
       const compoundRateKeeperExists = await contract.compoundRateKeeperExists(getUserAddress());
       dispatch(setCompoundRateKeeperExists(compoundRateKeeperExists));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -238,7 +238,7 @@ export function useValidators () {
 
       dispatch(setValidatorAddressesLongList(longList));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

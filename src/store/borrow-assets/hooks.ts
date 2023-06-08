@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import { ErrorHandler } from 'helpers';
 import { ApproveType, Asset } from 'typings/defi';
-import { fromWei, toWei } from 'web3-utils';
 
 import { setBorrowAllowanceDeposit, setBorrowAllowanceError, setBorrowAllowanceRepay, setBorrowVault, setBorrowVaultError } from './reducer';
 
@@ -13,7 +12,7 @@ import { getBorrowingCoreInstance, getBorrowingInstance, getStableCoinInstance }
 import { convertToBigAmount, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
-import { captureError } from 'utils/errors';
+import { fromWei, toWei } from 'utils/web3';
 
 export function useBorrowAssets () {
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export function useBorrowAssets () {
       dispatch(setBorrowVault(borrowVault));
     } catch (error) {
       dispatch(setBorrowVaultError(error));
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -45,7 +44,7 @@ export function useBorrowAssets () {
       const { address } = await getBorrowingCoreInstance();
       if (borrowType === 'deposit') {
         const contract = await getBorrowingInstance(asset);
-        const allowAmount = await contract.methods.allowance(getUserAddress(), address).call();
+        const allowAmount = await contract.allowance(getUserAddress(), address);
         dispatch(setBorrowAllowanceDeposit(fromWei(allowAmount)));
       } else {
         const contract = await getStableCoinInstance();
@@ -54,7 +53,7 @@ export function useBorrowAssets () {
       }
     } catch (error) {
       dispatch(setBorrowAllowanceError(error));
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -65,42 +64,41 @@ export function useBorrowAssets () {
     const userAddress = getUserAddress();
     const { address } = await getBorrowingCoreInstance();
 
-    let receipt: SubmitTransactionResponse;
-    if (borrowType === 'deposit') {
-      const contract = await getBorrowingInstance(asset);
-      receipt = {
-        promiEvent: contract.methods.approve(address, MAX_APPROVE_AMOUNT)
-          .send({ from: userAddress })
-      };
-    } else {
-      const contract = await getStableCoinInstance();
-      receipt = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
-    }
+    const contract = borrowType === 'deposit'
+      ? await getBorrowingInstance(asset)
+      : await getStableCoinInstance();
+    const tx = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
 
-    if ('promiEvent' in receipt) {
-      receipt?.promiEvent
-        .once('receipt', () => {
-          getBorrowingAllowance({ borrowType, asset });
-        });
-    }
-
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingAllowance({ borrowType, asset });
+      }
+    };
   }
 
   async function borrowAsset ({ amount, vaultId }: { amount: string; vaultId: number }) {
     const contract = await getBorrowingCoreInstance();
-    const receipt = await contract.generateStc(vaultId, toWei(amount), { from: getUserAddress() });
+    const tx = await contract.generateStc(vaultId, toWei(amount), { from: getUserAddress() });
 
-    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingVault(vaultId);
+      }
+    };
   }
 
   async function repayBorrowing ({ amount, vaultId }: { amount: string; vaultId: number }) {
     const contract = await getBorrowingCoreInstance();
-    const receipt = await contract.payBackStc(vaultId, toWei(amount), { from: getUserAddress() });
+    const tx = await contract.payBackStc(vaultId, toWei(amount), { from: getUserAddress() });
 
-    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingVault(vaultId);
+      }
+    };
   }
 
   async function depositCollateral ({ amount, vaultId, decimals }: {
@@ -110,12 +108,16 @@ export function useBorrowAssets () {
   }) {
     const contract = await getBorrowingCoreInstance();
     const convertAmount = convertToBigAmount(decimals);
-    const receipt = await contract.depositCol(vaultId, convertAmount(amount), {
+    const tx = await contract.depositCol(vaultId, convertAmount(amount), {
       from: getUserAddress()
     });
 
-    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingVault(vaultId);
+      }
+    };
   }
 
   async function withdrawCollateral ({ amount, vaultId, decimals }: {
@@ -126,12 +128,16 @@ export function useBorrowAssets () {
     const contract = await getBorrowingCoreInstance();
     const convertAmount = convertToBigAmount(decimals);
 
-    const receipt = await contract.withdrawCol(vaultId, convertAmount(amount), {
+    const tx = await contract.withdrawCol(vaultId, convertAmount(amount), {
       from: getUserAddress()
     });
 
-    receipt.promiEvent.once('receipt', () => { getBorrowingVault(vaultId); });
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingVault(vaultId);
+      }
+    };
   }
 
   return {

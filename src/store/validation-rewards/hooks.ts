@@ -2,14 +2,13 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { transformToPercentage } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 
 import { setDelegatorsShare, setLastUpdateOfCompoundRate, setPoolBalance, setPoolInfo } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
 
 export function useValidationRewards () {
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ export function useValidationRewards () {
       const delegatorsShare = await contract.getDelegatorsShare(getUserAddress());
       dispatch(setDelegatorsShare(Number(transformToPercentage(delegatorsShare)) || 0));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -37,7 +36,7 @@ export function useValidationRewards () {
       const poolInfo = await contract.getPoolInfo(getUserAddress());
       dispatch(setPoolInfo(poolInfo));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -47,7 +46,7 @@ export function useValidationRewards () {
       const lastUpdateOfCompoundRate = await contract.getLastUpdateOfCompoundRate(getUserAddress());
       dispatch(setLastUpdateOfCompoundRate(lastUpdateOfCompoundRate));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -57,7 +56,7 @@ export function useValidationRewards () {
       const amount = await contract.getBalance();
       dispatch(setPoolBalance(amount));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

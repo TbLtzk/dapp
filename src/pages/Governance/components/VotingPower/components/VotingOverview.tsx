@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { media } from '@q-dev/q-ui-kit';
 import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { fromWei } from 'web3-utils';
 
 import TopUpQVault from 'components/TopUpQVault';
 
@@ -12,6 +11,8 @@ import useVoterStatus from 'hooks/useVoterStatus';
 
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
+
+import { fromWei } from 'utils/web3';
 
 const StyledWrapper = styled.div`
   display: grid;

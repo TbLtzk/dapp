@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
@@ -26,17 +26,18 @@ export default defineConfig(({ mode }) => {
     resolve: {
       preserveSymlinks: true,
       alias: {
-        web3: 'web3/dist/web3.min.js',
         stream: 'stream-browserify',
         process: 'process/browser',
         zlib: 'browserify-zlib',
         util: 'util',
         // HACK: https://github.com/webpack/webpack/issues/12197
         'react-bootstrap-table2-toolkit': 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit',
+        events: 'rollup-plugin-node-polyfills/polyfills/events',
         assets: path.resolve(__dirname, './src/assets'),
         components: path.resolve(__dirname, './src/components'),
         constants: path.resolve(__dirname, './src/constants'),
         contracts: path.resolve(__dirname, './src/contracts'),
+        errors: path.resolve(__dirname, './src/errors'),
         utils: path.resolve(__dirname, './src/utils'),
         helpers: path.resolve(__dirname, './src/helpers'),
         hooks: path.resolve(__dirname, './src/hooks'),
@@ -56,7 +57,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            web3: ['web3/dist/web3.min.js'],
+            ethers: ['ethers'],
             q_sdk: ['@q-dev/q-js-sdk'],
             q_ui_kit: ['@q-dev/q-ui-kit'],
           }

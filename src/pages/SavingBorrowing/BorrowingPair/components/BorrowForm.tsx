@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { formatAsset, formatNumber, formatPercent } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 import { VaultWithId } from 'typings/defi';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -17,8 +17,8 @@ import { useTransaction } from 'store/transaction/hooks';
 
 import { getEpdrParametersInstance } from 'contracts/contract-instance';
 
-import { captureError } from 'utils/errors';
 import { amount, min, required } from 'utils/validators';
+import { fromWei } from 'utils/web3';
 
 const StyledForm = styled.form`
   display: grid;
@@ -79,7 +79,7 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
       const rawStep = await contract.getUint('governed.EPDR.QUSD_step');
       setMinAmount(fromWei(rawStep.toString()));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   };
 

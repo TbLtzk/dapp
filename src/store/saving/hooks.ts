@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { calculateInterestRate } from '@q-dev/utils';
-import { fromWei, toWei } from 'web3-utils';
+import { ErrorHandler } from 'helpers';
 
 import {
   setAllowance,
@@ -21,7 +21,7 @@ import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-h
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { unixToDate } from 'utils/date';
-import { captureError } from 'utils/errors';
+import { fromWei, toWei } from 'utils/web3';
 
 export function useSaving () {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ export function useSaving () {
 
       dispatch(setAllowance(allowance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -53,7 +53,7 @@ export function useSaving () {
       const result = await getSavingBalanceDetailsHelper(balanceDetails);
       dispatch(setBalanceDetails(result));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -63,59 +63,59 @@ export function useSaving () {
       const result = await contract.balanceOf(getUserAddress());
       dispatch(setAvailableToDeposit(fromWei(result)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function depositSaving (amount: string) {
     const contract = await getSavingInstance();
-    const receipt = await contract.deposit(toWei(amount), { from: getUserAddress() });
+    const tx = await contract.deposit(toWei(amount), { from: getUserAddress() });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         getSavingBalanceDetails();
         getSavingAllowance();
         getTotalSavingBalance();
         getSavingAvailableToDeposit();
         getSavingAssets();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function withdrawSaving (amount: string) {
     const contract = await getSavingInstance();
-    const receipt = await contract.withdraw(toWei(amount), { from: getUserAddress() });
+    const tx = await contract.withdraw(toWei(amount), { from: getUserAddress() });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         getSavingBalanceDetails();
         getSavingAllowance();
         getTotalSavingBalance();
         getSavingAvailableToDeposit();
         getSavingAssets();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function approveSaving () {
     const contract = await getStableCoinInstance();
     const contractSaving = await getSavingInstance();
-    const receipt = await contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, {
+    const tx = await contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, {
       from: getUserAddress()
     });
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         getSavingBalanceDetails();
         getSavingAllowance();
         getTotalSavingBalance();
         getSavingAvailableToDeposit();
         getSavingAssets();
-      });
-
-    return receipt;
+      }
+    };
   }
 
   async function updateSavingCompoundRate () {
@@ -126,11 +126,10 @@ export function useSaving () {
   async function getTotalSavingBalance () {
     try {
       const contract = await getSavingInstance();
-      const savingAmount = await contract.instance.methods.getBalance()
-        .call({ from: getUserAddress() });
+      const savingAmount = await contract.instance.getBalance({ from: getUserAddress() });
       dispatch(setTotalSavingBalance(fromWei(savingAmount)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -141,7 +140,7 @@ export function useSaving () {
       const rate = calculateInterestRate(Number(savingRate));
       dispatch(setSavingRate(rate));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -185,7 +184,7 @@ export function useSavingAssets () {
       }]));
     } catch (error) {
       dispatch(setSavingAssetsError(error));
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

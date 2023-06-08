@@ -1,20 +1,35 @@
-import { ContractRegistryInstance, RewardKPI } from '@q-dev/q-js-sdk';
+import { ContractRegistryInstance, RewardKPI, SignerOrProvider } from '@q-dev/q-js-sdk';
 import { CompoundRateKeeperInstance } from '@q-dev/q-js-sdk/lib/contracts/common/CompoundRateKeeperInstance';
+import { ERC20Instance } from '@q-dev/q-js-sdk/lib/contracts/defi/token/ERC20Instance';
 import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
+import { providers, Signer } from 'ethers';
 import { ContractType, ContractValue } from 'typings/contracts';
 import { Asset } from 'typings/defi';
-import { Contract } from 'web3-eth-contract';
 
 import { networkConfigsMap } from 'constants/config';
 
 export const CONTRACT_REGISTRY_ADDRESS = '0xc3E589056Ece16BCB88c6f9318e9a7343b663522';
 export let contractRegistryInstance: ContractRegistryInstance | null = null;
+export let currentProvider: providers.Web3Provider | providers.JsonRpcProvider | null = null;
+export let currentSigner: Signer | null = null;
 const cache: Record<string, ContractValue> = {};
+
+export const initSigner = (signer: Signer) => {
+  currentSigner = signer;
+};
+
+export const initProvider = (provider: providers.Web3Provider | providers.JsonRpcProvider) => {
+  currentProvider = provider;
+};
+
+export const initContractRegistryInstance = (signerOrProvider: SignerOrProvider) => {
+  contractRegistryInstance = new ContractRegistryInstance(signerOrProvider, CONTRACT_REGISTRY_ADDRESS);
+};
 
 export const getContractRegistryInstance = () => {
   if (!contractRegistryInstance) {
-    contractRegistryInstance = new ContractRegistryInstance(window.web3, CONTRACT_REGISTRY_ADDRESS);
+    throw new Error('ContractRegistryInstance not initialized');
   }
   return contractRegistryInstance;
 };
@@ -92,9 +107,13 @@ let indexerInstance: Indexer | null = null;
 let rewardKPIInstance: RewardKPI | null = null;
 
 export function getRewardKPIInstance () {
+  if (!currentProvider) {
+    throw new Error('Current provider not initialized');
+  }
+
   if (!rewardKPIInstance) {
     const contractRegistryInstance = getContractRegistryInstance();
-    rewardKPIInstance = new RewardKPI(window.web3, contractRegistryInstance);
+    rewardKPIInstance = new RewardKPI(currentSigner || currentProvider, contractRegistryInstance);
   }
   return rewardKPIInstance;
 }
@@ -138,17 +157,20 @@ export async function getCompoundRateBorrowingInstance (asset: Asset) {
   return compoundRateBorrowingInstances[asset];
 }
 
-const borrowingInstances: Record<string, Contract> = {};
+const borrowingInstances: Record<string, ERC20Instance> = {};
 
 export async function getBorrowingInstance (asset: Asset) {
+  if (!currentProvider) {
+    throw new Error('Current provider not initialized');
+  }
+
   if (!borrowingInstances[asset]) {
-    const stableCoinInstance = await getStableCoinInstance();
     const epdrParametersInstance = await getEpdrParametersInstance();
 
     const contractAddress = await epdrParametersInstance.getAddr(`governed.EPDR.${asset}_address`);
 
-    borrowingInstances[asset] = new window.web3.eth.Contract(
-      stableCoinInstance.instance.options.jsonInterface,
+    borrowingInstances[asset] = new ERC20Instance(
+      currentProvider || currentSigner,
       contractAddress
     );
   }

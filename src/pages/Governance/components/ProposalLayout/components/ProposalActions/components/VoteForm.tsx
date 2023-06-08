@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { RadioGroup } from '@q-dev/q-ui-kit';
 import { formatAsset, toBigNumber } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 import { Proposal } from 'typings/proposals';
-import { fromWei } from 'web3-utils';
 
 import Button from 'components/Button';
 
@@ -18,8 +18,8 @@ import { useTransaction } from 'store/transaction/hooks';
 
 import { getVotingWeightProxyInstance } from 'contracts/contract-instance';
 
-import { captureError } from 'utils/errors';
 import { required } from 'utils/validators';
+import { fromWei } from 'utils/web3';
 
 interface Props {
   proposal: Proposal;
@@ -40,7 +40,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
       const result = await contract.getBaseVotingWeightInfo(getUserAddress(), proposal.votingEndTime.toString());
       setBaseWeight(fromWei(result.ownWeight));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       setBaseWeight('0');
     }
   }

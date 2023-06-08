@@ -24,7 +24,9 @@ function AliasEventsTable ({ address }: { address: string }) {
       event: item.event,
       address: <ExplorerAddress address={item.address} />,
       alias: <ExplorerAddress address={item.alias} />,
-      role: invert(AliasPurpose)[item.role] || '–',
+      role: item.role
+        ? invert(AliasPurpose)[item.role] || '-'
+        : '-',
     }));
 
   const columns: TableColumn[] = [

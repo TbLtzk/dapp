@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { formatAsset, formatPercent } from '@q-dev/utils';
 import { Delegation } from 'typings/validator';
-import { toWei } from 'web3-utils';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -16,6 +15,7 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { max, min, required } from 'utils/validators';
+import { toWei } from 'utils/web3';
 
 interface Props {
   delegation: Delegation;

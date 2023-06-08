@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { fromWei } from 'web3-utils';
+import { ErrorHandler } from 'helpers';
 
 import {
   setStableCoinTotalSupply,
@@ -16,7 +16,7 @@ import { getUserAddress, useAppSelector } from 'store';
 
 import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
-import { captureError } from 'utils/errors';
+import { fromWei } from 'utils/web3';
 
 export function useSystemBalance () {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export function useSystemBalance () {
       const totalSupply = await contract.totalSupply();
       dispatch(setStableCoinTotalSupply(fromWei(totalSupply)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -51,7 +51,7 @@ export function useSystemBalance () {
       const balance = await contract.getBalance();
       dispatch(setSystemBalance(fromWei(balance)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -61,7 +61,7 @@ export function useSystemBalance () {
       const debt = await contract.getDebt();
       dispatch(setSystemBalanceDebt(fromWei(debt)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -71,7 +71,7 @@ export function useSystemBalance () {
       const surplus = await contract.getSurplus();
       dispatch(setSystemBalanceSurplus(fromWei(surplus)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -81,17 +81,17 @@ export function useSystemBalance () {
       const availableAmount = await contract.availableAmount();
       dispatch(setSystemReserveAvailableAmount(fromWei(availableAmount)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function getSystemReserveBalance () {
     try {
       const contract = await getSystemReserveInstance();
-      const balance = await window.web3.eth.getBalance(contract.address);
-      dispatch(setSystemReserveBalance(fromWei(balance)));
+      const balance = await contract.getBalance();
+      dispatch(setSystemReserveBalance(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

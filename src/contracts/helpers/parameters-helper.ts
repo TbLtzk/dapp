@@ -1,6 +1,7 @@
 import { ParameterType } from '@q-dev/q-js-sdk';
 import { ParameterType as StringParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
 import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
+import { ErrorHandler } from 'helpers';
 import { ContractType } from 'typings/contracts';
 
 import {
@@ -12,7 +13,6 @@ import {
 } from 'contracts/contract-instance';
 
 import { CONTRACT_TYPES } from 'constants/contracts';
-import { captureError } from 'utils/errors';
 
 export async function getParameterKeysByType (
   contractType: string,
@@ -22,20 +22,20 @@ export async function getParameterKeysByType (
     const contract = await getContract(contractType);
     switch (parameterType) {
       case ParameterType.ADDRESS:
-        return contract.instance.methods.getAddrKeys().call();
+        return contract.instance.getAddrKeys();
       case ParameterType.BOOL:
-        return contract.instance.methods.getBoolKeys().call();
+        return contract.instance.getBoolKeys();
       case ParameterType.STRING:
-        return contract.instance.methods.getStringKeys().call();
+        return contract.instance.getStringKeys();
       case ParameterType.BYTE:
-        return contract.instance.methods.getBytes32Keys().call();
+        return contract.instance.getBytes32Keys();
       case ParameterType.UINT:
-        return contract.instance.methods.getUintKeys().call();
+        return contract.instance.getUintKeys();
       default:
         return [];
     }
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return [];
   }
 }
@@ -58,15 +58,15 @@ export async function getParameterValueByKey (
     const contract = await getContract(contractType);
     return contract.getParameter(parameterTypeMap[parameterType], key);
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return '';
   }
 }
 
 export async function getContractOwner (type: ContractType) {
   const contract = await getInstance(type)() as ContractRegistryUpgradeVotingInstance;
-  return 'owner' in contract.instance.methods
-    ? contract.instance.methods.owner().call()
+  return 'owner' in contract.instance
+    ? contract.instance.owner()
     : '';
 }
 

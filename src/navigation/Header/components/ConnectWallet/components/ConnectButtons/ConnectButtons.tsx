@@ -1,23 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { WalletType } from 'connectors';
+import { PROVIDERS } from '@distributedlab/w3p';
 import { useWeb3Context } from 'context/Web3ContextProvider';
+import { ErrorHandler, sleep } from 'helpers';
 
 import Button from 'components/Button';
 
 function ConnectButtons () {
   const { t } = useTranslation();
+  const { connectWallet: connect } = useWeb3Context();
 
-  const { connectWallet, success, loading, error, setError } = useWeb3Context();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const connectWallet = async (provider: PROVIDERS) => {
+    setIsLoading(true);
+    try {
+      await connect(provider, async () => {
+        setIsSuccess(true);
+        await sleep(500);
+      });
+    } catch (error) {
+      ErrorHandler.process(error, t('ERROR_WHILE_CONNECTING_TO_WALLET'));
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     return () => {
-      setError(null);
+      setIsLoading(false);
     };
   }, []);
 
-  if (success) {
+  if (isSuccess) {
     return (
       <div className="connect">
         <h5>{t('SUCCESS')}</h5>
@@ -26,16 +42,8 @@ function ConnectButtons () {
     );
   }
 
-  if (loading) {
+  if (isLoading) {
     return <div className="connect-loading">{t('LOADING')}</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="connect">
-        <p>{t('ERROR_WHILE_CONNECTING_TO_WALLET')}</p>
-      </div>
-    );
   }
 
   return (
@@ -45,7 +53,7 @@ function ConnectButtons () {
           <Button
             alwaysEnabled
             style={{ width: '100%' }}
-            onClick={() => connectWallet(WalletType.INJECTED, true)}
+            onClick={() => connectWallet(PROVIDERS.Metamask)}
           >
             <img
               src="/icons/metamask.svg"
@@ -75,31 +83,6 @@ function ConnectButtons () {
             </Button>
           </a>
         )}
-
-      {/* TODO: display after fix connect
-      {Boolean(window.ethereum) && (
-        <Button
-          alwaysEnabled
-          style={{ width: '100%' }}
-          onClick={() => connectWallet(WalletType.COINBASE, true)}
-        >
-          <img
-            src="/icons/coinbase.png"
-            alt="Coinbase"
-            className="connect-buttons__icon"
-          />
-          <span>{t('CONNECT_WITH_COINBASE')}</span>
-        </Button>
-      )} */}
-
-      {/* TODO: add bridge between dApp and connect to wallet
-       <Button
-        alwaysEnabled
-        style={{ width: '100%' }}
-        onClick={() => connectWallet(WalletType.WALLET_CONNECT, true)}
-      >
-        Connect with Wallet Connect
-      </Button> */}
     </div>
   );
 }

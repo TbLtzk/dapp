@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
 import { formatAsset } from '@q-dev/utils';
-import { fromWei } from 'web3-utils';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateGMT, unixToDate } from 'utils/date';
+import { fromWei } from 'utils/web3';
 
 function RootBalanceInfo () {
   const { t, i18n } = useTranslation();

@@ -7,7 +7,6 @@ import flatten from 'lodash/flatten';
 import { ProposalContractType, ProposalEvent } from 'typings/contracts';
 import { SlashingProposalForm } from 'typings/forms';
 import { Proposal, SlashingProposal } from 'typings/proposals';
-import { fromWei } from 'web3-utils';
 
 import { getContractProposals } from '.';
 
@@ -15,6 +14,7 @@ import { getRootNodeSlashingEscrowInstance, getRootNodesSlashingVotingInstance, 
 
 import { ObjectionStatus } from 'constants/slashing';
 import { unixToDate } from 'utils/date';
+import { fromWei } from 'utils/web3';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],
@@ -99,9 +99,9 @@ export async function getSlashingEscrow (
     escrowArbitrationInfo,
     [confirmations, requiredConfirmations, percentage]
   ] = await Promise.all([
-    contract.instance.methods.getStatus(id).call(),
+    contract.instance.getStatus(id),
     contract.arbitrationInfos(id),
-    contract.instance.methods.getDecisionStats(id).call(),
+    contract.instance.getDecisionStats(id),
   ]);
 
   return {
@@ -109,7 +109,7 @@ export async function getSlashingEscrow (
       appealConfirmed: escrowArbitrationInfo.appealConfirmed,
       appealEndTime: unixToDate(escrowArbitrationInfo.params.appealEndTime as string),
       objectionEndTime: unixToDate(escrowArbitrationInfo.params.objectionEndTime as string),
-      status: status as ObjectionStatus,
+      status: status.toString() as ObjectionStatus,
       slashedAmount: fromWei(escrowArbitrationInfo.params.slashedAmount.toString()),
       executed: escrowArbitrationInfo.executed,
       remark: escrowArbitrationInfo.remark,
@@ -120,9 +120,9 @@ export async function getSlashingEscrow (
       externalReference: escrowArbitrationInfo.decision.externalReference,
       percentage: transformToPercentage(escrowArbitrationInfo.decision.percentage.toString()),
       proposer: escrowArbitrationInfo.decision.proposer,
-      confirmationCount: confirmations,
-      requiredConfirmations: requiredConfirmations,
-      currentConfirmationPercentage: transformToPercentage(percentage),
+      confirmationCount: confirmations.toString(),
+      requiredConfirmations: requiredConfirmations.toString(),
+      currentConfirmationPercentage: transformToPercentage(percentage.toString()),
     }
   };
 }
@@ -132,8 +132,8 @@ export async function checkConfirmedDecision ({ proposal, address }: {
   address: string;
 }): Promise<boolean> {
   const contract = await getEscrowInstance(proposal.contract);
-  return contract.instance.methods
-    .hasAlreadyConfirmedDecision(proposal.id, address).call();
+  return contract.instance
+    .hasAlreadyConfirmedDecision(proposal.id, address);
 }
 
 function getEscrowInstance (contractType: ProposalContractType):

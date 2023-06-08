@@ -26,18 +26,24 @@ export async function getAuctionsEvents (
   auctionType: AuctionType,
   lastBlock = 0 as number | string
 ) {
-  const pastEvents = await instance.getPastEvents('AuctionStarted', { fromBlock: lastBlock, toBlock: 'latest' });
+  const pastEvents = await instance.queryFilter(
+    instance.filters.AuctionStarted(),
+    lastBlock,
+    'latest'
+  );
   if (auctionType === 'liquidation') {
     return pastEvents.map((event) => ({
-      vaultOwner: event.returnValues._user,
-      vaultId: event.returnValues._vaultId,
+      vaultOwner: event.args._user,
+      vaultId: event.args._vaultId.toString(),
       blockNumber: event.blockNumber,
     })) as LiquidationAuctionEvent[];
   }
   return pastEvents.map((event) => ({
-    bidder: event.returnValues._bidder,
-    bid: event.returnValues._bid,
-    auctionId: event.returnValues._auctionId,
+    bidder: event.args._bidder,
+    bid: event.args._bid.toString(),
+    // TODO: fix types
+    // @ts-ignore-next-line
+    auctionId: event.args?._auctionId?.toString(),
     blockNumber: event.blockNumber,
   })) as SystemDebtAndSurplusEvent[];
 }

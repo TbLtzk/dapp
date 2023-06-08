@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { TimeLockEntry } from '@q-dev/q-js-sdk';
 import { useInterval } from '@q-dev/react-hooks';
-import { fromWei } from 'web3-utils';
+import { ErrorHandler } from 'helpers';
 
 import { getVestingInstance } from 'contracts/contract-instance';
 
 import { dateToUnix } from 'utils/date';
-import { captureError } from 'utils/errors';
+import { fromWei } from 'utils/web3';
 
 function useVestingTimeLocks (address: string) {
   const [vestingBalance, setVestingBalance] = useState('0');
@@ -21,7 +21,7 @@ function useVestingTimeLocks (address: string) {
       const balance = await contract.balanceOf(address);
       setVestingBalance(fromWei(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -31,7 +31,7 @@ function useVestingTimeLocks (address: string) {
       const minimumBalance = await contract.getMinimumBalance(address, dateToUnix());
       setVestingMinimumTimeLock(fromWei(minimumBalance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -42,7 +42,7 @@ function useVestingTimeLocks (address: string) {
       const timeLocks = await contract.getTimeLocks(address);
       setVestingTimeLocks(timeLocks);
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
     setVestingTimeLocksLoading(false);
   }

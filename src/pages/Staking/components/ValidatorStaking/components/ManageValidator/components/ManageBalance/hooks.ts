@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
-import { toWei } from 'web3-utils';
+import { ContractTransaction } from 'ethers';
 
 import { FORM_TYPES } from './components/ValidatorMenu';
 
@@ -11,6 +10,8 @@ import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { getValidatorsInstance } from 'contracts/contract-instance';
+
+import { toWei } from 'utils/web3';
 
 const useSendValidatorForms = () => {
   const user = useUser();
@@ -24,31 +25,31 @@ const useSendValidatorForms = () => {
 
   const sendForm = async (formType: string, amount: string) => {
     const contract = await getValidatorsInstance();
-    let receipt: SubmitTransactionResponse;
+    let tx: ContractTransaction;
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        receipt = await contract.commitStake({ value: toWei(amount), from: user.address });
+        tx = await contract.commitStake({ value: toWei(amount), from: user.address });
         break;
       case FORM_TYPES.announceWithdrawal:
-        receipt = await contract.announceWithdrawal(toWei(amount), { from: user.address });
+        tx = await contract.announceWithdrawal(toWei(amount), { from: user.address });
         break;
       case FORM_TYPES.withdrawFromRanking:
-        receipt = await contract.withdraw(toWei(amount), user.address);
+        tx = await contract.withdraw(toWei(amount), user.address);
         break;
       default:
         throw new Error('Unknown form type');
     }
 
-    receipt.promiEvent
-      .once('receipt', () => {
+    return {
+      tx,
+      onSuccess: () => {
         loadValidatorTotalStake();
         loadValidatorDelegatedStake();
         loadValidatorAccountableTotalStake();
         loadValidatorAccountableSelfStake();
         loadValidatorWithdrawalInfo();
-      });
-
-    return receipt;
+      }
+    };
   };
 
   return useCallback(sendForm, []);

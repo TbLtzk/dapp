@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
+import { ErrorHandler } from 'helpers';
 import { ParametersInstance } from 'typings/contracts';
 
 import { setConstitutionError, setConstitutionParameters } from './reducer';
@@ -9,8 +10,6 @@ import { setConstitutionError, setConstitutionParameters } from './reducer';
 import { useAppSelector } from 'store';
 
 import { getConstitutionInstance } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
 
 async function getParameters (contract: ParametersInstance) {
   const PARAMETER_TYPES: ParameterType[] = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32'];
@@ -46,7 +45,7 @@ export function useConstitution () {
       const parameters = await getParameters(contract);
       dispatch(setConstitutionParameters(parameters));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setConstitutionError('There was an error while loading Constitution Parameters data'));
     }
   }

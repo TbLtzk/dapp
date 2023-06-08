@@ -1,5 +1,6 @@
+import { ErrorHandler } from 'helpers';
 
-import { captureError } from 'utils/errors';
+import { currentProvider } from 'contracts/contract-instance';
 
 export async function getMinimalActiveBlockHeight () {
   try {
@@ -10,7 +11,7 @@ export async function getMinimalActiveBlockHeight () {
       lastBlockHeight,
     };
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return {
       minimalActiveBlockHeight: 0,
       lastBlockHeight: 'latest',
@@ -20,10 +21,10 @@ export async function getMinimalActiveBlockHeight () {
 
 export async function fetchBlockNumber (block = 'latest') {
   try {
-    const { number } = await window?.web3?.eth.getBlock(block);
-    return number;
+    const currBlock = await currentProvider?.getBlock(block);
+    return currBlock?.number || 0;
   } catch (error) {
-    captureError(error);
+    ErrorHandler.processWithoutFeedback(error);
     return 0;
   }
 }

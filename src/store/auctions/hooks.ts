@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { SubmitTransactionResponse } from '@q-dev/q-js-sdk';
+import { ContractTransaction } from 'ethers';
+import { ErrorHandler } from 'helpers';
 import {
   AuctionBid,
   AuctionExecute,
@@ -39,8 +40,6 @@ import {
 } from 'contracts/helpers/auction/system-surplus';
 import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 
-import { captureError } from 'utils/errors';
-
 export function useAuctions () {
   const dispatch = useDispatch();
   const auctions = useAppSelector(({ auctions }) => auctions);
@@ -72,7 +71,7 @@ export function useAuctions () {
         lastActiveBlock: lastBlockHeight,
       }));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -89,25 +88,28 @@ export function useAuctions () {
     auctionType: AuctionType;
   }) {
     const userAddress = getUserAddress();
-    let receipt: SubmitTransactionResponse;
+    let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation': {
-        receipt = await createLiquidationAuction(form as CreateLiquidationAuction, userAddress);
+        tx = await createLiquidationAuction(form as CreateLiquidationAuction, userAddress);
         break;
       }
       case 'systemDebt': {
-        receipt = await createSystemDebtAuction(form as CreateAuction, userAddress);
+        tx = await createSystemDebtAuction(form as CreateAuction, userAddress);
         break;
       }
       case 'systemSurplus': {
-        receipt = await createSystemSurplusAuction(form as CreateAuction);
+        tx = await createSystemSurplusAuction(form as CreateAuction);
         break;
       }
     }
 
-    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
-
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getAuctions(auctionType);
+      }
+    };
   }
 
   async function bidForAuction ({ form, auctionType }: {
@@ -116,45 +118,52 @@ export function useAuctions () {
   }) {
     const userAddress = getUserAddress();
 
-    let receipt: SubmitTransactionResponse;
+    let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation':
-        receipt = await bidForLiquidationAuction(form as LiquidationAuctionBid, userAddress);
+        tx = await bidForLiquidationAuction(form as LiquidationAuctionBid, userAddress);
         break;
       case 'systemDebt':
-        receipt = await bidForSystemDebtAuction(form as AuctionBid, userAddress);
+        tx = await bidForSystemDebtAuction(form as AuctionBid, userAddress);
         break;
       case 'systemSurplus':
-        receipt = await bidForSystemSurplusAction(form as AuctionBid, userAddress);
+        tx = await bidForSystemSurplusAction(form as AuctionBid, userAddress);
         break;
     }
 
-    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
-
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getAuctions(auctionType);
+      }
+    };
   }
 
   async function executeAuction ({ form, auctionType }: { form: ExecuteAuctionForm; auctionType: AuctionType }) {
     const userAddress = getUserAddress();
 
-    let receipt: SubmitTransactionResponse;
+    let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation': {
-        receipt = await executeLiquidationAuction(form as LiquidationAuctionExecute, userAddress);
+        tx = await executeLiquidationAuction(form as LiquidationAuctionExecute, userAddress);
         break;
       }
       case 'systemDebt': {
-        receipt = await executeSystemDebtAuction(userAddress);
+        tx = await executeSystemDebtAuction(userAddress);
         break;
       }
       case 'systemSurplus': {
-        receipt = await executeSystemSurplusAuction(form as AuctionExecute, userAddress);
+        tx = await executeSystemSurplusAuction(form as AuctionExecute, userAddress);
         break;
       }
     }
-    receipt.promiEvent.once('receipt', () => { getAuctions(auctionType); });
 
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getAuctions(auctionType);
+      }
+    };
   }
 
   const activeAuctionsCount = useMemo(() => {

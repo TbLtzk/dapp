@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ErrorHandler } from 'helpers';
 import { ValidatorLegend } from 'typings/validator';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
@@ -8,8 +9,6 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import { useConstitution } from 'store/constitution/hooks';
 
 import { getIndexerInstance, getValidatorsInstance } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
 
 const useGetValidatorRank = (address: string) => {
   const [validatorRank, setValidatorRank] = useState(0);
@@ -22,7 +21,7 @@ const useGetValidatorRank = (address: string) => {
       const validatorRank = shortList.findIndex((val) => val.address === address);
       setValidatorRank(validatorRank + 1);
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   };
 
@@ -32,7 +31,7 @@ const useGetValidatorRank = (address: string) => {
       const isInLongList = await contract.isInLongList(address);
       setIsValidator(isInLongList);
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       setIsValidator(false);
     }
   }
@@ -59,7 +58,7 @@ const useIsActiveValidator = (address: string) => {
       const inactiveValidators = await indexer.getInactiveValidators([address]);
       setIsActiveValidator(inactiveValidators === 0);
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       setIsActiveValidator(false);
     }
   };

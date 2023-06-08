@@ -1,13 +1,14 @@
 import { StakeDelegationInfo } from '@q-dev/q-js-sdk';
-import { toBigNumber, transformToPercentage } from '@q-dev/utils';
-import { fromWei, toWei } from 'web3-utils';
+import { transformToPercentage } from '@q-dev/utils';
 
-import { contractRegistryInstance, getQVaultInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance';
+import { contractRegistryInstance, currentProvider, getQVaultInstance, getValidationRewardPoolsInstance } from 'contracts/contract-instance';
+
+import { fromWei, toWei } from 'utils/web3';
 
 export async function getQHolderRewardPool () {
-  const address = await contractRegistryInstance?.instance.methods.getAddress('tokeneconomics.qHolderRewardPool').call();
-  const balance = await window.web3.eth.getBalance(address || '');
-  return fromWei(balance);
+  const address = await contractRegistryInstance?.instance.getAddress('tokeneconomics.qHolderRewardPool');
+  const balance = await currentProvider?.getBalance(address || '');
+  return fromWei(balance || '0');
 }
 
 export function countTotalStakeReward (delegationsList: StakeDelegationInfo[]) {
@@ -17,16 +18,14 @@ export function countTotalStakeReward (delegationsList: StakeDelegationInfo[]) {
 }
 
 export async function getQVaultDepositAmount (address: string) {
-  const amount = await window.web3.eth.getBalance(address);
-  if (Number(amount) <= 0) {
-    return '0';
-  }
+  const amount = await currentProvider?.getBalance(address);
+  if (!amount || amount.isZero()) return '0';
 
   const contract = await getQVaultInstance();
-  const fee = await contract.instance.methods.deposit().estimateGas({ value: amount, from: address });
-  const gas = fromWei(String(fee * 50), 'gwei');
+  const fee = await contract.instance.estimateGas.deposit({ value: amount, from: address });
+  const gas = fromWei(fee.mul(50), 'gwei');
 
-  const result = toBigNumber(amount).minus(toWei(gas)).toString(10);
+  const result = amount.sub(toWei(gas)).toString();
   return fromWei(result);
 }
 

@@ -3,14 +3,14 @@ export const TRANSACTION_TYPES = {
   rejected: 'Rejected',
 };
 
-export const LOAD_TYPES = {
-  error: 'error',
-  loaded: 'loaded',
-  loading: 'loading',
-  initError: 'init-error',
-  notLogged: 'not-logged',
-  notInstalled: 'not-installed',
-  wrongNetwork: 'wrong-network',
+export enum LOAD_TYPES {
+  error = 'error',
+  loaded ='loaded',
+  loading ='loading',
+  initError ='init-error',
+  notLogged ='not-logged',
+  notInstalled = 'not-installed',
+  wrongNetwork = 'wrong-network',
 };
 
 export enum TimeLockStatus {

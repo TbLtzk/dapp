@@ -9,7 +9,6 @@ import {
   LiquidationCompletedInfo,
 } from 'typings/auctions';
 import { Asset } from 'typings/defi';
-import { fromWei, toWei } from 'web3-utils';
 
 import { getAuctionStatusState } from './index';
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatusTransformation } from '.';
@@ -18,6 +17,7 @@ import { getBorrowingCoreInstance, getBorrowingInstance, getLiquidationAuctionIn
 import { convertFromBigAmount } from 'contracts/helpers/borrow-assets-helper';
 
 import { dateToUnix } from 'utils/date';
+import { fromWei, toWei } from 'utils/web3';
 
 async function prepareLiquidationAuctionInfo (
   info: SdkLiquidationAuctionInfo,
@@ -32,7 +32,7 @@ async function prepareLiquidationAuctionInfo (
   const vault = await borrowingCoreInstance.userVaults(auctionEvent.vaultOwner, auctionEvent.vaultId);
   const borrowingInstance = await getBorrowingInstance(vault.colKey as Asset);
 
-  const decimals = await borrowingInstance.methods.decimals().call();
+  const decimals = await borrowingInstance.decimals();
   const status = getStatusTransformation(info.status);
 
   completedInfo.lotAsset = 'QUSD';
@@ -46,7 +46,7 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.endTime = info.endTime.toString();
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
-  completedInfo.colAsset = convertFromBigAmount(decimals)(vault.colAsset);
+  completedInfo.colAsset = convertFromBigAmount(+decimals)(vault.colAsset);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.status = status;
 

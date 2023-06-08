@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ErrorHandler } from 'helpers';
+
 import {
   setDefaultAllocationProxy,
   setDefaultAllocationProxyLoading,
@@ -28,8 +30,6 @@ import {
   getValidationRewardProxyInstance,
 } from 'contracts/contract-instance';
 
-import { captureError } from 'utils/errors';
-
 export function useTokenomics () {
   const dispatch = useDispatch();
   const { loadQVBalanceDetails } = useQVault();
@@ -53,7 +53,7 @@ export function useTokenomics () {
       const balance = await contract.getBalance();
       dispatch(setDefaultAllocationProxy(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -61,17 +61,19 @@ export function useTokenomics () {
     dispatch(setDefaultAllocationProxyLoading(true));
     try {
       const contract = await getDefaultAllocationProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => {
+      return {
+        tx,
+        onSuccess: () => {
           getDefaultAllocationProxy();
           getRootNodeRewardProxy();
           getValidationRewardProxy();
-        })
-        .finally(() => dispatch(setDefaultAllocationProxyLoading(false)));
-
-      return receipt;
+        },
+        onFinally: () => {
+          dispatch(setDefaultAllocationProxyLoading(false));
+        }
+      };
     } catch (e) {
       dispatch(setDefaultAllocationProxyLoading(false));
       throw e;
@@ -84,7 +86,7 @@ export function useTokenomics () {
       const balance = await contract.getBalance();
       dispatch(setRootNodeRewardProxy(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -92,13 +94,17 @@ export function useTokenomics () {
     dispatch(setRootNodeRewardProxyLoading(true));
     try {
       const contract = await getRootNodeRewardProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => { getRootNodeRewardProxy(); })
-        .finally(() => dispatch(setRootNodeRewardProxyLoading(false)));
-
-      return receipt;
+      return {
+        tx,
+        onSuccess: () => {
+          getRootNodeRewardProxy();
+        },
+        onFinally: () => {
+          dispatch(setRootNodeRewardProxyLoading(false));
+        }
+      };
     } catch (e) {
       dispatch(setRootNodeRewardProxyLoading(false));
       throw e;
@@ -111,7 +117,7 @@ export function useTokenomics () {
       const balance = await contract.getBalance();
       dispatch(setValidationRewardProxy(balance));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -119,17 +125,19 @@ export function useTokenomics () {
     dispatch(setValidationRewardProxyLoading(true));
     try {
       const contract = await getValidationRewardProxyInstance();
-      const receipt = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: getUserAddress() });
 
-      receipt.promiEvent
-        .once('receipt', () => {
+      return {
+        tx,
+        onSuccess: () => {
           getValidationRewardProxy();
           getVRPPoolInfo();
           loadValidatorDelegatedStake();
-        })
-        .finally(() => dispatch(setValidationRewardProxyLoading(false)));
-
-      return receipt;
+        },
+        onFinally: () => {
+          dispatch(setValidationRewardProxyLoading(false));
+        }
+      };
     } catch (e) {
       dispatch(setValidationRewardProxyLoading(false));
       throw e;
@@ -143,7 +151,7 @@ export function useTokenomics () {
       dispatch(setqHolderUpdateTime(lastUpdate));
       loadQVBalanceDetails();
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -151,14 +159,19 @@ export function useTokenomics () {
     dispatch(setQHolderUpdateTimeLoading(true));
     try {
       const contract = await getQVaultInstance();
-      const receipt = await contract.updateCompoundRate({
+      const tx = await contract.updateCompoundRate({
         from: getUserAddress(),
       });
 
-      receipt.promiEvent
-        .once('receipt', () => { getQHolderUpdateTime(); })
-        .finally(() => dispatch(setQHolderUpdateTimeLoading(false)));
-      return receipt;
+      return {
+        tx,
+        onSuccess: () => {
+          getQHolderUpdateTime();
+        },
+        onFinally: () => {
+          dispatch(setQHolderUpdateTimeLoading(false));
+        }
+      };
     } catch (e) {
       dispatch(setQHolderUpdateTimeLoading(false));
       throw e;
@@ -171,7 +184,7 @@ export function useTokenomics () {
       const apr = await contract.getRootNodesAPR();
       dispatch(setRootNodesAPR(apr));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -181,7 +194,7 @@ export function useTokenomics () {
       const apr = await contract.getValidatorsAPR();
       dispatch(setValidatorsAPR(apr));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 

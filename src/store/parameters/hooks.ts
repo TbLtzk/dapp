@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ParameterType } from '@q-dev/q-js-sdk/lib/contracts/BaseParametersInstance';
+import { ErrorHandler } from 'helpers';
 import { ParametersInstance } from 'typings/contracts';
 
 import { setContractRegistry, setContractRegistryError, setEpdrParameters, setEpqfiParameters, setEpqfiParametersError, setEprsParameters, setEprsParametersError } from './reducer';
@@ -14,8 +15,6 @@ import {
   getEpqfiParametersInstance,
   getEprsParametersInstance
 } from 'contracts/contract-instance';
-
-import { captureError } from 'utils/errors';
 
 async function getParameters (contract: ParametersInstance) {
   const PARAMETER_TYPES: ParameterType[] = ['Uint', 'String', 'Bool', 'Addr', 'Bytes32'];
@@ -50,10 +49,10 @@ export function useParameters () {
   async function getContractRegistry () {
     try {
       const contractRegistryInstance = getContractRegistryInstance();
-      const data = await contractRegistryInstance.instance.methods.getContracts().call();
+      const data = await contractRegistryInstance.instance.getContracts();
       dispatch(setContractRegistry(data.map(([key, value]) => ({ key, value, type: 'Addr' }))));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setContractRegistryError('There was an error while loading Contract Registry data'));
     }
   }
@@ -64,7 +63,7 @@ export function useParameters () {
       const parameters = await getParameters(contract);
       dispatch(setEpqfiParameters(parameters));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEpqfiParametersError('There was an error while loading EPQFI Parameters data'));
     }
   }
@@ -75,7 +74,7 @@ export function useParameters () {
       const parameters = await getParameters(contract);
       dispatch(setEpdrParameters(parameters));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEprsParametersError('There was an error while loading EPDR Parameters data'));
     }
   }
@@ -86,7 +85,7 @@ export function useParameters () {
       const parameters = await getParameters(contract);
       dispatch(setEprsParameters(parameters));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
       dispatch(setEprsParametersError('There was an error while loading EPRS Parameters data'));
     }
   }

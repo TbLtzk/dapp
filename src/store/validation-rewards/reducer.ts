@@ -10,7 +10,6 @@ export interface ValidationRewardsState {
 
 const initialState: ValidationRewardsState = {
   poolInfo: {
-    interestRate: '0',
     aggregatedNormalizedStake: '0',
     compoundRate: '0',
     delegatedStake: '0',

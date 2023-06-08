@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { toBigNumber } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
 import { Asset } from 'typings/defi';
-import { fromWei } from 'web3-utils';
 
 import {
   setBorrowingFee,
@@ -19,7 +19,7 @@ import { getBorrowingCoreInstance, getBorrowingInstance } from 'contracts/contra
 import { convertFromBigAmount, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 import { getBorrowAssetRateAndFee } from 'contracts/helpers/borrowing-core';
 
-import { captureError } from 'utils/errors';
+import { fromWei } from 'utils/web3';
 
 export function useBorrowing () {
   const dispatch = useDispatch();
@@ -30,12 +30,12 @@ export function useBorrowing () {
     try {
       const borrowingInstance = await getBorrowingInstance(asset);
       const [decimals, balance] = await Promise.all([
-        borrowingInstance.methods.decimals().call(),
-        borrowingInstance.methods.balanceOf(getUserAddress()).call()
+        borrowingInstance.decimals(),
+        borrowingInstance.balanceOf(getUserAddress())
       ]);
-      dispatch(setCollateralBalance(convertFromBigAmount(decimals)(balance)));
+      dispatch(setCollateralBalance(convertFromBigAmount(+decimals)(balance)));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -44,7 +44,7 @@ export function useBorrowing () {
       const { borrowingFee } = await getBorrowAssetRateAndFee(asset);
       dispatch(setBorrowingFee(borrowingFee));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -96,7 +96,7 @@ export function useInterestRates () {
 
       dispatch(setInterestRates(rates));
     } catch (error) {
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
@@ -134,17 +134,20 @@ export function useBorrowingVaults () {
       dispatch(setBorrowingVaults(vaults));
     } catch (error) {
       dispatch(setBorrowingVaultsError(error));
-      captureError(error);
+      ErrorHandler.processWithoutFeedback(error);
     }
   }
 
   async function createVault (asset: Asset) {
     const contract = await getBorrowingCoreInstance();
-    const receipt = await contract.createVault(asset, { from: getUserAddress() });
+    const tx = await contract.createVault(asset, { from: getUserAddress() });
 
-    receipt.promiEvent.once('receipt', () => { getBorrowingVaults(); });
-
-    return receipt;
+    return {
+      tx,
+      onSuccess: () => {
+        getBorrowingVaults();
+      }
+    };
   }
 
   return {
