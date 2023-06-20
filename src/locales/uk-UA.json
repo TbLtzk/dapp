@@ -604,7 +604,8 @@
   "ERROR_TRANSACTION_REJECTED": "Ви відхилили транзакцію",
   "ERROR_RPC_UNKNOWN": "Сталася невідома помилка RPC",
   "ERROR_UNKNOWN": "Сталася невідома помилка",
-  "ERROR_TRANSACTION_REVERTED_BY_EVM": "Трансакцію було скасовано EVM",
+  "ERROR_INVALID_ADDRESS": "Неправильна або неіснуюча адреса",
+  "ERROR_TRANSACTION_REVERTED_BY_EVM": "Транзакцію було скасовано EVM",
   "ERROR_METHOD_MISSING_FROM_CONTRACT": "У контракті відсутній метод \"{{method}}\".",
   "ERROR_001000": "Неправильний параметр періоду голосування, неможливо створити пропозицію.",
   "ERROR_001001": "Неправильний параметр періоду вето, неможливо створити пропозицію.",
@@ -1331,5 +1332,9 @@
   "NOTIFICATIONS_DEFAULT_MESSAGE_WARNING": "Те, що ви робите, не рекомендується",
   "NOTIFICATIONS_DEFAULT_MESSAGE_INFO": "Щось відбувається. Просто хочу, щоб ти це знав",
   "APP_INIT_ERROR": "Помилка ініціалізації",
-  "APP_INIT_ERROR_MESSAGE": "Будь ласка, оновіть сторінку"
+  "APP_INIT_ERROR_MESSAGE": "Будь ласка, оновіть сторінку",
+  "NOT_A_ROOT_NODE": "Не кореневий вузол",
+  "JOIN_DATE": "Дата приєднання",
+  "JOIN_TIME": "Час приєднання",
+  "JOIN_BLOCK": "Блок приєднання"
 }

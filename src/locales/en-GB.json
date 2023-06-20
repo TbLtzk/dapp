@@ -1332,5 +1332,9 @@
   "NOTIFICATIONS_DEFAULT_MESSAGE_WARNING": "Something you are doing is not recommended",
   "NOTIFICATIONS_DEFAULT_MESSAGE_INFO": "Something is happening. Just want you to know that",
   "APP_INIT_ERROR": "Init error",
-  "APP_INIT_ERROR_MESSAGE": "Please, refresh the page"
+  "APP_INIT_ERROR_MESSAGE": "Please, refresh the page",
+  "NOT_A_ROOT_NODE": "Not a root node",
+  "JOIN_DATE": "Join Date",
+  "JOIN_TIME": "Join Time",
+  "JOIN_BLOCK": "Join Block"
 }

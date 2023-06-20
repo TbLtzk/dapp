@@ -1,4 +1,4 @@
-import { RootNodesWithdrawalInfo } from '@q-dev/q-js-sdk';
+import { RootNodeMetric, RootNodesWithdrawalInfo } from '@q-dev/q-js-sdk';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface RootNodeMember {
@@ -6,6 +6,7 @@ export interface RootNodeMember {
   stakeAmount: string;
   share: number;
   alias: string;
+  metric?: RootNodeMetric;
 }
 
 interface RootNodesState {

@@ -12,16 +12,26 @@ import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
 import DashboardLink from '../components/DashboardLink';
 
+import RootNodeMetricTooltip from './components/RootNodeMetricTooltip';
+
 import { useRootNodes } from 'store/root-nodes/hooks';
+
+import { formatDateRelative } from 'utils/date';
 
 const StyledWrapper = styled.div`
   .table-header {
     display: none;
   }
+
+  .root-nodes-monitoring__metric {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 `;
 
 function RootNodesMonitoring () {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
 
   useEffect(() => {
@@ -53,6 +63,18 @@ function RootNodesMonitoring () {
       formatter: (cell) => formatAsset(cell, 'Q'),
     },
     {
+      headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
+      dataField: 'date',
+      text: t('JOIN_TIME'),
+      sort: true,
+      formatter: (cell, row) => (
+        <div className="root-nodes-monitoring__metric">
+          <span>{formatDateRelative(cell * 1000, i18n.language)}</span>
+          {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
+        </div>
+      ),
+    },
+    {
       headerStyle: () => ({ minWidth: '190px' }),
       dataField: 'offChain',
       text: t('LAST_OFF-CHAIN_ACTIVITY'),
@@ -80,7 +102,9 @@ function RootNodesMonitoring () {
             amount: rootNode.stakeAmount,
             offChain: 'n/a',
             onChain: 'n/a',
-            alias: rootNode.alias
+            alias: rootNode.alias,
+            date: rootNode.metric?.attributes.startTime,
+            metric: rootNode.metric,
           }))}
         />
       </PageLayout>

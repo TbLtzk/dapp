@@ -5,12 +5,14 @@ import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { ErrorHandler } from 'helpers';
 import { orderBy, round, sumBy } from 'lodash';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTotalStake, setWithdrawalInfo } from './reducer';
 
 import { getState, getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
-import { getRootNodesInstance } from 'contracts/contract-instance';
+import { getIndexerInstance, getRootNodesInstance } from 'contracts/contract-instance';
 import { getAliasMap } from 'contracts/helpers/aliases-helper';
 
 import { dateToUnix } from 'utils/date';
@@ -19,6 +21,7 @@ import { fromWei, toWei } from 'utils/web3';
 export function useRootNodes () {
   const dispatch = useDispatch();
   const { loadWalletBalance } = useQVault();
+  const { indexerUrl } = useNetworkConfig();
 
   const withdrawalInfo = useAppSelector(({ rootNodes }) => rootNodes.withdrawalInfo);
   const isRootNode = useAppSelector(({ rootNodes }) => rootNodes.isRootNode);
@@ -89,30 +92,49 @@ export function useRootNodes () {
         contract.getMembers(),
         contract.getStakes()
       ]);
-      const aliasesMap = await getAliasMap(
-        members,
-        getState().user.chainId,
-        AliasPurpose.ROOT_NODE_OPERATION
-      );
+      const [aliasesMap, metrics] = await Promise.all([
+        getAliasMap(
+          members,
+          getState().user.chainId,
+          AliasPurpose.ROOT_NODE_OPERATION
+        ),
+        getRootNodeMetrics()
+      ]);
 
       const membersWithAmount = members.map((address) => {
         const memberWithStake = stakes.find(({ root }) => root === address);
+        const metric = metrics.find(({ attributes }) => attributes.rootAddress === address);
         const stakeAmount = fromWei(memberWithStake?.value || '0');
-        return { address, stakeAmount };
+        return { address, stakeAmount, metric };
       });
 
       const totalStake = sumBy(membersWithAmount, item => Number(item.stakeAmount));
-      const membersWithShare: RootNodeMember[] = membersWithAmount.map(({ address, stakeAmount }) => ({
+      const membersWithShare: RootNodeMember[] = membersWithAmount.map(({ address, stakeAmount, metric }) => ({
         address,
         stakeAmount,
+        metric,
         share: totalStake ? round(Number(stakeAmount) / totalStake * 100, 2) : 0,
         alias: aliasesMap[address],
       }));
 
-      dispatch(setMembers(orderBy(membersWithShare, 'stakeAmount', 'desc')));
+      dispatch(setMembers(orderBy(membersWithShare, 'metric.attributes.startTime', 'asc')));
       dispatch(setTotalStake(String(totalStake)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function getRootNodeMetrics () {
+    try {
+      const indexer = getIndexerInstance(indexerUrl);
+      const rootNodeMetrics = await indexer.getRootNodeMetrics({
+        'page[limit]': 100
+      });
+
+      return rootNodeMetrics;
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+      return [];
     }
   }
 
