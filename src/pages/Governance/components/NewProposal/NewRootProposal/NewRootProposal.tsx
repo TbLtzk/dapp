@@ -17,13 +17,14 @@ import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 import { useUser } from 'store/user/hooks';
 
+import { ZERO_BYTES_32 } from 'constants/boundaries';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: RootNodeProposalForm = {
   type: 'add-root-node',
   externalLink: '',
   address: '',
-  hash: '',
+  hash: ZERO_BYTES_32,
 };
 
 const NewRootProposalContext = createContext(

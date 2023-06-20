@@ -1,4 +1,4 @@
-import { AddressWithBalance, AliasPurpose } from '@q-dev/q-js-sdk';
+import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { toBigNumber, transformToPercentage } from '@q-dev/utils';
 import { Validator, ValidatorMetricStats, ValidatorMonitoring, ValidatorPoolInfo, ValidatorStatsInfo } from 'typings/validator';
 
@@ -15,16 +15,17 @@ import {
 import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 import { fromWei, isAddress } from 'utils/web3';
 
-export async function getValidatorMetrics (shortList: AddressWithBalance[]): Promise<ValidatorMetricStats[]> {
+export async function getValidatorMetrics (): Promise<ValidatorMetricStats[]> {
   const metrics = getValidatorMetricsInstance();
   await metrics.takeSnapshotFromNetwork(getContractRegistryInstance());
 
-  const efficiency = await metrics.getDelegationEfficiency();
-  const saturation = await metrics.getDelegationSaturation();
+  const efficiency = metrics.getDelegationEfficiency();
+  const saturation = metrics.getDelegationSaturation();
+  const validators = metrics.getValidatorsShortList();
 
   return efficiency.map((efficiency, idx) => ({
     ...efficiency,
-    address: shortList[idx].address,
+    address: validators[idx].address,
     delegationSaturation: saturation[idx],
   }));
 }
@@ -47,7 +48,7 @@ export async function getValidator (
     aliasesMap
   ] = await Promise.all([
     indexer.getInactiveValidators([address]),
-    getValidatorMetrics(shortList),
+    getValidatorMetrics(),
     getAliasMap([address], chainId, AliasPurpose.BLOCK_SEALING),
   ]);
 
@@ -67,7 +68,7 @@ export async function getValidator (
     isActiveValidator,
     alias: aliasesMap[address],
     rank: validatorRank + 1,
-    payoutPerDelegatedQ: fromWei(toBigNumber(metric?.payoutPerDelegatedQ || 0).toFixed()),
+    payoutPerDelegatedQ: fromWei(toBigNumber(metric?.payoutPerDelegatedQ || 0).toFixed(0)),
   };
 }
 export async function getPoolInfo (address: string): Promise<ValidatorPoolInfo> {
@@ -88,14 +89,14 @@ export async function getPoolInfo (address: string): Promise<ValidatorPoolInfo> 
     validationRewardPoolsInstance.getLastUpdateOfCompoundRate(address),
     validationRewardPoolsInstance.getPoolInfo(address),
   ]);
-  const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+  const delegatorsShare = transformToPercentage(poolInfo.delegatorsShare);
   const reservedForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
   return {
     selfStake: validatorInfo.selfStake,
     delegatedStake: validatorInfo.delegatedStake,
     totalStake: validatorInfo.totalStake,
-    validatorShare: 100 - delegatorsShare,
+    validatorShare: toBigNumber(100).minus(delegatorsShare).toString(),
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
     distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
     delegatorsShare,
@@ -145,14 +146,14 @@ export async function getValidatorStats (address: string): Promise<ValidatorStat
     validatorsInstance.getValidatorInfo(address),
     validationRewardPoolsInstance.getPoolInfo(address),
   ]);
-  const delegatorsShare = Number(transformToPercentage(poolInfo.delegatorsShare)) || 0;
+  const delegatorsShare = transformToPercentage(poolInfo.delegatorsShare);
   const reservedForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
   return {
     ...validatorInfo,
     reservedForClaims,
     delegatorsShare,
-    validatorShare: 100 - delegatorsShare,
+    validatorShare: toBigNumber(100).minus(delegatorsShare).toString(),
     validatorPoolBalance: fromWei(poolInfo.poolBalance),
     distributableDelegatorsRewards: Number(fromWei(poolInfo.poolBalance)) - reservedForClaims ?? 0,
   };

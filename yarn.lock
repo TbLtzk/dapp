@@ -1554,15 +1554,16 @@
   dependencies:
     lodash "^4.17.21"
 
-"@q-dev/q-js-sdk@^2.0.0-rc.3":
-  version "2.0.0-rc.3"
-  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.3.tgz#54115d3bd0f787ef80691f9cee0ee28544c23b39"
-  integrity sha1-VBFdO9D3h++AaR+c7g7ihUTCOzk=
+"@q-dev/q-js-sdk@^2.0.0-rc.6":
+  version "2.0.0-rc.6"
+  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.6.tgz#b3d1c35be37b5bfd97297b80a653e1b00dc8136c"
+  integrity sha1-s9HDW+N7W/2XKXuAplPhsA3IE2w=
   dependencies:
     axios "^0.26.1"
     bignumber.js "^9.0.0"
     bn.js "^5.2.1"
     ethers "^5.7.2"
+    lodash "^4.17.21"
 
 "@q-dev/q-ui-kit@^0.8.2":
   version "0.8.2"

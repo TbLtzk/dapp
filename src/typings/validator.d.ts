@@ -34,8 +34,8 @@ export interface ValidatorMetricStats extends DelegationEfficiency {
 
 export interface ValidatorStatsInfo extends ValidatorInfo {
   reservedForClaims: number;
-  delegatorsShare: number;
-  validatorShare: number;
+  delegatorsShare: string;
+  validatorShare: string;
   validatorPoolBalance: string;
   distributableDelegatorsRewards: number;
 }
@@ -53,10 +53,10 @@ export interface ValidatorPoolInfo {
   totalStake: string;
   selfStake: string;
   delegatedStake: string;
-  validatorShare: number;
+  validatorShare: string;
   validatorPoolBalance: string;
   distributableDelegatorsRewards: number;
-  delegatorsShare: number;
+  delegatorsShare: string;
   lastUpdateOfCompoundRate: string;
   reservedForClaims: number;
 }

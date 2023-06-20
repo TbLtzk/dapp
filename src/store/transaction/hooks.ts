@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ContractTransaction } from 'ethers';
-import { ErrorHandler } from 'helpers';
+import { ErrorHandler, getErrorMessage } from 'helpers';
 import { t } from 'i18next';
 import uniqueId from 'lodash/uniqueId';
 
@@ -87,7 +87,7 @@ export function useTransaction () {
         : ErrorHandler.processWithoutFeedback(error);
 
       onError(error);
-      updateTransaction(transaction.id, { status: 'error' });
+      updateTransaction(transaction.id, { status: 'error', message: getErrorMessage(error) });
 
       await loadAllBalances();
     }

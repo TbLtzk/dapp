@@ -12,6 +12,10 @@ export function getErrorMessage (error: Error | unknown): string {
       return t('ERROR_INVALID_ADDRESS');
     }
 
+    if (error.message?.includes('User rejected request')) {
+      return t('ERROR_TRANSACTION_REJECTED');
+    }
+
     return t('ERROR_UNKNOWN');
   }
 

@@ -139,7 +139,7 @@ export function useValidators () {
     try {
       await loadValidatorsShortList();
       const { validators: shortList } = getState().validators;
-      const metric = await getValidatorMetrics(shortList);
+      const metric = await getValidatorMetrics();
       const stats = await Promise.all(
         shortList.map(async (validator, index) => {
           const poolInfo = await getValidatorStats(
@@ -151,7 +151,7 @@ export function useValidators () {
             address: validator.address,
             rank: index + 1,
             alias: validator.alias,
-            payoutPerDelegatedQ: fromWei(toBigNumber(metric[index].payoutPerDelegatedQ || 0).toFixed()),
+            payoutPerDelegatedQ: fromWei(toBigNumber(metric[index].payoutPerDelegatedQ || 0).toFixed(0)),
           };
         })
       );
