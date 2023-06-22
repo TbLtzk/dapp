@@ -16,7 +16,7 @@ import {
 import { getUserAddress, useAppSelector } from 'store';
 
 import { getBorrowingCoreInstance, getBorrowingInstance } from 'contracts/contract-instance';
-import { convertFromBigAmount, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
+import { prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 import { getBorrowAssetRateAndFee } from 'contracts/helpers/borrowing-core';
 
 import { fromWei } from 'utils/web3';
@@ -33,7 +33,7 @@ export function useBorrowing () {
         borrowingInstance.decimals(),
         borrowingInstance.balanceOf(getUserAddress())
       ]);
-      dispatch(setCollateralBalance(convertFromBigAmount(+decimals)(balance)));
+      dispatch(setCollateralBalance(fromWei(balance, decimals)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }

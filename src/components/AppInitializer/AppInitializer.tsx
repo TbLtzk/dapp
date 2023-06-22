@@ -1,6 +1,7 @@
 import { ReactElement, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import { motion } from 'framer-motion';
 
@@ -15,6 +16,7 @@ import { useUser } from 'store/user/hooks';
 import { initContractRegistryInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
+import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 import { LOAD_TYPES } from 'constants/statuses';
 
 function AppInitializer ({ children }: { children: ReactElement }) {
@@ -36,6 +38,13 @@ function AppInitializer ({ children }: { children: ReactElement }) {
   const { getAllAuctions } = useAuctions();
   const { checkRootNodeMembership } = useRootNodes();
 
+  function setGasBuffer () {
+    const network = chainIdToNetworkMap[Number(chainId)];
+    if (network) {
+      BaseContractInstance.DEFAULT_GASBUFFER = networkConfigsMap[network].gasBuffer;
+    }
+  }
+
   async function loadAdditionalInfo () {
     if (!currentProvider) return;
     if (!isRightNetwork) {
@@ -44,7 +53,8 @@ function AppInitializer ({ children }: { children: ReactElement }) {
     };
     setLoadAppType(LOAD_TYPES.loading);
     try {
-      await initContractRegistryInstance(currentSigner || currentProvider);
+      setGasBuffer();
+      initContractRegistryInstance(currentSigner || currentProvider);
       loadAllBalances();
       getAllProposals();
       getAllAuctions();
@@ -70,7 +80,7 @@ function AppInitializer ({ children }: { children: ReactElement }) {
 
   useEffect(() => {
     loadAdditionalInfo();
-  }, [currentProvider, currentSigner, isRightNetwork]);
+  }, [currentProvider, currentSigner, isRightNetwork, chainId]);
 
   useEffect(() => {
     setAddress(address || ZERO_ADDRESS);

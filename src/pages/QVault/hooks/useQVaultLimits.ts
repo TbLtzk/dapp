@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { toBigNumber } from '@q-dev/utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber, toBigNumber } from '@q-dev/utils';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useUser } from 'store/user/hooks';

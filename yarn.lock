@@ -1554,10 +1554,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@q-dev/q-js-sdk@^2.0.0-rc.7":
-  version "2.0.0-rc.7"
-  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.7.tgz#ef32371abdd333443c688903abce08f32f365de0"
-  integrity sha1-7zI3Gr3TM0Q8aIkDq84I8y82XeA=
+"@q-dev/q-js-sdk@^2.0.0-rc.8":
+  version "2.0.0-rc.8"
+  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.8.tgz#5a8e06241d0de5fe99644fdddb0a6257632f306b"
+  integrity sha1-Wo4GJB0N5f6ZZE/d2wpiV2MvMGs=
   dependencies:
     axios "^0.26.1"
     bignumber.js "^9.0.0"
@@ -1579,10 +1579,10 @@
   resolved "https://registry.yarnpkg.com/@q-dev/react-hooks/-/react-hooks-0.1.0.tgz#5b59ca8db23f3372cc731f771dcc845502704807"
   integrity sha512-w6JhnqTFskh+oAnIJyzPpgr4y7iCo2bDJjhYm1yOfyFCZY7cD5XcW3BqK+93FwQxkrlcVr0SMtVHvI1UKCeuKA==
 
-"@q-dev/utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/utils/-/utils-0.1.0.tgz#bef4cdf4cdfa67f4bfb562ace7d0bd8d04ae5702"
-  integrity sha512-SM8e7xZwWFgXQoUR494jUaDcoWcyFOtJx4viY5BaikFicoKAd2UJ57LYRs4sf7MpBeZLyKp1OWLLwdlJRmhaPg==
+"@q-dev/utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/utils/-/utils-0.2.0.tgz#fb4e690d5389a11732a944c071cdcf35f7e20518"
+  integrity sha512-Mf9Ij5TtpKGq5ZTVMXlW+4gIc8nAvqUeSt+jYoGbmaxWgOPmS7Ak57ei6hMi7Iquf0KUZKwDFMbDXzXFt1Gmdw==
   dependencies:
     lodash "^4.17.21"
 

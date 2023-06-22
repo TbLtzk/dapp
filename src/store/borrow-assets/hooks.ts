@@ -9,7 +9,7 @@ import { setBorrowAllowanceDeposit, setBorrowAllowanceError, setBorrowAllowanceR
 import { getUserAddress, useAppSelector } from 'store';
 
 import { getBorrowingCoreInstance, getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
-import { convertToBigAmount, prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
+import { prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { fromWei, toWei } from 'utils/web3';
@@ -44,8 +44,11 @@ export function useBorrowAssets () {
       const { address } = await getBorrowingCoreInstance();
       if (borrowType === 'deposit') {
         const contract = await getBorrowingInstance(asset);
-        const allowAmount = await contract.allowance(getUserAddress(), address);
-        dispatch(setBorrowAllowanceDeposit(fromWei(allowAmount)));
+        const [allowAmount, decimals] = await Promise.all([
+          contract.allowance(getUserAddress(), address),
+          contract.decimals()
+        ]);
+        dispatch(setBorrowAllowanceDeposit(fromWei(allowAmount, decimals)));
       } else {
         const contract = await getStableCoinInstance();
         const allowance = await contract.allowance(getUserAddress(), address);
@@ -107,8 +110,7 @@ export function useBorrowAssets () {
     decimals: number;
   }) {
     const contract = await getBorrowingCoreInstance();
-    const convertAmount = convertToBigAmount(decimals);
-    const tx = await contract.depositCol(vaultId, convertAmount(amount), {
+    const tx = await contract.depositCol(vaultId, toWei(amount, decimals), {
       from: getUserAddress()
     });
 
@@ -126,9 +128,7 @@ export function useBorrowAssets () {
     decimals: number;
   }) {
     const contract = await getBorrowingCoreInstance();
-    const convertAmount = convertToBigAmount(decimals);
-
-    const tx = await contract.withdrawCol(vaultId, convertAmount(amount), {
+    const tx = await contract.withdrawCol(vaultId, toWei(amount, decimals), {
       from: getUserAddress()
     });
 

@@ -14,7 +14,6 @@ import { getAuctionStatusState } from './index';
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getStatusTransformation } from '.';
 
 import { getBorrowingCoreInstance, getBorrowingInstance, getLiquidationAuctionInstance } from 'contracts/contract-instance';
-import { convertFromBigAmount } from 'contracts/helpers/borrow-assets-helper';
 
 import { dateToUnix } from 'utils/date';
 import { fromWei, toWei } from 'utils/web3';
@@ -46,7 +45,7 @@ async function prepareLiquidationAuctionInfo (
   completedInfo.endTime = info.endTime.toString();
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
   completedInfo.highestBid = fromWei(info.highestBid);
-  completedInfo.colAsset = convertFromBigAmount(+decimals)(vault.colAsset);
+  completedInfo.colAsset = fromWei(vault.colAsset, decimals);
   completedInfo.state = getAuctionStatusState(status as keyof typeof AuctionStatus);
   completedInfo.status = status;
 

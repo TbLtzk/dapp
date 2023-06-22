@@ -3,9 +3,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import { StyleProvider } from '@q-dev/q-ui-kit';
+import { BigNumber } from '@q-dev/utils';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import BigNumber from 'bignumber.js';
 import LanguageProvider from 'context/LanguageProvider';
 import Web3ContextProvider from 'context/Web3ContextProvider';
 

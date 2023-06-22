@@ -46,6 +46,7 @@ function Table<T> ({
 }: Props<T>) {
   const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const afterSearch = useCallback((newTable: BootstrapTable[]) => {
     setIsEmpty(newTable.length === 0);
@@ -72,7 +73,7 @@ function Table<T> ({
     return (
       <PaginationProvider
         pagination={paginationFactory({
-          page: 1,
+          page: currentPage,
           custom: true,
           sizePerPage: perPage,
           totalSize: table.length,
@@ -80,6 +81,7 @@ function Table<T> ({
           prePageTitle: 'Pre page',
           firstPageTitle: 'First page',
           lastPageTitle: 'Last page',
+          onPageChange: (newPage) => { setCurrentPage(newPage); }
         })}
       >
         {({ paginationProps, paginationTableProps }) => (

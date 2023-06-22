@@ -1,3 +1,4 @@
+import { toBigNumber } from '@q-dev/utils';
 import { BigNumberish, utils } from 'ethers';
 
 export function isAddress (value: string) {
@@ -5,7 +6,7 @@ export function isAddress (value: string) {
 }
 
 export function fromWei (value: BigNumberish, unitName?: BigNumberish) {
-  return utils.formatUnits(value, unitName);
+  return toBigNumber(utils.formatUnits(value, unitName)).toFixed();
 }
 
 export function toWei (value: string, unitName?: BigNumberish) {

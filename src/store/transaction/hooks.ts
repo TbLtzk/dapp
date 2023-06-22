@@ -64,14 +64,16 @@ export function useTransaction () {
       if (submitResponse) {
         const tx = (submitResponse as TxWithCaller)?.tx || submitResponse;
 
+        if ('onFinally' in submitResponse && typeof submitResponse.onFinally === 'function') {
+          onFinally = submitResponse.onFinally;
+        }
+
         updateTransaction(transaction.id, { hash: tx.hash, status: 'sending' });
         onConfirm();
         await tx.wait();
+
         if ('onSuccess' in submitResponse && typeof submitResponse.onSuccess === 'function') {
           submitResponse.onSuccess();
-        }
-        if ('onFinally' in submitResponse && typeof submitResponse.onFinally === 'function') {
-          onFinally = submitResponse.onFinally;
         }
       }
       updateTransaction(transaction.id, { status: 'success' });

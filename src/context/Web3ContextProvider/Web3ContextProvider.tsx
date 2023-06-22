@@ -31,7 +31,7 @@ export interface Web3Data extends Omit<ProviderWrapper, 'init' | 'switchNetwork'
 
 function getFallbackProviderType (chainId?: number | string) {
   const networkName = chainId
-    ? chainIdToNetworkMap[+chainId] || ORIGIN_NETWORK_NAME
+    ? chainIdToNetworkMap[Number(chainId)] || ORIGIN_NETWORK_NAME
     : ORIGIN_NETWORK_NAME;
   switch (networkName) {
     case 'mainnet':
@@ -56,7 +56,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
 
   const isRightNetwork = useMemo(() =>
     Boolean(provider.chainId && chainIdToNetworkMap[provider.chainId]),
-  [provider]);
+  [provider.chainId]);
 
   async function init (providerType?: SupportedProviders) {
     try {

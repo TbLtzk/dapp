@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
-import { formatNumber } from '@q-dev/utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber, formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
 import { Asset, VaultWithId } from 'typings/defi';
 

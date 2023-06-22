@@ -8,7 +8,7 @@ import { getContractProposals } from '.';
 
 import { getRootNodesMembershipVotingInstance } from 'contracts/contract-instance';
 
-import { ZERO_ADDRESS } from 'constants/boundaries';
+import { ZERO_ADDRESS, ZERO_BYTES_32 } from 'constants/boundaries';
 import { fromWei } from 'utils/web3';
 
 export async function getRootNodeProposals (
@@ -32,7 +32,7 @@ export async function createRootNodeProposal (
     form.externalLink,
     form.type === 'add-root-node' ? address : ZERO_ADDRESS,
     form.address || ZERO_ADDRESS,
-    form.hash || '0x00',
+    form.hash || ZERO_BYTES_32,
     { from: address }
   );
 }
