@@ -68,14 +68,13 @@ function BalanceOverview () {
     getSavingRate();
     getSystemBalance();
     getStableCoinTotalSupply();
-    getSavingCompoundRateLastUpdate().then(setTimeSinceRefreshBalance);
 
     return () => setStableCoinAddress('');
   }, []);
 
   useInterval(() => {
     getSavingCompoundRateLastUpdate().then(setTimeSinceRefreshBalance);
-  }, 50000, loadingTimeSinceRefreshBalance);
+  }, 50000, { disabled: loadingTimeSinceRefreshBalance, immediate: true });
 
   const handleRefreshBalance = async () => {
     setLoadingTimeSinceRefreshBalance(true);

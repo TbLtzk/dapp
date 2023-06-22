@@ -1574,10 +1574,10 @@
     react-datepicker "^4.8.0"
     react-hotkeys-hook "^3.4.7"
 
-"@q-dev/react-hooks@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@q-dev/react-hooks/-/react-hooks-0.1.0.tgz#5b59ca8db23f3372cc731f771dcc845502704807"
-  integrity sha512-w6JhnqTFskh+oAnIJyzPpgr4y7iCo2bDJjhYm1yOfyFCZY7cD5XcW3BqK+93FwQxkrlcVr0SMtVHvI1UKCeuKA==
+"@q-dev/react-hooks@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@q-dev/react-hooks/-/react-hooks-0.2.0.tgz#b52a1eee69e8ed621c98eae835647b077039ef08"
+  integrity sha512-dbeNym2gXD10RMrfrLonHfo0j4WUNl4lkfv6gxwkBPFpSRiOZH1DBoLZXLiiNdf6gzG3hPPT7Q/jN60ny6xEpA==
 
 "@q-dev/utils@^0.2.0":
   version "0.2.0"

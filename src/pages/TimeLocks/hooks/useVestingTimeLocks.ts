@@ -47,13 +47,10 @@ function useVestingTimeLocks (address: string) {
     setVestingTimeLocksLoading(false);
   }
 
-  useInterval(() => {
-    getMinimumVestingTimeLock();
-  }, 5000);
+  useInterval(getMinimumVestingTimeLock, 5000, { immediate: true });
 
   useEffect(() => {
     getVestingBalance();
-    getMinimumVestingTimeLock();
     getVestingTimeLocks();
 
     return () => {

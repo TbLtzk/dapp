@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
-import { toBigNumber } from '@q-dev/utils';
+import { Tip } from '@q-dev/q-ui-kit';
+import { toBigNumber, unixToDate } from '@q-dev/utils';
+import styled from 'styled-components';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -12,8 +15,20 @@ import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { SubmitTransactionFn, useTransaction } from 'store/transaction/hooks';
 
+import { formatDate } from 'utils/date';
 import { amount, max, required } from 'utils/validators';
 import { fromWei } from 'utils/web3';
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .root-node-forms__submit-btn {
+    margin-top: 16px;
+    width: 100%;
+  }
+`;
 
 interface Props {
   formType: string | null;
@@ -32,15 +47,19 @@ function RootNodeForms ({ formType, onReset }: Props) {
   } = useRootNodes();
   const { walletBalance } = useQVault();
 
+  const isAnnouncementPending = useMemo(() => {
+    return unixToDate(withdrawalInfo.endTime) > new Date();
+  }, [withdrawalInfo.endTime]);
+
   const getMaxAmount = () => {
     const withdrawalAmount = fromWei(withdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
         return walletBalance;
       case FORM_TYPES.announceWithdrawal:
-        return toBigNumber(rootNodeStake).plus(toBigNumber(withdrawalAmount)).toString();
+        return toBigNumber(rootNodeStake).plus(toBigNumber(withdrawalAmount)).toFixed();
       case FORM_TYPES.withdrawFromRanking:
-        return withdrawalAmount;
+        return isAnnouncementPending ? '0' : withdrawalAmount;
       default:
         return '0';
     }
@@ -83,7 +102,15 @@ function RootNodeForms ({ formType, onReset }: Props) {
   });
 
   return (
-    <form noValidate onSubmit={form.submit}>
+    <StyledForm noValidate onSubmit={form.submit}>
+      {formType === FORM_TYPES.withdrawFromRanking && isAnnouncementPending && (
+        <Tip compact>
+          {t('WITHDRAWAL_LOCKED_TIP', {
+            date: formatDate(unixToDate(withdrawalInfo.endTime))
+          })}
+        </Tip>
+      )}
+
       <Input
         {...form.fields.amount}
         type="number"
@@ -98,12 +125,12 @@ function RootNodeForms ({ formType, onReset }: Props) {
 
       <Button
         type="submit"
-        style={{ width: '100%', marginTop: '24px' }}
+        className="root-node-forms__submit-btn"
         disabled={!form.isValid}
       >
         {t('CONFIRM')}
       </Button>
-    </form>
+    </StyledForm>
   );
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
@@ -32,13 +32,7 @@ function BlockHeight () {
     fetchBlockNumber('latest').then((blockNumber) => setBlockNumber(blockNumber));
   };
 
-  useInterval(() => {
-    getLatestBlock();
-  }, 5000);
-
-  useEffect(() => {
-    getLatestBlock();
-  }, []);
+  useInterval(getLatestBlock, 5000, { immediate: true });
 
   return (
     <StyledWrapper className="block">

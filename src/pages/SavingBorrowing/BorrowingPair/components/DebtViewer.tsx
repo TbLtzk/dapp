@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@q-dev/q-ui-kit';
@@ -46,13 +46,9 @@ function DebtViewer ({ asset }: { asset: Asset }) {
   const [refreshTime, setRefreshTime] = useState<Date | null>(null);
   const [timeLoading, setTimeLoading] = useState(false);
 
-  useEffect(() => {
-    getBorrowingCompoundRateLastUpdate(asset).then(setRefreshTime);
-  }, []);
-
   useInterval(() => {
     getBorrowingCompoundRateLastUpdate(asset).then(setRefreshTime);
-  }, 50000, timeLoading);
+  }, 50000, { disabled: timeLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
     setTimeLoading(true);

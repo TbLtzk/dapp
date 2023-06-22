@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -81,13 +81,9 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
   const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState<Date | null>(null);
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
 
-  useEffect(() => {
-    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
-  }, []);
-
   useInterval(() => {
     getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
-  }, 50000, debtRefreshLoading);
+  }, 50000, { disabled: debtRefreshLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
     setDebtRefreshLoading(true);

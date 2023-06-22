@@ -1,7 +1,12 @@
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
-import { formatNumber, toBigNumber } from '@q-dev/utils';
+import { Tip } from '@q-dev/q-ui-kit';
+import { useInterval } from '@q-dev/react-hooks';
+import { dateToUnix, formatAsset, formatNumber, toBigNumber, unixToDate } from '@q-dev/utils';
+import { ErrorHandler } from 'helpers';
+import styled from 'styled-components';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -12,10 +17,25 @@ import { FORM_TYPES } from './ValidatorMenu';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
+import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
+import { getValidatorsInstance } from 'contracts/contract-instance';
+
+import { formatDate } from 'utils/date';
 import { amount, max, required } from 'utils/validators';
 import { fromWei } from 'utils/web3';
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .validator-forms__submit-btn {
+    margin-top: 16px;
+    width: 100%;
+  }
+`;
 
 interface Props {
   formType: string;
@@ -24,6 +44,7 @@ interface Props {
 
 function ValidatorForms ({ formType, onClose }: Props) {
   const { t } = useTranslation();
+  const { address } = useUser();
   const {
     validatorAccountableSelfStake: selfStake,
     validatorWithdrawalInfo,
@@ -32,26 +53,45 @@ function ValidatorForms ({ formType, onClose }: Props) {
 
   const { submitTransaction } = useTransaction();
   const sendForm = useSendValidatorForms();
+  const [lockedStake, setLockedStake] = useState('0');
 
-  const getMaxAmount = () => {
+  const isAnnouncementPending = useMemo(() => {
+    return unixToDate(validatorWithdrawalInfo.endTime) > new Date();
+  }, [validatorWithdrawalInfo.endTime]);
+
+  const maxAmount = useMemo(() => {
     const withdrawalAmount = fromWei(validatorWithdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
         return walletBalance;
       case FORM_TYPES.announceWithdrawal:
-        return toBigNumber(selfStake).plus(toBigNumber(withdrawalAmount)).toString();
+        return toBigNumber(selfStake)
+          .plus(toBigNumber(withdrawalAmount))
+          .toFixed();
       case FORM_TYPES.withdrawFromRanking:
-        return fromWei(validatorWithdrawalInfo.amount);
+        return toBigNumber(fromWei(validatorWithdrawalInfo.amount))
+          .minus(lockedStake)
+          .toFixed();
       default:
         return '0';
     }
-  };
+  }, [formType, lockedStake, selfStake, validatorWithdrawalInfo.amount, walletBalance]);
 
   const maxAmountValidation = () => {
     return formType === FORM_TYPES.announceWithdrawal
-      ? max(getMaxAmount())
-      : amount(getMaxAmount());
+      ? max(maxAmount)
+      : amount(maxAmount);
   };
+
+  async function loadTimeLockedStake () {
+    try {
+      const contract = await getValidatorsInstance();
+      const minimumBalance = await contract.getMinimumBalance(address, dateToUnix());
+      setLockedStake(fromWei(minimumBalance));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -79,30 +119,51 @@ function ValidatorForms ({ formType, onClose }: Props) {
     },
   });
 
+  const inputHint = useMemo(() => {
+    switch (formType) {
+      case FORM_TYPES.stakeToRanking:
+        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : '';
+      case FORM_TYPES.withdrawFromRanking:
+        return toBigNumber(lockedStake).isZero()
+          ? ''
+          : t('TIME_LOCKED_STAKE', { stake: formatAsset(lockedStake, 'Q') });
+      default:
+        return '';
+    }
+  }, [formType, form.values.amount, lockedStake, maxAmount, t]);
+
+  useInterval(loadTimeLockedStake, 5000, { immediate: true });
+
   return (
-    <form noValidate onSubmit={form.submit}>
+    <StyledForm noValidate onSubmit={form.submit}>
+      {formType === FORM_TYPES.withdrawFromRanking && isAnnouncementPending && (
+        <Tip compact>
+          {t('WITHDRAWAL_LOCKED_TIP', {
+            date: formatDate(unixToDate(validatorWithdrawalInfo.endTime))
+          })}
+        </Tip>
+      )}
+
       <Input
         {...form.fields.amount}
         type="number"
         label={t('AMOUNT')}
         placeholder="0.00"
-        max={getMaxAmount()}
-        hint={
-          formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount() ? t('WARNING_NO_Q_LEFT') : ''
-        }
+        max={maxAmount}
+        hint={inputHint}
         labelTip={
-          formType === FORM_TYPES.announceWithdrawal ? t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(getMaxAmount()) }) : ''
+          formType === FORM_TYPES.announceWithdrawal ? t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(maxAmount) }) : ''
         }
       />
 
       <Button
         type="submit"
-        style={{ width: '100%', marginTop: '24px' }}
+        className="validator-forms__submit-btn"
         disabled={!form.isValid}
       >
         {t('CONFIRM')}
       </Button>
-    </form>
+    </StyledForm>
   );
 }
 

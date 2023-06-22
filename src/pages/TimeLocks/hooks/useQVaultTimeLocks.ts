@@ -48,14 +48,11 @@ function useQVaultTimeLocks (address: string) {
     setQVaultTimeLocksLoading(false);
   }
 
-  useInterval(() => {
-    loadMinimumQVaultTimeLock();
-  }, 5000);
+  useInterval(loadMinimumQVaultTimeLock, 5000, { immediate: true });
 
   useEffect(() => {
     loadVaultBalance();
     loadQVaultTimeLocks();
-    loadMinimumQVaultTimeLock();
 
     return () => {
       setQVaultMinimumTimeLock('0');

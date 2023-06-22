@@ -47,12 +47,12 @@ function TokenHolderRewards () {
 
   useEffect(() => {
     loadQVBalanceDetails();
-    getQHolderUpdateTime();
   }, []);
 
-  useInterval(() => {
-    getQHolderUpdateTime();
-  }, 5000, qHolderUpdateTimeLoading);
+  useInterval(getQHolderUpdateTime, 5000, {
+    disabled: qHolderUpdateTimeLoading,
+    immediate: true
+  });
 
   return (
     <StyledWrapper className="block">

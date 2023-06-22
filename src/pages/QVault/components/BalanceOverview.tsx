@@ -47,12 +47,11 @@ function BalanceOverview () {
   useEffect(() => {
     loadWalletBalance();
     loadVaultBalance();
-    loadMinimumQVaultTimeLock(user.address);
   }, []);
 
   useInterval(() => {
     loadMinimumQVaultTimeLock(user.address);
-  }, 5000);
+  }, 5000, { immediate: true });
 
   return (
     <StyledWrapper className="block">

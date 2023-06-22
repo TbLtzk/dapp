@@ -47,13 +47,10 @@ function useRootStakeTimeLocks (address: string) {
     setRootTimeLocksLoading(false);
   }
 
-  useInterval(() => {
-    getMinimumRootTimeLock();
-  }, 5000);
+  useInterval(getMinimumRootTimeLock, 5000, { immediate: true });
 
   useEffect(() => {
     getRootNodeStakes();
-    getMinimumRootTimeLock();
     getRootTimeLocks();
 
     return () => {

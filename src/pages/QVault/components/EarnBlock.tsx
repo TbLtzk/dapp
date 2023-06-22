@@ -46,12 +46,12 @@ function EarnBlock () {
 
   useEffect(() => {
     loadQVBalanceDetails();
-    getQHolderUpdateTime();
   }, []);
 
-  useInterval(() => {
-    getQHolderUpdateTime();
-  }, 30_000, qHolderUpdateTimeLoading);
+  useInterval(getQHolderUpdateTime, 30_000, {
+    disabled: qHolderUpdateTimeLoading,
+    immediate: true
+  });
 
   return (
     <StyledWrapper className="block">

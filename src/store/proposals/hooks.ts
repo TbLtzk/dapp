@@ -78,7 +78,7 @@ export function useBaseVotingWeightInfo () {
         constitutionCaller.get('/constitution/list')
       ]);
       const constitution = constitutionsRes.data.find(({ hash }: { hash: string }) => constitutionsHash === `0x${hash}`);
-      dispatch(setConstitutionUpdateDate(constitution.time * 1000));
+      dispatch(setConstitutionUpdateDate((constitution?.time || 0) * 1000));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }

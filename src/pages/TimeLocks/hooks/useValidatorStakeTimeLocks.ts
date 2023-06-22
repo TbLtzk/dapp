@@ -47,13 +47,10 @@ function useValidatorStakeTimeLocks (address: string) {
     setValidatorsTimeLocksLoading(false);
   }
 
-  useInterval(() => {
-    loadValidatorMinimumTimeLock();
-  }, 5000);
+  useInterval(loadValidatorMinimumTimeLock, 5000, { immediate: true });
 
   useEffect(() => {
     loadValidatorAccountableSelfStake();
-    loadValidatorMinimumTimeLock();
     loadValidatorTimeLocks();
 
     return () => {

@@ -40,7 +40,9 @@ function DetailsStep () {
   });
 
   const isRootType = values.type === 'root-slashing';
-  const memberError = isRootType ? 'Not a root node' : 'Not a validator';
+  const members = useMemo(() => {
+    return isRootType ? rootMembers : validatorStats;
+  }, [isRootType, rootMembers, validatorStats]);
 
   const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
 
@@ -57,8 +59,13 @@ function DetailsStep () {
   const stake = useMemo(() => {
     if (isAddress(form.values.address)) {
       const stake = getCurrentStake();
+      const memberError = isRootType
+        ? t('NOT_A_ROOT_NODE')
+        : t('NOT_A_VALIDATOR');
+
       form.fields.percent.onChange('0');
       form.setError('address', isNil(stake) ? memberError : '');
+
       return stake;
     }
   }, [form.values.address]);
@@ -99,6 +106,8 @@ function DetailsStep () {
         {...form.fields.address}
         label={t('CANDIDATE_TO_SLASH')}
         placeholder={t('ADDRESS_PLACEHOLDER')}
+        disabled={shouldPurge || members.length === 0}
+        hint={members.length > 0 ? '' : t('LOADING_CANDIDATES')}
         error={form.errors.address || (shouldPurge ? ' ' : '')}
       />
 

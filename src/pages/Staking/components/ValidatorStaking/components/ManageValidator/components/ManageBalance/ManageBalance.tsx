@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { media } from '@q-dev/q-ui-kit';
 import { useWeb3Context } from 'context/Web3ContextProvider';
@@ -57,10 +57,21 @@ function ManageBalance () {
     loadValidatorAccountableSelfStake,
   } = useValidators();
 
-  const chartsData =
-    isConnected
-      ? { validatorShare: '0', delegatorsShare: '0', selfStake: '0', delegatedStake: '0' }
-      : { validatorShare: 100 - delegatorsShare, delegatorsShare, selfStake, delegatedStake };
+  const chartsProps = useMemo(() => {
+    return isConnected
+      ? {
+        selfStake,
+        delegatedStake,
+        delegatorsShare,
+        validatorShare: 100 - delegatorsShare,
+      }
+      : {
+        selfStake: '0',
+        delegatedStake: '0',
+        delegatorsShare: 0,
+        validatorShare: 0,
+      };
+  }, [isConnected, delegatorsShare, selfStake, delegatedStake]);
 
   useEffect(() => {
     getVRPDelegatorsShare();
@@ -76,7 +87,7 @@ function ManageBalance () {
     <StyledWrapper>
       <ValidatorInfo />
       <StakingInfo />
-      <ValidatorCharts {...chartsData} />
+      <ValidatorCharts {...chartsProps} />
     </StyledWrapper>
   );
 }

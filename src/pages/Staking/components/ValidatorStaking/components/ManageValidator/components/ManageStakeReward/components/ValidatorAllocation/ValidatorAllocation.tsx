@@ -39,11 +39,13 @@ function ValidatorAllocation () {
 
   useEffect(() => {
     loadCompoundRateKeeperExists();
-    getDefaultAllocationProxy();
     getValidationRewardProxy();
   }, []);
 
-  useInterval(() => getDefaultAllocationProxy(), 5000, defaultAllocationProxyLoading);
+  useInterval(getDefaultAllocationProxy, 5000, {
+    disabled: defaultAllocationProxyLoading,
+    immediate: true
+  });
 
   return (
     <div className="block">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
@@ -40,13 +40,9 @@ function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
   const [timeSinceOutstandingDebt, setTimeSinceOutstandingDebt] = useState<Date | null>(null);
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
 
-  useEffect(() => {
-    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
-  }, []);
-
   useInterval(() => {
     getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
-  }, 50000, debtRefreshLoading);
+  }, 50000, { disabled: debtRefreshLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
     setDebtRefreshLoading(true);

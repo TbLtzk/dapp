@@ -22,7 +22,7 @@
     "@q-dev/form-hooks": "^0.4.0",
     "@q-dev/q-js-sdk": "^2.0.0-rc.8",
     "@q-dev/q-ui-kit": "^0.8.2",
-    "@q-dev/react-hooks": "^0.1.0",
+    "@q-dev/react-hooks": "^0.2.0",
     "@q-dev/utils": "^0.2.0",
     "@reduxjs/toolkit": "^1.8.3",
     "@sentry/react": "^6.19.1",

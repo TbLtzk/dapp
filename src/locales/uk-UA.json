@@ -1336,5 +1336,8 @@
   "NOT_A_ROOT_NODE": "Не кореневий вузол",
   "JOIN_DATE": "Дата приєднання",
   "JOIN_TIME": "Час приєднання",
-  "JOIN_BLOCK": "Блок приєднання"
+  "JOIN_BLOCK": "Блок приєднання",
+  "LOADING_CANDIDATES": "Завантажуємо кандидатів...",
+  "TIME_LOCKED_STAKE": "Стейк у таймлоці: {{stake}}",
+  "WITHDRAWAL_LOCKED_TIP": "Вивід заблоковано до {{date}}"
 }
