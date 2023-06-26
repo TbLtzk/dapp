@@ -103,7 +103,9 @@ export function useRootNodes () {
 
       const membersWithAmount = members.map((address) => {
         const memberWithStake = stakes.find(({ root }) => root === address);
-        const metric = metrics.find(({ attributes }) => attributes.rootAddress === address);
+        const metric = metrics.find(({ attributes }) =>
+          attributes.rootAddress.toLowerCase() === address.toLowerCase()
+        );
         const stakeAmount = fromWei(memberWithStake?.value || '0');
         return { address, stakeAmount, metric };
       });
