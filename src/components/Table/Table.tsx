@@ -29,6 +29,14 @@ interface Props<T> {
   rowClasses?: ((row: Record<string, string>, rowIndex: number) => string) | string;
 }
 
+const DEFAULT_PAGE = 1; // page number
+
+function getCurrentPage (dataLength: number, perPage: number, currentPage: number): number {
+  return Math.ceil(dataLength / perPage) < currentPage
+    ? DEFAULT_PAGE
+    : currentPage;
+}
+
 function Table<T> ({
   loading,
   table,
@@ -46,7 +54,7 @@ function Table<T> ({
 }: Props<T>) {
   const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
 
   const afterSearch = useCallback((newTable: BootstrapTable[]) => {
     setIsEmpty(newTable.length === 0);
@@ -73,7 +81,7 @@ function Table<T> ({
     return (
       <PaginationProvider
         pagination={paginationFactory({
-          page: currentPage,
+          page: getCurrentPage(table.length, perPage, currentPage),
           custom: true,
           sizePerPage: perPage,
           totalSize: table.length,
