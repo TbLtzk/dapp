@@ -170,7 +170,7 @@ export async function getBorrowingInstance (asset: Asset) {
     const contractAddress = await epdrParametersInstance.getAddr(`governed.EPDR.${asset}_address`);
 
     borrowingInstances[asset] = new ERC20Instance(
-      currentProvider || currentSigner,
+      currentSigner || currentProvider,
       contractAddress
     );
   }
