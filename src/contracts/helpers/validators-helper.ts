@@ -128,8 +128,12 @@ export async function getMonitoringValidators (
   ]);
 
   return validatorStats.map((stat, i) => {
-    const metric20 = metrics20.find((m) => m.address === addresses[i]);
-    const metric1000 = metrics1000.find((m) => m.address === addresses[i]);
+    const metric20 = metrics20.find((m) =>
+      m.address.toLowerCase() === addresses[i].toLowerCase()
+    );
+    const metric1000 = metrics1000.find((m) =>
+      m.address.toLowerCase() === addresses[i].toLowerCase()
+    );
 
     return {
       address: addresses[i],
