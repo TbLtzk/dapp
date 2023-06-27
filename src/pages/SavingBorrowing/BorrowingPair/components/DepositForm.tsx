@@ -49,7 +49,8 @@ function DepositForm ({ vault }: { vault: VaultWithId }) {
     allowanceDeposit,
     borrowVault,
     approveBorrowing,
-    depositCollateral
+    depositCollateral,
+    getBorrowingAllowance
   } = useBorrowAssets();
   const { collateralDetails, borrowingDetails } = borrowVault;
 
@@ -66,6 +67,10 @@ function DepositForm ({ vault }: { vault: VaultWithId }) {
         }),
         onSuccess: () => {
           form.reset();
+          getBorrowingAllowance({
+            borrowType: 'deposit',
+            asset: vault.colKey as Asset,
+          });
           getCollateralBalance(vault.colKey as Asset);
           getBorrowingVaults();
         },

@@ -890,6 +890,7 @@
   "ERROR_040001": "Länge der Adressen und Rollenarrays müssen gleich sein.",
   "ERROR_040002": "Alias ​​ist für ein anderes Konto reserviert.",
   "ERROR_DELEGATIONS": "Die Delegationen werden nicht aufgefrischt, da es keine verteilbaren Delegatorenbelohnungen gibt.",
+  "ERROR_UNPREDICTABLE_GAS_LIMIT": "Unvorhersehbare Gasgrenze",
   "AMOUNT_NEW_STAKE": "Betrag (neuer Anteil)",
   "VIEW_ON_EXPLORER": "Im Explorer ansehen",
   "CLOSE": "Schließen",

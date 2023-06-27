@@ -41,7 +41,7 @@ function RepayForm ({ vault }: { vault: VaultWithId }) {
   const { getSavingAvailableToDeposit } = useSaving();
   const { getBorrowingVaults } = useBorrowingVaults();
 
-  const { borrowVault, allowanceRepay, repayBorrowing, approveBorrowing } = useBorrowAssets();
+  const { borrowVault, allowanceRepay, repayBorrowing, approveBorrowing, getBorrowingAllowance } = useBorrowAssets();
   const { borrowingDetails } = borrowVault;
 
   const maxRepayAmount = BigNumber.min(
@@ -58,6 +58,10 @@ function RepayForm ({ vault }: { vault: VaultWithId }) {
         submitFn: () => repayBorrowing({ amount, vaultId: vault.id }),
         onSuccess: () => {
           form.reset();
+          getBorrowingAllowance({
+            borrowType: 'repay',
+            asset: vault.colKey as Asset
+          });
           getSavingAvailableToDeposit();
           getBorrowingVaults();
         },
