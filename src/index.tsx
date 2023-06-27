@@ -4,8 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { StyleProvider } from '@q-dev/q-ui-kit';
 import { BigNumber } from '@q-dev/utils';
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 import LanguageProvider from 'context/LanguageProvider';
 import Web3ContextProvider from 'context/Web3ContextProvider';
 
@@ -20,13 +18,6 @@ import '@mdi/font/css/materialdesignicons.min.css';
 
 // Prevents BigNumber from using exponential notation
 BigNumber.config({ EXPONENTIAL_AT: 1e9 });
-
-Sentry.init({
-  dsn: 'https://55eac6f20f434cc2b23b93499ac31111@o1170264.ingest.sentry.io/6263659',
-  integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0,
-  enabled: import.meta.env.NODE_ENV !== 'development',
-});
 
 ReactDOM.render(
   <StyleProvider>

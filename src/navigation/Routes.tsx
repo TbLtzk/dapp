@@ -1,8 +1,6 @@
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-import * as Sentry from '@sentry/react';
-import { ErrorHandler } from 'helpers';
 import { ProposalContractType } from 'typings/contracts';
 import { Asset } from 'typings/defi';
 
@@ -11,8 +9,6 @@ import ErrorBoundary from 'components/Custom/ErrorBoundary';
 import ScrollToTop from 'components/ScrollToTop';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
-
-import { getState } from 'store';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -39,21 +35,8 @@ const ManageDelegations = lazy(() => import('pages/Staking/components/Delegation
 const ValidatorManage = lazy(() => import('pages/Staking/components/ValidatorStaking/components/ManageValidator'));
 const Validator = lazy(() => import('pages/Staking/components/ValidatorStaking/components/Validator'));
 
-function addSentryContext () {
-  try {
-    const { chainId } = getState().user;
-    Sentry.setContext('additional', { network: chainId });
-  } catch (error) {
-    ErrorHandler.processWithoutFeedback(error);
-  }
-}
-
 function Routes () {
   const { featureFlags } = useNetworkConfig();
-
-  useEffect(() => {
-    addSentryContext();
-  }, []);
 
   return (
     <ErrorBoundary>

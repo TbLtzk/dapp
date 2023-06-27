@@ -71,58 +71,9 @@ function DataPrivacy () {
             security reasons to ensure the stability and integrity of our systems.
           </p>
 
-          <p className="text-lg">b) Web analytics:</p>
-          <p className="text-md">
-            We use the error analysis tool Sentry (https://sentry.io ) for our website. The service is pro-vided by the
-            company Sentry Inc.
-          </p>
-          <p className="text-md">
-            This analysis is for the purpose of optimizing the website with regards to the relevance and security of our
-            website. Sentry may also process data from you in the USA, among other places.{' '}
-          </p>
-
-          <p className="text-md">
-            As a basis for data processing with recipients located in third countries (i.e. in particular in the USA) or
-            a data transfer there, Sentry uses so-called standard contractual clauses (Article 46 GDPR). Standard
-            Contractual Clauses are templates provided by the EU Commission and are intended to ensure that your data
-            complies with European data protection standards even if it is transferred to and stored in third countries.
-            Through these clauses, Sentry under-takes to comply with the European level of data protection when
-            processing your relevant data, even if the data is stored, processed and managed in the United States. These
-            clauses are based on an implementing decision of the EU Commission.
-          </p>
-          <p className="text-md">The Data Processing Addendum, which corresponds to the standard contractual clauses, can be found at:</p>
-          <p className="text-md">
-            —{' '}
-            <a
-              href="https://sentry.io/legal/dpa/"
-              target="_blank"
-              rel="noreferrer"
-              className="link"
-            >
-              https://sentry.io/legal/dpa/
-            </a>
-          </p>
-          <p className="text-md">
-            To learn more about the data processed by using Sentry, see below at:
-          </p>
-          <p className="text-md">
-            —{' '}
-            <a
-              href="https://sentry.io/privacy/"
-              target="_blank"
-              rel="noreferrer"
-              className="link"
-            >
-              https://sentry.io/privacy/
-            </a>
-          </p>
-
           <h3 className="text-h3">2. Cookies</h3>
           <p className="text-md">
-            This website does not use cookies, however the error analysis tool Sentry uses cookies. Sen-try uses cookies
-            to understand and save your preferences for future visits, to advertise to you on other sites, and to
-            compile aggregate data about site traffic and site interaction so that Sentry can offer better site
-            experiences and tools in the future. Cookies are small files that are managed by the user’s web browser and
+            This website does not use cookies. Cookies are small files that are managed by the user’s web browser and
             are directly stored on the respective device (Laptop, Tablet, Smartphone etc.) whenever you visit our
             website. Cookies are stored as long as you do not don’t delete them.
           </p>

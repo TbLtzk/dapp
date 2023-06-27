@@ -1,8 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import * as Sentry from '@sentry/react';
-
 import Button from 'components/Button';
 
 interface Props extends RouteComponentProps {
@@ -20,9 +18,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError (error: string) {
-    if (import.meta.env.NODE_ENV !== 'development') {
-      Sentry.captureMessage(error);
-    }
+    console.error(error);
     return { hasError: true };
   }
 
