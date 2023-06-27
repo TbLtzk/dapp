@@ -48,6 +48,7 @@ function RewardStats ({ validator, onButtonClick, buttonLoading }: Props) {
         <h3 className="text-h3">{t('REWARD_STATS')}</h3>
         <Button
           compact
+          disabled={!validator.poolInfo.distributableDelegatorsRewards}
           loading={buttonLoading}
           onClick={onButtonClick}
         >

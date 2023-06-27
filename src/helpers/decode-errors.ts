@@ -16,6 +16,10 @@ export function getErrorMessage (error: Error | unknown): string {
       return t('ERROR_TRANSACTION_REJECTED');
     }
 
+    if (error.message?.includes('Delegations are not refreshed')) {
+      return t('ERROR_DELEGATIONS');
+    }
+
     return t('ERROR_UNKNOWN');
   }
 

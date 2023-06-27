@@ -889,6 +889,7 @@
   "ERROR_040000": "Alias is not reserved.",
   "ERROR_040001": "Length of adresses and role arrays must be equal.",
   "ERROR_040002": "Alias is reserved for another account.",
+  "ERROR_DELEGATIONS": "Delegations are not refreshed due to zero distributable delegator rewards.",
   "AMOUNT_NEW_STAKE": "Amount (New stake)",
   "VIEW_ON_EXPLORER": "View on Explorer",
   "CLOSE": "Close",

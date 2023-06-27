@@ -8,6 +8,7 @@ import { Asset } from 'typings/defi';
 
 import LazyLoading from 'components/Base/LazyLoading';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
+import ScrollToTop from 'components/ScrollToTop';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -57,6 +58,7 @@ function Routes () {
   return (
     <ErrorBoundary>
       <LazyLoading>
+        <ScrollToTop />
         <Switch>
           <Route exact path={['/', '/dashboard/:slug']}>
             <Dashboard />

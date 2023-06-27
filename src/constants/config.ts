@@ -20,6 +20,7 @@ interface NetworkConfig {
   gasBuffer: number;
   featureFlags: {
     aliases: boolean;
+    rootNodesMetrics: boolean;
   };
 }
 
@@ -38,7 +39,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.q.org',
     collaterals: ['QBTC'],
     gasBuffer: 1.5,
-    featureFlags: { aliases: true },
+    featureFlags: { aliases: true, rootNodesMetrics: false },
   },
   testnet: {
     chainId: 35443,
@@ -54,7 +55,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.qtestnet.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     gasBuffer: 2,
-    featureFlags: { aliases: true },
+    featureFlags: { aliases: true, rootNodesMetrics: false },
   },
   devnet: {
     chainId: 35442,
@@ -70,7 +71,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     constitutionUrl: 'https://constitution.qdevnet.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     gasBuffer: 1.5,
-    featureFlags: { aliases: true },
+    featureFlags: { aliases: true, rootNodesMetrics: true },
   },
 };
 

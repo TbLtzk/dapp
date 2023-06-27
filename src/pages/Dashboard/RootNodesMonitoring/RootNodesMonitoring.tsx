@@ -10,6 +10,8 @@ import PageLayout from 'components/PageLayout';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import DashboardLink from '../components/DashboardLink';
 
 import RootNodeMetricTooltip from './components/RootNodeMetricTooltip';
@@ -33,6 +35,7 @@ const StyledWrapper = styled.div`
 function RootNodesMonitoring () {
   const { t, i18n } = useTranslation();
   const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
+  const { featureFlags } = useNetworkConfig();
 
   useEffect(() => {
     getRootMembers();
@@ -65,6 +68,7 @@ function RootNodesMonitoring () {
     {
       headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
       dataField: 'date',
+      hidden: !featureFlags.rootNodesMetrics,
       text: t('JOIN_TIME'),
       sort: true,
       formatter: (cell, row) => (
