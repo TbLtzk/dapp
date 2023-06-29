@@ -1341,5 +1341,9 @@
   "JOIN_BLOCK": "Блок приєднання",
   "LOADING_CANDIDATES": "Завантажуємо кандидатів...",
   "TIME_LOCKED_STAKE": "Стейк у таймлоці: {{stake}}",
-  "WITHDRAWAL_LOCKED_TIP": "Вивід заблоковано до {{date}}"
+  "WITHDRAWAL_LOCKED_TIP": "Вивід заблоковано до {{date}}",
+  "NAME": "Назва",
+  "SYMBOL": "Cимвол",
+  "DECIMALS": "Десяткові знаки",
+  "ERC20_INFO": "ERC-20 Інформація"
 }

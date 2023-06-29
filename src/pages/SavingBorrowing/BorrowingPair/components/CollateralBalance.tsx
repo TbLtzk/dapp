@@ -9,9 +9,13 @@ import { Asset } from 'typings/defi';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AssetMenu from 'pages/SavingBorrowing/components/AssetMenu';
 
+import AssetInfoTooltip from './AssetInfoTooltip';
+
 import { useBorrowing } from 'store/borrowing/hooks';
 
 import { getBorrowingInstance } from 'contracts/contract-instance';
+
+import { fromWei } from 'utils/web3';
 
 const StyledWrapper = styled.div`
   padding: 24px 24px 16px 24px;
@@ -27,18 +31,28 @@ const StyledWrapper = styled.div`
 
 function CollateralBalance ({ asset }: { asset: Asset }) {
   const { t } = useTranslation();
-  const { collateralBalance } = useBorrowing();
+  const { getCollateralBalanceByAsset, getAssetInfo, loadAssetInfo } = useBorrowing();
   const [contractAddress, setContractAddress] = useState('…');
-  const collateralBalanceRef = useAnimateNumber(collateralBalance, '');
+
+  const balance = getCollateralBalanceByAsset(asset);
+  const assetInfo = getAssetInfo(asset);
+  const collateralBalanceRef = useAnimateNumber(
+    assetInfo.decimals ? fromWei(balance, assetInfo.decimals) : '0',
+    ''
+  );
 
   useEffect(() => {
+    loadAssetInfo(asset);
     getBorrowingInstance(asset).then(({ instance }) => setContractAddress(instance.address));
   }, []);
 
   return (
     <StyledWrapper className="block">
       <div className="block__header">
-        <h2 className="text-lg">{t('ASSET_BALANCE', { asset })}</h2>
+        <h2 className="text-lg">
+          <span>{t('ASSET_BALANCE', { asset })}</span>
+          <AssetInfoTooltip assetInfo={assetInfo} />
+        </h2>
         <AssetMenu asset={asset} />
       </div>
       <p ref={collateralBalanceRef} className="text-xl font-semibold">0</p>

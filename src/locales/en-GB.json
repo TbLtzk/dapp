@@ -1341,5 +1341,9 @@
   "JOIN_BLOCK": "Join Block",
   "LOADING_CANDIDATES": "Loading candidates...",
   "TIME_LOCKED_STAKE": "Time-locked stake: {{stake}}",
-  "WITHDRAWAL_LOCKED_TIP": "Withdrawal locked until {{date}}"
+  "WITHDRAWAL_LOCKED_TIP": "Withdrawal locked until {{date}}",
+  "NAME": "Name",
+  "SYMBOL": "Symbol",
+  "DECIMALS": "Decimals",
+  "ERC20_INFO": "ERC-20 Info"
 }

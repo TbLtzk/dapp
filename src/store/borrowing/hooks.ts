@@ -6,6 +6,7 @@ import { ErrorHandler } from 'helpers';
 import { Asset } from 'typings/defi';
 
 import {
+  setAssetInfo,
   setBorrowingFee,
   setBorrowingVaults,
   setBorrowingVaultsError,
@@ -23,17 +24,43 @@ import { fromWei } from 'utils/web3';
 
 export function useBorrowing () {
   const dispatch = useDispatch();
-  const collateralBalance = useAppSelector(({ borrowing }) => borrowing.collateralBalance);
-  const borrowingFee = useAppSelector(({ borrowing }) => borrowing.borrowingFee);
+
+  const assets = useAppSelector(({ borrowing }) => borrowing.assetsMap);
+
+  function getAssetInfo (asset: Asset) {
+    return assets[asset].info;
+  }
+
+  function getCollateralBalanceByAsset (asset: Asset) {
+    return assets[asset].collateralBalance;
+  }
+
+  function getBorrowingFeeByAsset (asset: Asset) {
+    return assets[asset].borrowingFee;
+  }
+
+  async function loadAssetInfo (asset: Asset) {
+    try {
+      const borrowingInstance = await getBorrowingInstance(asset);
+      const [decimals, symbol, name] = await Promise.all([
+        borrowingInstance.decimals(),
+        borrowingInstance.symbol(),
+        borrowingInstance.name(),
+      ]);
+      dispatch(setAssetInfo({
+        asset,
+        info: { decimals, symbol, name }
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
 
   async function getCollateralBalance (asset: Asset) {
     try {
       const borrowingInstance = await getBorrowingInstance(asset);
-      const [decimals, balance] = await Promise.all([
-        borrowingInstance.decimals(),
-        borrowingInstance.balanceOf(getUserAddress())
-      ]);
-      dispatch(setCollateralBalance(fromWei(balance, decimals)));
+      const balance = await borrowingInstance.balanceOf(getUserAddress());
+      dispatch(setCollateralBalance({ asset, balance }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
@@ -42,7 +69,7 @@ export function useBorrowing () {
   async function getBorrowingFee (asset: Asset) {
     try {
       const { borrowingFee } = await getBorrowAssetRateAndFee(asset);
-      dispatch(setBorrowingFee(borrowingFee));
+      dispatch(setBorrowingFee({ asset, borrowingFee }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
@@ -54,9 +81,11 @@ export function useBorrowing () {
   }
 
   return {
-    collateralBalance,
-    borrowingFee,
+    getAssetInfo,
+    getCollateralBalanceByAsset,
+    getBorrowingFeeByAsset,
 
+    loadAssetInfo: useCallback(loadAssetInfo, []),
     getCollateralBalance: useCallback(getCollateralBalance, []),
     getBorrowingFee: useCallback(getBorrowingFee, []),
     updateBorrowingCompoundRate: useCallback(updateBorrowingCompoundRate, [])

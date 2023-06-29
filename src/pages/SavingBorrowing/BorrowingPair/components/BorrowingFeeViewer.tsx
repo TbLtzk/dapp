@@ -19,7 +19,8 @@ const StyledWrapper = styled.div`
 
 function BorrowingFeeViewer ({ asset }: { asset: Asset }) {
   const { t } = useTranslation();
-  const { borrowingFee } = useBorrowing();
+  const { getBorrowingFeeByAsset } = useBorrowing();
+  const borrowingFee = getBorrowingFeeByAsset(asset);
   const { borrowingVaults } = useBorrowingVaults();
 
   const borrowingFeeRef = useAnimateNumber(borrowingFee, ' %');
