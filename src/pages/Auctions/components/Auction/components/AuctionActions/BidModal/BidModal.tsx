@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useForm, useMultiStepForm } from '@q-dev/form-hooks';
+import { useForm } from '@q-dev/form-hooks';
 import { Modal, Tip } from '@q-dev/q-ui-kit';
-import { toBigNumber } from '@q-dev/utils';
+import { formatAsset, toBigNumber } from '@q-dev/utils';
 import snakeCase from 'lodash/snakeCase';
+import styled from 'styled-components';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
 
 import Button from 'components/Button';
@@ -19,10 +20,17 @@ import { getAuctionInstance } from 'contracts/helpers/auction';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { max, min, required } from 'utils/validators';
+import { fromWei } from 'utils/web3';
 
-const DEFAULT_VALUES = {
-  bid: '',
-};
+const StyledBidModal = styled.form`
+  display: flex; 
+  flex-direction: column;
+  gap: 16px;
+
+  .bid-modal__button {
+    width: 100%
+  }
+`;
 
 interface Props {
   auction: AuctionCompletedInfos;
@@ -31,24 +39,23 @@ interface Props {
   onHide: () => void;
 }
 
-const LocalStateContext = createContext(
-  {} as ReturnType<typeof useMultiStepForm<typeof DEFAULT_VALUES>>
-);
-
 function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { bidForAuction } = useAuctions();
+  const [allowance, setAllowance] = useState('0');
+  const [balance, setBalance] = useState('0');
+  const modalTitle = useMemo(() => `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`, [t, auction.auctionType]);
   const user = useUser();
 
   const form = useForm({
-    initialValues: DEFAULT_VALUES,
-    validators: { bid: [required, min(auction.raisingBid), max('1000000000000000')] },
+    initialValues: { bid: '' },
+    validators: { bid: [required, min(auction.raisingBid), max(balance)] },
     onSubmit: (values) => {
       submitTransaction({
         successMessage: t('BID_FOR_AUCTION_TX'),
         onSuccess: () => {
-          handleHide();
+          handleCloseModal();
           onSubmit();
         },
         submitFn: () => bidForAuction({
@@ -64,30 +71,37 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
     },
   });
 
-  const handleHide = () => {
+  const isApproved = useMemo(() => {
+    return toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(allowance);
+  }, [form.values.bid, allowance]);
+
+  const canBid = useMemo(() => {
+    return toBigNumber(balance).isGreaterThanOrEqualTo(auction.raisingBid) &&
+     toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(balance);
+  }, [balance, form.values.bid, auction.raisingBid]);
+
+  const handleCloseModal = () => {
     form.reset();
     onHide();
   };
 
-  const [allowance, setAllowance] = useState<string | number>(0);
-  const [isApproved, setIsApproved] = useState(true);
+  async function loadAllowanceValue () {
+    const stableCoin = await getStableCoinInstance();
+    const { address } = await getAuctionInstance(auction.auctionType);
+    const allowance = await stableCoin.allowance(user.address, address);
+    setAllowance(fromWei(allowance));
+  }
+
+  async function loadUserBalance () {
+    const stableCoin = await getStableCoinInstance();
+    const balance = await stableCoin.balanceOf(user.address);
+    setBalance(fromWei(balance));
+  }
 
   useEffect(() => {
-    async function getAllowanceValue () {
-      const stableCoin = await getStableCoinInstance();
-      const { address } = await getAuctionInstance(auction.auctionType);
-
-      const allowance = await stableCoin.allowance(user.address, address);
-      setAllowance(allowance);
-    }
-
-    getAllowanceValue();
-  }, [isApproved]);
-
-  const handleBidChange = async (value: string) => {
-    form.fields.bid.onChange(value);
-    setIsApproved(toBigNumber(value).comparedTo(allowance) !== 1);
-  };
+    loadAllowanceValue();
+    loadUserBalance();
+  }, []);
 
   async function approveContract () {
     const contract = await getStableCoinInstance();
@@ -96,51 +110,55 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
     await submitTransaction({
       successMessage: t('APPROVE_TX'),
       submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: user.address }),
-      onSuccess: () => setIsApproved(true),
-      onError: () => setIsApproved(false)
+      onSuccess: () => {
+        loadUserBalance();
+        loadAllowanceValue();
+      }
     });
   }
-
-  const modalTitle = `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`;
-  const bidTitle = auction.auctionType === 'systemDebt' ? t('PROVIDE_YOUR_BID') : t('PROVIDE_A_BID_FOR_THIS_AUCTION');
 
   return (
     <Modal
       open={modalOpen}
       title={modalTitle}
       width={460}
-      onClose={handleHide}
+      onClose={handleCloseModal}
     >
-      <form noValidate onSubmit={form.submit}>
-        {!isApproved && (
+      <StyledBidModal noValidate onSubmit={form.submit}>
+        {!isApproved && canBid && (
           <Tip
-            style={{ marginBottom: '16px' }}
-            action={<Button compact onClick={approveContract}>{t('APPROVE')}</Button>}
+            action={
+              <Button
+                compact
+                onClick={approveContract}
+              >
+                {t('APPROVE')}
+              </Button>
+            }
           >
             {t('APPROVE_BID_CONTRACT')}
           </Tip>
         )}
-
         <Input
           {...form.fields.bid}
           type="number"
-          label={`${bidTitle} (${t('MINIMUM')}: ${auction.raisingBid} ${auction.bidAsset})`}
+          label={t('BID_AMOUNT')}
+          labelTip={t('MINIMUM_BID_TIP', { amount: formatAsset(auction.raisingBid, auction.bidAsset) })}
+          hint={t('YOUR_BALANCE', { balance: formatAsset(balance, auction.bidAsset) })}
+          max={balance}
+          min={auction.raisingBid}
           placeholder={t('BID')}
-          onChange={handleBidChange}
         />
-
         <Button
           type="submit"
-          style={{ width: '100%', marginTop: '24px' }}
-          disabled={!form.isValid || !isApproved}
+          className="bid-modal__button"
+          disabled={!form.isValid || !canBid || !isApproved}
         >
           {t('CONFIRM')}
         </Button>
-      </form>
+      </StyledBidModal>
     </Modal>
   );
 }
-
-export const useBid = () => useContext(LocalStateContext);
 
 export default BidModal;

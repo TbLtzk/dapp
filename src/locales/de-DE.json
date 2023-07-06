@@ -265,7 +265,7 @@
   "BID_FOR": "Gebot für",
   "PROVIDE_YOUR_BID": "Geben Sie Ihr Gebot ab",
   "PROVIDE_A_BID_FOR_THIS_AUCTION": "Geben Sie ein Gebot für diese Auktion",
-  "MINIMUM": "Minimum",
+  "MINIMUM_BID_TIP": "Minimum: {{amount}}",
   "APPROVE": "Genehmigen",
   "APPROVE_BID_CONTRACT": "Sie müssen die Vertragsinteraktion genehmigen, bevor Sie ein Gebot abgeben",
   "EXECUTE": "Ausführen",
@@ -1345,5 +1345,7 @@
   "NAME": "Name",
   "SYMBOL": "Symbol",
   "DECIMALS": "Dezimalen",
+  "YOUR_BALANCE": "Ihr Guthaben: {{balance}}",
+  "BID_AMOUNT": "Gebotsbetrag",
   "ERC20_INFO": "ERC-20 Informationen"
 }
