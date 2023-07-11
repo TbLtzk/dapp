@@ -1,6 +1,6 @@
 import { Chain, CHAIN_TYPES } from '@distributedlab/w3p';
 import { utils } from 'ethers';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 export type NetworkName = 'mainnet' | 'testnet' | 'devnet';
 
@@ -17,6 +17,7 @@ interface NetworkConfig {
   docsUrl: string;
   constitutionUrl: string;
   collaterals: Asset[];
+  stablecoins: StablecoinAsset[];
   gasBuffer: number;
   featureFlags: {
     aliases: boolean;
@@ -38,6 +39,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
     collaterals: ['QBTC'],
+    stablecoins: ['QUSD'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true, rootNodesMetrics: false },
   },
@@ -54,6 +56,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
+    stablecoins: ['QUSD'],
     gasBuffer: 2,
     featureFlags: { aliases: true, rootNodesMetrics: false },
   },
@@ -70,6 +73,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qdevnet.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
+    stablecoins: ['QUSD', 'QEUR'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true, rootNodesMetrics: true },
   },

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@q-dev/q-ui-kit';
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { InterestRate } from 'typings/defi';
+import { InterestRate, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import AssetPairLogos from 'pages/SavingBorrowing/components/AssetPairLogos';
@@ -18,6 +18,11 @@ import { useTransaction } from 'store/transaction/hooks';
 import { getBorrowingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
 
 import { formatDate, formatDateRelative } from 'utils/date';
+
+interface Props {
+  rate: InterestRate;
+  stablecoinAsset: StablecoinAsset;
+}
 
 const StyledLink = styled(Link)`
   padding: 0;
@@ -67,13 +72,13 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function AssetCard ({ rate }: { rate: InterestRate }) {
+function AssetCard ({ rate, stablecoinAsset }: Props) {
   const { t, i18n } = useTranslation();
   const { collaterals } = useNetworkConfig();
 
   const { submitTransaction } = useTransaction();
   const { updateBorrowingCompoundRate } = useBorrowing();
-  const { getInterestRates } = useInterestRates();
+  const { loadInterestRates } = useInterestRates(stablecoinAsset);
 
   const interestRateRef = useAnimateNumber(rate.borrowingFee, ' %');
   const debtRef = useAnimateNumber(rate.outstandingDebt, '');
@@ -82,7 +87,7 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
 
   useInterval(() => {
-    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
+    getBorrowingCompoundRateLastUpdate(rate.asset, stablecoinAsset).then(setTimeSinceOutstandingDebt);
   }, 50000, { disabled: debtRefreshLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
@@ -90,20 +95,20 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
     await submitTransaction({
       successMessage: t('TIME_SINCE_LAST_REFRESH_TX'),
       isClosedModal: true,
-      submitFn: () => updateBorrowingCompoundRate(rate.asset)
+      submitFn: () => updateBorrowingCompoundRate(rate.asset, stablecoinAsset)
     });
 
-    const updatedTime = await getBorrowingCompoundRateLastUpdate(rate.asset);
+    const updatedTime = await getBorrowingCompoundRateLastUpdate(rate.asset, stablecoinAsset);
     setTimeSinceOutstandingDebt(updatedTime);
 
-    getInterestRates(collaterals);
+    loadInterestRates(collaterals);
     setDebtRefreshLoading(false);
   };
 
   return (
     <StyledLink
       to={{
-        pathname: `/saving-borrowing/borrowing/${rate.asset}-QUSD`,
+        pathname: `/saving-borrowing/borrowing/${rate.asset}-${stablecoinAsset}`,
         state: { from: 'list' },
       }}
       className="block"
@@ -111,10 +116,10 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
       <div className="asset-card-header">
         <AssetPairLogos
           collateral={rate.asset}
-          borrowing="QUSD"
+          borrowing={stablecoinAsset}
           className="asset-card-logos"
         />
-        <p className="text-h3">{rate.asset} → QUSD</p>
+        <p className="text-h3">{rate.asset} → {stablecoinAsset}</p>
       </div>
 
       <div className="asset-card-main">
@@ -124,7 +129,7 @@ function AssetCard ({ rate }: { rate: InterestRate }) {
         </div>
 
         <div className="asset-card-block">
-          <p className="text-md color-secondary">{t('OUTSTANDING_DEBT_ASSET', { asset: 'QUSD' })}</p>
+          <p className="text-md color-secondary">{t('OUTSTANDING_DEBT_ASSET', { asset: stablecoinAsset })}</p>
           <div className="asset-card-debt">
             <div>
               <p ref={debtRef} className="text-xl font-semibold">0</p>

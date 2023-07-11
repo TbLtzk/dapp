@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '@q-dev/q-ui-kit';
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 
@@ -15,6 +15,11 @@ import { useTransaction } from 'store/transaction/hooks';
 import { getBorrowingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
 
 import { formatDate, formatDateRelative } from 'utils/date';
+
+interface Props {
+  collateral: Asset;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledWrapper = styled.div`
   padding: 24px 24px 16px 24px;
@@ -32,14 +37,14 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function DebtViewer ({ asset }: { asset: Asset }) {
+function DebtViewer ({ collateral, stablecoin }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
 
   const { updateBorrowingCompoundRate } = useBorrowing();
-  const { borrowingVaults, getBorrowingVaults } = useBorrowingVaults();
+  const { borrowingVaults, loadBorrowingVaults } = useBorrowingVaults(stablecoin);
 
-  const assetVaults = borrowingVaults.filter(vault => vault.colKey === asset);
+  const assetVaults = borrowingVaults.filter(vault => vault.colKey === collateral);
   const outstandingDebt = assetVaults.reduce((acc, vault) => acc + Number(vault.outstandingDebt), 0);
   const outstandingDebtRef = useAnimateNumber(outstandingDebt, '');
 
@@ -47,7 +52,7 @@ function DebtViewer ({ asset }: { asset: Asset }) {
   const [timeLoading, setTimeLoading] = useState(false);
 
   useInterval(() => {
-    getBorrowingCompoundRateLastUpdate(asset).then(setRefreshTime);
+    getBorrowingCompoundRateLastUpdate(collateral, stablecoin).then(setRefreshTime);
   }, 50000, { disabled: timeLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
@@ -55,20 +60,20 @@ function DebtViewer ({ asset }: { asset: Asset }) {
     await submitTransaction({
       successMessage: t('TIME_SINCE_LAST_REFRESH_TX'),
       isClosedModal: true,
-      submitFn: () => updateBorrowingCompoundRate(asset)
+      submitFn: () => updateBorrowingCompoundRate(collateral, stablecoin)
     });
 
-    const updatedTime = await getBorrowingCompoundRateLastUpdate(asset);
+    const updatedTime = await getBorrowingCompoundRateLastUpdate(collateral, stablecoin);
     setRefreshTime(updatedTime);
 
-    getBorrowingVaults();
+    loadBorrowingVaults();
     setTimeLoading(false);
   };
 
   return (
     <StyledWrapper className="block">
       <div className="block__header">
-        <h2 className="text-lg">{t('ASSET_DEBT', { asset: 'QUSD' })}</h2>
+        <h2 className="text-lg">{t('ASSET_DEBT', { asset: stablecoin })}</h2>
         <Button
           icon
           look="ghost"

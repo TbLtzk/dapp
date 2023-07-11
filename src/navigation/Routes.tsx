@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { ProposalContractType } from 'typings/contracts';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import LazyLoading from 'components/Base/LazyLoading';
 import ErrorBoundary from 'components/Custom/ErrorBoundary';
@@ -43,7 +43,7 @@ function Routes () {
       <LazyLoading>
         <ScrollToTop />
         <Switch>
-          <Route exact path={['/', '/dashboard/:slug']}>
+          <Route exact path={['/', '/dashboard/:slug', RoutePaths.dashboardSavingBorrowingTab]}>
             <Dashboard />
           </Route>
 
@@ -112,7 +112,7 @@ function Routes () {
             path={RoutePaths.borrowingPair}
             component={(props: RouteComponentProps<{
               collateral: Asset;
-              borrow: 'QUSD';
+              borrow: StablecoinAsset;
             }>) => (
               <BorrowingPair {...props} />
             )}

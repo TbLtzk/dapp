@@ -26,7 +26,7 @@ async function prepareLiquidationAuctionInfo (
   const completedInfo = {} as LiquidationCompletedInfo;
   if (!auctionEvent) return completedInfo;
 
-  const borrowingCoreInstance = await getBorrowingCoreInstance();
+  const borrowingCoreInstance = await getBorrowingCoreInstance('QUSD');
 
   const vault = await borrowingCoreInstance.userVaults(auctionEvent.vaultOwner, auctionEvent.vaultId);
   const borrowingInstance = await getBorrowingInstance(vault.colKey as Asset);

@@ -13,7 +13,7 @@ import { useQVault } from 'store/q-vault/hooks';
 
 import { Bus } from 'utils/event-bus';
 
-interface TxWithCaller {
+export interface TxWithCaller {
   tx: ContractTransaction;
   onSuccess: () => void;
   onFinally?: () => void;

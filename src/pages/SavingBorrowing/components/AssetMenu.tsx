@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 
 import { Dropdown, Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { addBorrowTokenToWallet } from 'contracts/helpers/borrowing-core';
-import { addQUSDTokenToWallet } from 'contracts/helpers/saving-assets-helper';
+import { addStablecoinToWallet } from 'contracts/helpers/saving-assets-helper';
 
 const StyledDropdown = styled(Dropdown)`
   .asset-menu {
@@ -57,7 +57,7 @@ const StyledDropdown = styled(Dropdown)`
 `;
 
 interface Props {
-  asset: 'QUSD' | Asset;
+  asset: StablecoinAsset | Asset;
   contractAddress?: string;
 }
 
@@ -86,8 +86,8 @@ function AssetMenu ({ asset, contractAddress }: Props) {
       <div className="asset-menu">
         <button
           className="asset-menu-item text-md"
-          onClick={() => asset === 'QUSD'
-            ? addQUSDTokenToWallet()
+          onClick={() => asset === 'QUSD' || asset === 'QEUR'
+            ? addStablecoinToWallet(asset)
             : addBorrowTokenToWallet(asset)
           }
         >

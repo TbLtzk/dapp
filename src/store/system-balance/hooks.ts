@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ErrorHandler } from 'helpers';
+import { StablecoinAsset } from 'typings/defi';
 
 import {
   setStableCoinTotalSupply,
@@ -18,64 +19,96 @@ import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstan
 
 import { fromWei } from 'utils/web3';
 
+export function useSystemAssetBalance (asset: StablecoinAsset) {
+  const dispatch = useDispatch();
+
+  const stablecoinTotalSupply = useAppSelector(({ systemBalance }) => systemBalance.stablecoinMap[asset].totalSupply);
+  const systemBalance = useAppSelector(({ systemBalance }) => systemBalance.stablecoinMap[asset].systemBalance);
+  const systemBalanceDebt = useAppSelector(({ systemBalance }) => systemBalance.stablecoinMap[asset].systemBalanceDebt);
+  const systemBalanceSurplus = useAppSelector(({ systemBalance }) =>
+    systemBalance.stablecoinMap[asset].systemBalanceSurplus
+  );
+
+  async function performNetting () {
+    const contract = await getSystemBalanceInstance(asset);
+    return contract.performNetting({ from: getUserAddress() });
+  }
+
+  async function loadStableCoinTotalSupply () {
+    try {
+      const contract = await getStableCoinInstance(asset);
+      const totalSupply = await contract.totalSupply();
+      dispatch(setStableCoinTotalSupply({
+        asset,
+        totalSupply: fromWei(totalSupply)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadSystemBalance () {
+    try {
+      const contract = await getSystemBalanceInstance(asset);
+      const balance = await contract.getBalance();
+      dispatch(setSystemBalance({
+        asset,
+        balance: fromWei(balance)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadSystemBalanceDebt () {
+    try {
+      const contract = await getSystemBalanceInstance(asset);
+      const debt = await contract.getDebt();
+      dispatch(setSystemBalanceDebt({
+        asset,
+        balance: fromWei(debt)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadSystemBalanceSurplus () {
+    try {
+      const contract = await getSystemBalanceInstance(asset);
+      const surplus = await contract.getSurplus();
+      dispatch(setSystemBalanceSurplus({
+        asset,
+        balance: fromWei(surplus)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  return {
+    stablecoinTotalSupply,
+    systemBalance,
+    systemBalanceDebt,
+    systemBalanceSurplus,
+
+    performNetting: useCallback(performNetting, [asset]),
+    loadStableCoinTotalSupply: useCallback(loadStableCoinTotalSupply, [asset]),
+    loadSystemBalance: useCallback(loadSystemBalance, [asset]),
+    loadSystemBalanceDebt: useCallback(loadSystemBalanceDebt, [asset]),
+    loadSystemBalanceSurplus: useCallback(loadSystemBalanceSurplus, [asset]),
+  };
+}
+
 export function useSystemBalance () {
   const dispatch = useDispatch();
 
-  const stableCoinTotalSupply = useAppSelector(({ systemBalance }) => systemBalance.stableCoinTotalSupply);
-  const systemBalance = useAppSelector(({ systemBalance }) => systemBalance.systemBalance);
-  const systemBalanceDebt = useAppSelector(({ systemBalance }) => systemBalance.systemBalanceDebt);
-  const systemBalanceSurplus = useAppSelector(({ systemBalance }) => systemBalance.systemBalanceSurplus);
   const systemReserveBalance = useAppSelector(({ systemBalance }) => systemBalance.systemReserveBalance);
   const systemReserveAvailableAmount = useAppSelector(
     ({ systemBalance }) => systemBalance.systemReserveAvailableAmount
   );
 
-  async function performNetting () {
-    const contract = await getSystemBalanceInstance();
-    return contract.performNetting({ from: getUserAddress() });
-  }
-
-  async function getStableCoinTotalSupply () {
-    try {
-      const contract = await getStableCoinInstance();
-      const totalSupply = await contract.totalSupply();
-      dispatch(setStableCoinTotalSupply(fromWei(totalSupply)));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function getSystemBalance () {
-    try {
-      const contract = await getSystemBalanceInstance();
-      const balance = await contract.getBalance();
-      dispatch(setSystemBalance(fromWei(balance)));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function getSystemBalanceDebt () {
-    try {
-      const contract = await getSystemBalanceInstance();
-      const debt = await contract.getDebt();
-      dispatch(setSystemBalanceDebt(fromWei(debt)));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function getSystemBalanceSurplus () {
-    try {
-      const contract = await getSystemBalanceInstance();
-      const surplus = await contract.getSurplus();
-      dispatch(setSystemBalanceSurplus(fromWei(surplus)));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function getSystemReserveAvailableAmount () {
+  async function loadSystemReserveAvailableAmount () {
     try {
       const contract = await getSystemReserveInstance();
       const availableAmount = await contract.availableAmount();
@@ -85,7 +118,7 @@ export function useSystemBalance () {
     }
   }
 
-  async function getSystemReserveBalance () {
+  async function loadSystemReserveBalance () {
     try {
       const contract = await getSystemReserveInstance();
       const balance = await contract.getBalance();
@@ -96,19 +129,10 @@ export function useSystemBalance () {
   }
 
   return {
-    stableCoinTotalSupply,
-    systemBalance,
-    systemBalanceDebt,
-    systemBalanceSurplus,
     systemReserveBalance,
     systemReserveAvailableAmount,
 
-    performNetting: useCallback(performNetting, []),
-    getStableCoinTotalSupply: useCallback(getStableCoinTotalSupply, []),
-    getSystemBalance: useCallback(getSystemBalance, []),
-    getSystemBalanceDebt: useCallback(getSystemBalanceDebt, []),
-    getSystemBalanceSurplus: useCallback(getSystemBalanceSurplus, []),
-    getSystemReserveAvailableAmount: useCallback(getSystemReserveAvailableAmount, []),
-    getSystemReserveBalance: useCallback(getSystemReserveBalance, []),
+    loadSystemReserveAvailableAmount: useCallback(loadSystemReserveAvailableAmount, []),
+    loadSystemReserveBalance: useCallback(loadSystemReserveBalance, []),
   };
 }

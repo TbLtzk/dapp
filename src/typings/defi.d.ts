@@ -1,14 +1,12 @@
 import { Vault } from '@q-dev/q-js-sdk';
 
-import { defiApproveType } from 'constants/defi';
-
 type Asset = 'QBTC' | 'QDAI' | 'QUSDC' | 'QVNXAU';
-type ApproveType = typeof defiApproveType[keyof typeof defiApproveType];
+type StablecoinAsset = 'QUSD' | 'QEUR';
+type ApproveType = 'deposit' | 'repay';
 
 interface SavingAsset {
+  assetName: StablecoinAsset;
   rate: number;
-  depositAsset: string;
-  interestAsset: string;
   balance: string;
   compoundRateUpdated: number;
 }

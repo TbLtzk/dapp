@@ -15,14 +15,14 @@ const StyledWrapper = styled.div`
 function PoolBalances () {
   const { t } = useTranslation();
   const { poolBalance, getVRPBalance } = useValidationRewards();
-  const { systemReserveBalance, getSystemReserveBalance } = useSystemBalance();
+  const { systemReserveBalance, loadSystemReserveBalance } = useSystemBalance();
 
   const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
   const rewardPoolsBalanceRef = useInfinityNumber(poolBalance, ' Q');
 
   useEffect(() => {
     getVRPBalance();
-    getSystemReserveBalance();
+    loadSystemReserveBalance();
   }, []);
 
   return (

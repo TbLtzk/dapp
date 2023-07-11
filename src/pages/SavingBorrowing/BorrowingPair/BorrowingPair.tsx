@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { Icon, media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 
@@ -60,26 +60,26 @@ const StyledWrapper = styled.div`
 
 function BorrowingPair ({ match }: RouteComponentProps<{
   collateral: Asset;
-  borrow: 'QUSD';
+  borrow: StablecoinAsset;
 }>) {
   const history = useHistory();
   const { t } = useTranslation();
-  const { collaterals } = useNetworkConfig();
+  const { collaterals, stablecoins } = useNetworkConfig();
 
   const { collateral, borrow } = match.params;
 
   const { submitTransaction } = useTransaction();
-  const { getBorrowingVaults, createVault } = useBorrowingVaults();
-  const { getBorrowingFee, getCollateralBalance } = useBorrowing();
+  const { loadBorrowingVaults, createVault } = useBorrowingVaults(borrow);
+  const { loadBorrowingFee, loadCollateralBalance } = useBorrowing();
 
   useEffect(() => {
-    getBorrowingVaults();
-    getBorrowingFee(collateral);
-    getCollateralBalance(collateral);
+    loadBorrowingVaults();
+    loadBorrowingFee(collateral, borrow);
+    loadCollateralBalance(collateral);
   }, []);
 
   useEffect(() => {
-    if (!collaterals.includes(collateral) || borrow !== 'QUSD') {
+    if (!collaterals.includes(collateral) || !stablecoins.includes(borrow)) {
       history.replace('/not-found');
     }
 
@@ -118,13 +118,13 @@ function BorrowingPair ({ match }: RouteComponentProps<{
       </div>
 
       <div className="borrowing-pair-overview">
-        <BorrowingFeeViewer asset={collateral} />
+        <BorrowingFeeViewer collateral={collateral} stablecoin={borrow} />
         <CollateralBalance asset={collateral} />
-        <BorrowingBalance />
-        <DebtViewer asset={collateral} />
+        <BorrowingBalance stablecoin={borrow} />
+        <DebtViewer collateral={collateral} stablecoin={borrow} />
       </div>
 
-      <VaultsList asset={collateral} />
+      <VaultsList collateral={collateral} stablecoin={borrow} />
     </StyledWrapper>
   );
 }

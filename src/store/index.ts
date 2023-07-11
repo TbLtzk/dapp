@@ -4,7 +4,6 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import aliases from './aliases/reducer';
 import auctions from './auctions/reducer';
-import borrowAssets from './borrow-assets/reducer';
 import borrowing from './borrowing/reducer';
 import constitution from './constitution/reducer';
 import experts from './experts/reducer';
@@ -26,7 +25,6 @@ export const store = configureStore({
     rootNodes,
     qVault,
     borrowing,
-    borrowAssets,
     saving,
     aliases,
     tokenomics,

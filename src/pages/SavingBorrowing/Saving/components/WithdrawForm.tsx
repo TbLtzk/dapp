@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -21,10 +22,10 @@ const StyledForm = styled.form`
   }
 `;
 
-function WithdrawForm ({ asset }: { asset: string }) {
+function WithdrawForm ({ asset }: { asset: StablecoinAsset }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { savingBalanceDetails, withdrawSaving } = useSaving();
+  const { savingBalanceDetails, withdrawSaving } = useSaving(asset);
 
   const form = useForm({
     initialValues: { amount: '' },

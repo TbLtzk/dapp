@@ -27,15 +27,15 @@ function ManageSaving ({ asset }: Props) {
   const { hash, pathname } = useLocation();
 
   const {
-    getSavingAllowance,
-    getSavingBalanceDetails,
-    getSavingAvailableToDeposit
-  } = useSaving();
+    loadSavingAllowance,
+    loadSavingBalanceDetails,
+    loadSavingAvailableToDeposit
+  } = useSaving(asset.assetName);
 
   useEffect(() => {
-    getSavingAllowance();
-    getSavingBalanceDetails();
-    getSavingAvailableToDeposit();
+    loadSavingAllowance();
+    loadSavingBalanceDetails();
+    loadSavingAvailableToDeposit();
   }, []);
 
   const tabs = [
@@ -57,7 +57,7 @@ function ManageSaving ({ asset }: Props) {
       <div className="manage-saving-content">
         {hash === '#deposit'
           ? <DepositForm asset={asset} />
-          : <WithdrawForm asset={asset.interestAsset} />
+          : <WithdrawForm asset={asset.assetName} />
         }
       </div>
     </StyledWrapper>

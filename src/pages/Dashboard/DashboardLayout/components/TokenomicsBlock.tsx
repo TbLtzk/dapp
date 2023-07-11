@@ -62,14 +62,14 @@ const StyledWrapper = styled.div`
 function TokenomicsBlock () {
   const { t } = useTranslation();
   const { defaultAllocationProxy, getDefaultAllocationProxy } = useTokenomics();
-  const { systemReserveBalance, getSystemReserveBalance } = useSystemBalance();
+  const { systemReserveBalance, loadSystemReserveBalance } = useSystemBalance();
 
   const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
   const allocationProxyRef = useAnimateNumber(defaultAllocationProxy, ' Q');
 
   useEffect(() => {
     getDefaultAllocationProxy();
-    getSystemReserveBalance();
+    loadSystemReserveBalance();
   }, []);
 
   return (

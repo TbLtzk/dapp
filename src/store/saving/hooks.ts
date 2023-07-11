@@ -3,6 +3,9 @@ import { useDispatch } from 'react-redux';
 
 import { calculateInterestRate } from '@q-dev/utils';
 import { ErrorHandler } from 'helpers';
+import { StablecoinAsset } from 'typings/defi';
+
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import {
   setAllowance,
@@ -23,165 +26,174 @@ import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
 import { unixToDate } from 'utils/date';
 import { fromWei, toWei } from 'utils/web3';
 
-export function useSaving () {
+export function useSaving (asset: StablecoinAsset) {
   const dispatch = useDispatch();
-  const { getSavingAssets } = useSavingAssets();
+  const { loadSavingAssets } = useSavingAssets();
 
-  const totalSavingBalance = useAppSelector(({ saving }) => saving.totalSavingBalance);
-  const savingRate = useAppSelector(({ saving }) => saving.savingRate);
+  const totalSavingBalance = useAppSelector(({ saving }) => saving.stablecoinMap[asset].totalSavingBalance);
+  const savingRate = useAppSelector(({ saving }) => saving.stablecoinMap[asset].savingRate);
 
-  const savingBalanceDetails = useAppSelector(({ saving }) => saving.balanceDetails);
-  const savingAvailableToDeposit = useAppSelector(({ saving }) => saving.availableToDeposit);
-  const savingAllowance = useAppSelector(({ saving }) => saving.allowance);
+  const savingBalanceDetails = useAppSelector(({ saving }) => saving.stablecoinMap[asset].balanceDetails);
+  const savingAvailableToDeposit = useAppSelector(({ saving }) => saving.stablecoinMap[asset].availableToDeposit);
+  const savingAllowance = useAppSelector(({ saving }) => saving.stablecoinMap[asset].allowance);
 
-  async function getSavingAllowance () {
+  async function loadSavingAllowance () {
     try {
-      const stableCoinInstance = await getStableCoinInstance();
-      const savingInstance = await getSavingInstance();
+      const stableCoinInstance = await getStableCoinInstance(asset);
+      const savingInstance = await getSavingInstance(asset);
       const allowance = await stableCoinInstance.allowance(getUserAddress(), savingInstance.address);
 
-      dispatch(setAllowance(allowance));
+      dispatch(setAllowance({ asset, allowance }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
   }
 
-  async function getSavingBalanceDetails () {
+  async function loadSavingBalanceDetails () {
     try {
-      const contract = await getSavingInstance();
+      const contract = await getSavingInstance(asset);
       const balanceDetails = await contract.getBalanceDetails(getUserAddress());
       const result = await getSavingBalanceDetailsHelper(balanceDetails);
-      dispatch(setBalanceDetails(result));
+      dispatch(setBalanceDetails({ asset, balanceDetails: result }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
   }
 
-  async function getSavingAvailableToDeposit () {
+  async function loadSavingAvailableToDeposit () {
     try {
-      const contract = await getStableCoinInstance();
+      const contract = await getStableCoinInstance(asset);
       const result = await contract.balanceOf(getUserAddress());
-      dispatch(setAvailableToDeposit(fromWei(result)));
+      dispatch(setAvailableToDeposit({
+        asset,
+        amount: fromWei(result)
+      }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
+  }
+
+  async function loadTotalSavingBalance () {
+    try {
+      const contract = await getSavingInstance(asset);
+      const savingAmount = await contract.instance.getBalance({ from: getUserAddress() });
+      dispatch(setTotalSavingBalance({
+        asset,
+        balance: fromWei(savingAmount)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadSavingRate () {
+    try {
+      const contract = await getEpdrParametersInstance();
+      const savingRate = await contract.getUint(`governed.EPDR.${asset}_savingRate`);
+      const rate = calculateInterestRate(Number(savingRate));
+      dispatch(setSavingRate({ asset, rate }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  function loadAllSavingStates () {
+    loadSavingBalanceDetails();
+    loadSavingAllowance();
+    loadTotalSavingBalance();
+    loadSavingAvailableToDeposit();
+    loadSavingAssets();
   }
 
   async function depositSaving (amount: string) {
-    const contract = await getSavingInstance();
+    const contract = await getSavingInstance(asset);
     const tx = await contract.deposit(toWei(amount), { from: getUserAddress() });
 
     return {
       tx,
-      onSuccess: () => {
-        getSavingBalanceDetails();
-        getSavingAllowance();
-        getTotalSavingBalance();
-        getSavingAvailableToDeposit();
-        getSavingAssets();
-      }
+      onSuccess: () => { loadAllSavingStates(); }
     };
   }
 
   async function withdrawSaving (amount: string) {
-    const contract = await getSavingInstance();
+    const contract = await getSavingInstance(asset);
     const tx = await contract.withdraw(toWei(amount), { from: getUserAddress() });
 
     return {
       tx,
-      onSuccess: () => {
-        getSavingBalanceDetails();
-        getSavingAllowance();
-        getTotalSavingBalance();
-        getSavingAvailableToDeposit();
-        getSavingAssets();
-      }
+      onSuccess: () => { loadAllSavingStates(); }
     };
   }
 
   async function approveSaving () {
-    const contract = await getStableCoinInstance();
-    const contractSaving = await getSavingInstance();
+    const [contract, contractSaving] = await Promise.all([
+      getStableCoinInstance(asset),
+      getSavingInstance(asset)
+    ]);
     const tx = await contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, {
       from: getUserAddress()
     });
 
     return {
       tx,
-      onSuccess: () => {
-        getSavingBalanceDetails();
-        getSavingAllowance();
-        getTotalSavingBalance();
-        getSavingAvailableToDeposit();
-        getSavingAssets();
-      }
+      onSuccess: () => { loadAllSavingStates(); }
     };
   }
 
   async function updateSavingCompoundRate () {
-    const contract = await getSavingInstance();
+    const contract = await getSavingInstance(asset);
     return contract.updateCompoundRate({ from: getUserAddress() });
   }
 
-  async function getTotalSavingBalance () {
-    try {
-      const contract = await getSavingInstance();
-      const savingAmount = await contract.instance.getBalance({ from: getUserAddress() });
-      dispatch(setTotalSavingBalance(fromWei(savingAmount)));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function getSavingRate () {
-    try {
-      const contract = await getEpdrParametersInstance();
-      const savingRate = await contract.getUint('governed.EPDR.QUSD_savingRate');
-      const rate = calculateInterestRate(Number(savingRate));
-      dispatch(setSavingRate(rate));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
   return {
+    totalSavingBalance,
+    savingRate,
     savingBalanceDetails,
     savingAvailableToDeposit,
     savingAllowance,
-    totalSavingBalance,
-    savingRate,
 
-    getSavingAllowance: useCallback(getSavingAllowance, []),
-    getSavingBalanceDetails: useCallback(getSavingBalanceDetails, []),
-    getSavingAvailableToDeposit: useCallback(getSavingAvailableToDeposit, []),
-    depositSaving: useCallback(depositSaving, []),
-    withdrawSaving: useCallback(withdrawSaving, []),
-    approveSaving: useCallback(approveSaving, []),
-    updateSavingCompoundRate: useCallback(updateSavingCompoundRate, []),
-    getTotalSavingBalance: useCallback(getTotalSavingBalance, []),
-    getSavingRate: useCallback(getSavingRate, []),
+    loadSavingAllowance: useCallback(loadSavingAllowance, [asset]),
+    loadSavingBalanceDetails: useCallback(loadSavingBalanceDetails, [asset]),
+    loadSavingAvailableToDeposit: useCallback(loadSavingAvailableToDeposit, [asset]),
+    depositSaving: useCallback(depositSaving, [asset]),
+    withdrawSaving: useCallback(withdrawSaving, [asset]),
+    approveSaving: useCallback(approveSaving, [asset]),
+    updateSavingCompoundRate: useCallback(updateSavingCompoundRate, [asset]),
+    loadTotalSavingBalance: useCallback(loadTotalSavingBalance, [asset]),
+    loadSavingRate: useCallback(loadSavingRate, [asset]),
   };
 }
 
 export function useSavingAssets () {
   const dispatch = useDispatch();
+  const { stablecoins } = useNetworkConfig();
 
   const savingAssets = useAppSelector(({ saving }) => saving.savingAssets);
   const savingAssetsLoading = useAppSelector(({ saving }) => saving.savingAssetsLoading);
   const savingAssetsError = useAppSelector(({ saving }) => saving.savingAssetsError);
 
-  async function getSavingAssets () {
+  async function loadSavingAssets () {
     try {
-      const contract = await getSavingInstance();
-      const balanceDetails = await contract.getBalanceDetails(getUserAddress());
+      const contracts = await Promise.all(stablecoins.map(async (asset) => ({
+        asset,
+        contract: await getSavingInstance(asset)
+      })));
 
-      dispatch(setSavingAssets([{
-        depositAsset: 'QUSD',
-        interestAsset: 'QUSD',
-        rate: calculateInterestRate(Number(balanceDetails.interestRate)),
-        balance: fromWei(balanceDetails.currentBalance),
-        compoundRateUpdated: unixToDate(balanceDetails.lastUpdateOfCompoundRate).getTime(),
-      }]));
+      const userAddress = getUserAddress();
+      const savingAssets = await Promise.all(
+        contracts.map(async ({ contract, asset }) => {
+          const balanceDetails = await contract.getBalanceDetails(userAddress);
+
+          return {
+            assetName: asset,
+            rate: calculateInterestRate(Number(balanceDetails.interestRate)),
+            balance: fromWei(balanceDetails.currentBalance),
+            compoundRateUpdated: unixToDate(balanceDetails.lastUpdateOfCompoundRate).getTime(),
+          };
+        }
+        ));
+
+      dispatch(setSavingAssets(savingAssets));
     } catch (error) {
       dispatch(setSavingAssetsError(error));
       ErrorHandler.processWithoutFeedback(error);
@@ -192,6 +204,6 @@ export function useSavingAssets () {
     savingAssets,
     savingAssetsLoading,
     savingAssetsError,
-    getSavingAssets: useCallback(getSavingAssets, []),
+    loadSavingAssets: useCallback(loadSavingAssets, []),
   };
 }

@@ -9,7 +9,9 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
-import { useSystemBalance } from 'store/system-balance/hooks';
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
+import { useSystemAssetBalance } from 'store/system-balance/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -60,19 +62,22 @@ const StyledWrapper = styled.div`
 
 function SavingBorrowingBlock () {
   const { t } = useTranslation();
+  const { stablecoins } = useNetworkConfig();
+  const firstAsset = stablecoins[0];
+
   const {
     systemBalance,
-    stableCoinTotalSupply,
-    getSystemBalance,
-    getStableCoinTotalSupply,
-  } = useSystemBalance();
+    stablecoinTotalSupply,
+    loadSystemBalance,
+    loadStableCoinTotalSupply,
+  } = useSystemAssetBalance(firstAsset);
 
   const systemBalanceRef = useAnimateNumber(systemBalance, '');
-  const totalSupplyRef = useAnimateNumber(stableCoinTotalSupply, '');
+  const totalSupplyRef = useAnimateNumber(stablecoinTotalSupply, '');
 
   useEffect(() => {
-    getSystemBalance();
-    getStableCoinTotalSupply();
+    loadSystemBalance();
+    loadStableCoinTotalSupply();
   }, []);
 
   return (
@@ -98,12 +103,16 @@ function SavingBorrowingBlock () {
       <div className="saving__values">
         <div className="saving__value">
           <p ref={systemBalanceRef} className="text-xl font-semibold">0</p>
-          <p className="text-md color-secondary">{t('QUSD_SYSTEM_BALANCE')}</p>
+          <p className="text-md color-secondary">
+            {t('ASSET_SYSTEM_BALANCE', { asset: firstAsset })}
+          </p>
         </div>
 
         <div className="saving__value">
           <p ref={totalSupplyRef} className="text-xl font-semibold">0</p>
-          <p className="text-md color-secondary">{t('QUSD_TOTAL_SUPPLY')}</p>
+          <p className="text-md color-secondary">
+            {t('ASSET_TOTAL_SUPPLY', { asset: firstAsset })}
+          </p>
         </div>
       </div>
     </StyledWrapper>

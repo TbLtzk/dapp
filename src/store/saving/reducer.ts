@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SavingAsset } from 'typings/defi';
+import { SavingAsset, StablecoinAsset } from 'typings/defi';
 
 interface BalanceDetails {
   interestRate: number;
@@ -7,27 +7,40 @@ interface BalanceDetails {
   estimatedInterest: number;
 }
 
-interface SavingState {
+interface StablecoinState {
+  savingRate: number;
+  allowance: string;
   availableToDeposit: string;
   balanceDetails: BalanceDetails;
-  allowance: string;
-  totalSavingBalance: number | string;
-  savingRate: number | string;
+  totalSavingBalance: string;
+}
+
+interface SavingState {
+  stablecoinMap: Record<StablecoinAsset, StablecoinState>;
 
   savingAssets: SavingAsset[];
   savingAssetsLoading: boolean;
   savingAssetsError: Error | null | unknown;
 }
 
+function getDefaultStablecoinState (): StablecoinState {
+  return {
+    savingRate: 0,
+    allowance: '0',
+    availableToDeposit: '0',
+    balanceDetails: {
+      interestRate: 0,
+      currentBalance: '0',
+      estimatedInterest: 0,
+    },
+    totalSavingBalance: '0',
+  };
+}
+
 const initialState: SavingState = {
-  availableToDeposit: '0',
-  totalSavingBalance: 0,
-  savingRate: 0,
-  allowance: '0',
-  balanceDetails: {
-    interestRate: 0,
-    currentBalance: '0',
-    estimatedInterest: 0,
+  stablecoinMap: {
+    QUSD: getDefaultStablecoinState(),
+    QEUR: getDefaultStablecoinState(),
   },
 
   savingAssets: [],
@@ -39,16 +52,25 @@ const savingSlice = createSlice({
   name: 'saving',
   initialState,
   reducers: {
-    setBalanceDetails (state, { payload }: PayloadAction<BalanceDetails>) {
-      state.balanceDetails = payload;
+    setBalanceDetails (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      balanceDetails: BalanceDetails;
+    }>) {
+      state.stablecoinMap[payload.asset].balanceDetails = payload.balanceDetails;
     },
 
-    setAllowance (state, { payload }: PayloadAction<string>) {
-      state.allowance = payload;
+    setAllowance (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      allowance: string;
+    }>) {
+      state.stablecoinMap[payload.asset].allowance = payload.allowance;
     },
 
-    setAvailableToDeposit (state, { payload }: PayloadAction<string>) {
-      state.availableToDeposit = payload;
+    setAvailableToDeposit (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      amount: string;
+    }>) {
+      state.stablecoinMap[payload.asset].availableToDeposit = payload.amount;
     },
 
     setSavingAssets (state, { payload }: PayloadAction<SavingAsset[]>) {
@@ -61,12 +83,18 @@ const savingSlice = createSlice({
       state.savingAssetsLoading = false;
     },
 
-    setTotalSavingBalance (state, { payload }: PayloadAction<number | string>) {
-      state.totalSavingBalance = payload;
+    setTotalSavingBalance (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      balance: string;
+    }>) {
+      state.stablecoinMap[payload.asset].totalSavingBalance = payload.balance;
     },
 
-    setSavingRate (state, { payload }: PayloadAction<number | string>) {
-      state.savingRate = payload;
+    setSavingRate (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      rate: number;
+    }>) {
+      state.stablecoinMap[payload.asset].savingRate = payload.rate;
     },
   }
 });

@@ -86,14 +86,14 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   };
 
   async function loadAllowanceValue () {
-    const stableCoin = await getStableCoinInstance();
+    const stableCoin = await getStableCoinInstance('QUSD');
     const { address } = await getAuctionInstance(auction.auctionType);
     const allowance = await stableCoin.allowance(user.address, address);
     setAllowance(fromWei(allowance));
   }
 
   async function loadUserBalance () {
-    const stableCoin = await getStableCoinInstance();
+    const stableCoin = await getStableCoinInstance('QUSD');
     const balance = await stableCoin.balanceOf(user.address);
     setBalance(fromWei(balance));
   }
@@ -104,7 +104,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   }, []);
 
   async function approveContract () {
-    const contract = await getStableCoinInstance();
+    const contract = await getStableCoinInstance('QUSD');
     const { address } = await getAuctionInstance(auction.auctionType);
 
     await submitTransaction({

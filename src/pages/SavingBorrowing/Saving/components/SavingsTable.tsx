@@ -50,14 +50,14 @@ function SavingsTable () {
     savingAssets,
     savingAssetsLoading,
     savingAssetsError,
-    getSavingAssets
+    loadSavingAssets
   } = useSavingAssets();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<SavingAsset | null>(null);
 
   useEffect(() => {
-    getSavingAssets();
+    loadSavingAssets();
   }, []);
 
   const handleOpenModal = (asset: SavingAsset) => {
@@ -82,10 +82,10 @@ function SavingsTable () {
         perPage={savingAssets.length}
         error={savingAssetsError}
         table={savingAssets}
-        keyField="depositAsset"
+        keyField="assetName"
         columns={[
           {
-            dataField: 'depositAsset',
+            dataField: 'assetName',
             text: t('SAVING_ASSET'),
             formatter: (cell) => (
               <div className="asset-block">
@@ -103,15 +103,15 @@ function SavingsTable () {
           {
             dataField: 'balance',
             text: t('SAVING_BALANCE'),
-            formatter: cell => formatAsset(cell, 'QUSD')
+            formatter: (cell, row) => formatAsset(cell, row.assetName)
           },
           {
             dataField: 'compoundRateUpdated',
             text: t('SAVING_BALANCE_REFRESHED'),
-            formatter: (cell) => (
+            formatter: (cell, row) => (
               <div className="refresh-block">
                 <span title={formatDate(cell, i18n.language)}>{formatDateRelative(cell, i18n.language)}</span>
-                <RefreshBalanceButton />
+                <RefreshBalanceButton asset={row.assetName} />
               </div>
             )
           },
@@ -134,7 +134,7 @@ function SavingsTable () {
 
       <Modal
         open={modalOpen}
-        title={t('ASSET_SAVINGS', { asset: selectedAsset?.depositAsset })}
+        title={t('ASSET_SAVINGS', { asset: selectedAsset?.assetName })}
         onClose={handleCloseModal}
       >
         {selectedAsset && <ManageSaving asset={selectedAsset} />}

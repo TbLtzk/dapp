@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 
 import styled from 'styled-components';
-import { Asset, VaultWithId } from 'typings/defi';
+import { StablecoinAsset, VaultWithId } from 'typings/defi';
 
 import Tabs from 'components/Tabs';
 
@@ -12,35 +11,20 @@ import DepositForm from './DepositForm';
 import RepayForm from './RepayForm';
 import WithdrawForm from './WithdrawForm';
 
-import { useBorrowAssets } from 'store/borrow-assets/hooks';
-
 const StyledWrapper = styled.div`
-  .manage-vault-content {
+  .manage-vault-tabs__content {
     margin-top: 20px;
   }
 `;
 
 interface Props {
   vault: VaultWithId;
+  stablecoin: StablecoinAsset;
 }
 
-function ManageVault ({ vault }: Props) {
+function ManageVaultTabs ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { hash, pathname } = useLocation();
-
-  const { getBorrowingVault, getBorrowingAllowance } = useBorrowAssets();
-
-  useEffect(() => {
-    getBorrowingAllowance({
-      borrowType: 'repay',
-      asset: vault.colKey as Asset
-    });
-    getBorrowingAllowance({
-      borrowType: 'deposit',
-      asset: vault.colKey as Asset,
-    });
-    getBorrowingVault(vault.id);
-  }, []);
 
   const tabs = [
     {
@@ -68,23 +52,23 @@ function ManageVault ({ vault }: Props) {
   const tabContent = () => {
     switch (hash) {
       case '#borrow':
-        return <BorrowForm vault={vault} />;
+        return <BorrowForm vault={vault} stablecoin={stablecoin} />;
       case '#repay':
-        return <RepayForm vault={vault} />;
+        return <RepayForm vault={vault} stablecoin={stablecoin} />;
       case '#withdraw':
-        return <WithdrawForm vault={vault} />;
+        return <WithdrawForm vault={vault} stablecoin={stablecoin} />;
       case '#deposit':
       default:
-        return <DepositForm vault={vault} />;
+        return <DepositForm vault={vault} stablecoin={stablecoin} />;
     }
   };
 
   return (
     <StyledWrapper>
       <Tabs noAnimation tabs={tabs} />
-      <div className="manage-vault-content">{tabContent()}</div>
+      <div className="manage-vault-tabs__content">{tabContent()}</div>
     </StyledWrapper>
   );
 }
 
-export default ManageVault;
+export default ManageVaultTabs;

@@ -46,7 +46,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
     savingAllowance,
     depositSaving,
     approveSaving
-  } = useSaving();
+  } = useSaving(asset.assetName);
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -70,7 +70,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
         {...form.fields.amount}
         type="number"
         label={t('AMOUNT_TO_DEPOSIT')}
-        prefix={asset.depositAsset}
+        prefix={asset.assetName}
         max={savingAvailableToDeposit}
         labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(savingAvailableToDeposit) })}
         placeholder="0.00"
@@ -79,7 +79,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
       <div className="deposit-balances">
         <p className="deposit-balance text-sm">
           <span className="font-light">{t('SAVING_BALANCE')}</span>
-          <span>{formatAsset(savingBalanceDetails.currentBalance, asset.interestAsset)}</span>
+          <span>{formatAsset(savingBalanceDetails.currentBalance, asset.assetName)}</span>
         </p>
 
         <p className="deposit-balance text-sm">
@@ -89,7 +89,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
 
         <p className="deposit-balance text-sm">
           <span className="font-light">{t('EXPECTED_YEARLY_EARNINGS')}</span>
-          <span>{formatAsset(savingBalanceDetails.estimatedInterest, asset.interestAsset)}</span>
+          <span>{formatAsset(savingBalanceDetails.estimatedInterest, asset.assetName)}</span>
         </p>
       </div>
 
@@ -99,7 +99,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
             className="deposit-btn"
             onClick={() => submitTransaction({
               successMessage: t('APPROVE'),
-              submitFn: approveSaving
+              submitFn: () => approveSaving()
             })}
           >
             {t('APPROVE')}

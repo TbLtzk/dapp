@@ -31,10 +31,10 @@ const StyledWrapper = styled.div`
 
 function CollateralBalance ({ asset }: { asset: Asset }) {
   const { t } = useTranslation();
-  const { getCollateralBalanceByAsset, getAssetInfo, loadAssetInfo } = useBorrowing();
+  const { getCollateralBalance, getAssetInfo, loadAssetInfo } = useBorrowing();
   const [contractAddress, setContractAddress] = useState('…');
 
-  const balance = getCollateralBalanceByAsset(asset);
+  const balance = getCollateralBalance(asset);
   const assetInfo = getAssetInfo(asset);
   const collateralBalanceRef = useAnimateNumber(
     assetInfo.decimals ? fromWei(balance, assetInfo.decimals) : '0',

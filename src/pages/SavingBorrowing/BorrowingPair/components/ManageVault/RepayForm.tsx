@@ -4,17 +4,23 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { BigNumber, formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
-import { Asset, VaultWithId } from 'typings/defi';
+import { Asset, StablecoinAsset, VaultWithId } from 'typings/defi';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useManageVaultContext } from './ManageVaultContext';
+
 import { useBorrowingVaults } from 'store/borrowing/hooks';
 import { useSaving } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { amount, required } from 'utils/validators';
+
+interface Props {
+  vault: VaultWithId;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledForm = styled.form`
   display: grid;
@@ -34,14 +40,20 @@ const StyledForm = styled.form`
   }
 `;
 
-function RepayForm ({ vault }: { vault: VaultWithId }) {
+function RepayForm ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { getSavingAvailableToDeposit } = useSaving();
-  const { getBorrowingVaults } = useBorrowingVaults();
+  const { loadSavingAvailableToDeposit } = useSaving(stablecoin);
+  const { loadBorrowingVaults } = useBorrowingVaults(stablecoin);
 
-  const { borrowVault, allowanceRepay, repayBorrowing, approveBorrowing, getBorrowingAllowance } = useBorrowAssets();
+  const {
+    borrowVault,
+    allowanceRepay,
+    repayBorrowing,
+    approveBorrowing,
+    getBorrowingAllowance
+  } = useManageVaultContext();
   const { borrowingDetails } = borrowVault;
 
   const maxRepayAmount = BigNumber.min(
@@ -62,8 +74,8 @@ function RepayForm ({ vault }: { vault: VaultWithId }) {
             borrowType: 'repay',
             asset: vault.colKey as Asset
           });
-          getSavingAvailableToDeposit();
-          getBorrowingVaults();
+          loadSavingAvailableToDeposit();
+          loadBorrowingVaults();
         },
       });
     }
@@ -86,7 +98,7 @@ function RepayForm ({ vault }: { vault: VaultWithId }) {
       />
 
       <p className="repay-balance text-sm">
-        <span className="font-light">{t('ASSET_BALANCE', { asset: 'QUSD' })}</span>
+        <span className="font-light">{t('ASSET_BALANCE', { asset: stablecoin })}</span>
         <span>{formatNumber(borrowingDetails.availableRepay)}</span>
       </p>
 

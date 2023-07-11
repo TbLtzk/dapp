@@ -5,7 +5,7 @@ import { Indexer } from '@q-dev/q-js-sdk/lib/indexer/indexer';
 import { ValidatorMetrics } from '@q-dev/q-js-sdk/lib/utils/validator-metrics';
 import { providers, Signer } from 'ethers';
 import { ContractType, ContractValue } from 'typings/contracts';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import { networkConfigsMap } from 'constants/config';
 
@@ -48,6 +48,20 @@ export function getInstance<T extends ContractType> (
   };
 }
 
+export function getInstanceWithAsset<T extends ContractType> (
+  instance: T,
+): (asset: StablecoinAsset) => ContractValue<T> {
+  return (asset: StablecoinAsset) => {
+    const cacheKey = `${instance}-${asset}`;
+    if (!cache[cacheKey]) {
+      const contractRegistryInstance = getContractRegistryInstance();
+      cache[cacheKey] = contractRegistryInstance[instance](asset);
+    }
+
+    return cache[cacheKey];
+  };
+}
+
 export const getUpgradeVotingInstance = getInstance('upgradeVoting');
 export const getAddressVotingInstance = getInstance('addressVoting');
 
@@ -63,10 +77,11 @@ export const getRootNodeRewardProxyInstance = getInstance('rootNodeRewardProxy')
 export const getConstitutionVotingInstance = getInstance('constitutionVoting');
 export const getConstitutionInstance = getInstance('constitution');
 
-export const getSavingInstance = getInstance('saving', 'QUSD');
-export const getStableCoinInstance = getInstance('stableCoin', 'QUSD');
-export const getBorrowingCoreInstance = getInstance('borrowingCore', 'QUSD');
-export const getSystemBalanceInstance = getInstance('systemBalance', 'QUSD');
+export const getSavingInstance = getInstanceWithAsset('saving');
+export const getStableCoinInstance = getInstanceWithAsset('stableCoin');
+export const getBorrowingCoreInstance = getInstanceWithAsset('borrowingCore');
+export const getSystemBalanceInstance = getInstanceWithAsset('systemBalance');
+
 export const getSystemDebtAuctionInstance = getInstance('systemDebtAuction', 'QUSD');
 export const getLiquidationAuctionInstance = getInstance('liquidationAuction', 'QUSD');
 export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuction', 'QUSD');
@@ -101,10 +116,11 @@ export const getEprsMembershipVotingInstance = getInstance('eprsMembershipVoting
 export const getEprsParametersVotingInstance = getInstance('eprsParametersVoting');
 
 let validatorMetricsInstance: ValidatorMetrics | null = null;
-let compoundRateKeeperSavingInstance: CompoundRateKeeperInstance | null = null;
 let compoundRateKeeperQVaultInstance: CompoundRateKeeperInstance | null = null;
 let indexerInstance: Indexer | null = null;
 let rewardKPIInstance: RewardKPI | null = null;
+const borrowingInstances: Record<string, ERC20Instance> = {};
+const compoundRateKeeperSavingInstances: Record<string, CompoundRateKeeperInstance> = {};
 
 export function getRewardKPIInstance () {
   if (!currentProvider) {
@@ -118,13 +134,14 @@ export function getRewardKPIInstance () {
   return rewardKPIInstance;
 }
 
-export async function getCompoundRateKeeperSavingInstance () {
-  if (!compoundRateKeeperSavingInstance) {
-    const contract = await getSavingInstance();
-    compoundRateKeeperSavingInstance = await contract.getCompoundRateKeeper();
+export async function getCompoundRateKeeperSavingInstance (asset: StablecoinAsset) {
+  if (!compoundRateKeeperSavingInstances[asset]) {
+    const contract = await getSavingInstance(asset);
+    compoundRateKeeperSavingInstances[asset] = await contract.getCompoundRateKeeper();
   }
-  return compoundRateKeeperSavingInstance;
+  return compoundRateKeeperSavingInstances[asset];
 }
+
 export async function getCompoundRateKeeperQVaultInstance () {
   if (!compoundRateKeeperQVaultInstance) {
     const contract = await getQVaultInstance();
@@ -149,15 +166,15 @@ export const getIndexerInstance = (indexerUrl = networkConfigsMap.testnet.indexe
 
 const compoundRateBorrowingInstances: Record<string, ContractValue> = {};
 
-export async function getCompoundRateBorrowingInstance (asset: Asset) {
-  if (!compoundRateBorrowingInstances[asset]) {
-    const borrowingCoreInstance = await getBorrowingCoreInstance();
-    compoundRateBorrowingInstances[asset] = await borrowingCoreInstance.getCompoundRateKeeper(asset);
-  }
-  return compoundRateBorrowingInstances[asset];
-}
+export async function getCompoundRateBorrowingInstance (asset: Asset, stablecoinAsset: StablecoinAsset) {
+  const assetPair = `${asset}-${stablecoinAsset}`;
 
-const borrowingInstances: Record<string, ERC20Instance> = {};
+  if (!compoundRateBorrowingInstances[assetPair]) {
+    const borrowingCoreInstance = await getBorrowingCoreInstance(stablecoinAsset);
+    compoundRateBorrowingInstances[assetPair] = await borrowingCoreInstance.getCompoundRateKeeper(asset);
+  }
+  return compoundRateBorrowingInstances[assetPair];
+}
 
 export async function getBorrowingInstance (asset: Asset) {
   if (!currentProvider) {

@@ -21,7 +21,7 @@ function Dashboard () {
         <Tokenomics />
       </TabRoute>
 
-      <TabRoute exact path={RoutePaths.dashboardSavingBorrowing}>
+      <TabRoute exact path={RoutePaths.dashboardSavingBorrowingTab}>
         <SavingBorrowing />
       </TabRoute>
 

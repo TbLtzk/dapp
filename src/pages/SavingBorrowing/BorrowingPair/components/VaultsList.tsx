@@ -5,13 +5,18 @@ import { useHistory } from 'react-router';
 import { Illustration, media, Modal, SegmentedButton } from '@q-dev/q-ui-kit';
 import { fillArray } from '@q-dev/utils';
 import styled from 'styled-components';
-import { Asset, VaultWithId } from 'typings/defi';
+import { Asset, StablecoinAsset, VaultWithId } from 'typings/defi';
 
 import ManageVault from './ManageVault';
 import VaultCard from './VaultCard';
 import VaultCardSkeleton from './VaultCardSkeleton';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
+
+interface Props {
+  collateral: Asset;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledWrapper = styled.div`
   .vaults-list-title {
@@ -41,10 +46,10 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function VaultsList ({ asset }: { asset: Asset }) {
+function VaultsList ({ collateral, stablecoin }: Props) {
   const { t } = useTranslation();
   const history = useHistory();
-  const { borrowingVaults, borrowingVaultsLoading } = useBorrowingVaults();
+  const { borrowingVaults, borrowingVaultsLoading } = useBorrowingVaults(stablecoin);
 
   const [filter, setFilter] = useState<'all' | 'active'>('all');
   const [modalOpen, setModalOpen] = useState(false);
@@ -63,7 +68,7 @@ function VaultsList ({ asset }: { asset: Asset }) {
   };
 
   const vaults = borrowingVaults
-    .filter(vault => vault.colKey === asset)
+    .filter(vault => vault.colKey === collateral)
     .filter(vault => filter === 'all' || !vault.isLiquidated);
 
   return (
@@ -98,6 +103,7 @@ function VaultsList ({ asset }: { asset: Asset }) {
                 <VaultCard
                   key={vault.id}
                   vault={vault}
+                  stablecoin={stablecoin}
                   onManageClick={handleOpenModal}
                 />
               ))
@@ -111,7 +117,7 @@ function VaultsList ({ asset }: { asset: Asset }) {
         title={t('VAULT_NUMBER', { id: selectedVault?.id })}
         onClose={handleCloseModal}
       >
-        {selectedVault && <ManageVault vault={selectedVault} />}
+        {selectedVault && <ManageVault vault={selectedVault} stablecoin={stablecoin} />}
       </Modal>
     </StyledWrapper>
   );

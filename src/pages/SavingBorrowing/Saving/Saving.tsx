@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import SavingsTable from './components/SavingsTable';
 import StableCoinBalance from './components/StableCoinBalance';
 import SystemBalance from './components/SystemBalance';
-import TotalSavingBalance from './components/TotalSaving';
-import TotalSupply from './components/TotalSupply';
 
 import { useSavingAssets } from 'store/saving/hooks';
 
@@ -32,19 +32,22 @@ const StyledWrapper = styled.div`
 `;
 
 function Saving () {
-  const { getSavingAssets } = useSavingAssets();
+  const { loadSavingAssets } = useSavingAssets();
+  const { stablecoins } = useNetworkConfig();
 
   useEffect(() => {
-    getSavingAssets();
+    loadSavingAssets();
   }, []);
 
   return (
     <StyledWrapper>
       <div className="saving-overview">
-        <StableCoinBalance />
-        <TotalSavingBalance />
-        <TotalSupply />
-        <SystemBalance />
+        {stablecoins.map((asset) => (
+          <Fragment key={asset}>
+            <StableCoinBalance asset={asset} />
+            <SystemBalance asset={asset} />
+          </Fragment>
+        ))}
       </div>
 
       <SavingsTable />

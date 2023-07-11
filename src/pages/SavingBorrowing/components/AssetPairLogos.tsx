@@ -2,7 +2,7 @@
 import { HTMLAttributes } from 'react';
 
 import styled from 'styled-components';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import AssetLogo from 'components/AssetLogo';
 
@@ -35,7 +35,7 @@ const StyledWrapper = styled.div`
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   collateral: Asset;
-  borrowing: 'QUSD';
+  borrowing: StablecoinAsset;
 }
 
 function AssetPairLogos ({ collateral, borrowing, ...rest }: Props) {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { BorrowAssetsRateAndFee } from 'typings/defi';
+import { BorrowAssetsRateAndFee, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 
@@ -13,6 +13,11 @@ import { useTransaction } from 'store/transaction/hooks';
 import { getBorrowingCompoundRateLastUpdate } from 'contracts/helpers/borrowing-core';
 
 import { formatDate, formatDateRelative } from 'utils/date';
+
+interface Props {
+  rate: BorrowAssetsRateAndFee;
+  stablecoinAsset: StablecoinAsset;
+}
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -30,7 +35,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
+function InterestRateBlock ({ rate, stablecoinAsset }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { updateBorrowingCompoundRate } = useBorrowing();
@@ -41,7 +46,7 @@ function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
   const [debtRefreshLoading, setDebtRefreshLoading] = useState(false);
 
   useInterval(() => {
-    getBorrowingCompoundRateLastUpdate(rate.asset).then(setTimeSinceOutstandingDebt);
+    getBorrowingCompoundRateLastUpdate(rate.asset, stablecoinAsset).then(setTimeSinceOutstandingDebt);
   }, 50000, { disabled: debtRefreshLoading, immediate: true });
 
   const handleRefreshDebt = async () => {
@@ -49,17 +54,17 @@ function InterestRateBlock ({ rate }: { rate: BorrowAssetsRateAndFee }) {
     await submitTransaction({
       successMessage: t('TIME_SINCE_LAST_REFRESH_TX'),
       isClosedModal: true,
-      submitFn: () => updateBorrowingCompoundRate(rate.asset)
+      submitFn: () => updateBorrowingCompoundRate(rate.asset, stablecoinAsset)
     });
 
-    const updatedTime = await getBorrowingCompoundRateLastUpdate(rate.asset);
+    const updatedTime = await getBorrowingCompoundRateLastUpdate(rate.asset, stablecoinAsset);
     setTimeSinceOutstandingDebt(updatedTime);
     setDebtRefreshLoading(false);
   };
 
   return (
     <StyledWrapper className="block">
-      <p className="text-h3">QUSD - {rate.asset}</p>
+      <p className="text-h3">{stablecoinAsset} - {rate.asset}</p>
 
       <div>
         <p ref={interestRateRef} className="text-xl font-semibold" />

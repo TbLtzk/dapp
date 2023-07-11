@@ -1,65 +1,59 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { media } from '@q-dev/q-ui-kit';
-import styled from 'styled-components';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import PageLayout from 'components/PageLayout';
+import Tabs from 'components/Tabs';
+import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import DashboardLink from '../components/DashboardLink';
 
-import BalanceOverview from './components/BalanceOverview';
-import InterestRateBlock from './components/InterestRateBlock';
+import StablecoinAssetTab from './components/StablecoinAssetTab';
 
-import { useInterestRates } from 'store/borrowing/hooks';
-
-const StyledWrapper = styled.div`
-  .saving-borrowing__main {
-    display: grid;
-    gap: 24px;
-
-    ${media.lessThan('medium')} {
-      gap: 16px;
-    }
-  }
-
-  .saving-borrowing-rates {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-
-    ${media.lessThan('medium')} {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-  }
-`;
+import { RoutePaths } from 'constants/routes';
 
 function SavingBorrowing () {
+  const { replace } = useHistory();
+  const { pathname } = useLocation();
   const { t } = useTranslation();
-  const { collaterals } = useNetworkConfig();
-  const { interestRates, getInterestRates } = useInterestRates();
+  const { stablecoins } = useNetworkConfig();
+
+  const tabs = useMemo(() => stablecoins.map((item) => ({
+    id: item,
+    label: item,
+    link: RoutePaths.dashboardSavingBorrowing + '/' + item
+  })), [stablecoins]);
 
   useEffect(() => {
-    getInterestRates(collaterals);
+    if (!tabs.some(({ link }) => pathname === link)) {
+      replace(tabs[0].link);
+    }
   }, []);
 
   return (
-    <StyledWrapper>
+    <div>
       <DashboardLink />
       <PageLayout title={t('SAVING_BORROWING')}>
-        <div className="saving-borrowing__main">
-          <BalanceOverview />
-          <div className="saving-borrowing-rates">
-            {interestRates.map(rate => (
-              <InterestRateBlock key={rate.asset} rate={rate}/>
+        <Tabs tabs={tabs} />
+
+        <TabSwitch>
+          <>
+            {tabs.map((item) => (
+              <TabRoute
+                key={item.id}
+                exact
+                path={item.link}
+              >
+                <StablecoinAssetTab stablecoinAsset={item.id} />
+              </TabRoute>
             ))}
-          </div>
-        </div>
+          </>
+        </TabSwitch>
+
       </PageLayout>
-    </StyledWrapper>
+    </div>
   );
 }
 

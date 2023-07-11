@@ -1,6 +1,7 @@
 import { SavingBalanceDetails } from '@q-dev/q-js-sdk';
 import { calculateInterestRate } from '@q-dev/utils';
 import { ErrorHandler, requestAddErc20 } from 'helpers';
+import { StablecoinAsset } from 'typings/defi';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
@@ -17,9 +18,9 @@ export function getSavingBalanceDetailsHelper (balanceDetails: SavingBalanceDeta
   };
 }
 
-export async function addQUSDTokenToWallet () {
+export async function addStablecoinToWallet (asset: StablecoinAsset) {
   try {
-    const contract = await getStableCoinInstance();
+    const contract = await getStableCoinInstance(asset);
     const [decimals, symbol] = await Promise.all([
       contract.decimals(),
       contract.symbol(),

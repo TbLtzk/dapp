@@ -4,16 +4,22 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { formatAsset, formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
-import { Asset, VaultWithId } from 'typings/defi';
+import { Asset, StablecoinAsset, VaultWithId } from 'typings/defi';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useManageVaultContext } from './ManageVaultContext';
+
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { amount, required } from 'utils/validators';
+
+interface Props {
+  vault: VaultWithId;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledForm = styled.form`
   display: grid;
@@ -38,12 +44,12 @@ const StyledForm = styled.form`
   }
 `;
 
-function DepositForm ({ vault }: { vault: VaultWithId }) {
+function DepositForm ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { getCollateralBalance } = useBorrowing();
-  const { getBorrowingVaults } = useBorrowingVaults();
+  const { loadCollateralBalance } = useBorrowing();
+  const { loadBorrowingVaults } = useBorrowingVaults(stablecoin);
 
   const {
     allowanceDeposit,
@@ -51,7 +57,7 @@ function DepositForm ({ vault }: { vault: VaultWithId }) {
     approveBorrowing,
     depositCollateral,
     getBorrowingAllowance
-  } = useBorrowAssets();
+  } = useManageVaultContext();
   const { collateralDetails, borrowingDetails } = borrowVault;
 
   const form = useForm({
@@ -71,8 +77,8 @@ function DepositForm ({ vault }: { vault: VaultWithId }) {
             borrowType: 'deposit',
             asset: vault.colKey as Asset,
           });
-          getCollateralBalance(vault.colKey as Asset);
-          getBorrowingVaults();
+          loadCollateralBalance(vault.colKey as Asset);
+          loadBorrowingVaults();
         },
       });
     }

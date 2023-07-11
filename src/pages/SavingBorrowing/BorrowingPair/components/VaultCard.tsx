@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon, Progress, Tooltip } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
-import { BorrowingVault } from 'typings/defi';
+import { BorrowingVault, StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 
@@ -37,9 +37,10 @@ const StyledWrapper = styled.div`
 interface Props {
   vault: BorrowingVault;
   onManageClick: (vault: BorrowingVault) => void;
+  stablecoin: StablecoinAsset;
 }
 
-function VaultCard ({ vault, onManageClick }: Props) {
+function VaultCard ({ vault, onManageClick, stablecoin }: Props) {
   const { t } = useTranslation();
 
   const LIQUIDATION_WARN_THRESHOLD = 0.9;
@@ -81,7 +82,7 @@ function VaultCard ({ vault, onManageClick }: Props) {
           </span>
 
           <span className="text-md font-semibold">
-            {formatAsset(vault.outstandingDebt, 'QUSD')} / {formatAsset(vault.borrowingLimit, 'QUSD')}
+            {formatAsset(vault.outstandingDebt, stablecoin)} / {formatAsset(vault.borrowingLimit, stablecoin)}
           </span>
         </p>
         <Progress value={Number(vault.outstandingDebt)} max={Number(vault.borrowingLimit)} />
@@ -90,7 +91,7 @@ function VaultCard ({ vault, onManageClick }: Props) {
           {' '}
           <span>{formatAsset(vault.lockedCollateral, vault.colKey)}</span>
           {' '}
-          <span className="font-light">≈ {formatAsset(evaluatedCollateral, 'QUSD')}</span>
+          <span className="font-light">≈ {formatAsset(evaluatedCollateral, stablecoin)}</span>
         </p>
       </div>
     </StyledWrapper>

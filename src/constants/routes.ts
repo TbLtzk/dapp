@@ -2,6 +2,7 @@ export enum RoutePaths {
   dashboard = '/',
   dashboardTokenomics = '/dashboard/tokenomics',
   dashboardSavingBorrowing = '/dashboard/saving-borrowing',
+  dashboardSavingBorrowingTab = '/dashboard/saving-borrowing/:tab?',
   dahboardRootNodesMonitoring = '/dashboard/root-nodes-monitoring',
   dashboardValidatorsMonitoring = '/dashboard/validators-monitoring',
 

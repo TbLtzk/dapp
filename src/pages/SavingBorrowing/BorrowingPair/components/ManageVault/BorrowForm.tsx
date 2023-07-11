@@ -5,12 +5,13 @@ import { useForm } from '@q-dev/form-hooks';
 import { formatAsset, formatNumber, formatPercent } from '@q-dev/utils';
 import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
-import { VaultWithId } from 'typings/defi';
+import { StablecoinAsset, VaultWithId } from 'typings/defi';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { useBorrowAssets } from 'store/borrow-assets/hooks';
+import { useManageVaultContext } from './ManageVaultContext';
+
 import { useBorrowingVaults } from 'store/borrowing/hooks';
 import { useSaving } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
@@ -19,6 +20,11 @@ import { getEpdrParametersInstance } from 'contracts/contract-instance';
 
 import { amount, min, required } from 'utils/validators';
 import { fromWei } from 'utils/web3';
+
+interface Props {
+  vault: VaultWithId;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledForm = styled.form`
   display: grid;
@@ -43,13 +49,13 @@ const StyledForm = styled.form`
   }
 `;
 
-function BorrowForm ({ vault }: { vault: VaultWithId }) {
+function BorrowForm ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { getSavingAvailableToDeposit } = useSaving();
-  const { getBorrowingVaults } = useBorrowingVaults();
-  const { borrowVault, borrowAsset } = useBorrowAssets();
+  const { loadSavingAvailableToDeposit } = useSaving(stablecoin);
+  const { loadBorrowingVaults } = useBorrowingVaults(stablecoin);
+  const { borrowVault, borrowAsset } = useManageVaultContext();
 
   const [minAmount, setMinAmount] = useState('0');
 
@@ -62,8 +68,8 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
         submitFn: () => borrowAsset({ amount, vaultId: vault.id }),
         onSuccess: () => {
           form.reset();
-          getSavingAvailableToDeposit();
-          getBorrowingVaults();
+          loadSavingAvailableToDeposit();
+          loadBorrowingVaults();
         },
       });
     }
@@ -76,7 +82,7 @@ function BorrowForm ({ vault }: { vault: VaultWithId }) {
   const loadMinAmount = async () => {
     try {
       const contract = await getEpdrParametersInstance();
-      const rawStep = await contract.getUint('governed.EPDR.QUSD_step');
+      const rawStep = await contract.getUint(`governed.EPDR.${stablecoin}_step`);
       setMinAmount(fromWei(rawStep.toString()));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

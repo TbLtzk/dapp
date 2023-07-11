@@ -1,6 +1,6 @@
 import { calculateInterestRate } from '@q-dev/utils';
 import { ErrorHandler, requestAddErc20 } from 'helpers';
-import { Asset, BorrowAssetsRateAndFee } from 'typings/defi';
+import { Asset, BorrowAssetsRateAndFee, StablecoinAsset } from 'typings/defi';
 
 import {
   getBorrowingInstance,
@@ -11,11 +11,14 @@ import {
 
 import { unixToDate } from 'utils/date';
 
-export async function getBorrowAssetRateAndFee (asset: Asset): Promise<BorrowAssetsRateAndFee> {
+export async function getBorrowAssetRateAndFee (
+  asset: Asset,
+  stablecoinAsset: StablecoinAsset
+): Promise<BorrowAssetsRateAndFee> {
   const contract = await getEpdrParametersInstance();
   let interestRate = '0';
   try {
-    interestRate = await contract.getUint(`governed.EPDR.${asset}_QUSD_interestRate`);
+    interestRate = await contract.getUint(`governed.EPDR.${asset}_${stablecoinAsset}_interestRate`);
   } catch (error) {
     ErrorHandler.processWithoutFeedback(error);
   }
@@ -45,9 +48,9 @@ export async function addBorrowTokenToWallet (asset: Asset) {
   }
 }
 
-export async function getSavingCompoundRateLastUpdate () {
+export async function getSavingCompoundRateLastUpdate (stablecoinAsset: StablecoinAsset) {
   try {
-    const contract = await getCompoundRateKeeperSavingInstance();
+    const contract = await getCompoundRateKeeperSavingInstance(stablecoinAsset);
     const lastUpdate = await contract.getLastUpdate();
     return unixToDate(lastUpdate);
   } catch (error) {
@@ -56,9 +59,9 @@ export async function getSavingCompoundRateLastUpdate () {
   }
 }
 
-export async function getBorrowingCompoundRateLastUpdate (asset: Asset) {
+export async function getBorrowingCompoundRateLastUpdate (asset: Asset, stablecoinAsset: StablecoinAsset) {
   try {
-    const contract = await getCompoundRateBorrowingInstance(asset);
+    const contract = await getCompoundRateBorrowingInstance(asset, stablecoinAsset);
     const lastUpdate = await contract.getLastUpdate();
     return unixToDate(lastUpdate);
   } catch (error) {

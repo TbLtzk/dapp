@@ -1,5 +1,7 @@
 import mitt, { Emitter, EventType } from 'mitt';
 
+import type { AllowanceArg } from 'pages/SavingBorrowing/BorrowingPair/components/ManageVault/ManageVaultContext';
+
 export type NotificationObjectPayload = {
   title?: string;
   message: string;
@@ -12,6 +14,9 @@ enum EVENTS {
   success = 'success',
   info = 'info',
   default = 'default',
+
+  updateBorrowingAllowance = 'updateBorrowingAllowance',
+  updateBorrowingVault = 'updateBorrowingVault'
 }
 
 export class EventBus {
@@ -59,6 +64,14 @@ export class EventBus {
 
   info (payload: string | NotificationObjectPayload): void {
     this.emit(this.eventList.info, payload);
+  }
+
+  updateBorrowingAllowance (payload: AllowanceArg): void {
+    this.emit(this.eventList.updateBorrowingAllowance, payload);
+  }
+
+  updateBorrowingVault (payload: number): void {
+    this.emit(this.eventList.updateBorrowingVault, payload);
   }
 }
 

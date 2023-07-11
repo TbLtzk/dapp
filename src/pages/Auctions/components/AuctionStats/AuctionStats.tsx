@@ -10,7 +10,7 @@ import { AuctionStatsContainer } from './styles';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useSaving } from 'store/saving/hooks';
-import { useSystemBalance } from 'store/system-balance/hooks';
+import { useSystemAssetBalance, useSystemBalance } from 'store/system-balance/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
@@ -26,19 +26,22 @@ function AuctionStats () {
     loadVaultBalance,
   } = useQVault();
 
-  const { savingAvailableToDeposit, getSavingAvailableToDeposit } = useSaving();
+  const { savingAvailableToDeposit, loadSavingAvailableToDeposit } = useSaving('QUSD');
   const {
     systemBalance,
     systemBalanceDebt,
     systemBalanceSurplus,
+    loadSystemBalance,
+    loadSystemBalanceDebt,
+    loadSystemBalanceSurplus,
+    performNetting
+  } = useSystemAssetBalance('QUSD');
+
+  const {
     systemReserveAvailableAmount,
     systemReserveBalance,
-    getSystemBalance,
-    getSystemBalanceDebt,
-    getSystemBalanceSurplus,
-    getSystemReserveBalance,
-    getSystemReserveAvailableAmount,
-    performNetting
+    loadSystemReserveBalance,
+    loadSystemReserveAvailableAmount,
   } = useSystemBalance();
 
   const [surplusLot, setSurplusLot] = useState<string | number>('0');
@@ -60,12 +63,12 @@ function AuctionStats () {
   useEffect(() => {
     loadWalletBalance();
     loadVaultBalance();
-    getSavingAvailableToDeposit();
-    getSystemBalance();
-    getSystemBalanceDebt();
-    getSystemBalanceSurplus();
-    getSystemReserveBalance();
-    getSystemReserveAvailableAmount();
+    loadSavingAvailableToDeposit();
+    loadSystemBalance();
+    loadSystemBalanceDebt();
+    loadSystemBalanceSurplus();
+    loadSystemReserveBalance();
+    loadSystemReserveAvailableAmount();
 
     return () => {
       setSurplusLot('0');
@@ -83,7 +86,7 @@ function AuctionStats () {
       value: formatAsset(vaultBalance, 'Q'),
     },
     {
-      title: t('QUSD_BALANCE'),
+      title: t('ASSET_BALANCE', { asset: 'QUSD' }),
       value: formatAsset(savingAvailableToDeposit, 'QUSD'),
     },
   ];
@@ -153,7 +156,9 @@ function AuctionStats () {
 
       <StatsContainer className="block">
         <div className="stats-head">
-          <h2 className="text-h2">{t('QUSD_SYSTEM_BALANCE')}</h2>
+          <h2 className="text-h2">
+            {t('ASSET_SYSTEM_BALANCE', { asset: 'QUSD' })}
+          </h2>
         </div>
         <div>
           {auctionStats2.map(({ title, value }) => (

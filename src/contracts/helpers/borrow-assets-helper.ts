@@ -1,17 +1,21 @@
 import { VaultStats } from '@q-dev/q-js-sdk';
 import { calculateInterestRate } from '@q-dev/utils';
-import { Asset, VaultData } from 'typings/defi';
+import { Asset, StablecoinAsset, VaultData } from 'typings/defi';
 
 import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 
 import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
 import { fromWei } from 'utils/web3';
 
-export async function prepareVaultdata (vaultStats: VaultStats, userAddress: string): Promise<VaultData> {
+export async function prepareVaultdata (
+  stablecoinAsset: StablecoinAsset,
+  vaultStats: VaultStats,
+  userAddress: string
+): Promise<VaultData> {
   const collateralAsset = vaultStats.colStats.key as Asset;
   const [borrowingInstance, stableCoinInstance] = await Promise.all([
     getBorrowingInstance(collateralAsset),
-    getStableCoinInstance(),
+    getStableCoinInstance(stablecoinAsset),
   ]);
 
   const [decimals, stableCoinBalance, borrowingBalance] = await Promise.all([

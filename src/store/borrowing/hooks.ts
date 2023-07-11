@@ -3,13 +3,12 @@ import { useDispatch } from 'react-redux';
 
 import { toBigNumber } from '@q-dev/utils';
 import { ErrorHandler } from 'helpers';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import {
   setAssetInfo,
   setBorrowingFee,
   setBorrowingVaults,
-  setBorrowingVaultsError,
   setCollateralBalance,
   setInterestRates,
 } from './reducer';
@@ -31,12 +30,12 @@ export function useBorrowing () {
     return assets[asset].info;
   }
 
-  function getCollateralBalanceByAsset (asset: Asset) {
+  function getCollateralBalance (asset: Asset) {
     return assets[asset].collateralBalance;
   }
 
-  function getBorrowingFeeByAsset (asset: Asset) {
-    return assets[asset].borrowingFee;
+  function getBorrowingFee (asset: Asset, stablecoinAsset: StablecoinAsset) {
+    return assets[asset].borrowingFee[stablecoinAsset];
   }
 
   async function loadAssetInfo (asset: Asset) {
@@ -56,7 +55,7 @@ export function useBorrowing () {
     }
   }
 
-  async function getCollateralBalance (asset: Asset) {
+  async function loadCollateralBalance (asset: Asset) {
     try {
       const borrowingInstance = await getBorrowingInstance(asset);
       const balance = await borrowingInstance.balanceOf(getUserAddress());
@@ -66,42 +65,42 @@ export function useBorrowing () {
     }
   }
 
-  async function getBorrowingFee (asset: Asset) {
+  async function loadBorrowingFee (asset: Asset, stablecoinAsset: StablecoinAsset) {
     try {
-      const { borrowingFee } = await getBorrowAssetRateAndFee(asset);
-      dispatch(setBorrowingFee({ asset, borrowingFee }));
+      const { borrowingFee } = await getBorrowAssetRateAndFee(asset, stablecoinAsset);
+      dispatch(setBorrowingFee({ asset, stablecoinAsset, borrowingFee }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
   }
 
-  async function updateBorrowingCompoundRate (asset: Asset) {
-    const contract = await getBorrowingCoreInstance();
+  async function updateBorrowingCompoundRate (asset: Asset, stablecoinAsset: StablecoinAsset) {
+    const contract = await getBorrowingCoreInstance(stablecoinAsset);
     return contract.updateCompoundRate(asset, { from: getUserAddress() });
   }
 
   return {
     getAssetInfo,
-    getCollateralBalanceByAsset,
-    getBorrowingFeeByAsset,
+    getCollateralBalance,
+    getBorrowingFee,
 
     loadAssetInfo: useCallback(loadAssetInfo, []),
-    getCollateralBalance: useCallback(getCollateralBalance, []),
-    getBorrowingFee: useCallback(getBorrowingFee, []),
+    loadCollateralBalance: useCallback(loadCollateralBalance, []),
+    loadBorrowingFee: useCallback(loadBorrowingFee, []),
     updateBorrowingCompoundRate: useCallback(updateBorrowingCompoundRate, [])
   };
 }
 
-export function useInterestRates () {
+export function useInterestRates (asset: StablecoinAsset) {
   const dispatch = useDispatch();
 
-  const interestRates = useAppSelector(({ borrowing }) => borrowing.interestRates);
-  const interestRatesLoading = useAppSelector(({ borrowing }) => borrowing.interestRatesLoading);
+  const interestRates = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].interestRates);
+  const interestRatesLoading = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].interestRatesLoading);
 
-  async function getInterestRates (collaterals: Asset[]) {
+  async function loadInterestRates (collaterals: Asset[]) {
     try {
       const userAddress = getUserAddress();
-      const contract = await getBorrowingCoreInstance();
+      const contract = await getBorrowingCoreInstance(asset);
       const vaults = await contract.getAllUserVaults(userAddress);
 
       const debts = await Promise.all(
@@ -112,7 +111,7 @@ export function useInterestRates () {
       );
 
       const interestRates = await Promise.all(
-        collaterals.map(getBorrowAssetRateAndFee)
+        collaterals.map((item) => getBorrowAssetRateAndFee(item, asset))
       );
 
       const rates = interestRates.map(item => ({
@@ -123,7 +122,7 @@ export function useInterestRates () {
           .toString()
       }));
 
-      dispatch(setInterestRates(rates));
+      dispatch(setInterestRates({ stablecoinAsset: asset, rates }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
@@ -132,26 +131,27 @@ export function useInterestRates () {
   return {
     interestRates,
     interestRatesLoading,
-    getInterestRates: useCallback(getInterestRates, []),
+    loadInterestRates: useCallback(loadInterestRates, [asset]),
   };
 }
 
-export function useBorrowingVaults () {
+export function useBorrowingVaults (asset: StablecoinAsset) {
   const dispatch = useDispatch();
 
-  const borrowingVaults = useAppSelector(({ borrowing }) => borrowing.borrowingVaults);
-  const borrowingVaultsLoading = useAppSelector(({ borrowing }) => borrowing.borrowingVaultsLoading);
-  const borrowingVaultsError = useAppSelector(({ borrowing }) => borrowing.borrowingVaultsError);
+  const borrowingVaults = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].borrowingVaults);
+  const borrowingVaultsLoading = useAppSelector(({ borrowing }) =>
+    borrowing.stablecoinMap[asset].borrowingVaultsLoading
+  );
 
-  async function getBorrowingVaults () {
+  async function loadBorrowingVaults () {
     try {
-      const contract = await getBorrowingCoreInstance();
+      const contract = await getBorrowingCoreInstance(asset);
       const allUserVaults = await contract.getAllUserVaults(getUserAddress());
       const vaultsWithId = allUserVaults.map((vault, id) => ({ ...vault, id }));
 
       const vaults = await Promise.all(vaultsWithId.map(async (vault) => {
         const vaultStats = await contract.getVaultStats(getUserAddress(), vault.id);
-        const borrowVault = await prepareVaultdata(vaultStats, getUserAddress());
+        const borrowVault = await prepareVaultdata(asset, vaultStats, getUserAddress());
         return {
           ...vault,
           assetPrice: borrowVault.collateralDetails.assetPrice,
@@ -160,21 +160,20 @@ export function useBorrowingVaults () {
           lockedCollateral: borrowVault.collateralDetails.lockedCollateral,
         };
       }));
-      dispatch(setBorrowingVaults(vaults));
+      dispatch(setBorrowingVaults({ stablecoinAsset: asset, vaults }));
     } catch (error) {
-      dispatch(setBorrowingVaultsError(error));
       ErrorHandler.processWithoutFeedback(error);
     }
   }
 
-  async function createVault (asset: Asset) {
-    const contract = await getBorrowingCoreInstance();
-    const tx = await contract.createVault(asset, { from: getUserAddress() });
+  async function createVault (borrowingAsset: Asset) {
+    const contract = await getBorrowingCoreInstance(asset);
+    const tx = await contract.createVault(borrowingAsset, { from: getUserAddress() });
 
     return {
       tx,
       onSuccess: () => {
-        getBorrowingVaults();
+        loadBorrowingVaults();
       }
     };
   }
@@ -182,9 +181,8 @@ export function useBorrowingVaults () {
   return {
     borrowingVaults,
     borrowingVaultsLoading,
-    borrowingVaultsError,
 
-    getBorrowingVaults: useCallback(getBorrowingVaults, []),
-    createVault: useCallback(createVault, []),
+    loadBorrowingVaults: useCallback(loadBorrowingVaults, [asset]),
+    createVault: useCallback(createVault, [asset]),
   };
 }

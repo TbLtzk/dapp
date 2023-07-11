@@ -62,6 +62,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
         return `${formatNumber(item.value, 2)} ${t('GAS')}`;
       case 'Q':
       case 'QUSD':
+      case 'QEUR':
         return formatAsset(fromWei(item.value), type);
       default:
         return item.value;

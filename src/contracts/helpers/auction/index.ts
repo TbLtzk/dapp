@@ -93,7 +93,7 @@ export const getAuctionStatusState = (status: keyof typeof AuctionStatus) => {
 };
 
 export async function getAllowance (userAddress: string, contractAddress: string, value: string | number) {
-  const stableCoin = await getStableCoinInstance();
+  const stableCoin = await getStableCoinInstance('QUSD');
   const allowance = await stableCoin.allowance(userAddress, contractAddress);
   if (value && Number(allowance) < Number(value)) {
     await stableCoin.approve(contractAddress, MAX_APPROVE_AMOUNT, { from: userAddress });

@@ -24,27 +24,35 @@ const StyledWrapper = styled.div`
 `;
 
 function Borrowing () {
-  const { collaterals } = useNetworkConfig();
-  const {
-    interestRates,
-    interestRatesLoading,
-    getInterestRates
-  } = useInterestRates();
+  const { collaterals, stablecoins } = useNetworkConfig();
+
+  const stablecoinsInterestRates = stablecoins.map((asset) => ({
+    asset: asset,
+    rates: useInterestRates(asset)
+  }));
 
   useEffect(() => {
-    getInterestRates(collaterals);
+    stablecoinsInterestRates.forEach(({ rates: { loadInterestRates } }) => {
+      loadInterestRates(collaterals);
+    });
   }, []);
 
   return (
     <StyledWrapper>
       <div className="borrowing__list">
-        {interestRatesLoading
+        {stablecoinsInterestRates.every(({ rates: { interestRatesLoading } }) => interestRatesLoading)
           ? fillArray(4).map((i) => (
             <AssetCardSkeleton key={i} />
           ))
-          : interestRates.map(rate => (
-            <AssetCard key={rate.asset} rate={rate}/>
-          ))}
+          : stablecoinsInterestRates.map(({ asset, rates }) =>
+            rates.interestRates.map(rate => (
+              <AssetCard
+                key={`${rate.asset}_${asset}`}
+                rate={rate}
+                stablecoinAsset={asset}
+              />
+            ))
+          )}
       </div>
     </StyledWrapper>
   );

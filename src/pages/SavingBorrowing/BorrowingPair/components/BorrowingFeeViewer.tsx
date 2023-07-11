@@ -3,9 +3,14 @@ import { useTranslation } from 'react-i18next';
 
 import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
-import { Asset } from 'typings/defi';
+import { Asset, StablecoinAsset } from 'typings/defi';
 
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';
+
+interface Props {
+  collateral: Asset;
+  stablecoin: StablecoinAsset;
+}
 
 const StyledWrapper = styled.div`
   padding: 24px 24px 16px 24px;
@@ -17,15 +22,15 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function BorrowingFeeViewer ({ asset }: { asset: Asset }) {
+function BorrowingFeeViewer ({ collateral, stablecoin }: Props) {
   const { t } = useTranslation();
-  const { getBorrowingFeeByAsset } = useBorrowing();
-  const borrowingFee = getBorrowingFeeByAsset(asset);
-  const { borrowingVaults } = useBorrowingVaults();
+  const { getBorrowingFee } = useBorrowing();
+  const borrowingFee = getBorrowingFee(collateral, stablecoin);
+  const { borrowingVaults } = useBorrowingVaults(stablecoin);
 
   const borrowingFeeRef = useAnimateNumber(borrowingFee, ' %');
   const activeVaultsCount = borrowingVaults
-    .filter(v => v.colKey === asset && !v.isLiquidated)
+    .filter(v => v.colKey === collateral && !v.isLiquidated)
     .length;
 
   return (
