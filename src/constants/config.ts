@@ -37,7 +37,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.q.org',
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
-    collaterals: ['QBTC'],
+    collaterals: ['QBTC', 'QUSDC', 'QDAI'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true, rootNodesMetrics: false },
   },
