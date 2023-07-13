@@ -40,7 +40,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
     serverConfigUrl: 'https://hq-config.q.org',
-    collaterals: ['QBTC'],
+    collaterals: ['QBTC', 'QUSDC', 'QDAI'],
     stablecoins: ['QUSD'],
     gasBuffer: 1.5,
     featureFlags: { aliases: true, rootNodesMetrics: false },
