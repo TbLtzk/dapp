@@ -93,27 +93,24 @@ const getLiquidationAuctionData = async (auction: LiquidationAuctionInfo) => {
 export async function getLiquidation (auctions: AuctionInfos[], lastBlock: number | string) {
   const instance = await getLiquidationAuctionInstance();
   const auctionsEvents = await getAuctionsEvents(instance, 'liquidation', lastBlock);
-  const allAuctions = await Promise.all(
+  return Promise.all(
     [...auctions, ...auctionsEvents].map((auction) => getLiquidationAuctionData(auction as LiquidationAuctionInfo))
   );
-  return allAuctions;
 }
 
 export async function createLiquidationAuction (form: CreateLiquidationAuction, userAddress: string) {
   const instance = await getLiquidationAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  return await instance.startAuction(form.vaultOwner, form.vaultId, toWei(form.bid), { from: userAddress });
+  return instance.startAuction(form.vaultOwner, form.vaultId, toWei(form.bid), { from: userAddress });
 }
 
 export async function bidForLiquidationAuction (form: LiquidationAuctionBid, userAddress: string) {
   const instance = await getLiquidationAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  const result = await instance.bid(form.vaultOwner, form.vaultId, toWei(String(form.bid)), { from: userAddress });
-  return result;
+  return instance.bid(form.vaultOwner, form.vaultId, toWei(String(form.bid)), { from: userAddress });
 }
 
 export async function executeLiquidationAuction (form: LiquidationAuctionExecute, userAddress: string) {
   const instance = await getLiquidationAuctionInstance();
-  const result = await instance.execute(form.vaultOwner, form.vaultId, { from: userAddress });
-  return result;
+  return instance.execute(form.vaultOwner, form.vaultId, { from: userAddress });
 }

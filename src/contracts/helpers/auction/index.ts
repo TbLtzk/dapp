@@ -14,6 +14,7 @@ import {
 } from 'contracts/contract-instance';
 
 import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
+import { fromWei } from 'utils/web3';
 
 export enum AUCTIONS_TYPES {
   liquidation = 'liquidation',
@@ -93,9 +94,15 @@ export const getAuctionStatusState = (status: keyof typeof AuctionStatus) => {
 };
 
 export async function getAllowance (userAddress: string, contractAddress: string, value: string | number) {
+  if (!value) return;
+
   const stableCoin = await getStableCoinInstance('QUSD');
-  const allowance = await stableCoin.allowance(userAddress, contractAddress);
-  if (value && Number(allowance) < Number(value)) {
+  const [allowance, decimals] = await Promise.all([
+    stableCoin.allowance(userAddress, contractAddress),
+    stableCoin.decimals()
+  ]);
+
+  if (Number(fromWei(allowance, decimals)) < Number(value)) {
     await stableCoin.approve(contractAddress, MAX_APPROVE_AMOUNT, { from: userAddress });
   }
 }

@@ -87,18 +87,16 @@ export async function getOneSystemDebtAuction (auctionId: string | number) {
 export async function createSystemDebtAuction (form: CreateAuction, userAddress: string) {
   const instance = await getSystemDebtAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  return await instance.startAuction(toWei(form.bid), { from: userAddress });
+  return instance.startAuction(toWei(form.bid), { from: userAddress });
 }
 
 export async function bidForSystemDebtAuction (form: AuctionBid, userAddress: string) {
   const instance = await getSystemDebtAuctionInstance();
   await getAllowance(userAddress, instance.address, form.bid);
-  const result = await instance.bid(toWei(String(form.bid)), { from: userAddress });
-  return result;
+  return instance.bid(toWei(String(form.bid)), { from: userAddress });
 }
 
 export async function executeSystemDebtAuction (userAddress: string) {
   const instance = await getSystemDebtAuctionInstance();
-  const result = await instance.execute({ from: userAddress });
-  return result;
+  return instance.execute({ from: userAddress });
 }

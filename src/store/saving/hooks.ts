@@ -41,9 +41,15 @@ export function useSaving (asset: StablecoinAsset) {
     try {
       const stableCoinInstance = await getStableCoinInstance(asset);
       const savingInstance = await getSavingInstance(asset);
-      const allowance = await stableCoinInstance.allowance(getUserAddress(), savingInstance.address);
+      const [allowance, decimals] = await Promise.all([
+        stableCoinInstance.allowance(getUserAddress(), savingInstance.address),
+        stableCoinInstance.decimals()
+      ]);
 
-      dispatch(setAllowance({ asset, allowance }));
+      dispatch(setAllowance({
+        asset,
+        allowance: fromWei(allowance, decimals)
+      }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
