@@ -1,13 +1,27 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { AliasPurpose, L0ListItemStatus } from '@q-dev/q-js-sdk';
+import { AxiosError } from 'axios';
 import { ErrorHandler } from 'helpers';
 import { orderBy, round, sumBy } from 'lodash';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
-import { RootNodeMember, setIsRootNode, setMembers, setMinimumTimeLock, setRootNodeStake, setTotalStake, setWithdrawalInfo } from './reducer';
+import {
+  RootNodeMember,
+  RootNodesOnchainDiffItem,
+  setIsRootNode,
+  setMembers,
+  setMinimumTimeLock,
+  setRootNodesExclusion,
+  setRootNodesL0,
+  setRootNodesOnchainDiffList,
+  setRootNodeStake,
+  setRootOnchainList,
+  setTotalStake,
+  setWithdrawalInfo
+} from './reducer';
 
 import { getState, getUserAddress, useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
@@ -197,5 +211,107 @@ export function useRootNodes () {
     getRootWithdrawalInfo: useCallback(getRootWithdrawalInfo, []),
     getMinimumRootTimeLock: useCallback(getMinimumRootTimeLock, []),
     checkRootNodeMembership: useCallback(checkRootNodeMembership, []),
+  };
+}
+
+export function useRootNodesMonitoring () {
+  const dispatch = useDispatch();
+  const { indexerUrl } = useNetworkConfig();
+
+  const rootNodesOnchainDiffList = useAppSelector(({ rootNodes }) => rootNodes.rootNodesOnchainDiffList);
+  const isRootNodesOnchainDiffListLoading = useAppSelector(
+    ({ rootNodes }) => rootNodes.isRootNodesOnchainDiffListLoading
+  );
+
+  const rootNodesL0Active = useAppSelector(({ rootNodes }) => rootNodes.rootNodesL0.active);
+  const rootNodesL0Proposed = useAppSelector(({ rootNodes }) => rootNodes.rootNodesL0.proposed);
+  const rootNodesExclusionActive = useAppSelector(({ rootNodes }) => rootNodes.rootNodesExclusion.active);
+  const rootNodesExclusionProposed = useAppSelector(({ rootNodes }) => rootNodes.rootNodesExclusion.proposed);
+  const rootNodesOnchainList = useAppSelector(({ rootNodes }) => rootNodes.rootNodesOnchainList);
+
+  async function loadRootNodesOnchainDiffList () {
+    const indexer = getIndexerInstance(indexerUrl);
+    const contract = await getRootNodesInstance();
+    const [rootNodesL0, members] = await Promise.all([
+      indexer.getL0RootList('active'),
+      contract.getMembers()
+    ]);
+
+    const rootNodesOnchainDiffMap = members.reduce((acc, address) => {
+      acc[address] = {
+        address,
+        isOnchain: true,
+        isL0Active: false,
+      };
+      return acc;
+    }, {} as Record<string, RootNodesOnchainDiffItem>);
+
+    rootNodesL0.roots.forEach(({ mainAccount }) => {
+      rootNodesOnchainDiffMap[mainAccount] = {
+        address: mainAccount,
+        isL0Active: true,
+        isOnchain: rootNodesOnchainDiffMap?.[mainAccount]?.isOnchain || false,
+      };
+    });
+
+    dispatch(setRootOnchainList(members));
+    dispatch(setRootNodesL0({ status: 'active', rootNodesL0 }));
+    dispatch(setRootNodesOnchainDiffList(Object.values(rootNodesOnchainDiffMap)));
+  }
+
+  async function loadRootNodesL0 (status: L0ListItemStatus) {
+    try {
+      const indexer = getIndexerInstance(indexerUrl);
+      const rootNodesL0 = await indexer.getL0RootList(status);
+
+      dispatch(setRootNodesL0({ status, rootNodesL0 }));
+    } catch (error) {
+      if ((error as AxiosError)?.response?.status !== 404) throw error;
+
+      dispatch(setRootNodesL0({ status, rootNodesL0: null }));
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadRootNodesExclusion (status: L0ListItemStatus) {
+    try {
+      const indexer = getIndexerInstance(indexerUrl);
+      const rootNodesExclusion = await indexer.getL0ExclusionList(status);
+
+      dispatch(setRootNodesExclusion({ status, rootNodesExclusion }));
+    } catch (error) {
+      if ((error as AxiosError)?.response?.status !== 404) throw error;
+
+      dispatch(setRootNodesExclusion({ status, rootNodesExclusion: null }));
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  function loadRootNodesMonitoringData () {
+    return Promise.all([
+      loadRootNodesOnchainDiffList(),
+      loadRootNodesL0('proposed'),
+      loadRootNodesExclusion('active'),
+      loadRootNodesExclusion('proposed'),
+    ]);
+  }
+
+  return {
+    rootNodesOnchainDiffList,
+    isRootNodesOnchainDiffListLoading,
+    rootNodesL0Active,
+    rootNodesL0Proposed,
+    rootNodesOnchainList,
+    rootNodesExclusionActive,
+    rootNodesExclusionProposed,
+
+    loadRootNodesOnchainDiffList: useCallback(async () => {
+      try {
+        await loadRootNodesOnchainDiffList();
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error);
+      }
+    }, []),
+    loadRootNodesMonitoringData: useCallback(loadRootNodesMonitoringData, []),
   };
 }

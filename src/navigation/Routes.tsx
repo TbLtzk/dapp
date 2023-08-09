@@ -43,7 +43,15 @@ function Routes () {
       <LazyLoading>
         <ScrollToTop />
         <Switch>
-          <Route exact path={['/', '/dashboard/:slug', RoutePaths.dashboardSavingBorrowingTab]}>
+          <Route
+            exact
+            path={[
+              '/',
+              '/dashboard/:slug',
+              RoutePaths.dashboardSavingBorrowingTab,
+              ...(featureFlags.rootNodesMetrics ? [RoutePaths.dashboardRootNodesMonitoringTab] : [])
+            ]}
+          >
             <Dashboard />
           </Route>
 

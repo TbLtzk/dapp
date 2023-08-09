@@ -48,7 +48,7 @@ function TotalRootNodes () {
         </p>
       </div>
 
-      <Link to={RoutePaths.dahboardRootNodesMonitoring}>
+      <Link to={RoutePaths.dashboardRootNodesMonitoring}>
         <Button
           icon
           alwaysEnabled

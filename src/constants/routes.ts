@@ -3,7 +3,9 @@ export enum RoutePaths {
   dashboardTokenomics = '/dashboard/tokenomics',
   dashboardSavingBorrowing = '/dashboard/saving-borrowing',
   dashboardSavingBorrowingTab = '/dashboard/saving-borrowing/:tab?',
-  dahboardRootNodesMonitoring = '/dashboard/root-nodes-monitoring',
+  dashboardRootNodesMonitoring = '/dashboard/root-nodes-monitoring',
+  dashboardRootNodesMonitoringTab = '/dashboard/root-nodes-monitoring/:tab?',
+  dashboardRootNodesMonitoringOnchainActiveDifference = '/dashboard/root-nodes-monitoring/onchain-active-difference',
   dashboardValidatorsMonitoring = '/dashboard/validators-monitoring',
 
   governance = '/governance',
