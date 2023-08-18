@@ -10,6 +10,8 @@ import ScrollToTop from 'components/ScrollToTop';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
+import { useServerConfig } from 'store/server-config/hooks';
+
 import { RoutePaths } from 'constants/routes';
 
 const TimeLocks = lazy(() => import('pages/TimeLocks'));
@@ -37,6 +39,7 @@ const Validator = lazy(() => import('pages/Staking/components/ValidatorStaking/c
 
 function Routes () {
   const { featureFlags } = useNetworkConfig();
+  const { features } = useServerConfig();
 
   return (
     <ErrorBoundary>
@@ -111,28 +114,32 @@ function Routes () {
             <ManageDelegations />
           </Route>
 
-          <Route exact path={RoutePaths.savingBorrowingTab}>
-            <SavingBorrowing />
-          </Route>
+          {features.savingAndBorrowing && (
+            <>
+              <Route exact path={RoutePaths.savingBorrowingTab}>
+                <SavingBorrowing />
+              </Route>
 
-          <Route
-            exact
-            path={RoutePaths.borrowingPair}
-            component={(props: RouteComponentProps<{
-              collateral: Asset;
-              borrow: StablecoinAsset;
-            }>) => (
-              <BorrowingPair {...props} />
-            )}
-          />
+              <Route
+                exact
+                path={RoutePaths.borrowingPair}
+                component={(props: RouteComponentProps<{
+                  collateral: Asset;
+                  borrow: StablecoinAsset;
+                }>) => (
+                  <BorrowingPair {...props} />
+                )}
+              />
 
-          <Route exact path="/auctions/:type?">
-            <Auctions />
-          </Route>
+              <Route exact path="/auctions/:type?">
+                <Auctions />
+              </Route>
 
-          <Route exact path="/auctions/:type/new">
-            <NewAuction />
-          </Route>
+              <Route exact path="/auctions/:type/new">
+                <NewAuction />
+              </Route>
+            </>
+          )}
 
           <Route
             exact

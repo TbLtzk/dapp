@@ -11,6 +11,7 @@ import { useAuctions } from 'store/auctions/hooks';
 import { useProposals } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
+import { useServerConfig } from 'store/server-config/hooks';
 import { useUser } from 'store/user/hooks';
 
 import { initContractRegistryInstance } from 'contracts/contract-instance';
@@ -37,6 +38,7 @@ function AppInitializer ({ children }: { children: ReactElement }) {
   const { getAllProposals } = useProposals();
   const { getAllAuctions } = useAuctions();
   const { checkRootNodeMembership } = useRootNodes();
+  const { loadFeatures } = useServerConfig();
 
   function setGasBuffer () {
     const network = chainIdToNetworkMap[Number(chainId)];
@@ -55,7 +57,12 @@ function AppInitializer ({ children }: { children: ReactElement }) {
     try {
       setGasBuffer();
       initContractRegistryInstance(currentSigner || currentProvider);
-      loadAllBalances();
+
+      await Promise.all([
+        loadAllBalances(),
+        loadFeatures()
+      ]);
+
       getAllProposals();
       getAllAuctions();
       checkRootNodeMembership();

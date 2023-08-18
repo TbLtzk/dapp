@@ -12,6 +12,7 @@ import proposals from './proposals/reducer';
 import qVault from './q-vault/reducer';
 import rootNodes from './root-nodes/reducer';
 import saving from './saving/reducer';
+import serverConfig from './server-config/reducer';
 import systemBalance from './system-balance/reducer';
 import tokenomics from './tokenomics/reducer';
 import transaction from './transaction/reducer';
@@ -36,7 +37,8 @@ export const store = configureStore({
     validationRewards,
     systemBalance,
     parameters,
-    constitution
+    constitution,
+    serverConfig
   },
 });
 

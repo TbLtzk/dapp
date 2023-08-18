@@ -16,12 +16,14 @@ import { SidebarContainer } from './styles';
 
 import { useAuctions } from 'store/auctions/hooks';
 import { useProposals } from 'store/proposals/hooks';
+import { useServerConfig } from 'store/server-config/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
 function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useTranslation();
   const { featureFlags } = useNetworkConfig();
+  const { features } = useServerConfig();
   const { pathname } = useLocation();
 
   const { activeAuctionsCount } = useAuctions();
@@ -79,20 +81,24 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
                 title={t('ACCOUNT_ALIASING')}
               />}
 
-              <SidebarLink
-                exact={false}
-                to={RoutePaths.savingBorrowing}
-                title={t('SAVING_BORROWING')}
-                icon="coins"
-              />
+              {features.savingAndBorrowing && (
+                <>
+                  <SidebarLink
+                    exact={false}
+                    to={RoutePaths.savingBorrowing}
+                    title={t('SAVING_BORROWING')}
+                    icon="coins"
+                  />
 
-              <SidebarLink
-                exact={false}
-                to={RoutePaths.auctions}
-                title={t('DECENTRALIZED_AUCTIONS')}
-                icon="hammer"
-                count={activeAuctionsCount}
-              />
+                  <SidebarLink
+                    exact={false}
+                    to={RoutePaths.auctions}
+                    title={t('DECENTRALIZED_AUCTIONS')}
+                    icon="hammer"
+                    count={activeAuctionsCount}
+                  />
+                </>
+              )}
 
               <SidebarLink
                 exact={false}

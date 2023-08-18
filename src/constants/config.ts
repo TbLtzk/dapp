@@ -16,6 +16,7 @@ interface NetworkConfig {
   qBridgeUrl: string;
   docsUrl: string;
   constitutionUrl: string;
+  serverConfigUrl: string;
   collaterals: Asset[];
   stablecoins: StablecoinAsset[];
   gasBuffer: number;
@@ -38,6 +39,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.q.org',
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
+    serverConfigUrl: 'https://hq-config.q.org',
     collaterals: ['QBTC'],
     stablecoins: ['QUSD'],
     gasBuffer: 1.5,
@@ -55,6 +57,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.qtestnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
+    serverConfigUrl: 'https://hq-config.q.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD'],
     gasBuffer: 2,
@@ -72,6 +75,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     qBridgeUrl: 'https://bridge.qdevnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qdevnet.org',
+    serverConfigUrl: 'https://hq-config.q.org',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD', 'QEUR'],
     gasBuffer: 1.5,
