@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
-import { useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 
 const StyledWrapper = styled.div<{$isActive: boolean}>`
   padding: 24px 24px 16px;
@@ -36,7 +36,7 @@ const StyledWrapper = styled.div<{$isActive: boolean}>`
 function ExclusionProposedBlock () {
   const { t } = useTranslation();
 
-  const { rootNodesExclusionActive, rootNodesExclusionProposed, rootNodesL0Active } = useRootNodesMonitoring();
+  const { rootNodesExclusionActive, rootNodesExclusionProposed, rootNodesL0Active } = useRootNodesMonitoringContext();
 
   const hasExclusionProposedList = Boolean(rootNodesExclusionProposed);
 

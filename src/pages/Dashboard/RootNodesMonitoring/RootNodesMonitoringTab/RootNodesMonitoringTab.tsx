@@ -1,15 +1,14 @@
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media, Spinner } from '@q-dev/q-ui-kit';
-import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 
 import PageLayout from 'components/PageLayout';
 import NotFound from 'pages/NotFound';
 
 import DashboardLink from '../../components/DashboardLink';
+import { useRootNodesMonitoringContext } from '../RootNodesMonitoringContext';
 
 import ExclusionProposedBlock from './components/ExclusionProposedBlock';
 import L0ProposedBlock from './components/L0ProposedBlock';
@@ -17,7 +16,7 @@ import OnchainActiveBlock from './components/OnchainActiveBlock';
 import RecentTransitionBlock from './components/RecentTransitionBlock';
 import RootNodesMonitoringTable from './components/RootNodesMonitoringTable';
 
-import { useRootNodes, useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -46,36 +45,19 @@ const StyledWrapper = styled.div`
 
 function RootNodesMonitoring () {
   const { t } = useTranslation();
-  const { rootMembersLoading, getRootMembers } = useRootNodes();
-  const { loadRootNodesMonitoringData } = useRootNodesMonitoring();
-  const [isMonitoringDataLoading, setIsMonitoringDataLoading] = useState(true);
-  const [isMonitoringDataError, setIsMonitoringDataError] = useState(false);
+  const { isInitiallyLoaded, isLoadingFailed } = useRootNodesMonitoringContext();
+  const { rootMembersLoading } = useRootNodes();
 
-  async function loadMonitoringData () {
-    try {
-      await loadRootNodesMonitoringData();
-    } catch (e) {
-      setIsMonitoringDataError(true);
-      ErrorHandler.processWithoutFeedback(e);
-    }
-    setIsMonitoringDataLoading(false);
+  if (!isInitiallyLoaded && isLoadingFailed) {
+    return <NotFound title={t('ERROR_PLEASE_TRY_AGAIN')} />;
   }
 
-  useEffect(() => {
-    loadMonitoringData();
-    getRootMembers();
-  }, []);
-
-  if (isMonitoringDataLoading || rootMembersLoading) {
+  if (!isInitiallyLoaded || rootMembersLoading) {
     return (
       <CenteredContainer>
         <Spinner size={100} thickness={4} />
       </CenteredContainer>
     );
-  }
-
-  if (isMonitoringDataError) {
-    return <NotFound title={t('ERROR_PLEASE_TRY_AGAIN')} />;
   }
 
   return (

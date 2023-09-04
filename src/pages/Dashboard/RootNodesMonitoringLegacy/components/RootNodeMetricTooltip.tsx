@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { RootNodeMetric } from '@q-dev/q-js-sdk';
+import { OnchainRootNodeMetric } from '@q-dev/q-js-sdk';
 import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import { formatNumber } from '@q-dev/utils';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ const StyledTooltip = styled(Tooltip)`
   }
 `;
 
-function RootNodeMetricTooltip ({ metric }: { metric: RootNodeMetric }) {
+function RootNodeMetricTooltip ({ metric }: { metric: OnchainRootNodeMetric }) {
   const { t } = useTranslation();
 
   return (

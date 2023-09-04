@@ -10,13 +10,15 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
-import { l0ApprovalStatusSortFunc, l0MembershipStatusSortFunc } from '../helpers/table-sorting';
+import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { cosignatureStatusSortFunc, l0ApprovalStatusSortFunc, l0MembershipStatusSortFunc } from '../helpers/table-sorting';
 
+import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
 import RootNodeMetricTooltip from './RootNodeMetricTooltip';
 
-import { useRootNodes, useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateRelative } from 'utils/date';
 
@@ -33,8 +35,9 @@ function RootNodesMonitoringTable () {
     rootNodesL0Active,
     rootNodesL0Proposed,
     rootNodesExclusionActive,
-    rootNodesExclusionProposed
-  } = useRootNodesMonitoring();
+    rootNodesExclusionProposed,
+    latestCosignatureMetrics
+  } = useRootNodesMonitoringContext();
 
   function getL0ApprovalStatus (address: string, isL0Active: boolean): {
     l0ApprovalStatus: L0ApprovalStatus;
@@ -85,10 +88,29 @@ function RootNodesMonitoringTable () {
       : 'not-in-list';
   }
 
+  function getCosignatureStatus (address: string) {
+    const metrics = latestCosignatureMetrics?.byAddress.find(({ mainAccount }) =>
+      mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
+    );
+    if (!metrics) return 'offline';
+    // TODO: change `observedApprovals[0]` after fix endpoint
+    if (metrics.observedApprovals[0].lastObservedApproval.Block === latestCosignatureMetrics?.lastTransitionBlock) {
+      return 'online';
+    }
+    // TODO: change `observedApprovals[0]` after fix endpoint
+    if (metrics.observedApprovals[0].firstObservedApproval.Block ===
+      latestCosignatureMetrics?.firstTransitionBlock) {
+      return 'waiting-approval';
+    }
+
+    return 'offline';
+  }
+
   const rootMembersMonitoring = useMemo(() => {
     return rootMembers.map((rootNode) => {
       const l0MembershipStatus = getL0MembershipStatus(rootNode.address);
       const { l0ApprovalStatus, listsSigned } = getL0ApprovalStatus(rootNode.address, l0MembershipStatus === 'active');
+      const cosignatureStatus = getCosignatureStatus(rootNode.address);
 
       return {
         address: rootNode.address,
@@ -96,6 +118,7 @@ function RootNodesMonitoringTable () {
         alias: rootNode.alias,
         date: rootNode.metric?.attributes.startTime,
         metric: rootNode.metric,
+        cosignatureStatus,
         l0ApprovalStatus,
         listsSigned,
         l0MembershipStatus,
@@ -157,6 +180,16 @@ function RootNodesMonitoringTable () {
       sortFunc: l0ApprovalStatusSortFunc,
       formatter: (cell, row) => (
         <L0ApprovalStatusColumn status={cell} listsSigned={row.listsSigned} />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: '120px' }),
+      dataField: 'cosignatureStatus',
+      text: t('CO_SIGNATURE_STATUS'),
+      sort: true,
+      sortFunc: cosignatureStatusSortFunc,
+      formatter: (cell) => (
+        <CosignatureStatusColumn status={cell} />
       ),
     },
   ];

@@ -23,7 +23,7 @@ const StyledWrapper = styled.p<{$status: L0MembershipStatus}>`
     background-color: ${({ theme, $status }) => {
       switch ($status) {
         case 'active':
-          return theme.colors.primaryDark;
+          return theme.colors.successMain;
         case 'proposed':
           return theme.colors.warningSecondary;
         case 'not-in-list':

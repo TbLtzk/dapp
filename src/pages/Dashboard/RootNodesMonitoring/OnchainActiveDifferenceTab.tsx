@@ -1,5 +1,5 @@
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Icon } from '@q-dev/q-ui-kit';
@@ -10,7 +10,7 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import PageLayout from 'components/PageLayout';
 import Table, { TableColumn } from 'components/Table';
 
-import { useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodesMonitoringContext } from './RootNodesMonitoringContext';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -27,21 +27,13 @@ const StatusIcon = styled(Icon)<{$isSuccess: boolean}>`
 
 function OnchainActiveDifferenceTab () {
   const { t } = useTranslation();
-  const {
-    rootNodesOnchainDiffList,
-    loadRootNodesOnchainDiffList,
-    isRootNodesOnchainDiffListLoading
-  } = useRootNodesMonitoring();
+  const { rootNodesOnchainDiffList, isInitiallyLoaded } = useRootNodesMonitoringContext();
 
   const diffCount = useMemo(() => {
     return rootNodesOnchainDiffList
       .filter((i) => !i.isL0Active || !i.isOnchain)
       .length;
   }, [rootNodesOnchainDiffList]);
-
-  useEffect(() => {
-    loadRootNodesOnchainDiffList();
-  }, []);
 
   const columns: TableColumn[] = [
     {
@@ -106,7 +98,7 @@ function OnchainActiveDifferenceTab () {
       >
         <Table
           hideSearch
-          loading={isRootNodesOnchainDiffListLoading}
+          loading={!isInitiallyLoaded}
           perPage={20}
           columns={columns}
           emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}

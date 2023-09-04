@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
-import { useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 
 const StyledWrapper = styled.div<{
   $isEqual: boolean;
@@ -46,7 +46,7 @@ const StyledWrapper = styled.div<{
 function L0ProposedBlock () {
   const { t } = useTranslation();
 
-  const { rootNodesL0Active, rootNodesL0Proposed, rootNodesOnchainList } = useRootNodesMonitoring();
+  const { rootNodesL0Active, rootNodesL0Proposed, rootNodesOnchainList } = useRootNodesMonitoringContext();
 
   const hasRootNodesL0ProposedList = Boolean(rootNodesL0Proposed);
 

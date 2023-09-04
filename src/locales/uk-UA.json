@@ -1363,6 +1363,7 @@
   "ONCHAIN_LIST": "Ончейн список",
   "ACTIVE_LIST": "Активний список",
   "COLLECTING_APPROVALS": "Збір погоджень",
+  "MAJORITY_IS_OFFLINE": "Більшість не в мережі",
   "RECENT_TRANSITION_BLOCK": "Нещодавній перехідний блок",
   "NO_LIST": "Немає списку",
   "L0_MEMBERSHIP_STATUS": "Статус учасника L0",
@@ -1371,5 +1372,9 @@
   "ADDRESS_IS_NOT_ON_ACTIVE_LIST": "Адреса відсутня в активному списку",
   "DID_NOT_SIGN": "Не підписав",
   "ACTIVE_ROOT_LIST": "Активний кореневий список",
-  "ACTIVE_EXCLUSION_LIST": "Активний список винятків"
+  "ACTIVE_EXCLUSION_LIST": "Активний список винятків",
+  "CO_SIGNATURE_STATUS": "Статус співпідписання",
+  "OFFLINE": "Офлайн",
+  "ONLINE": "Онлайн",
+  "WAITING_FOR_APPROVAL": "Чекає на затвердження"
 }

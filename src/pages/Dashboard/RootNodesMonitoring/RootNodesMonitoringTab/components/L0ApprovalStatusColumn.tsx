@@ -25,7 +25,7 @@ const StyledWrapper = styled.div<{$status: L0ApprovalStatus}>`
     background-color: ${({ theme, $status }) => {
       switch ($status) {
         case 'all-signed':
-          return theme.colors.primaryDark;
+          return theme.colors.successMain;
         case 'not-signed':
           return theme.colors.warningSecondary;
         case 'not-in-list':

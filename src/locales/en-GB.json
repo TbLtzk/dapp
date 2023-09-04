@@ -1363,6 +1363,7 @@
   "ONCHAIN_LIST": "Onchain list",
   "ACTIVE_LIST": "Active list",
   "COLLECTING_APPROVALS": "Collecting approvals",
+  "MAJORITY_IS_OFFLINE": "Majority is offline",
   "RECENT_TRANSITION_BLOCK": "Recent transition block",
   "NO_LIST": "No list",
   "L0_MEMBERSHIP_STATUS": "L0 membership status",
@@ -1371,5 +1372,9 @@
   "ADDRESS_IS_NOT_ON_ACTIVE_LIST": "Address is not on active list",
   "DID_NOT_SIGN": "Did not sign",
   "ACTIVE_ROOT_LIST": "Active root list",
-  "ACTIVE_EXCLUSION_LIST": "Active exclusion list"
+  "ACTIVE_EXCLUSION_LIST": "Active exclusion list",
+  "CO_SIGNATURE_STATUS": "Co-signature status",
+  "OFFLINE": "Offline",
+  "ONLINE": "Online",
+  "WAITING_FOR_APPROVAL": "Waiting for approval"
 }

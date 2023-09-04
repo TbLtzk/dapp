@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
-import { useRootNodesMonitoring } from 'store/root-nodes/hooks';
+import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -30,7 +30,7 @@ const StyledWrapper = styled.div<{$isEqual: boolean}>`
 function OnchainActiveBlock () {
   const { t } = useTranslation();
 
-  const { rootNodesOnchainDiffList } = useRootNodesMonitoring();
+  const { rootNodesOnchainDiffList } = useRootNodesMonitoringContext();
 
   const diffCount = useMemo(() => {
     return rootNodesOnchainDiffList
