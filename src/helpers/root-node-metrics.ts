@@ -4,9 +4,9 @@ import { ErrorHandler } from 'helpers';
 
 import { getIndexerInstance } from 'contracts/contract-instance';
 
-export function getLatestCosignatureMetrics (indexerUrl: string) {
+export function getCosignatureMetrics (indexerUrl: string, cycles: number, blocksDelay = 0) {
   const indexer = getIndexerInstance(indexerUrl);
-  return indexer.getRootNodeMetrics({ cycles: 2, blocksDelay: 0 });
+  return indexer.getRootNodeMetrics({ cycles, blocksDelay });
 }
 
 export async function getRootNodesExclusion (indexerUrl: string, status: L0ListItemStatus) {

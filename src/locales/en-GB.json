@@ -1376,5 +1376,8 @@
   "CO_SIGNATURE_STATUS": "Co-signature status",
   "OFFLINE": "Offline",
   "ONLINE": "Online",
-  "WAITING_FOR_APPROVAL": "Waiting for approval"
+  "WAITING_FOR_APPROVAL": "Waiting for approval",
+  "AVAILABILITY": "Availability",
+  "ACTUAL_APPROVALS": "Actual approvals",
+  "DUE_APPROVALS": "Due approvals"
 }

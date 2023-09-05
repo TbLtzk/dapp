@@ -2,7 +2,7 @@ import { createContext, ReactNode, useCallback, useContext, useState } from 'rea
 
 import { L0ExclusionListItem, L0RootListItem, RootNodeMetric } from '@q-dev/q-js-sdk';
 import { useInterval } from '@q-dev/react-hooks';
-import { getLatestCosignatureMetrics, getRootNodesExclusion, getRootNodesL0 } from 'helpers/root-node-metrics';
+import { getCosignatureMetrics, getRootNodesExclusion, getRootNodesL0 } from 'helpers/root-node-metrics';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -29,6 +29,8 @@ export interface RootNodesMonitoringData {
   rootNodesExclusionActive: L0ExclusionListItem | null;
   rootNodesExclusionProposed: L0ExclusionListItem | null;
   latestCosignatureMetrics: RootNodeMetric | null;
+  cosignatureMetrics20: RootNodeMetric | null;
+  cosignatureMetrics1000: RootNodeMetric | null;
   blockHeight: number;
   isInitiallyLoaded: boolean;
   isLoadingFailed: boolean;
@@ -46,6 +48,8 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
   const [rootNodesExclusionProposed, setRootNodesExclusionProposed] = useState<L0ExclusionListItem | null>(null);
   const [rootNodesOnchainList, setRootNodesOnchainList] = useState<string[]>([]);
   const [latestCosignatureMetrics, setLatestCosignatureMetrics] = useState<RootNodeMetric | null>(null);
+  const [cosignatureMetrics20, setCosignatureMetrics20] = useState<RootNodeMetric | null>(null);
+  const [cosignatureMetrics1000, setCosignatureMetrics1000] = useState<RootNodeMetric | null>(null);
   const [blockHeight, setBlockHeight] = useState<number>(0);
   const [isInitiallyLoaded, setIsInitiallyLoaded] = useState(false);
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
@@ -62,6 +66,8 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
         rootNodesExclusionActive,
         rootNodesExclusionProposed,
         latestCosignatureMetrics,
+        cosignatureMetrics20,
+        cosignatureMetrics1000,
         members,
         blockHeight,
       ] = await Promise.all([
@@ -69,7 +75,9 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
         getRootNodesL0(indexerUrl, 'proposed'),
         getRootNodesExclusion(indexerUrl, 'active'),
         getRootNodesExclusion(indexerUrl, 'proposed'),
-        getLatestCosignatureMetrics(indexerUrl),
+        getCosignatureMetrics(indexerUrl, 2),
+        getCosignatureMetrics(indexerUrl, 20, 10),
+        getCosignatureMetrics(indexerUrl, 1000, 10),
         rootNodesContract.getMembers(),
         fetchBlockNumber(),
         getRootMembers()
@@ -99,6 +107,8 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
       setRootNodesExclusionProposed(rootNodesExclusionProposed);
       setRootNodesOnchainDiffList(Object.values(rootNodesOnchainDiffMap));
       setLatestCosignatureMetrics(latestCosignatureMetrics);
+      setCosignatureMetrics20(cosignatureMetrics20);
+      setCosignatureMetrics1000(cosignatureMetrics1000);
       setBlockHeight(blockHeight);
       setIsInitiallyLoaded(true);
     } catch {
@@ -120,6 +130,8 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
         rootNodesExclusionActive,
         rootNodesExclusionProposed,
         latestCosignatureMetrics,
+        cosignatureMetrics20,
+        cosignatureMetrics1000,
         blockHeight,
       }}
     >

@@ -1376,5 +1376,8 @@
   "CO_SIGNATURE_STATUS": "Статус співпідписання",
   "OFFLINE": "Офлайн",
   "ONLINE": "Онлайн",
-  "WAITING_FOR_APPROVAL": "Чекає на затвердження"
+  "WAITING_FOR_APPROVAL": "Чекає на затвердження",
+  "AVAILABILITY": "Доступність",
+  "ACTUAL_APPROVALS": "Фактичні погодження",
+  "DUE_APPROVALS": "Належні погодження"
 }

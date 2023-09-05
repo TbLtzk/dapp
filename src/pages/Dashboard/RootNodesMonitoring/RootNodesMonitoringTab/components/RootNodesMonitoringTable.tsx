@@ -1,18 +1,27 @@
 
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
-import { L0ApprovalMap, L0ApprovalStatus, L0MembershipStatus } from 'typings/root-nodes';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
-import { cosignatureStatusSortFunc, l0ApprovalStatusSortFunc, l0MembershipStatusSortFunc } from '../helpers/table-sorting';
+import {
+  getCosignatureStats,
+  getCosignatureStatus,
+  getL0ApprovalStatus,
+  getL0MembershipStatus
+} from '../helpers/table-collect-data';
+import {
+  cosignatureStatsSortFunc,
+  cosignatureStatusSortFunc,
+  l0ApprovalStatusSortFunc,
+  l0MembershipStatusSortFunc,
+} from '../helpers/table-sorting';
 
+import CosignatureStatsColumn from './CosignatureStatsColumn';
 import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
@@ -36,95 +45,42 @@ function RootNodesMonitoringTable () {
     rootNodesL0Proposed,
     rootNodesExclusionActive,
     rootNodesExclusionProposed,
-    latestCosignatureMetrics
+    latestCosignatureMetrics,
+    cosignatureMetrics20,
+    cosignatureMetrics1000,
   } = useRootNodesMonitoringContext();
 
-  function getL0ApprovalStatus (address: string, isL0Active: boolean): {
-    l0ApprovalStatus: L0ApprovalStatus;
-    listsSigned: L0ApprovalMap;
-  } {
-    const listsSigned = {
-      isRootActiveSigned: false,
-      isRootProposedSigned: false,
-      isExclusionActiveSigned: false,
-      isExclusionProposedSigned: false,
-    };
+  const rootMembersMonitoring = rootMembers.map((rootNode) => {
+    const l0MembershipStatus = getL0MembershipStatus({
+      address: rootNode.address,
+      rootNodesL0Active,
+      rootNodesL0Proposed,
+    });
+    const { l0ApprovalStatus, listsSigned } = getL0ApprovalStatus({
+      address: rootNode.address,
+      isL0Active: l0MembershipStatus === 'active',
+      rootNodesL0Active,
+      rootNodesL0Proposed,
+      rootNodesExclusionActive,
+      rootNodesExclusionProposed,
+    });
+    const cosignatureStatus = getCosignatureStatus(rootNode.address, latestCosignatureMetrics);
+    const cosignatureStats20 = getCosignatureStats(rootNode.address, cosignatureMetrics20);
+    const cosignatureStats1000 = getCosignatureStats(rootNode.address, cosignatureMetrics1000);
 
-    if (!isL0Active) {
-      return {
-        l0ApprovalStatus: 'not-in-list',
-        listsSigned,
-      };
-    }
-
-    listsSigned.isRootActiveSigned = !rootNodesL0Active?.signers ||
-      rootNodesL0Active.signers.some(({ mainAccount }) => mainAccount === address);
-    listsSigned.isRootProposedSigned = !rootNodesL0Proposed?.signers ||
-      rootNodesL0Proposed.signers.some(({ mainAccount }) => mainAccount === address);
-    listsSigned.isExclusionActiveSigned = !rootNodesExclusionActive?.signers ||
-      rootNodesExclusionActive.signers.some(({ mainAccount }) => mainAccount === address);
-    listsSigned.isExclusionProposedSigned = !rootNodesExclusionProposed?.signers ||
-      rootNodesExclusionProposed.signers.some(({ mainAccount }) => mainAccount === address);
-
-    const l0ApprovalStatus = Object.values(listsSigned).every(i => i)
-      ? 'all-signed'
-      : 'not-signed';
     return {
+      address: rootNode.address,
+      alias: rootNode.alias,
+      date: rootNode.metric?.attributes.startTime,
+      metric: rootNode.metric,
+      cosignatureStatus,
       l0ApprovalStatus,
       listsSigned,
+      l0MembershipStatus,
+      cosignatureStats20,
+      cosignatureStats1000,
     };
-  }
-
-  function getL0MembershipStatus (address: string): L0MembershipStatus {
-    const isL0ActiveStatus = rootNodesL0Active?.roots.some(({ mainAccount }) => mainAccount === address);
-    if (isL0ActiveStatus) return 'active';
-
-    const isL0ProposedStatus = rootNodesL0Proposed?.roots.some(
-      ({ mainAccount }) => mainAccount === address
-    );
-
-    return isL0ProposedStatus
-      ? 'proposed'
-      : 'not-in-list';
-  }
-
-  function getCosignatureStatus (address: string) {
-    const metrics = latestCosignatureMetrics?.byAddress.find(({ mainAccount }) =>
-      mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
-    );
-    if (!metrics) return 'offline';
-    // TODO: change `observedApprovals[0]` after fix endpoint
-    if (metrics.observedApprovals[0].lastObservedApproval.Block === latestCosignatureMetrics?.lastTransitionBlock) {
-      return 'online';
-    }
-    // TODO: change `observedApprovals[0]` after fix endpoint
-    if (metrics.observedApprovals[0].firstObservedApproval.Block ===
-      latestCosignatureMetrics?.firstTransitionBlock) {
-      return 'waiting-approval';
-    }
-
-    return 'offline';
-  }
-
-  const rootMembersMonitoring = useMemo(() => {
-    return rootMembers.map((rootNode) => {
-      const l0MembershipStatus = getL0MembershipStatus(rootNode.address);
-      const { l0ApprovalStatus, listsSigned } = getL0ApprovalStatus(rootNode.address, l0MembershipStatus === 'active');
-      const cosignatureStatus = getCosignatureStatus(rootNode.address);
-
-      return {
-        address: rootNode.address,
-        amount: rootNode.stakeAmount,
-        alias: rootNode.alias,
-        date: rootNode.metric?.attributes.startTime,
-        metric: rootNode.metric,
-        cosignatureStatus,
-        l0ApprovalStatus,
-        listsSigned,
-        l0MembershipStatus,
-      };
-    });
-  }, [rootMembers]);
+  });
 
   const columns: TableColumn[] = [
     {
@@ -145,13 +101,6 @@ function RootNodesMonitoringTable () {
     },
     {
       headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
-      dataField: 'amount',
-      text: t('STAKED_AMOUNT'),
-      sort: true,
-      formatter: (cell) => formatAsset(cell, 'Q'),
-    },
-    {
-      headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
       dataField: 'date',
       text: t('JOIN_TIME'),
       sort: true,
@@ -163,7 +112,23 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '120px' }),
+      headerStyle: () => ({ minWidth: '150px', whiteSpace: 'pre-line', }),
+      dataField: 'cosignatureStats1000',
+      text: t('AVG_AVAILABILITY_CYCLES', { cycles: 1000 }),
+      sort: true,
+      sortFunc: cosignatureStatsSortFunc,
+      formatter: (cell) => (<CosignatureStatsColumn cosignatureStats={cell} />),
+    },
+    {
+      headerStyle: () => ({ minWidth: '150px', whiteSpace: 'pre-line', }),
+      dataField: 'cosignatureStats20',
+      text: t('AVG_AVAILABILITY_CYCLES', { cycles: 20 }),
+      sort: true,
+      sortFunc: cosignatureStatsSortFunc,
+      formatter: (cell) => (<CosignatureStatsColumn cosignatureStats={cell} />),
+    },
+    {
+      headerStyle: () => ({ minWidth: '140px', whiteSpace: 'pre-line', }),
       dataField: 'l0MembershipStatus',
       text: t('L0_MEMBERSHIP_STATUS'),
       sort: true,
@@ -173,7 +138,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '120px' }),
+      headerStyle: () => ({ minWidth: '120px', whiteSpace: 'pre-line', }),
       dataField: 'l0ApprovalStatus',
       text: t('L0_APPROVAL_STATUS'),
       sort: true,
@@ -183,7 +148,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '120px' }),
+      headerStyle: () => ({ minWidth: '180px', whiteSpace: 'pre-line', }),
       dataField: 'cosignatureStatus',
       text: t('CO_SIGNATURE_STATUS'),
       sort: true,

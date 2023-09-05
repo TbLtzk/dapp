@@ -1,4 +1,4 @@
-import { CosignatureStatus, L0ApprovalStatus, L0MembershipStatus } from 'typings/root-nodes';
+import { CosignatureStats, CosignatureStatus, L0ApprovalStatus, L0MembershipStatus } from 'typings/root-nodes';
 
 import { TableColumn } from 'components/Table';
 
@@ -41,6 +41,15 @@ export const l0MembershipStatusSortFunc: TableColumn['sortFunc'] = (a: L0Members
 export const cosignatureStatusSortFunc: TableColumn['sortFunc'] = (a: CosignatureStatus, b: CosignatureStatus, order) => {
   const aNum = cosignatureStatusSortNumberMap[a];
   const bNum = cosignatureStatusSortNumberMap[b];
+
+  return order === 'asc'
+    ? aNum - bNum
+    : bNum - aNum;
+};
+
+export const cosignatureStatsSortFunc: TableColumn['sortFunc'] = (a: CosignatureStats, b: CosignatureStats, order) => {
+  const aNum = a.availability;
+  const bNum = b.availability;
 
   return order === 'asc'
     ? aNum - bNum

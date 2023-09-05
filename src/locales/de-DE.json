@@ -1376,5 +1376,8 @@
   "CO_SIGNATURE_STATUS": "Status der Mitunterzeichnung",
   "OFFLINE": "Offline",
   "ONLINE": "Online",
-  "WAITING_FOR_APPROVAL": "Warten auf Genehmigung"
+  "WAITING_FOR_APPROVAL": "Warten auf Genehmigung",
+  "AVAILABILITY": "Verfügbarkeit",
+  "ACTUAL_APPROVALS": "Tatsächliche Genehmigungen",
+  "DUE_APPROVALS": "Fällige Genehmigungen"
 }

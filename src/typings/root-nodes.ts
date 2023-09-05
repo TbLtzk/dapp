@@ -7,3 +7,10 @@ export interface L0ApprovalMap {
   isExclusionActiveSigned: boolean;
   isExclusionProposedSigned: boolean;
 }
+
+export interface CosignatureStats {
+  dueCycles: number;
+  offlineCycles: number;
+  actualApprovals: number;
+  availability: number;
+}
