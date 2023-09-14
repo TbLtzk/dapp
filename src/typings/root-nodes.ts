@@ -14,3 +14,20 @@ export interface CosignatureStats {
   actualApprovals: number;
   availability: number;
 }
+
+export interface VotingParticipationStats {
+  aggregatePercentage: number;
+  rootNodeProposals: {
+    totalOfUser: number;
+  };
+  rootNodeVotings: {
+    total: number;
+    totalOfUser: number;
+    participationPercentage: number;
+  };
+  qTHVotings: {
+    total: number;
+    totalOfUser: number;
+    participationPercentage: number;
+  };
+}

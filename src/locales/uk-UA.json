@@ -1379,5 +1379,12 @@
   "WAITING_FOR_APPROVAL": "Чекає на затвердження",
   "AVAILABILITY": "Доступність",
   "ACTUAL_APPROVALS": "Фактичні погодження",
-  "DUE_APPROVALS": "Належні погодження"
+  "DUE_APPROVALS": "Належні погодження",
+  "VOTING_PARTICIPATION": "Участь у голосуванні",
+  "RN_VOTINGS": "RN Голосування",
+  "TOTAL": "Всього",
+  "USER": "Користувач",
+  "PARTICIPATION": "Участь",
+  "QTH_VOTINGS": "QTH Голосування",
+  "RN_PROPOSALS": "RN Пропозиції"
 }

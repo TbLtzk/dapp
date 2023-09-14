@@ -15,7 +15,7 @@ const StyledWrapper = styled.div`
   align-items: center;
   gap: 5px;
 
-  .cosignature-stats-column__tooltip-tooltip-content {
+  .cosignature-stats-column__tooltip-content {
     display: grid;
     gap: 4px;
   }

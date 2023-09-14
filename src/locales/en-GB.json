@@ -1379,5 +1379,12 @@
   "WAITING_FOR_APPROVAL": "Waiting for approval",
   "AVAILABILITY": "Availability",
   "ACTUAL_APPROVALS": "Actual approvals",
-  "DUE_APPROVALS": "Due approvals"
+  "DUE_APPROVALS": "Due approvals",
+  "VOTING_PARTICIPATION": "Voting Participation",
+  "RN_VOTINGS": "RN Votings",
+  "TOTAL": "Total",
+  "USER": "User",
+  "PARTICIPATION": "Participation",
+  "QTH_VOTINGS": "QTH Votings",
+  "RN_PROPOSALS": "RN Proposals"
 }

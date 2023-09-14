@@ -1,8 +1,22 @@
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
 
-import { L0ExclusionListItem, L0RootListItem, RootNodeMetric } from '@q-dev/q-js-sdk';
+import {
+  L0ExclusionListItem,
+  L0RootListItem,
+  RootNodeMetric,
+  RootNodeProposalsAggregated,
+  RootNodeQTHVotingsAggregated,
+  RootNodeVotingsAggregated
+} from '@q-dev/q-js-sdk';
 import { useInterval } from '@q-dev/react-hooks';
-import { getCosignatureMetrics, getRootNodesExclusion, getRootNodesL0 } from 'helpers/root-node-metrics';
+import {
+  getCosignatureMetrics,
+  getRNProposalsStats,
+  getRNQTHVotingsStats,
+  getRNVotingsStats,
+  getRootNodesExclusion,
+  getRootNodesL0,
+} from 'helpers/root-node-metrics';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -10,6 +24,10 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 import { fetchBlockNumber } from 'contracts/helpers/block-number';
+
+const SECONDS_IN_HALF_YEAR = 182.625 * 24 * 60 * 60;
+const SECONDS_PER_BLOCK = 5;
+const HALF_YEAR_BLOCKS = SECONDS_IN_HALF_YEAR / SECONDS_PER_BLOCK;
 
 interface RootNodesOnchainDiffItem {
   address: string;
@@ -24,36 +42,49 @@ interface Props {
 export interface RootNodesMonitoringData {
   rootNodesOnchainList: string[];
   rootNodesOnchainDiffList: RootNodesOnchainDiffItem[];
-  rootNodesL0Active:L0RootListItem | null;
+  rootNodesL0Active: L0RootListItem | null;
   rootNodesL0Proposed: L0RootListItem | null;
   rootNodesExclusionActive: L0ExclusionListItem | null;
   rootNodesExclusionProposed: L0ExclusionListItem | null;
   latestCosignatureMetrics: RootNodeMetric | null;
   cosignatureMetrics20: RootNodeMetric | null;
   cosignatureMetrics1000: RootNodeMetric | null;
+  qTHVotingsStats: RootNodeQTHVotingsAggregated | null;
+  votingsStats: RootNodeVotingsAggregated | null;
+  proposalsStats: RootNodeProposalsAggregated | null;
   blockHeight: number;
+};
+
+export interface RootNodesMonitoringDataContext extends RootNodesMonitoringData{
   isInitiallyLoaded: boolean;
   isLoadingFailed: boolean;
 };
 
-export const RootNodesMonitoringContext = createContext<RootNodesMonitoringData>({} as RootNodesMonitoringData);
+export const RootNodesMonitoringContext =
+  createContext<RootNodesMonitoringDataContext>({} as RootNodesMonitoringDataContext);
 
 function RootNodesMonitoringContextProvider ({ children }: Props) {
   const { getRootMembers } = useRootNodes();
+  const { indexerUrl } = useNetworkConfig();
 
-  const [rootNodesOnchainDiffList, setRootNodesOnchainDiffList] = useState<RootNodesOnchainDiffItem[]>([]);
-  const [rootNodesL0Active, setRootNodesL0Active] = useState<L0RootListItem | null>(null);
-  const [rootNodesL0Proposed, setRootNodesL0Proposed] = useState<L0RootListItem | null>(null);
-  const [rootNodesExclusionActive, setRootNodesExclusionActive] = useState<L0ExclusionListItem | null>(null);
-  const [rootNodesExclusionProposed, setRootNodesExclusionProposed] = useState<L0ExclusionListItem | null>(null);
-  const [rootNodesOnchainList, setRootNodesOnchainList] = useState<string[]>([]);
-  const [latestCosignatureMetrics, setLatestCosignatureMetrics] = useState<RootNodeMetric | null>(null);
-  const [cosignatureMetrics20, setCosignatureMetrics20] = useState<RootNodeMetric | null>(null);
-  const [cosignatureMetrics1000, setCosignatureMetrics1000] = useState<RootNodeMetric | null>(null);
-  const [blockHeight, setBlockHeight] = useState<number>(0);
+  const [rootNodesMonitoringData, setRootNodesMonitoringData] = useState<RootNodesMonitoringData>({
+    rootNodesOnchainList: [],
+    rootNodesOnchainDiffList: [],
+    rootNodesL0Active: null,
+    rootNodesL0Proposed: null,
+    rootNodesExclusionActive: null,
+    rootNodesExclusionProposed: null,
+    latestCosignatureMetrics: null,
+    cosignatureMetrics20: null,
+    cosignatureMetrics1000: null,
+    qTHVotingsStats: null,
+    votingsStats: null,
+    proposalsStats: null,
+    blockHeight: 0,
+  });
+
   const [isInitiallyLoaded, setIsInitiallyLoaded] = useState(false);
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
-  const { indexerUrl } = useNetworkConfig();
 
   const loadRootNodesMonitoringData = useCallback(async () => {
     if (!isInitiallyLoaded && isLoadingFailed) return;
@@ -83,6 +114,14 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
         getRootMembers()
       ]);
 
+      const startBlock = blockHeight - HALF_YEAR_BLOCKS;
+
+      const [qTHVotingsStats, votingsStats, proposalsStats] = await Promise.all([
+        getRNQTHVotingsStats(indexerUrl, { startBlock }),
+        getRNVotingsStats(indexerUrl, { startBlock }),
+        getRNProposalsStats(indexerUrl, { startBlock }),
+      ]);
+
       const rootNodesOnchainDiffMap = members.reduce((acc, address) => {
         acc[address] = {
           address,
@@ -100,16 +139,21 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
         };
       });
 
-      setRootNodesOnchainList(members);
-      setRootNodesL0Active(rootNodesL0Active);
-      setRootNodesL0Proposed(rootNodesL0Proposed);
-      setRootNodesExclusionActive(rootNodesExclusionActive);
-      setRootNodesExclusionProposed(rootNodesExclusionProposed);
-      setRootNodesOnchainDiffList(Object.values(rootNodesOnchainDiffMap));
-      setLatestCosignatureMetrics(latestCosignatureMetrics);
-      setCosignatureMetrics20(cosignatureMetrics20);
-      setCosignatureMetrics1000(cosignatureMetrics1000);
-      setBlockHeight(blockHeight);
+      setRootNodesMonitoringData({
+        rootNodesOnchainList: members,
+        rootNodesOnchainDiffList: Object.values(rootNodesOnchainDiffMap),
+        rootNodesL0Active,
+        rootNodesL0Proposed,
+        rootNodesExclusionActive,
+        rootNodesExclusionProposed,
+        latestCosignatureMetrics,
+        cosignatureMetrics20,
+        cosignatureMetrics1000,
+        qTHVotingsStats,
+        votingsStats,
+        proposalsStats,
+        blockHeight,
+      });
       setIsInitiallyLoaded(true);
     } catch {
       setIsLoadingFailed(true);
@@ -123,16 +167,7 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
       value={{
         isInitiallyLoaded,
         isLoadingFailed,
-        rootNodesOnchainDiffList,
-        rootNodesL0Active,
-        rootNodesL0Proposed,
-        rootNodesOnchainList,
-        rootNodesExclusionActive,
-        rootNodesExclusionProposed,
-        latestCosignatureMetrics,
-        cosignatureMetrics20,
-        cosignatureMetrics1000,
-        blockHeight,
+        ...rootNodesMonitoringData
       }}
     >
       {children}

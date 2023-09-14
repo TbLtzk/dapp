@@ -1,4 +1,4 @@
-import { L0ListItemStatus, } from '@q-dev/q-js-sdk';
+import { L0ListItemStatus, RootNodeAggregatedOptions } from '@q-dev/q-js-sdk';
 import { AxiosError } from 'axios';
 import { ErrorHandler } from 'helpers';
 
@@ -34,4 +34,19 @@ export async function getRootNodesL0 (indexerUrl: string, status: L0ListItemStat
     ErrorHandler.processWithoutFeedback(error);
     return null;
   }
+}
+
+export async function getRNQTHVotingsStats (indexerUrl: string, options?: RootNodeAggregatedOptions) {
+  const indexer = getIndexerInstance(indexerUrl);
+  return indexer.getRNQTHVotingsAggregated(options);
+}
+
+export async function getRNVotingsStats (indexerUrl: string, options?: RootNodeAggregatedOptions) {
+  const indexer = getIndexerInstance(indexerUrl);
+  return indexer.getRNVotingsAggregated(options);
+}
+
+export async function getRNProposalsStats (indexerUrl: string, options?: RootNodeAggregatedOptions) {
+  const indexer = getIndexerInstance(indexerUrl);
+  return indexer.getRNProposalsAggregated(options);
 }

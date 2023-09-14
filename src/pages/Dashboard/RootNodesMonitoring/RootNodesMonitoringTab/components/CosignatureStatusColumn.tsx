@@ -16,7 +16,7 @@ const StyledWrapper = styled.p<{$status: CosignatureStatus}>`
       case 'waiting-approval':
         return theme.colors.warningSecondary;
       case 'offline':
-        return theme.colors.secondaryMain;
+        return theme.colors.textAdditional;
     }
   }};
 `;
@@ -31,7 +31,7 @@ function CosignatureStatusColumn ({ status }: Props) {
   };
 
   return (
-    <StyledWrapper $status={status}>
+    <StyledWrapper $status={status} className="font-semibold">
       {statusTextMap[status]}
     </StyledWrapper>
   );

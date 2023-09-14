@@ -1,5 +1,17 @@
-import { L0ExclusionListItem, L0RootListItem, RootNodeMetric } from '@q-dev/q-js-sdk';
-import { CosignatureStats, L0ApprovalMap, L0ApprovalStatus, L0MembershipStatus } from 'typings/root-nodes';
+import {
+  L0ExclusionListItem,
+  L0RootListItem,
+  RootNodeMetric,
+  RootNodeProposalsAggregated,
+  RootNodeQTHVotingsAggregated,
+  RootNodeVotingsAggregated
+} from '@q-dev/q-js-sdk';
+import {
+  CosignatureStats,
+  L0ApprovalMap,
+  L0ApprovalStatus,
+  L0MembershipStatus
+} from 'typings/root-nodes';
 
 interface L0ApprovalStatusArgs {
   address: string;
@@ -14,6 +26,13 @@ interface L0MembershipStatusArgs {
   address: string;
   rootNodesL0Active: L0RootListItem | null;
   rootNodesL0Proposed: L0RootListItem | null;
+}
+
+interface VotingParticipationStatsArgs {
+  address: string;
+  qTHVotingsStats: RootNodeQTHVotingsAggregated | null;
+  votingsStats: RootNodeVotingsAggregated | null;
+  proposalsStats: RootNodeProposalsAggregated | null;
 }
 
 export function getL0ApprovalStatus ({
@@ -118,5 +137,59 @@ export function getCosignatureStats (address: string, metrics: RootNodeMetric | 
     availability: firstObservedApproval.DueCycles && actualApprovals
       ? actualApprovals / firstObservedApproval.DueCycles * 100
       : 0
+  };
+}
+
+export function getVotingParticipationStats ({
+  address,
+  qTHVotingsStats,
+  votingsStats,
+  proposalsStats,
+}: VotingParticipationStatsArgs) {
+  const userVotingsStats = votingsStats?.byAddress.find(
+    ({ accountAddress }) => accountAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+  );
+  const userQTHVotingsStats = qTHVotingsStats?.byAddress.find(
+    ({ accountAddress }) => accountAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+  );
+  const userProposalsStats = proposalsStats?.byAddress.find(
+    ({ accountAddress }) => accountAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+  );
+
+  const rootNodeVotings = {
+    total: votingsStats?.total.all || 0,
+    totalOfUser: userVotingsStats?.counts.all || 0,
+  };
+
+  const qTHVotings = {
+    total: qTHVotingsStats?.total.all || 0,
+    totalOfUser: userQTHVotingsStats?.counts.all || 0,
+  };
+
+  const rootNodeProposals = {
+    totalOfUser: userProposalsStats?.counts.all || 0,
+  };
+
+  const totalVotings = rootNodeVotings.total + qTHVotings.total;
+  const totalOfUserVotings = rootNodeVotings.totalOfUser + qTHVotings.totalOfUser;
+  const aggregatePercentage = totalOfUserVotings && totalVotings
+    ? totalOfUserVotings / totalVotings * 100
+    : 0;
+
+  return {
+    aggregatePercentage,
+    rootNodeProposals,
+    rootNodeVotings: {
+      ...rootNodeVotings,
+      participationPercentage: rootNodeVotings.total && rootNodeVotings.totalOfUser
+        ? rootNodeVotings.totalOfUser / rootNodeVotings.total * 100
+        : 0
+    },
+    qTHVotings: {
+      ...qTHVotings,
+      participationPercentage: qTHVotings.total && qTHVotings.totalOfUser
+        ? qTHVotings.totalOfUser / qTHVotings.total * 100
+        : 0
+    }
   };
 }

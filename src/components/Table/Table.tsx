@@ -27,6 +27,7 @@ interface Props<T> {
   keyField?: string;
   searchFormatted?: boolean;
   rowClasses?: ((row: Record<string, string>, rowIndex: number) => string) | string;
+  className?: string;
 }
 
 const DEFAULT_PAGE = 1; // page number
@@ -47,6 +48,7 @@ function Table<T> ({
   emptyTableMessage,
   header,
   rowClasses,
+  className,
   tiny = false,
   keyField = 'id',
   hideSearch = false,
@@ -158,7 +160,11 @@ function Table<T> ({
   };
 
   return (
-    <TableContainer withPagination={perPage < table.length} tiny={tiny}>
+    <TableContainer
+      className={className}
+      withPagination={perPage < table.length}
+      tiny={tiny}
+    >
       <div className="table">
         {header && <div className="table-header">{header}</div>}
         {tableContent()}

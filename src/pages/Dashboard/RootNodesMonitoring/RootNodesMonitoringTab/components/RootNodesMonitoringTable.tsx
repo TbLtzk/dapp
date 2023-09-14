@@ -12,13 +12,15 @@ import {
   getCosignatureStats,
   getCosignatureStatus,
   getL0ApprovalStatus,
-  getL0MembershipStatus
+  getL0MembershipStatus,
+  getVotingParticipationStats,
 } from '../helpers/table-collect-data';
 import {
   cosignatureStatsSortFunc,
   cosignatureStatusSortFunc,
   l0ApprovalStatusSortFunc,
   l0MembershipStatusSortFunc,
+  votingParticipationStatsSortFunc,
 } from '../helpers/table-sorting';
 
 import CosignatureStatsColumn from './CosignatureStatsColumn';
@@ -26,15 +28,26 @@ import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
 import RootNodeMetricTooltip from './RootNodeMetricTooltip';
+import VotingParticipationStatsColumn from './VotingParticipationStatsColumn';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateRelative } from 'utils/date';
 
+const StyledTable = styled(Table)`
+  .table tr td {
+    padding: 10px;
+
+    &:first-child {
+      padding-left: 24px;
+    }
+  }
+`;
+
 const DateColumnWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 function RootNodesMonitoringTable () {
@@ -48,6 +61,9 @@ function RootNodesMonitoringTable () {
     latestCosignatureMetrics,
     cosignatureMetrics20,
     cosignatureMetrics1000,
+    qTHVotingsStats,
+    votingsStats,
+    proposalsStats,
   } = useRootNodesMonitoringContext();
 
   const rootMembersMonitoring = rootMembers.map((rootNode) => {
@@ -67,6 +83,12 @@ function RootNodesMonitoringTable () {
     const cosignatureStatus = getCosignatureStatus(rootNode.address, latestCosignatureMetrics);
     const cosignatureStats20 = getCosignatureStats(rootNode.address, cosignatureMetrics20);
     const cosignatureStats1000 = getCosignatureStats(rootNode.address, cosignatureMetrics1000);
+    const votingParticipationStats = getVotingParticipationStats({
+      address: rootNode.address,
+      qTHVotingsStats,
+      votingsStats,
+      proposalsStats,
+    });
 
     return {
       address: rootNode.address,
@@ -79,12 +101,13 @@ function RootNodesMonitoringTable () {
       l0MembershipStatus,
       cosignatureStats20,
       cosignatureStats1000,
+      votingParticipationStats,
     };
   });
 
   const columns: TableColumn[] = [
     {
-      headerStyle: () => ({ minWidth: '180px' }),
+      headerStyle: () => ({ minWidth: '190px' }),
       dataField: 'address',
       text: t('ROOT_NODE_ADDRESS'),
       formatter: (cell, row) => (
@@ -100,7 +123,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '160px', cursor: 'pointer' }),
+      headerStyle: () => ({ minWidth: '150px', cursor: 'pointer' }),
       dataField: 'date',
       text: t('JOIN_TIME'),
       sort: true,
@@ -112,7 +135,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '150px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '140px', whiteSpace: 'pre-line', }),
       dataField: 'cosignatureStats1000',
       text: t('AVG_AVAILABILITY_CYCLES', { cycles: 1000 }),
       sort: true,
@@ -120,7 +143,7 @@ function RootNodesMonitoringTable () {
       formatter: (cell) => (<CosignatureStatsColumn cosignatureStats={cell} />),
     },
     {
-      headerStyle: () => ({ minWidth: '150px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '140px', whiteSpace: 'pre-line', }),
       dataField: 'cosignatureStats20',
       text: t('AVG_AVAILABILITY_CYCLES', { cycles: 20 }),
       sort: true,
@@ -148,7 +171,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '180px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '120px', whiteSpace: 'pre-line', }),
       dataField: 'cosignatureStatus',
       text: t('CO_SIGNATURE_STATUS'),
       sort: true,
@@ -157,10 +180,20 @@ function RootNodesMonitoringTable () {
         <CosignatureStatusColumn status={cell} />
       ),
     },
+    {
+      headerStyle: () => ({ minWidth: '135px', whiteSpace: 'pre-line', }),
+      dataField: 'votingParticipationStats',
+      text: t('VOTING_PARTICIPATION'),
+      sort: true,
+      sortFunc: votingParticipationStatsSortFunc,
+      formatter: (cell) => (
+        <VotingParticipationStatsColumn stats={cell} />
+      ),
+    },
   ];
 
   return (
-    <Table
+    <StyledTable
       perPage={20}
       columns={columns}
       header={<h2 className="text-h2">
