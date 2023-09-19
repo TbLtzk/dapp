@@ -114,38 +114,47 @@ function Routes () {
             <ManageDelegations />
           </Route>
 
+          {/* React Router doesn't have support for React fragments in Switch */}
+          {/* so we use feature check for every feature route */}
+          {/* https://github.com/ReactTraining/react-router/issues/5785 */}
           {features.savingAndBorrowing && (
-            <>
-              <Route exact path={RoutePaths.savingBorrowingTab}>
-                <SavingBorrowing />
-              </Route>
-
-              <Route
-                exact
-                path={RoutePaths.borrowingPair}
-                component={(props: RouteComponentProps<{
-                  collateral: Asset;
-                  borrow: StablecoinAsset;
-                }>) => (
-                  <BorrowingPair {...props} />
-                )}
-              />
-
-              <Route exact path="/auctions/:type?">
-                <Auctions />
-              </Route>
-
-              <Route exact path="/auctions/:type/new">
-                <NewAuction />
-              </Route>
-            </>
+            <Route exact path={RoutePaths.savingBorrowingTab}>
+              <SavingBorrowing />
+            </Route>
           )}
 
-          <Route
-            exact
-            path="/auction/:type?/:slug?"
-            component={Auction}
-          />
+          {features.savingAndBorrowing && (
+            <Route
+              exact
+              path={RoutePaths.borrowingPair}
+              component={(props: RouteComponentProps<{
+                collateral: Asset;
+                borrow: StablecoinAsset;
+              }>) => (
+                <BorrowingPair {...props} />
+              )}
+            />
+          )}
+
+          {features.savingAndBorrowing && (
+            <Route exact path="/auctions/:type?">
+              <Auctions />
+            </Route>
+          )}
+
+          {features.savingAndBorrowing && (
+            <Route exact path="/auctions/:type/new">
+              <NewAuction />
+            </Route>
+          )}
+
+          {features.savingAndBorrowing && (
+            <Route
+              exact
+              path="/auction/:type?/:slug?"
+              component={Auction}
+            />
+          )}
 
           <Route exact path={RoutePaths.timeLocksTab}>
             <TimeLocks />
