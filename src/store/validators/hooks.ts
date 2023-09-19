@@ -172,7 +172,7 @@ export function useValidators () {
         ...monitoringValidators[i],
       }))));
     } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
+      ErrorHandler.process(error);
     }
   }
 

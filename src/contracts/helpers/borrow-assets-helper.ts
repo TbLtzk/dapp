@@ -4,7 +4,6 @@ import { Asset, StablecoinAsset, VaultData } from 'typings/defi';
 
 import { getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 
-import { UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
 import { fromWei } from 'utils/web3';
 
 export async function prepareVaultdata (
@@ -24,7 +23,6 @@ export async function prepareVaultdata (
     borrowingInstance.balanceOf(userAddress),
   ]);
 
-  const liquidationPriceRaw = vaultStats.colStats.liquidationPrice;
   const assetPrice = fromWei(vaultStats.colStats.price);
   const lockedCollateral = fromWei(vaultStats.colStats.balance, decimals);
 
@@ -36,9 +34,7 @@ export async function prepareVaultdata (
       lockedCollateral,
       availableDeposit: fromWei(borrowingBalance, decimals),
       availableWithdraw: fromWei(vaultStats.colStats.withdrawableAmount, decimals),
-      liquidationPrice: liquidationPriceRaw === UINT_PSEUDO_UNDEFINED
-        ? '0'
-        : fromWei(liquidationPriceRaw),
+      liquidationPrice: vaultStats.colStats.liquidationPrice,
     },
     borrowingDetails: {
       borrowingAsset: vaultStats.stcStats.key,

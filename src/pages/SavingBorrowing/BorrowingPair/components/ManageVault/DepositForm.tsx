@@ -9,6 +9,7 @@ import { Asset, StablecoinAsset, VaultWithId } from 'typings/defi';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import LiquidationInfoBlock from './LiquidationInfoBlock';
 import { useManageVaultContext } from './ManageVaultContext';
 
 import { useBorrowing, useBorrowingVaults } from 'store/borrowing/hooks';
@@ -123,20 +124,7 @@ function DepositForm ({ vault, stablecoin }: Props) {
         </p>
       </div>
 
-      <div className="deposit-balances">
-        <p className="deposit-balance text-sm">
-          <span className="font-light">{t('LIQUIDATION_PRICE')}</span>
-          <span>
-            1 {collateralDetails.collateralAsset} ≈{' '}
-            {formatAsset(collateralDetails.liquidationPrice, borrowingDetails.borrowingAsset)}
-          </span>
-        </p>
-
-        <p className="deposit-balance text-sm">
-          <span className="font-light">{t('LIQUIDATION_LIMIT')}</span>
-          <span>{formatAsset(borrowingDetails.liquidationLimit, borrowingDetails.borrowingAsset)}</span>
-        </p>
-      </div>
+      <LiquidationInfoBlock />
 
       {isApproveMode
         ? (

@@ -8,7 +8,7 @@ import { getUserAddress } from 'store';
 import { getBorrowingCoreInstance, getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
 
-import { MAX_APPROVE_AMOUNT } from 'constants/boundaries';
+import { MAX_APPROVE_AMOUNT, UINT_PSEUDO_UNDEFINED } from 'constants/boundaries';
 import { Bus } from 'utils/event-bus';
 import { fromWei, toWei } from 'utils/web3';
 
@@ -20,7 +20,7 @@ function getDefaultVaultData () {
       assetPrice: '0',
       availableWithdraw: '0',
       availableDeposit: '0',
-      liquidationPrice: '0',
+      liquidationPrice: UINT_PSEUDO_UNDEFINED,
       decimals: 0
     },
     borrowingDetails: {

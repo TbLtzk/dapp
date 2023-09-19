@@ -5,7 +5,7 @@ import { Tooltip } from '@q-dev/q-ui-kit';
 
 import { AuctionPeriodsContainer } from 'pages/Auctions/styles';
 
-import { formatDate, formatDateRelative } from 'utils/date';
+import { formatDate, formatDateDMY } from 'utils/date';
 
 interface Props {
   endTime: string;
@@ -22,7 +22,7 @@ function AuctionPeriods ({ endTime, placement = 'top', ...rest }: Props) {
     <AuctionPeriodsContainer {...rest}>
       <Tooltip
         placement={placement}
-        trigger={<p className="text-md">{`${auctionText} ${formatDateRelative(auctionEndTime, i18n.language)}`}</p>}
+        trigger={<p className="text-md">{`${auctionText} ${formatDateDMY(auctionEndTime, i18n.language)}`}</p>}
       >
         {formatDate(auctionEndTime, i18n.language)}
       </Tooltip>

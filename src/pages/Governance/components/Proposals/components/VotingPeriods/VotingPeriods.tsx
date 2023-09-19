@@ -8,7 +8,7 @@ import { Proposal } from 'typings/proposals';
 import { VotingContainer } from './styles';
 
 import { CONTRACTS_NAMES } from 'constants/contracts';
-import { formatDate, formatDateRelative } from 'utils/date';
+import { formatDate, formatDateDMY } from 'utils/date';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   proposal: Proposal;
@@ -42,7 +42,7 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
         placement="bottom"
         trigger={(
           <p className="text-md font-light">
-            {`${votingText} ${formatDateRelative(votingEndTime, i18n.language)}`}
+            {`${votingText} ${formatDateDMY(votingEndTime, i18n.language)}`}
           </p>
         )}
       >
@@ -56,7 +56,7 @@ function VotingPeriods ({ proposal, ...rest }: Props) {
           <p className="text-md font-light">
             {hasNoVeto || !vetoEndTime
               ? t('NO_VETO')
-              : `${vetoText} ${formatDateRelative(vetoEndTime, i18n.language)}`
+              : `${vetoText} ${formatDateDMY(vetoEndTime, i18n.language)}`
             }
           </p>
         )}

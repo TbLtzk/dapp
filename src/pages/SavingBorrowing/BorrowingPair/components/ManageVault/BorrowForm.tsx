@@ -10,6 +10,7 @@ import { StablecoinAsset, VaultWithId } from 'typings/defi';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import LiquidationInfoBlock from './LiquidationInfoBlock';
 import { useManageVaultContext } from './ManageVaultContext';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
@@ -116,6 +117,8 @@ function BorrowForm ({ vault, stablecoin }: Props) {
           </span>
         </p>
       </div>
+
+      <LiquidationInfoBlock />
 
       <Button
         type="submit"

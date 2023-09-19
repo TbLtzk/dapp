@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { formatDate, formatDateRelative } from 'utils/date';
+import { formatDate, formatDateDMY } from 'utils/date';
 
 function useEndTime (date: Date) {
   const { t, i18n } = useTranslation();
@@ -8,7 +8,7 @@ function useEndTime (date: Date) {
   return {
     formatted: formatDate(date, i18n.language),
     relative: date.getTime()
-      ? `${endTimeText} ${formatDateRelative(date, i18n.language)}`
+      ? `${endTimeText} ${formatDateDMY(date, i18n.language)}`
       : '–',
   };
 }
