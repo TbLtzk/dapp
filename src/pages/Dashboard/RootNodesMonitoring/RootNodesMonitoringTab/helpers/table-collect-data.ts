@@ -100,12 +100,10 @@ export function getCosignatureStatus (address: string, latestCosignatureMetrics:
     mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
   );
   if (!metrics) return 'offline';
-  // TODO: change `observedApprovals[0]` after fix endpoint
-  if (metrics.observedApprovals[0].lastObservedApproval.Block === latestCosignatureMetrics?.lastTransitionBlock) {
+  if (metrics.lastObservedApproval.block === latestCosignatureMetrics?.lastTransitionBlock) {
     return 'online';
   }
-  // TODO: change `observedApprovals[0]` after fix endpoint
-  if (metrics.observedApprovals[0].firstObservedApproval.Block ===
+  if (metrics.firstObservedApproval.block ===
       latestCosignatureMetrics?.firstTransitionBlock) {
     return 'waiting-approval';
   }
@@ -126,16 +124,15 @@ export function getCosignatureStats (address: string, metrics: RootNodeMetric | 
       availability: 0,
     };
   }
-  // TODO: change `observedApprovals[0]` after fix endpoint
-  const { lastObservedApproval, firstObservedApproval } = accountMetrics.observedApprovals[0];
+  const { lastObservedApproval, firstObservedApproval } = accountMetrics;
+  const actualApprovals = firstObservedApproval.dueCycles - lastObservedApproval.offlineCycles;
 
-  const actualApprovals = firstObservedApproval.DueCycles - lastObservedApproval.OfflineCycles;
   return {
     actualApprovals,
-    dueCycles: firstObservedApproval.DueCycles,
-    offlineCycles: lastObservedApproval.OfflineCycles,
-    availability: firstObservedApproval.DueCycles && actualApprovals
-      ? actualApprovals / firstObservedApproval.DueCycles * 100
+    dueCycles: firstObservedApproval.dueCycles,
+    offlineCycles: lastObservedApproval.offlineCycles,
+    availability: firstObservedApproval.dueCycles && actualApprovals
+      ? actualApprovals / firstObservedApproval.dueCycles * 100
       : 0
   };
 }

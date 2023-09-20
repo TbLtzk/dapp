@@ -43,9 +43,8 @@ function RecentTransitionBlock () {
   const lastBlockSigned = useMemo(() => {
     if (!latestCosignatureMetrics) return 0;
     return latestCosignatureMetrics.byAddress
-      .filter(({ observedApprovals }) =>
-        // TODO: change `observedApprovals[0]` after fix endpoint
-        observedApprovals[0].lastObservedApproval.Block === latestCosignatureMetrics.lastTransitionBlock)
+      .filter(({ lastObservedApproval }) =>
+        lastObservedApproval.block === latestCosignatureMetrics.lastTransitionBlock)
       .length;
   }, [latestCosignatureMetrics]);
 
@@ -65,9 +64,8 @@ function RecentTransitionBlock () {
     if (delta >= BLOCK_DELTA) return null;
 
     const firstBlockSigned = latestCosignatureMetrics.byAddress
-      .filter(({ observedApprovals }) =>
-        // TODO: change `observedApprovals[0]` after fix endpoint
-        observedApprovals[0].firstObservedApproval.Block === latestCosignatureMetrics.firstTransitionBlock)
+      .filter(({ firstObservedApproval }) =>
+        firstObservedApproval.block === latestCosignatureMetrics.firstTransitionBlock)
       .length;
 
     const firstBlockSignedPercentage = firstBlockSigned / rootNodesL0ActiveCount * 100;
