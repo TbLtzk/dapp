@@ -27,7 +27,7 @@ import { fetchBlockNumber } from 'contracts/helpers/block-number';
 
 const SECONDS_IN_HALF_YEAR = 182.625 * 24 * 60 * 60;
 const SECONDS_PER_BLOCK = 5;
-const HALF_YEAR_BLOCKS = SECONDS_IN_HALF_YEAR / SECONDS_PER_BLOCK;
+export const HALF_YEAR_BLOCKS = SECONDS_IN_HALF_YEAR / SECONDS_PER_BLOCK;
 
 interface RootNodesOnchainDiffItem {
   address: string;

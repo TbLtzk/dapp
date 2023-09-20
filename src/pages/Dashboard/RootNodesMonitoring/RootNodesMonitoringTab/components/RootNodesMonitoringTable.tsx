@@ -27,6 +27,7 @@ import CosignatureStatsColumn from './CosignatureStatsColumn';
 import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
+import RootNodeMetricsExport from './RootNodeMetricsExport';
 import RootNodeMetricTooltip from './RootNodeMetricTooltip';
 import VotingParticipationStatsColumn from './VotingParticipationStatsColumn';
 
@@ -203,6 +204,7 @@ function RootNodesMonitoringTable () {
       keyField="address"
       searchFormatted={false}
       table={rootMembersMonitoring}
+      buttons={<RootNodeMetricsExport />}
     />
   );
 }

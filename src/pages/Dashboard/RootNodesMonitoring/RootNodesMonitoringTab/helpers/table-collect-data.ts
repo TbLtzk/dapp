@@ -156,15 +156,29 @@ export function getVotingParticipationStats ({
   const rootNodeVotings = {
     total: votingsStats?.total.all || 0,
     totalOfUser: userVotingsStats?.counts.all || 0,
+    addressVoting: userVotingsStats?.counts.addressVoting || 0,
+    upgradeVoting: userVotingsStats?.counts.upgradeVoting || 0,
+    emergencyUpdateVoting: userVotingsStats?.counts.emergencyUpdateVoting || 0,
+    validatorsSlashingVoting: userVotingsStats?.counts.validatorsSlashingVoting || 0,
   };
 
   const qTHVotings = {
     total: qTHVotingsStats?.total.all || 0,
     totalOfUser: userQTHVotingsStats?.counts.all || 0,
+    constitutionVoting: userQTHVotingsStats?.counts.constitutionVoting || 0,
+    epdrMembershipVoting: userQTHVotingsStats?.counts.epdrMembershipVoting || 0,
+    epqfiMembershipVoting: userQTHVotingsStats?.counts.epqfiMembershipVoting || 0,
+    eprsMembershipVoting: userQTHVotingsStats?.counts.eprsMembershipVoting || 0,
+    generalUpdateVoting: userQTHVotingsStats?.counts.generalUpdateVoting || 0,
+    rootNodesMembershipVoting: userQTHVotingsStats?.counts.rootNodesMembershipVoting || 0,
+    rootNodesSlashingVoting: userQTHVotingsStats?.counts.rootNodesSlashingVoting || 0,
   };
 
   const rootNodeProposals = {
     totalOfUser: userProposalsStats?.counts.all || 0,
+    emergencyUpdateVoting: userProposalsStats?.counts.emergencyUpdateVoting || 0,
+    rootNodesSlashingVoting: userProposalsStats?.counts.rootNodesSlashingVoting || 0,
+    validatorsSlashingVoting: userProposalsStats?.counts.validatorsSlashingVoting || 0,
   };
 
   const totalVotings = rootNodeVotings.total + qTHVotings.total;
