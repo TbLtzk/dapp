@@ -1,23 +1,34 @@
 import { useTranslation } from 'react-i18next';
+import { generatePath } from 'react-router-dom';
 
 import { Tag } from '@q-dev/q-ui-kit';
 import kebabCase from 'lodash/kebabCase';
 import { AuctionInfos, LiquidationAuctionInfo, SystemDebtAndSurplusInfo } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
-import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionCardLink } from 'pages/Auctions/styles';
 
 import AuctionPeriods from '../AuctionPeriods';
 
+import { AUCTION_HEADERS } from 'constants/auctions';
+import { RoutePaths } from 'constants/routes';
+
 interface Props {
   auction: AuctionInfos;
+  stablecoinAsset: StablecoinAsset;
 }
 
-function AuctionCard ({ auction }: Props) {
+function AuctionCard ({ auction, stablecoinAsset }: Props) {
   const { t } = useTranslation();
   const title = AUCTION_HEADERS[auction.auctionType];
+  const auctionLink = generatePath(RoutePaths.auction, {
+    type: kebabCase(auction.auctionType),
+    slug: auction.slug,
+    asset: stablecoinAsset,
+  });
+
   return (
-    <AuctionCardLink className="block" to={`/auction/${kebabCase(auction.auctionType)}/${auction.slug}`}>
+    <AuctionCardLink className="block" to={auctionLink}>
       <div className="auction-card__head">
         {auction.auctionType === 'liquidation'
           ? (

@@ -23,7 +23,7 @@ function ConfirmStep ({ surplusLot }: Props) {
         title={t('AUCTION_LOT')}
       >
         <p className="text-lg">
-          {surplusLot} QUSD
+          {surplusLot} {values.asset}
         </p>
       </FormBlock>
 

@@ -1,4 +1,5 @@
 import { TagState } from '@q-dev/q-ui-kit/dist/components/Tag';
+import { StablecoinAsset } from 'typings/defi';
 
 import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
 
@@ -62,6 +63,7 @@ interface AuctionInfo {
 
 interface CreateAuction {
   bid: string;
+  asset: StablecoinAsset;
 }
 interface AuctionExecute {
   auctionId: string;

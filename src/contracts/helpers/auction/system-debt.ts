@@ -6,6 +6,7 @@ import {
   SystemDebtAndSurplusInfo,
   SystemDebtCompletedInfo,
 } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAllowance, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
@@ -15,6 +16,7 @@ import { dateToUnix } from 'utils/date';
 import { fromWei, toWei } from 'utils/web3';
 
 function prepareSystemDebtAuctionInfo (
+  asset: StablecoinAsset,
   info: SystemDebtAuctionInfo,
   auctionId: string | number,
   raisingBid: string | null
@@ -22,7 +24,7 @@ function prepareSystemDebtAuctionInfo (
   const completedInfo = {} as SystemDebtCompletedInfo;
   const status = getStatusTransformation(info.status);
 
-  completedInfo.bidAsset = 'QUSD';
+  completedInfo.bidAsset = asset;
   completedInfo.lotAsset = 'Q';
 
   completedInfo.auctionType = AUCTIONS_TYPES.systemDebt;
@@ -41,8 +43,8 @@ function prepareSystemDebtAuctionInfo (
   return completedInfo;
 }
 
-const getSystemDebtAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
-  const instance = await getSystemDebtAuctionInstance();
+const getSystemDebtAuctionData = async (asset: StablecoinAsset, auction: SystemDebtAndSurplusInfo) => {
+  const instance = await getSystemDebtAuctionInstance(asset);
   const auctionInfo = await instance.getAuctionInfo(auction.auctionId);
   const status = getStatusTransformation(auctionInfo.status);
 
@@ -57,18 +59,19 @@ const getSystemDebtAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
   };
 };
 
-export async function getSystemDebt (auctions: AuctionInfos[], lastBlock: string | number) {
-  const instance = await getSystemDebtAuctionInstance();
+export async function getSystemDebt (asset: StablecoinAsset, auctions: AuctionInfos[], lastBlock: string | number) {
+  const instance = await getSystemDebtAuctionInstance(asset);
   const auctionsEvents = await getAuctionsEvents(instance, 'systemDebt', lastBlock);
   const allAcutions = await Promise.all(
-    [...auctions, ...auctionsEvents].map((auction) => getSystemDebtAuctionData(auction as SystemDebtAndSurplusInfo))
+    [...auctions, ...auctionsEvents].map((auction) =>
+      getSystemDebtAuctionData(asset, auction as SystemDebtAndSurplusInfo))
   );
   return allAcutions;
 }
 
-export async function getOneSystemDebtAuction (auctionId: string | number) {
+export async function getOneSystemDebtAuction (asset: StablecoinAsset, auctionId: string | number) {
   try {
-    const instance = await getSystemDebtAuctionInstance();
+    const instance = await getSystemDebtAuctionInstance(asset);
     const info = await instance.getAuctionInfo(auctionId);
     if (!Number(info.endTime)) {
       return { error: ERROR_TYPES.notExist };
@@ -77,7 +80,7 @@ export async function getOneSystemDebtAuction (auctionId: string | number) {
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(auctionId);
       }
-      return prepareSystemDebtAuctionInfo(info, auctionId, raisingBid);
+      return prepareSystemDebtAuctionInfo(asset, info, auctionId, raisingBid);
     }
   } catch (error) {
     return { error: ERROR_TYPES.wrongLink };
@@ -85,18 +88,18 @@ export async function getOneSystemDebtAuction (auctionId: string | number) {
 }
 
 export async function createSystemDebtAuction (form: CreateAuction, userAddress: string) {
-  const instance = await getSystemDebtAuctionInstance();
-  await getAllowance(userAddress, instance.address, form.bid);
+  const instance = await getSystemDebtAuctionInstance(form.asset);
+  await getAllowance(form.asset, userAddress, instance.address, form.bid);
   return instance.startAuction(toWei(form.bid), { from: userAddress });
 }
 
-export async function bidForSystemDebtAuction (form: AuctionBid, userAddress: string) {
-  const instance = await getSystemDebtAuctionInstance();
-  await getAllowance(userAddress, instance.address, form.bid);
+export async function bidForSystemDebtAuction (asset: StablecoinAsset, form: AuctionBid, userAddress: string) {
+  const instance = await getSystemDebtAuctionInstance(asset);
+  await getAllowance(asset, userAddress, instance.address, form.bid);
   return instance.bid(toWei(String(form.bid)), { from: userAddress });
 }
 
-export async function executeSystemDebtAuction (userAddress: string) {
-  const instance = await getSystemDebtAuctionInstance();
+export async function executeSystemDebtAuction (asset: StablecoinAsset, userAddress: string) {
+  const instance = await getSystemDebtAuctionInstance(asset);
   return instance.execute({ from: userAddress });
 }

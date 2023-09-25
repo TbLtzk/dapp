@@ -229,9 +229,8 @@
   "AUCTION_STATS": "Auction Stats",
   "PERFORM_NETTING": "Perform Netting",
   "NEW_AUCTION": "New Auction",
-  "PROVIDE_USER_ADDRESS_OF_VAULT_HOLDER": "Provide user address of vault holder, which shall be liquidated",
-  "PROVIDE_THE_VAULT_ID_TO_BE_LIQUIDATED": "Provide the Vault ID to be liquidated",
-  "PROVIDE_YOUR_INITIAL_BID_IN_QUSD": "Provide your initial Bid in QUSD",
+  "USER_ADDRESS_OF_VAULT_HOLDER": "User address of vault holder, which shall be liquidated",
+  "YOUR_INITIAL_BID_IN_ASSET": "Your initial Bid in {{ asset }}",
   "BID": "Bid",
   "LIQUDATION_AUCTION": "Liqudation Auction",
   "ADDRESS_OF_VAULT_HOLDER_WHICH_SHALL_BE_LIQUIDATED": "Address of Vault Holder, which shall be Liquidated",
@@ -244,7 +243,6 @@
   "AUCTION_LOT": "Auction lot",
   "CREATE_SYSTEM_SURPLUS_AUCTION": "Create System Surplus Auction",
   "SYSTEM_SURPLUS_LOT": "System Surplus Lot",
-  "PROVIDE_YOUR_INITIAL_BID_IN_Q": "Provide your initial Bid in Q",
   "AUCTIONS": "Auctions",
   "AUCTION_ID": "Auction Id",
   "VAULT_OWNER": "Vault Owner",
@@ -265,8 +263,6 @@
   "NONE": "None",
   "ACTIVE": "Active",
   "BID_FOR": "Bid for",
-  "PROVIDE_YOUR_BID": "Provide your Bid",
-  "PROVIDE_A_BID_FOR_THIS_AUCTION": "Provide a Bid for this auction",
   "MINIMUM_BID_TIP": "Minimum: {{amount}}",
   "APPROVE": "Approve",
   "APPROVE_BID_CONTRACT": "You have to approve the contract interaction before making a bid",
@@ -1409,5 +1405,7 @@
   "RNP_TOTAL_PROPOSALS": "[RNP] Total Proposals",
   "RNP_EMERGENCY_UPDATE_PROPOSALS": "[RNP] Emergency Update Proposals",
   "RNP_ROOT_NODE_SLASHING_PROPOSALS": "[RNP] Root Node Slashing Proposals",
-  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Validator Slashing Proposals"
+  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Validator Slashing Proposals",
+  "DEBT_ASSET": "Debt asset",
+  "SURPLUS_ASSET": "Surplus asset"
 }

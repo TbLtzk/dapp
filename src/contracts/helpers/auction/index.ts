@@ -1,6 +1,7 @@
 import { AuctionStatus } from '@q-dev/q-js-sdk';
 import { AuctionInfos, AuctionType, LiquidationAuctionEvent, SystemDebtAndSurplusEvent } from 'typings/auctions';
 import { AuctionInstance } from 'typings/contracts';
+import { StablecoinAsset } from 'typings/defi';
 
 import { getOneLiquidationAuction } from './liquidation';
 import { getOneSystemDebtAuction } from './system-debt';
@@ -49,19 +50,19 @@ export async function getAuctionsEvents (
   })) as SystemDebtAndSurplusEvent[];
 }
 
-export const getAuction = async (auctionType: AuctionType, params: { slug: string }) => {
+export const getAuction = async (asset: StablecoinAsset, auctionType: AuctionType, params: { slug: string }) => {
   switch (auctionType) {
     case 'liquidation': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
-      return await getOneLiquidationAuction(searchParams.vaultId, searchParams.vaultOwner);
+      return await getOneLiquidationAuction(asset, searchParams.vaultId, searchParams.vaultOwner);
     }
     case 'systemDebt': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
-      return await getOneSystemDebtAuction(searchParams.auctionId);
+      return await getOneSystemDebtAuction(asset, searchParams.auctionId);
     }
     case 'systemSurplus': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
-      return await getOneSystemSurplusAuction(searchParams.auctionId);
+      return await getOneSystemSurplusAuction(asset, searchParams.auctionId);
     }
     default: {
       return { error: ERROR_TYPES.notExist };
@@ -93,10 +94,15 @@ export const getAuctionStatusState = (status: keyof typeof AuctionStatus) => {
   }
 };
 
-export async function getAllowance (userAddress: string, contractAddress: string, value: string | number) {
+export async function getAllowance (
+  asset: StablecoinAsset,
+  userAddress: string,
+  contractAddress: string,
+  value: string | number
+) {
   if (!value) return;
 
-  const stableCoin = await getStableCoinInstance('QUSD');
+  const stableCoin = await getStableCoinInstance(asset);
   const [allowance, decimals] = await Promise.all([
     stableCoin.allowance(userAddress, contractAddress),
     stableCoin.decimals()
@@ -107,16 +113,16 @@ export async function getAllowance (userAddress: string, contractAddress: string
   }
 }
 
-export async function getAuctionInstance (auctionType: AuctionType) {
+export async function getAuctionInstance (asset: StablecoinAsset, auctionType: AuctionType) {
   switch (auctionType) {
     case 'liquidation': {
-      return await getLiquidationAuctionInstance();
+      return await getLiquidationAuctionInstance(asset);
     }
     case 'systemDebt': {
-      return await getSystemDebtAuctionInstance();
+      return await getSystemDebtAuctionInstance(asset);
     }
     case 'systemSurplus': {
-      return await getSystemSurplusAuctionInstance();
+      return await getSystemSurplusAuctionInstance(asset);
     }
   }
 }

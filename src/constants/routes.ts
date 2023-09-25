@@ -25,10 +25,13 @@ export enum RoutePaths {
   newSlashingProposal = '/governance/slashing-proposals/new',
 
   auctions = '/auctions',
+  auction = '/auction/:asset/:type/:slug',
+  auctionsTab = '/auctions/:asset?',
 
-  liquidation = '/auctions/liquidation',
-  systemDebt = '/auctions/system-debt',
-  systemSurplus = '/auctions/system-surplus',
+  auctionsTabList = '/auctions/:asset/:type(liquidation|system-debt|system-surplus)',
+  liquidation = '/auctions/:asset/liquidation',
+  systemDebt = '/auctions/:asset/system-debt',
+  systemSurplus = '/auctions/:asset/system-surplus',
 
   newLiquidation = '/auctions/liquidation/new',
   newSystemDebt = '/auctions/system-debt/new',

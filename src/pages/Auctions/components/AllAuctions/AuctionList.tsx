@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Illustration } from '@q-dev/q-ui-kit';
 import { fillArray } from '@q-dev/utils';
 import { AuctionInfos, AuctionType } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
@@ -14,19 +15,24 @@ import AuctionCard from './components/AuctionCard';
 
 import { useAuctions } from 'store/auctions/hooks';
 
+interface Props {
+  auctionType: AuctionType;
+  stablecoinAsset: StablecoinAsset;
+}
+
 const PAGE_LIMIT = 10;
 
-function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
+function AllAuctions ({ auctionType, stablecoinAsset }: Props) {
   const { t } = useTranslation();
 
   const { auctions, getAuctions } = useAuctions();
-  const { list: auctionsList, isLoading } = auctions[auctionType];
+  const { list: auctionsList, isLoading } = auctions[stablecoinAsset][auctionType];
 
   const [list, setList] = useState<AuctionInfos[]>([]);
   const [offset, setOffset] = useState(PAGE_LIMIT);
 
   useEffect(() => {
-    getAuctions(auctionType);
+    getAuctions(auctionType, stablecoinAsset);
   }, []);
 
   useEffect(() => {
@@ -64,7 +70,11 @@ function AllAuctions ({ auctionType }: { auctionType: AuctionType }) {
     <>
       <ListWrapper>
         {list.map((auction: AuctionInfos) => (
-          <AuctionCard key={auction.slug} auction={auction} />
+          <AuctionCard
+            key={auction.slug}
+            auction={auction}
+            stablecoinAsset={stablecoinAsset}
+          />
         ))}
       </ListWrapper>
       {list.length < auctionsList.length && (

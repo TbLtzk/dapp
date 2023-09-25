@@ -229,9 +229,8 @@
   "AUCTION_STATS": "Auktionsstatistiken",
   "PERFORM_NETTING": "Netting durchführen",
   "NEW_AUCTION": "Neue Auktion",
-  "PROVIDE_USER_ADDRESS_OF_VAULT_HOLDER": "Geben Sie die Benutzeradresse des Tresorhalters an, der liquidiert werden muss",
-  "PROVIDE_THE_VAULT_ID_TO_BE_LIQUIDATED": "Zu liquidierende Vault ID angeben",
-  "PROVIDE_YOUR_INITIAL_BID_IN_QUSD": "Anfangsgebot in QUSD angeben",
+  "USER_ADDRESS_OF_VAULT_HOLDER": "Benutzeradresse des Tresorhalters an, der liquidiert werden muss",
+  "YOUR_INITIAL_BID_IN_ASSET": "Ihr Anfangsgebot in {{ asset }}",
   "BID": "Gebot",
   "LIQUDATION_AUCTION": "Liquidierungsauktion",
   "ADDRESS_OF_VAULT_HOLDER_WHICH_SHALL_BE_LIQUIDATED": "Adresse des Vault-Besitzers, welches liquidiert werden soll",
@@ -244,7 +243,6 @@
   "AUCTION_LOT": "Auktionsmasse",
   "CREATE_SYSTEM_SURPLUS_AUCTION": "Systemüberschussauktion erzeugen",
   "SYSTEM_SURPLUS_LOT": "Systemüberschussmasse",
-  "PROVIDE_YOUR_INITIAL_BID_IN_Q": "Anfangsgebot in Q angeben",
   "AUCTIONS": "Auktionen",
   "AUCTION_ID": "Auktions-ID",
   "VAULT_OWNER": "Vault-Besitzer",
@@ -265,8 +263,6 @@
   "NONE": "Keiner",
   "ACTIVE": "Aktiv",
   "BID_FOR": "Gebot für",
-  "PROVIDE_YOUR_BID": "Geben Sie Ihr Gebot ab",
-  "PROVIDE_A_BID_FOR_THIS_AUCTION": "Geben Sie ein Gebot für diese Auktion",
   "MINIMUM_BID_TIP": "Minimum: {{amount}}",
   "APPROVE": "Genehmigen",
   "APPROVE_BID_CONTRACT": "Sie müssen die Vertragsinteraktion genehmigen, bevor Sie ein Gebot abgeben",
@@ -1409,5 +1405,7 @@
   "RNP_TOTAL_PROPOSALS": "[RNP] Total Proposals",
   "RNP_EMERGENCY_UPDATE_PROPOSALS": "[RNP] Emergency Update Proposals",
   "RNP_ROOT_NODE_SLASHING_PROPOSALS": "[RNP] Root Node Slashing Proposals",
-  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Validator Slashing Proposals"
+  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Validator Slashing Proposals",
+  "DEBT_ASSET": "Schuldtitel",
+  "SURPLUS_ASSET": "Überschüssiger Vermögenswert"
 }

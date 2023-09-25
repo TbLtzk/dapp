@@ -27,7 +27,7 @@ function ConfirmStep ({ reserveLot }: Props) {
         title={t('BID')}
         onAction={() => updateStep(0)}
       >
-        <p className="text-lg">{values.bid} QUSD</p>
+        <p className="text-lg">{values.bid} {values.asset}</p>
       </FormBlock>
 
     </FormStep>

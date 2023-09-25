@@ -50,7 +50,7 @@ function ConfirmStep () {
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
-          {values.bid} QUSD
+          {values.bid} {values.asset}
         </p>
       </FormBlock>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { formatAsset } from '@q-dev/utils';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
@@ -15,7 +16,11 @@ import { useTransaction } from 'store/transaction/hooks';
 
 import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 
-function AuctionStats () {
+interface Props {
+  stablecoinAsset: StablecoinAsset;
+}
+
+function AuctionStats ({ stablecoinAsset }: Props) {
   const { t } = useTranslation();
   const { pendingTransactions, submitTransaction } = useTransaction();
 
@@ -26,7 +31,7 @@ function AuctionStats () {
     loadVaultBalance,
   } = useQVault();
 
-  const { savingAvailableToDeposit, loadSavingAvailableToDeposit } = useSaving('QUSD');
+  const { savingAvailableToDeposit, loadSavingAvailableToDeposit } = useSaving(stablecoinAsset);
   const {
     systemBalance,
     systemBalanceDebt,
@@ -35,7 +40,7 @@ function AuctionStats () {
     loadSystemBalanceDebt,
     loadSystemBalanceSurplus,
     performNetting
-  } = useSystemAssetBalance('QUSD');
+  } = useSystemAssetBalance(stablecoinAsset);
 
   const {
     systemReserveAvailableAmount,
@@ -55,7 +60,7 @@ function AuctionStats () {
     getEPDRUint('governed.EPDR.reserveLot')
       .then((value) => setReserveLot(value))
       .catch((err) => setReserveLot(err.message));
-    getEPDRUint('governed.EPDR.QUSD_surplusLot')
+    getEPDRUint(`governed.EPDR.${stablecoinAsset}_surplusLot`)
       .then((value) => setSurplusLot(value))
       .catch((err) => setSurplusLot(err.message));
   };
@@ -86,27 +91,27 @@ function AuctionStats () {
       value: formatAsset(vaultBalance, 'Q'),
     },
     {
-      title: t('ASSET_BALANCE', { asset: 'QUSD' }),
-      value: formatAsset(savingAvailableToDeposit, 'QUSD'),
+      title: t('ASSET_BALANCE', { asset: stablecoinAsset }),
+      value: formatAsset(savingAvailableToDeposit, stablecoinAsset),
     },
   ];
 
   const auctionStats2 = [
     {
       title: t('COLLECTED_SURPLUS'),
-      value: formatAsset(systemBalanceSurplus, 'QUSD'),
+      value: formatAsset(systemBalanceSurplus, stablecoinAsset),
     },
     {
       title: t('OPEN_DEBT'),
-      value: formatAsset(systemBalanceDebt, 'QUSD'),
+      value: formatAsset(systemBalanceDebt, stablecoinAsset),
     },
     {
       title: t('SYSTEM_BALANCE'),
-      value: formatAsset(systemBalance, 'QUSD'),
+      value: formatAsset(systemBalance, stablecoinAsset),
     },
     {
       title: t('SURPLUS_AUCTION_LOT'),
-      value: formatAsset(surplusLot, 'QUSD'),
+      value: formatAsset(surplusLot, stablecoinAsset),
     },
   ];
 
@@ -157,7 +162,7 @@ function AuctionStats () {
       <StatsContainer className="block">
         <div className="stats-head">
           <h2 className="text-h2">
-            {t('ASSET_SYSTEM_BALANCE', { asset: 'QUSD' })}
+            {t('ASSET_SYSTEM_BALANCE', { asset: stablecoinAsset })}
           </h2>
         </div>
         <div>

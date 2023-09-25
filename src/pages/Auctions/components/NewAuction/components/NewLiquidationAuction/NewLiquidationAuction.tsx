@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { generatePath, useHistory } from 'react-router';
 
 import { useMultiStepForm } from '@q-dev/form-hooks';
 import { CreateLiquidationAuction } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import MultiStepForm from 'components/MultiStepForm';
 
@@ -16,6 +17,7 @@ import { useTransaction } from 'store/transaction/hooks';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: CreateLiquidationAuction = {
+  asset: '' as StablecoinAsset,
   vaultOwner: '',
   vaultId: '',
   bid: '',
@@ -37,7 +39,9 @@ function NewLiquidationAuction () {
       submitTransaction({
         successMessage: t('CREATE_LIQUIDATION_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'liquidation', form }),
-        onSuccess: () => history.push(RoutePaths.liquidation)
+        onSuccess: () => history.push(
+          generatePath(RoutePaths.liquidation, { asset: form.asset })
+        )
       });
     },
   });

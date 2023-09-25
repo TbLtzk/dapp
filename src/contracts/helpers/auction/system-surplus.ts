@@ -8,6 +8,7 @@ import {
   SystemDebtAndSurplusInfo,
   SystemSurplusCompletedInfo,
 } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import { AUCTIONS_TYPES, ERROR_TYPES, getAuctionsEvents, getAuctionStatusState, getStatusTransformation } from '.';
 
@@ -17,6 +18,7 @@ import { dateToUnix } from 'utils/date';
 import { fromWei } from 'utils/web3';
 
 export function prepareAuctionData (
+  asset: StablecoinAsset,
   info: SystemSurplusAuctionInfo,
   event: SystemDebtAndSurplusEvent | undefined,
   raisingBid: string | null
@@ -34,7 +36,7 @@ export function prepareAuctionData (
   completedInfo.lot = fromWei(info.lot);
 
   completedInfo.bidAsset = 'Q';
-  completedInfo.lotAsset = 'QUSD';
+  completedInfo.lotAsset = asset;
 
   completedInfo.endTime = String(dateToUnix(info.endTime));
   completedInfo.raisingBid = raisingBid ? fromWei(raisingBid) : 0;
@@ -49,8 +51,8 @@ export function prepareAuctionData (
   return completedInfo;
 }
 
-const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) => {
-  const instance = await getSystemSurplusAuctionInstance();
+const getSystemSurplusAuctionData = async (asset: StablecoinAsset, auction: SystemDebtAndSurplusInfo) => {
+  const instance = await getSystemSurplusAuctionInstance(asset);
   const auctionInfo = await instance.getAuctionInfo(auction.auctionId);
   const status = getStatusTransformation(auctionInfo.status);
 
@@ -65,18 +67,19 @@ const getSystemSurplusAuctionData = async (auction: SystemDebtAndSurplusInfo) =>
   };
 };
 
-export async function getSystemSurplus (auctions: AuctionInfos[], lastBlock: string | number) {
-  const instance = await getSystemSurplusAuctionInstance();
+export async function getSystemSurplus (asset: StablecoinAsset, auctions: AuctionInfos[], lastBlock: string | number) {
+  const instance = await getSystemSurplusAuctionInstance(asset);
   const auctionsEvents = await getAuctionsEvents(instance, 'systemSurplus', lastBlock);
   const allAcutions = await Promise.all(
-    [...auctions, ...auctionsEvents].map((auction) => getSystemSurplusAuctionData(auction as SystemDebtAndSurplusInfo))
+    [...auctions, ...auctionsEvents].map((auction) =>
+      getSystemSurplusAuctionData(asset, auction as SystemDebtAndSurplusInfo))
   );
   return allAcutions;
 }
 
-export async function getOneSystemSurplusAuction (id: string | number) {
+export async function getOneSystemSurplusAuction (asset: StablecoinAsset, id: string | number) {
   try {
-    const instance = await getSystemSurplusAuctionInstance();
+    const instance = await getSystemSurplusAuctionInstance(asset);
     const info = await instance.getAuctionInfo(id);
     if (!Number(info.endTime)) {
       return { error: ERROR_TYPES.notExist };
@@ -87,7 +90,7 @@ export async function getOneSystemSurplusAuction (id: string | number) {
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(id);
       }
-      return prepareAuctionData(info, event, raisingBid);
+      return prepareAuctionData(asset, info, event, raisingBid);
     }
   } catch (error) {
     return { error: ERROR_TYPES.wrongLink };
@@ -95,12 +98,12 @@ export async function getOneSystemSurplusAuction (id: string | number) {
 }
 
 export async function createSystemSurplusAuction (form: CreateAuction) {
-  const instance = await getSystemSurplusAuctionInstance();
+  const instance = await getSystemSurplusAuctionInstance(form.asset);
   return await instance.startAuction({ qAmount: form.bid });
 }
 
-export async function bidForSystemSurplusAction (form: AuctionBid, userAddress: string) {
-  const instance = await getSystemSurplusAuctionInstance();
+export async function bidForSystemSurplusAction (asset: StablecoinAsset, form: AuctionBid, userAddress: string) {
+  const instance = await getSystemSurplusAuctionInstance(asset);
   const result = await instance.bid(form.auctionId, {
     from: userAddress,
     qAmount: form.bid,
@@ -108,8 +111,8 @@ export async function bidForSystemSurplusAction (form: AuctionBid, userAddress: 
   return result;
 }
 
-export async function executeSystemSurplusAuction (form: AuctionExecute, userAddress: string) {
-  const instance = await getSystemSurplusAuctionInstance();
+export async function executeSystemSurplusAuction (asset: StablecoinAsset, form: AuctionExecute, userAddress: string) {
+  const instance = await getSystemSurplusAuctionInstance(asset);
   const result = await instance.execute(form.auctionId, { from: userAddress });
   return result;
 }

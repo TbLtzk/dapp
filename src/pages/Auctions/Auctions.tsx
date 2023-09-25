@@ -1,54 +1,44 @@
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Redirect, Route, useLocation } from 'react-router-dom';
+import { generatePath, Link, Redirect, Route, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import Tabs from 'components/Tabs';
 import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
-import AllAuctions from './components/AllAuctions';
-import AuctionStats from './components/AuctionStats';
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
+import AuctionTab from './components/AuctionTab';
 
 import { useAuctions } from 'store/auctions/hooks';
 
-import { AUCTIONS_TYPES } from 'contracts/helpers/auction';
-
 import { RoutePaths } from 'constants/routes';
-
-export const AUCTION_HEADERS = {
-  [AUCTIONS_TYPES.liquidation]: 'LIQUIDATION_AUCTION',
-  [AUCTIONS_TYPES.systemDebt]: 'SYSTEM_DEBT_AUCTION',
-  [AUCTIONS_TYPES.systemSurplus]: 'SYSTEM_SURPLUS_AUCTION',
-};
 
 function Auctions () {
   const { t } = useTranslation();
-
-  const { auctions } = useAuctions();
+  const { asset: assetUrlParam } = useParams<{asset: StablecoinAsset}>();
+  const { replace } = useHistory();
   const { pathname } = useLocation();
 
-  const tabs = [
-    {
-      id: AUCTIONS_TYPES.liquidation,
-      label: t('LIQUIDATION'),
-      count: auctions.liquidation.activeCount,
-      link: RoutePaths.liquidation,
-    },
-    {
-      id: AUCTIONS_TYPES.systemDebt,
-      label: t('SYSTEM_DEBT'),
-      count: auctions.systemDebt.activeCount,
-      link: RoutePaths.systemDebt,
-    },
-    {
-      id: AUCTIONS_TYPES.systemSurplus,
-      label: t('SYSTEM_SURPLUS'),
-      count: auctions.systemSurplus.activeCount,
-      link: RoutePaths.systemSurplus,
-    },
-  ];
+  const { stablecoins } = useNetworkConfig();
+  const { getActiveAuctionsCountByAsset } = useAuctions();
+
+  const tabs = useMemo(() => stablecoins.map((asset) => ({
+    id: asset,
+    label: asset,
+    count: getActiveAuctionsCountByAsset(asset),
+    link: generatePath(RoutePaths.auctionsTab, { asset })
+  })), [stablecoins, getActiveAuctionsCountByAsset]);
+
+  useEffect(() => {
+    if (!assetUrlParam || !stablecoins.includes(assetUrlParam)) {
+      replace(tabs[0].link);
+    }
+  }, []);
 
   const pathToNewAuctionPath: Record<string, string> = {
     [RoutePaths.liquidation]: RoutePaths.newLiquidation,
@@ -56,7 +46,6 @@ function Auctions () {
     [RoutePaths.systemSurplus]: RoutePaths.newSystemSurplus,
   };
 
-  const redirectTab = tabs.find((tab) => tab.count > 0) || tabs[0];
   return (
     <PageLayout
       title={t('AUCTIONS')}
@@ -69,25 +58,22 @@ function Auctions () {
         </Link>
       }
     >
-      <AuctionStats />
       <Tabs tabs={tabs} />
       <TabSwitch>
         <>
           <Route exact path={RoutePaths.auctions}>
-            <Redirect to={redirectTab.link} />
+            <Redirect to={tabs[0].link} />
           </Route>
 
-          <TabRoute exact path={RoutePaths.liquidation}>
-            <AllAuctions auctionType="liquidation" />
-          </TabRoute>
-
-          <TabRoute exact path={RoutePaths.systemDebt}>
-            <AllAuctions auctionType="systemDebt" />
-          </TabRoute>
-
-          <TabRoute exact path={RoutePaths.systemSurplus}>
-            <AllAuctions auctionType="systemSurplus" />
-          </TabRoute>
+          {tabs.map((item) => (
+            <TabRoute
+              key={item.id}
+              exact={false}
+              path={item.link}
+            >
+              <AuctionTab stablecoinAsset={item.id} />
+            </TabRoute>
+          ))}
         </>
       </TabSwitch>
     </PageLayout>

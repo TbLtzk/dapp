@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@q-dev/q-ui-kit';
 import { AuctionCompletedInfos, AuctionExecute, AuctionType, LiquidationAuctionExecute } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
-import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 
 import BidModal from './BidModal';
 import { AuctionActionsContainer } from './styles';
@@ -14,13 +14,16 @@ import { AuctionActionsContainer } from './styles';
 import { useAuctions } from 'store/auctions/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
+import { AUCTION_HEADERS } from 'constants/auctions';
+
 interface Props {
   auction: AuctionCompletedInfos;
   auctionType: AuctionType;
+  stablecoinAsset: StablecoinAsset;
   onSubmit: () => void;
 }
 
-function AuctionActions ({ auction, auctionType, onSubmit }: Props) {
+function AuctionActions ({ auction, auctionType, stablecoinAsset, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { executeAuction } = useAuctions();
@@ -41,11 +44,12 @@ function AuctionActions ({ auction, auctionType, onSubmit }: Props) {
       onSuccess: () => onSubmit(),
       submitFn: () => executeAuction({
         auctionType,
+        asset: stablecoinAsset,
         form: {
           auctionId: (auction as AuctionExecute).auctionId,
           vaultId: (auction as LiquidationAuctionExecute).vaultId,
           vaultOwner: (auction as LiquidationAuctionExecute).vaultOwner,
-        }
+        },
       })
     });
   }
@@ -84,6 +88,7 @@ function AuctionActions ({ auction, auctionType, onSubmit }: Props) {
       <BidModal
         modalOpen={modalOpen}
         auction={auction}
+        stablecoinAsset={stablecoinAsset}
         onHide={handleModalClose}
         onSubmit={onSubmit}
       />

@@ -7,6 +7,7 @@ import { formatAsset, toBigNumber } from '@q-dev/utils';
 import snakeCase from 'lodash/snakeCase';
 import styled from 'styled-components';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -35,11 +36,12 @@ const StyledBidModal = styled.form`
 interface Props {
   auction: AuctionCompletedInfos;
   modalOpen: boolean;
+  stablecoinAsset: StablecoinAsset;
   onSubmit: () => void;
   onHide: () => void;
 }
 
-function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
+function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { bidForAuction } = useAuctions();
@@ -60,12 +62,13 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
         },
         submitFn: () => bidForAuction({
           auctionType: auction.auctionType,
+          asset: stablecoinAsset,
           form: {
             ...values,
             vaultOwner: (auction as LiquidationAuctionBid).vaultOwner,
             auctionId: (auction as AuctionBid).auctionId,
             vaultId: (auction as LiquidationAuctionBid).vaultId
-          }
+          },
         })
       });
     },
@@ -77,7 +80,7 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
 
   const canBid = useMemo(() => {
     return toBigNumber(balance).isGreaterThanOrEqualTo(auction.raisingBid) &&
-     toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(balance);
+      toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(balance);
   }, [balance, form.values.bid, auction.raisingBid]);
 
   const handleCloseModal = () => {
@@ -86,14 +89,14 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   };
 
   async function loadAllowanceValue () {
-    const stableCoin = await getStableCoinInstance('QUSD');
-    const { address } = await getAuctionInstance(auction.auctionType);
+    const stableCoin = await getStableCoinInstance(stablecoinAsset);
+    const { address } = await getAuctionInstance(stablecoinAsset, auction.auctionType);
     const allowance = await stableCoin.allowance(user.address, address);
     setAllowance(fromWei(allowance));
   }
 
   async function loadUserBalance () {
-    const stableCoin = await getStableCoinInstance('QUSD');
+    const stableCoin = await getStableCoinInstance(stablecoinAsset);
     const balance = await stableCoin.balanceOf(user.address);
     setBalance(fromWei(balance));
   }
@@ -104,8 +107,8 @@ function BidModal ({ modalOpen, auction, onHide, onSubmit }: Props) {
   }, []);
 
   async function approveContract () {
-    const contract = await getStableCoinInstance('QUSD');
-    const { address } = await getAuctionInstance(auction.auctionType);
+    const contract = await getStableCoinInstance(stablecoinAsset);
+    const { address } = await getAuctionInstance(stablecoinAsset, auction.auctionType);
 
     await submitTransaction({
       successMessage: t('APPROVE_TX'),

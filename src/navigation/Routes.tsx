@@ -137,7 +137,16 @@ function Routes () {
           )}
 
           {features.savingAndBorrowing && (
-            <Route exact path="/auctions/:type?">
+            <Route
+              exact
+              path={[
+                RoutePaths.auctions,
+                RoutePaths.auctionsTab,
+                RoutePaths.liquidation,
+                RoutePaths.systemDebt,
+                RoutePaths.systemSurplus,
+              ]}
+            >
               <Auctions />
             </Route>
           )}
@@ -151,7 +160,7 @@ function Routes () {
           {features.savingAndBorrowing && (
             <Route
               exact
-              path="/auction/:type?/:slug?"
+              path={RoutePaths.auction}
               component={Auction}
             />
           )}

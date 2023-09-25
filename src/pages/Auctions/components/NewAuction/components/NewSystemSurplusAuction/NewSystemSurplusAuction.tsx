@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { generatePath, useHistory } from 'react-router';
 
 import { useMultiStepForm } from '@q-dev/form-hooks';
 import { CreateAuction } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import MultiStepForm from 'components/MultiStepForm';
 
@@ -13,11 +14,10 @@ import ProvideInfoStep from './components/ProvideInfoStep';
 import { useAuctions } from 'store/auctions/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
-import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
-
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: CreateAuction = {
+  asset: '' as StablecoinAsset,
   bid: '',
 };
 
@@ -37,25 +37,21 @@ function NewSystemSurplusAuction () {
       submitTransaction({
         successMessage: t('CREATE_SYSTEM_SURPLUS_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'systemSurplus', form }),
-        onSuccess: () => history.push(RoutePaths.systemSurplus),
+        onSuccess: () => history.push(
+          generatePath(RoutePaths.systemSurplus, { asset: form.asset })
+        ),
       });
     },
   });
 
   const [surplusLot, setSurplusLot] = useState<string | number>(0);
 
-  useEffect(() => {
-    getEPDRUint('governed.EPDR.QUSD_surplusLot').then((value) => setSurplusLot(value));
-
-    return () => setSurplusLot(0);
-  }, []);
-
   const steps = [
     {
       id: 'type',
       name: t('AUCTION_TYPE'),
       title: t('CREATE_SYSTEM_SURPLUS_AUCTION'),
-      children: <ProvideInfoStep surplusLot={surplusLot} />
+      children: <ProvideInfoStep surplusLot={surplusLot} setSurplusLot={setSurplusLot} />
     },
     {
       id: 'confirm',

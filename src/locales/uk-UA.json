@@ -229,9 +229,8 @@
   "AUCTION_STATS": "Статистика аукціону",
   "PERFORM_NETTING": "Виконати кліринг",
   "NEW_AUCTION": "Новий аукціон",
-  "PROVIDE_USER_ADDRESS_OF_VAULT_HOLDER": "Надайте адресу власника сейфу, який повинен бути ліквідований",
-  "PROVIDE_THE_VAULT_ID_TO_BE_LIQUIDATED": "Надайте ідентифікатор сейфу для ліквідації",
-  "PROVIDE_YOUR_INITIAL_BID_IN_QUSD": "Надайте свою початкову ставку в QUSD",
+  "USER_ADDRESS_OF_VAULT_HOLDER": "Адреса власника сейфу, який повинен бути ліквідований",
+  "YOUR_INITIAL_BID_IN_ASSET": "Ваша початкова ставка в {{ asset }}",
   "BID": "Зробити ставку",
   "LIQUDATION_AUCTION": "Ліквідаційний аукціон",
   "ADDRESS_OF_VAULT_HOLDER_WHICH_SHALL_BE_LIQUIDATED": "Адреса власника сейфу, що ліквідується",
@@ -244,7 +243,6 @@
   "AUCTION_LOT": "Лот аукціону",
   "CREATE_SYSTEM_SURPLUS_AUCTION": "Створити аукціон системного надлишку",
   "SYSTEM_SURPLUS_LOT": "Системний надлишок",
-  "PROVIDE_YOUR_INITIAL_BID_IN_Q": "Надайте свою початкову ставку в Q",
   "AUCTIONS": "Аукціони",
   "AUCTION_ID": "Ідентифікатор аукціону",
   "VAULT_OWNER": "Власник сейфу",
@@ -265,8 +263,6 @@
   "NONE": "Немає",
   "ACTIVE": "Активний",
   "BID_FOR": "Зробити ставку на",
-  "PROVIDE_YOUR_BID": "Зробіть свою ставку",
-  "PROVIDE_A_BID_FOR_THIS_AUCTION": "Зробіть ставку у цьому аукціоні",
   "MINIMUM_BID_TIP": "Мінімум: {{amount}}",
   "APPROVE": "Дозволити",
   "APPROVE_BID_CONTRACT": "Ви повинні підтвердити взаємодію з контрактом перед тим, як робити ставку",
@@ -1409,5 +1405,7 @@
   "RNP_TOTAL_PROPOSALS": "[RNP] Усього пропозицій",
   "RNP_EMERGENCY_UPDATE_PROPOSALS": "[RNP] Пропозиції екстреного оновлення",
   "RNP_ROOT_NODE_SLASHING_PROPOSALS": "[RNP] Пропозиції слешингу кореневих вузлів",
-  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Пропозиції слешингу валідаторів"
+  "RNP_VALIDATOR_SLASHING_PROPOSALS": "[RNP] Пропозиції слешингу валідаторів",
+  "DEBT_ASSET": "Борговий актив",
+  "SURPLUS_ASSET": "Надлишковий актив"
 }

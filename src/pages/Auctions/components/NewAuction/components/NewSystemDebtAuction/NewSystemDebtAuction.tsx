@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { generatePath, useHistory } from 'react-router';
 
 import { useMultiStepForm } from '@q-dev/form-hooks';
 import { CreateAuction } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import MultiStepForm from 'components/MultiStepForm';
 
@@ -18,6 +19,7 @@ import { getEPDRUint } from 'contracts/helpers/epdr-param-helper';
 import { RoutePaths } from 'constants/routes';
 
 const DEFAULT_VALUES: CreateAuction = {
+  asset: '' as StablecoinAsset,
   bid: '',
 };
 
@@ -37,7 +39,9 @@ function NewSystemDebtAuction () {
       submitTransaction({
         successMessage: t('CREATE_SYSTEM_DEBT_AUCTION_TX'),
         submitFn: () => createAuction({ auctionType: 'systemDebt', form }),
-        onSuccess: () => history.push(RoutePaths.systemDebt),
+        onSuccess: () => history.push(
+          generatePath(RoutePaths.systemDebt, { asset: form.asset })
+        ),
       });
     },
   });

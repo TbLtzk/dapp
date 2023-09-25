@@ -33,7 +33,7 @@ function Tabs ({ tabs, noAnimation, ...rest }: Props) {
           >
             <span className="tab-label">{label}</span>
 
-            {(link === pathname || link === pathname + hash) && (
+            {(pathname + hash).includes(link) && (
               <motion.div
                 className="tab-active"
                 layoutId={noAnimation ? undefined : 'underline'}

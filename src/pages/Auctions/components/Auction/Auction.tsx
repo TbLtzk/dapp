@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { generatePath, RouteComponentProps, useHistory } from 'react-router';
 
 import { Icon, Tag } from '@q-dev/q-ui-kit';
 import camelCase from 'lodash/camelCase';
 import { AuctionCompletedInfos, AuctionType } from 'typings/auctions';
+import { StablecoinAsset } from 'typings/defi';
 
 import { SkeletonAuctionLoading } from 'components/Base/SkeletonLoading';
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
-import { AUCTION_HEADERS } from 'pages/Auctions/Auctions';
 import { AuctionContainer } from 'pages/Auctions/styles';
 
 import AuctionActions from './components/AuctionActions';
@@ -18,10 +18,14 @@ import { AuctionNotFoundContainer } from './styles';
 
 import { getAuction } from 'contracts/helpers/auction';
 
-function Auction ({ match, }: RouteComponentProps<{
+import { AUCTION_HEADERS } from 'constants/auctions';
+import { RoutePaths } from 'constants/routes';
+
+function Auction ({ match }: RouteComponentProps<{
   id: string;
   type: string;
   slug: string;
+  asset: StablecoinAsset;
 }>) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -34,12 +38,17 @@ function Auction ({ match, }: RouteComponentProps<{
   const [auctionError, setAuctionError] = useState<ReactNode>(null);
 
   const handleBackClick = () => {
-    history.push(`/auctions/${linkToAuctions}`);
+    history.push(
+      generatePath(RoutePaths.auctionsTabList, {
+        asset: match.params.asset,
+        type: linkToAuctions,
+      })
+    );
   };
 
   const loadOneAuction = async () => {
     try {
-      const result = await getAuction(auctionType, match.params);
+      const result = await getAuction(match.params.asset, auctionType, match.params);
       if ('error' in result && result?.error) {
         setAuctionError(result?.error);
       } else {
@@ -104,6 +113,7 @@ function Auction ({ match, }: RouteComponentProps<{
           <AuctionActions
             auctionType={auctionType}
             auction={auction}
+            stablecoinAsset={match.params.asset}
             onSubmit={loadOneAuction}
           />
         )}

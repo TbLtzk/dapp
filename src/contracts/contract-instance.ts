@@ -82,9 +82,9 @@ export const getStableCoinInstance = getInstanceWithAsset('stableCoin');
 export const getBorrowingCoreInstance = getInstanceWithAsset('borrowingCore');
 export const getSystemBalanceInstance = getInstanceWithAsset('systemBalance');
 
-export const getSystemDebtAuctionInstance = getInstance('systemDebtAuction', 'QUSD');
-export const getLiquidationAuctionInstance = getInstance('liquidationAuction', 'QUSD');
-export const getSystemSurplusAuctionInstance = getInstance('systemSurplusAuction', 'QUSD');
+export const getSystemDebtAuctionInstance = getInstanceWithAsset('systemDebtAuction');
+export const getLiquidationAuctionInstance = getInstanceWithAsset('liquidationAuction');
+export const getSystemSurplusAuctionInstance = getInstanceWithAsset('systemSurplusAuction');
 
 export const getQVaultInstance = getInstance('qVault');
 export const getRootNodesInstance = getInstance('rootNodes');
