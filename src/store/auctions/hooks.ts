@@ -17,8 +17,6 @@ import {
 } from 'typings/auctions';
 import { StablecoinAsset } from 'typings/defi';
 
-import useNetworkConfig from 'hooks/useNetworkConfig';
-
 import { setAuctions } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
@@ -44,8 +42,6 @@ import {
 import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 
 export function useAuctions () {
-  const { stablecoins } = useNetworkConfig();
-
   const dispatch = useDispatch();
   const auctions = useAppSelector(({ auctions }) => auctions);
 
@@ -79,16 +75,6 @@ export function useAuctions () {
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
-  }
-
-  function getAllAuctions () {
-    stablecoins.forEach(asset => {
-      getAuctions('liquidation', asset);
-      getAuctions('systemDebt', asset);
-      getAuctions('systemSurplus', asset);
-    });
-
-    setTimeout(getAllAuctions, 240_000);
   }
 
   async function createAuction ({ form, auctionType }: {
@@ -197,7 +183,6 @@ export function useAuctions () {
 
     getActiveAuctionsCountByAsset,
     getAuctions: useCallback(getAuctions, []),
-    getAllAuctions: useCallback(getAllAuctions, []),
     createAuction: useCallback(createAuction, []),
     bidForAuction: useCallback(bidForAuction, []),
     executeAuction: useCallback(executeAuction, []),

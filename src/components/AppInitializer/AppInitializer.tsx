@@ -36,7 +36,7 @@ function AppInitializer ({ children }: { children: ReactElement }) {
   } = useWeb3Context();
   const { loadAllBalances } = useQVault();
   const { getAllProposals } = useProposals();
-  const { getAllAuctions } = useAuctions();
+  const { getAuctions } = useAuctions();
   const { checkRootNodeMembership } = useRootNodes();
   const { loadFeatures } = useServerConfig();
 
@@ -45,6 +45,19 @@ function AppInitializer ({ children }: { children: ReactElement }) {
     if (network) {
       BaseContractInstance.DEFAULT_GASBUFFER = networkConfigsMap[network].gasBuffer;
     }
+  }
+
+  function getAllAuctions () {
+    const network = chainIdToNetworkMap[Number(chainId)];
+    const { stablecoins } = networkConfigsMap[network];
+
+    stablecoins.forEach(asset => {
+      getAuctions('liquidation', asset);
+      getAuctions('systemDebt', asset);
+      getAuctions('systemSurplus', asset);
+    });
+
+    setTimeout(getAllAuctions, 240_000);
   }
 
   async function loadAdditionalInfo () {
