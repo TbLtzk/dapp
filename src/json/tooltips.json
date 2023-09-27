@@ -26,5 +26,17 @@
   "slashing-proposals": "PROPOSALS_HANDLING_THE_SLASHING_OF_VALIDATORS_AND_ROOT_NODES",
   "contract-updates": "PROPOSALS_HANDLING_CHANGES_TO_THE_SYSTEM_CONTRACT_REGISTRY",
   "root-node-staking": "ADD_OR_REMOVE_ROOT_NODE_STAKE_HERE",
-  "validator-staking": "ADD_OR_REMOVE_VALIDATOR_STAKE"
+  "validator-staking": "ADD_OR_REMOVE_VALIDATOR_STAKE",
+  "default-allocation-proxy": "DEFAULT_ALLOCATION_PROXY_TOOLTIP",
+  "validation-reward-proxy": "VALIDATION_REWARD_PROXY_TOOLTIP",
+  "root-node-reward-proxy": "ROOT_NODE_REWARD_PROXY_TOOLTIP",
+  "auctions": "AUCTIONS_TOOLTIP",
+  "debt-auction-lot": "DEBT_AUCTION_LOT_TOOLTIP",
+  "surplus-auction-lot": "SURPLUS_AUCTION_LOT_TOOLTIP",
+  "system-balance": "SYSTEM_BALANCE_TOOLTIP",
+  "system-reserve": "SYSTEM_RESERVE_TOOLTIP",
+  "reserve-balance": "RESERVE_BALANCE_TOOLTIP",
+  "reserve-available": "RESERVE_AVAILABLE_TOOLTIP",
+  "reserve-state": "RESERVE_STATE_TOOLTIP",
+  "reserve-cool-down": "RESERVE_COOL_DOWN_TOOLTIP"
 }

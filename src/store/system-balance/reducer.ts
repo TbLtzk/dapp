@@ -14,6 +14,8 @@ interface SystemBalanceState {
 
   systemReserveAvailableAmount: string;
   systemReserveBalance: string;
+  systemReserveCoolDownPhase: number;
+  isSystemReservePaused: boolean;
 }
 
 function getDefaultStablecoinItem (): StablecoinItem {
@@ -33,6 +35,8 @@ const initialState: SystemBalanceState = {
 
   systemReserveAvailableAmount: '0',
   systemReserveBalance: '0',
+  systemReserveCoolDownPhase: 0,
+  isSystemReservePaused: false
 };
 
 const systemBalanceSlice = createSlice({
@@ -74,6 +78,14 @@ const systemBalanceSlice = createSlice({
     setSystemReserveBalance: (state, { payload }: PayloadAction<string>) => {
       state.systemReserveBalance = payload;
     },
+
+    setSystemReserveCoolDownPhase: (state, { payload }: PayloadAction<number>) => {
+      state.systemReserveCoolDownPhase = payload;
+    },
+
+    setIsSystemReservePaused: (state, { payload }: PayloadAction<boolean>) => {
+      state.isSystemReservePaused = payload;
+    }
   }
 });
 
@@ -84,5 +96,7 @@ export const {
   setSystemBalanceDebt,
   setSystemReserveAvailableAmount,
   setSystemReserveBalance,
+  setSystemReserveCoolDownPhase,
+  setIsSystemReservePaused
 } = systemBalanceSlice.actions;
 export default systemBalanceSlice.reducer;

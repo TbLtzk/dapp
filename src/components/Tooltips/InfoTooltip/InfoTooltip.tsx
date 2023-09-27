@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@q-dev/q-ui-kit';
 import tooltips from 'json/tooltips.json';
 
-import { InfoIcon } from './styles';
+import { InfoIcon, TooltipContent } from './styles';
 
 type TooltipProps = Parameters<typeof Tooltip>[0];
 interface Props extends Omit<TooltipProps, 'trigger' | 'children'> {
@@ -20,7 +20,7 @@ function InfoTooltip ({ topic, ...rest }: Props) {
       )}
       {...rest}
     >
-      <span>{t(tooltips[topic])}</span>
+      <TooltipContent>{t(tooltips[topic])}</TooltipContent>
     </Tooltip>
   );
 }

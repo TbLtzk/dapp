@@ -5,12 +5,14 @@ import { ErrorHandler } from 'helpers';
 import { StablecoinAsset } from 'typings/defi';
 
 import {
+  setIsSystemReservePaused,
   setStableCoinTotalSupply,
   setSystemBalance,
   setSystemBalanceDebt,
   setSystemBalanceSurplus,
   setSystemReserveAvailableAmount,
-  setSystemReserveBalance
+  setSystemReserveBalance,
+  setSystemReserveCoolDownPhase
 } from './reducer';
 
 import { getUserAddress, useAppSelector } from 'store';
@@ -100,13 +102,15 @@ export function useSystemAssetBalance (asset: StablecoinAsset) {
   };
 }
 
-export function useSystemBalance () {
+export function useSystemReserve () {
   const dispatch = useDispatch();
 
   const systemReserveBalance = useAppSelector(({ systemBalance }) => systemBalance.systemReserveBalance);
   const systemReserveAvailableAmount = useAppSelector(
     ({ systemBalance }) => systemBalance.systemReserveAvailableAmount
   );
+  const systemReserveCoolDownPhase = useAppSelector(({ systemBalance }) => systemBalance.systemReserveCoolDownPhase);
+  const isSystemReservePaused = useAppSelector(({ systemBalance }) => systemBalance.isSystemReservePaused);
 
   async function loadSystemReserveAvailableAmount () {
     try {
@@ -128,11 +132,35 @@ export function useSystemBalance () {
     }
   }
 
+  async function loadSystemReserveCoolDownPhase () {
+    try {
+      const contract = await getSystemReserveInstance();
+      const coolDownPhase = await contract.coolDownPhase();
+      dispatch(setSystemReserveCoolDownPhase(Number(coolDownPhase)));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  async function loadSystemReservePaused () {
+    try {
+      const contract = await getSystemReserveInstance();
+      const systemPaused = await contract.systemPaused();
+      dispatch(setIsSystemReservePaused(systemPaused));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
   return {
     systemReserveBalance,
     systemReserveAvailableAmount,
+    systemReserveCoolDownPhase,
+    isSystemReservePaused,
 
     loadSystemReserveAvailableAmount: useCallback(loadSystemReserveAvailableAmount, []),
     loadSystemReserveBalance: useCallback(loadSystemReserveBalance, []),
+    loadSystemReserveCoolDownPhase: useCallback(loadSystemReserveCoolDownPhase, []),
+    loadSystemReservePaused: useCallback(loadSystemReservePaused, [])
   };
 }

@@ -30,7 +30,8 @@ export const AuctionStatsContainer = styled.div`
       border-left: none;
     }
   }
+
   .buttons {
-    margin-top:auto;
+    margin-top: 16px
   }
 `;

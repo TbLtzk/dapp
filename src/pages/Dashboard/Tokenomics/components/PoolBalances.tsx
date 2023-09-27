@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useInfinityNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 
-import { useSystemBalance } from 'store/system-balance/hooks';
+import { useSystemReserve } from 'store/system-balance/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 
 const StyledWrapper = styled.div`
@@ -15,7 +15,7 @@ const StyledWrapper = styled.div`
 function PoolBalances () {
   const { t } = useTranslation();
   const { poolBalance, getVRPBalance } = useValidationRewards();
-  const { systemReserveBalance, loadSystemReserveBalance } = useSystemBalance();
+  const { systemReserveBalance, loadSystemReserveBalance } = useSystemReserve();
 
   const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
   const rewardPoolsBalanceRef = useInfinityNumber(poolBalance, ' Q');

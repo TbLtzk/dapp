@@ -56,6 +56,7 @@ function AllocationBlocks () {
         value={defaultAllocationProxy}
         loading={defaultAllocationProxyLoading}
         title={t('DEFAULT_ALLOCATION_PROXY')}
+        tooltipTopic="default-allocation-proxy"
         onAllocate={() => submitTransaction({
           successMessage: t('DEFAULT_ALLOCATION_PROXY_TX'),
           isClosedModal: true,
@@ -66,6 +67,7 @@ function AllocationBlocks () {
         value={validationRewardProxy}
         loading={validationRewardProxyLoading}
         title={t('VALIDATION_REWARD_PROXY')}
+        tooltipTopic="validation-reward-proxy"
         onAllocate={() => submitTransaction({
           successMessage: t('VALIDATON_REWARD_PROXY_TX'),
           isClosedModal: true,
@@ -76,6 +78,7 @@ function AllocationBlocks () {
         value={rootNodeRewardProxy}
         loading={rootNodeRewardProxyLoading}
         title={t('ROOT_NODE_REWARD_PROXY')}
+        tooltipTopic="root-node-reward-proxy"
         onAllocate={() => submitTransaction({
           successMessage: t('ROOT_NODE_REWARD_PROXY_TX'),
           isClosedModal: true,

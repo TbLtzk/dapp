@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
-import { useSystemBalance } from 'store/system-balance/hooks';
+import { useSystemReserve } from 'store/system-balance/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -62,7 +62,7 @@ const StyledWrapper = styled.div`
 function TokenomicsBlock () {
   const { t } = useTranslation();
   const { defaultAllocationProxy, getDefaultAllocationProxy } = useTokenomics();
-  const { systemReserveBalance, loadSystemReserveBalance } = useSystemBalance();
+  const { systemReserveBalance, loadSystemReserveBalance } = useSystemReserve();
 
   const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
   const allocationProxyRef = useAnimateNumber(defaultAllocationProxy, ' Q');

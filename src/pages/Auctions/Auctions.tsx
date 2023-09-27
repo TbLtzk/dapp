@@ -9,6 +9,7 @@ import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import Tabs from 'components/Tabs';
 import { TabRoute, TabSwitch } from 'components/Tabs/components';
+import InfoTooltip from 'components/Tooltips/InfoTooltip/InfoTooltip';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -49,6 +50,7 @@ function Auctions () {
   return (
     <PageLayout
       title={t('AUCTIONS')}
+      titleExtra={<InfoTooltip placement="bottom" topic="auctions" />}
       action={
         <Link to={pathToNewAuctionPath[pathname] || RoutePaths.newLiquidation}>
           <Button block>

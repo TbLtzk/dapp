@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const SidebarContainer = styled.div<{ $open: boolean }>`
   .sidebar {
     position: relative;
-    width: 302px;
+    width: 310px;
     height: 100vh;
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto; 

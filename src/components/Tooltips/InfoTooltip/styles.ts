@@ -11,3 +11,7 @@ export const InfoIcon = styled.i`
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 `;
+
+export const TooltipContent = styled.span`
+  white-space: pre-line;
+`;

@@ -1,10 +1,12 @@
 
+import { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAnimateNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
+import InfoTooltip from 'components/Tooltips/InfoTooltip/InfoTooltip';
 
 const StyledWrapper = styled.div`
   .allocation-block-btn {
@@ -15,11 +17,12 @@ const StyledWrapper = styled.div`
 interface Props {
   value: string;
   title: string;
+  tooltipTopic: ComponentProps<typeof InfoTooltip>['topic'];
   loading: boolean;
   onAllocate: () => void;
 }
 
-function AllocationBlock ({ value, title, loading, onAllocate }: Props) {
+function AllocationBlock ({ value, title, tooltipTopic, loading, onAllocate }: Props) {
   const { t } = useTranslation();
   const valueRef = useAnimateNumber(value);
 
@@ -31,7 +34,11 @@ function AllocationBlock ({ value, title, loading, onAllocate }: Props) {
       >
         0 Q
       </p>
-      <p className="text-md color-secondary">{title}</p>
+
+      <p className="text-md color-secondary">
+        <span>{title}</span>
+        <InfoTooltip topic={tooltipTopic} />
+      </p>
 
       <Button
         className="allocation-block-btn"
