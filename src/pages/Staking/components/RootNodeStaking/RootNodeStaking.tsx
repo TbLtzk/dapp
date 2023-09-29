@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
 import RootBalanceInfo from './components/RootBalanceInfo';
@@ -9,7 +11,6 @@ import RootNodesTable from './components/RootNodesTable';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
-import { useUser } from 'store/user/hooks';
 
 function RootNodeStaking () {
   const { t } = useTranslation();
@@ -19,13 +20,13 @@ function RootNodeStaking () {
     getRootWithdrawalInfo,
     getMinimumRootTimeLock
   } = useRootNodes();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   useEffect(() => {
     loadWalletBalance();
-    getRootNodeStakes(user.address);
-    getRootWithdrawalInfo(user.address);
-    getMinimumRootTimeLock(user.address);
+    getRootNodeStakes(address);
+    getRootWithdrawalInfo(address);
+    getMinimumRootTimeLock(address);
   }, []);
 
   return (

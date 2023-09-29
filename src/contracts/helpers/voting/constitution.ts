@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import {
   ConstitutionProposal,
   ConstitutionVotingInstance,
@@ -19,25 +20,28 @@ import {
 
 import { fromWei } from 'utils/web3';
 
-export async function getQProposals (proposals: ProposalEvent[], lastBlock: number) {
+export async function getQProposals (proposals: ProposalEvent[], lastBlock: number, chainId: ChainId) {
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
       contract: await getConstitutionVotingInstance(),
       lastBlock,
       contractName: 'constitutionVoting',
+      chainId,
     }),
     getContractProposals({
       proposals,
       contract: await getEmergencyUpdateVotingInstance(),
       lastBlock,
       contractName: 'emergencyUpdateVoting',
+      chainId,
     }),
     getContractProposals({
       proposals,
       contract: await getGeneralUpdateVotingInstance(),
       lastBlock,
       contractName: 'generalUpdateVoting',
+      chainId,
     }),
   ]);
 

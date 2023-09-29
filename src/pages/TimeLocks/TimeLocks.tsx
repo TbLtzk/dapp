@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, Route } from 'react-router';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import PageLayout from 'components/PageLayout';
 import Tabs from 'components/Tabs';
 import { TabRoute, TabSwitch } from 'components/Tabs/components';
@@ -13,8 +15,6 @@ import {
   ValidatorStakeTab,
   VestingAccountTab
 } from './components/Tabs';
-
-import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -28,8 +28,8 @@ export const TimeLocksAddressContext = createContext({} as AddressContext);
 function TimeLocks () {
   const { t } = useTranslation();
 
-  const user = useUser();
-  const [address, setAddress] = useState(user.address);
+  const { address: accountAddress } = useWeb3Context();
+  const [address, setAddress] = useState(accountAddress);
 
   const tabs = [
     {

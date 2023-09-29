@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { media } from '@q-dev/q-ui-kit';
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -38,7 +38,7 @@ function BalanceOverview () {
     loadVaultBalance,
     loadMinimumQVaultTimeLock
   } = useQVault();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   const userQVBalanceRef = useAnimateNumber(vaultBalance);
   const userAccountBalanceRef = useAnimateNumber(walletBalance);
@@ -50,7 +50,7 @@ function BalanceOverview () {
   }, []);
 
   useInterval(() => {
-    loadMinimumQVaultTimeLock(user.address);
+    loadMinimumQVaultTimeLock(address);
   }, 5000, { immediate: true });
 
   return (

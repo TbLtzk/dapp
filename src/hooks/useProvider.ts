@@ -18,6 +18,7 @@ import { ProviderWrapper } from 'typings/provider';
 
 import { initProvider, initSigner } from 'contracts/contract-instance';
 
+import { ZERO_ADDRESS } from 'constants/boundaries';
 import { FALLBACK_PROVIDER_NAMES } from 'constants/providers';
 
 export const useProvider = (): ProviderWrapper => {
@@ -27,7 +28,7 @@ export const useProvider = (): ProviderWrapper => {
   const [currentSigner, setCurrentSigner] = useState<Signer>();
   const [providerReactiveState, setProviderReactiveState] = useState(() => {
     return {
-      address: _provider.current?.address || '',
+      address: _provider.current?.address || ZERO_ADDRESS,
       isConnected: _provider.current?.isConnected || false,
       chainId: _provider.current?.chainId || '',
       chainType: _provider.current?.chainType,
@@ -141,7 +142,7 @@ export const useProvider = (): ProviderWrapper => {
 
   const _updateProviderState = () => {
     setProviderReactiveState({
-      address: _provider.current?.address || '',
+      address: _provider.current?.address || ZERO_ADDRESS,
       isConnected: _provider.current?.isConnected || false,
       chainId: _provider.current?.chainId || '',
       chainType: _provider.current?.chainType,

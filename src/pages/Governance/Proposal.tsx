@@ -4,6 +4,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 
 import { Icon } from '@q-dev/q-ui-kit';
 import { useInterval } from '@q-dev/react-hooks';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ProposalContractType } from 'typings/contracts';
 import { Proposal as ProposalInterface, ProposalType } from 'typings/proposals';
 
@@ -25,6 +26,7 @@ function Proposal ({ match }: RouteComponentProps<{
   const { t } = useTranslation();
   const history = useHistory();
   const { pendingTransactions } = useTransaction();
+  const { address } = useWeb3Context();
 
   const [proposal, setProposal] = useState<ProposalInterface |null>(null);
   const type = getProposalTypeByContract(match.params.contract);
@@ -38,7 +40,7 @@ function Proposal ({ match }: RouteComponentProps<{
   }, [pendingTransactions.length]);
 
   async function loadProposal () {
-    const proposal = await getProposal(match.params.contract, match.params.id);
+    const proposal = await getProposal(match.params.contract, match.params.id, address);
     if (!proposal) {
       history.replace('/not-found');
       return;

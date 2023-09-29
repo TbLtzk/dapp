@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { ApproveType, Asset, StablecoinAsset, VaultData } from 'typings/defi';
-
-import { getUserAddress } from 'store';
 
 import { getBorrowingCoreInstance, getBorrowingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
@@ -40,13 +39,13 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
   const [borrowVault, setBorrowVault] = useState<VaultData>(getDefaultVaultData());
   const [allowanceDeposit, setAllowanceDeposit] = useState('0');
   const [allowanceRepay, setAllowanceRepay] = useState('0');
+  const { address: accountAddress } = useWeb3Context();
 
   async function getBorrowingVault (vaultId: number | string) {
     try {
-      const userAddress = getUserAddress();
       const contract = await getBorrowingCoreInstance(stablecoinAsset);
-      const vaultStats = await contract.getVaultStats(userAddress, vaultId);
-      const borrowVault = await prepareVaultdata(stablecoinAsset, vaultStats, userAddress);
+      const vaultStats = await contract.getVaultStats(accountAddress, vaultId);
+      const borrowVault = await prepareVaultdata(stablecoinAsset, vaultStats, accountAddress);
 
       setBorrowVault(borrowVault);
     } catch (error) {
@@ -60,13 +59,13 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
       if (borrowType === 'deposit') {
         const contract = await getBorrowingInstance(asset);
         const [allowAmount, decimals] = await Promise.all([
-          contract.allowance(getUserAddress(), address),
+          contract.allowance(accountAddress, address),
           contract.decimals()
         ]);
         setAllowanceDeposit(fromWei(allowAmount, decimals));
       } else {
         const contract = await getStableCoinInstance(stablecoinAsset);
-        const allowance = await contract.allowance(getUserAddress(), address);
+        const allowance = await contract.allowance(accountAddress, address);
         setAllowanceRepay(fromWei(allowance));
       }
     } catch (error) {
@@ -78,13 +77,12 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
     borrowType: ApproveType;
     asset: Asset;
   }) {
-    const userAddress = getUserAddress();
     const { address } = await getBorrowingCoreInstance(stablecoinAsset);
 
     const contract = borrowType === 'deposit'
       ? await getBorrowingInstance(asset)
       : await getStableCoinInstance(stablecoinAsset);
-    const tx = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: userAddress });
+    const tx = await contract.approve(address, MAX_APPROVE_AMOUNT, { from: accountAddress });
 
     return {
       tx,
@@ -96,7 +94,7 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
 
   async function borrowAsset ({ amount, vaultId }: { amount: string; vaultId: number }) {
     const contract = await getBorrowingCoreInstance(stablecoinAsset);
-    const tx = await contract.generateStc(vaultId, toWei(amount), { from: getUserAddress() });
+    const tx = await contract.generateStc(vaultId, toWei(amount), { from: accountAddress });
 
     return {
       tx,
@@ -108,7 +106,7 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
 
   async function repayBorrowing ({ amount, vaultId }: { amount: string; vaultId: number }) {
     const contract = await getBorrowingCoreInstance(stablecoinAsset);
-    const tx = await contract.payBackStc(vaultId, toWei(amount), { from: getUserAddress() });
+    const tx = await contract.payBackStc(vaultId, toWei(amount), { from: accountAddress });
 
     return {
       tx,
@@ -125,7 +123,7 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
   }) {
     const contract = await getBorrowingCoreInstance(stablecoinAsset);
     const tx = await contract.depositCol(vaultId, toWei(amount, decimals), {
-      from: getUserAddress()
+      from: accountAddress
     });
 
     return {
@@ -143,7 +141,7 @@ export function useBorrowAssets (stablecoinAsset: StablecoinAsset) {
   }) {
     const contract = await getBorrowingCoreInstance(stablecoinAsset);
     const tx = await contract.withdrawCol(vaultId, toWei(amount, decimals), {
-      from: getUserAddress()
+      from: accountAddress
     });
 
     return {

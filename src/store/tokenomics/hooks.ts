@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 
 import {
@@ -16,7 +17,7 @@ import {
   setValidatorsAPR,
 } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
@@ -35,6 +36,7 @@ export function useTokenomics () {
   const { loadQVBalanceDetails } = useQVault();
   const { getVRPPoolInfo } = useValidationRewards();
   const { loadValidatorDelegatedStake } = useValidators();
+  const { address: accountAddress } = useWeb3Context();
 
   const defaultAllocationProxy = useAppSelector(({ tokenomics }) => tokenomics.defaultAllocationProxy);
   const defaultAllocationProxyLoading = useAppSelector(({ tokenomics }) => tokenomics.defaultAllocationProxyLoading);
@@ -61,7 +63,7 @@ export function useTokenomics () {
     dispatch(setDefaultAllocationProxyLoading(true));
     try {
       const contract = await getDefaultAllocationProxyInstance();
-      const tx = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: accountAddress });
 
       return {
         tx,
@@ -94,7 +96,7 @@ export function useTokenomics () {
     dispatch(setRootNodeRewardProxyLoading(true));
     try {
       const contract = await getRootNodeRewardProxyInstance();
-      const tx = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: accountAddress });
 
       return {
         tx,
@@ -125,7 +127,7 @@ export function useTokenomics () {
     dispatch(setValidationRewardProxyLoading(true));
     try {
       const contract = await getValidationRewardProxyInstance();
-      const tx = await contract.allocate({ from: getUserAddress() });
+      const tx = await contract.allocate({ from: accountAddress });
 
       return {
         tx,
@@ -160,7 +162,7 @@ export function useTokenomics () {
     try {
       const contract = await getQVaultInstance();
       const tx = await contract.updateCompoundRate({
-        from: getUserAddress(),
+        from: accountAddress,
       });
 
       return {

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Progress, Tag, Tooltip } from '@q-dev/q-ui-kit';
 import { formatPercent } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
@@ -19,6 +20,7 @@ import { CONTRACTS_NAMES } from 'constants/contracts';
 
 function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   const { t } = useTranslation();
+  const { address } = useWeb3Context();
 
   const [proposalInfo, setProposalInfo] = useState<Proposal | null>(null);
   const { title, status, state } = useProposalDetails(proposalInfo);
@@ -32,7 +34,7 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
   }, []);
 
   async function loadProposal () {
-    const result = await getProposal(proposal.contract, proposal.id);
+    const result = await getProposal(proposal.contract, proposal.id, address);
     setProposalInfo(result);
   }
 

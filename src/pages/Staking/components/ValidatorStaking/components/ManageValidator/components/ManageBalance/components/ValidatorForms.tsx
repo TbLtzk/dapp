@@ -5,6 +5,7 @@ import { useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
 import { useInterval } from '@q-dev/react-hooks';
 import { dateToUnix, formatAsset, formatNumber, toBigNumber, unixToDate } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 
@@ -17,7 +18,6 @@ import { FORM_TYPES } from './ValidatorMenu';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { getValidatorsInstance } from 'contracts/contract-instance';
@@ -44,7 +44,7 @@ interface Props {
 
 function ValidatorForms ({ formType, onClose }: Props) {
   const { t } = useTranslation();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
   const {
     validatorAccountableSelfStake: selfStake,
     validatorWithdrawalInfo,

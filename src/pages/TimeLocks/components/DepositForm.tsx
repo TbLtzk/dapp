@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { Calendar, media, Tip } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 import { TimeLockForm } from 'typings/time-locks';
@@ -16,7 +17,6 @@ import { useTimeLocksAddress } from '../TimeLocks';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { depositTimeLock } from 'contracts/helpers/locked-amount-helper';
 import { getQVaultDepositAmount } from 'contracts/helpers/q-vault-helper';
@@ -58,7 +58,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   const { submitTransaction } = useTransaction();
 
   const { walletBalance } = useQVault();
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
 
   const [maxAmount, setMaxAmount] = useState('0');
 
@@ -83,7 +83,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   });
 
   const getMaxAmount = async () => {
-    const depositAmount = await getQVaultDepositAmount(user.address);
+    const depositAmount = await getQVaultDepositAmount(accountAddress);
     return Number(depositAmount) < 0 ? '0' : String(depositAmount);
   };
 

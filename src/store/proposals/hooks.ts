@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import axios from 'axios';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ContractTransaction } from 'ethers';
 import { ErrorHandler } from 'helpers';
 import { ContractType, ProposalEvent } from 'typings/contracts';
@@ -14,7 +15,7 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { setBaseVotingWeightInfo, setConstitutionHash, setConstitutionUpdateDate, setMinimalActiveBlock, setProposals } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { getConstitutionVotingInstance, getInstance, getVotingWeightProxyInstance } from 'contracts/contract-instance';
@@ -51,8 +52,9 @@ function isProposalActive (item: ProposalEvent, minBlock: number) {
 }
 
 export function useBaseVotingWeightInfo () {
-  const { constitutionUrl } = useNetworkConfig();
   const dispatch = useDispatch();
+  const { constitutionUrl } = useNetworkConfig();
+  const { address: accountAddress } = useWeb3Context();
 
   const newParameter = useAppSelector(({ proposals }) => proposals.newParameter);
   const constitutionHash = useAppSelector(({ proposals }) => proposals.constitutionHash);
@@ -87,7 +89,7 @@ export function useBaseVotingWeightInfo () {
   async function getBaseVotingWeightInfo () {
     try {
       const contract = await getVotingWeightProxyInstance();
-      const result = await contract.getBaseVotingWeightInfo(getUserAddress(), String(dateToUnix()));
+      const result = await contract.getBaseVotingWeightInfo(accountAddress, String(dateToUnix()));
       dispatch(setBaseVotingWeightInfo({ ...result }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -111,6 +113,7 @@ export function useProposals () {
   const dispatch = useDispatch();
   const { loadDelegationInfo, loadLockInfo } = useQVault();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const { address: accountAddress, chainId } = useWeb3Context();
 
   const minimalActiveBlock = useAppSelector(({ proposals }) => proposals.minimalActiveBlock);
   const proposalsMap = useAppSelector(({ proposals }) => proposals.proposalsMap);
@@ -140,7 +143,7 @@ export function useProposals () {
     try {
       const { minimalActiveBlockHeight, lastBlockHeight } = await getMinimalActiveBlockHeight();
       const { proposals, lastBlock } = proposalsMap[type];
-      const newProposals = await getProposalEvents(type, proposals, lastBlock);
+      const newProposals = await getProposalEvents(type, proposals, lastBlock, chainId);
 
       dispatch(setProposals({
         type,
@@ -154,14 +157,13 @@ export function useProposals () {
   }
 
   async function createNewProposal (form: CreateProposalForm) {
-    const userAddress = getUserAddress();
-    const tx = await createProposal(form, userAddress);
+    const tx = await createProposal(form, accountAddress);
 
     return {
       tx,
       onSuccess: () => {
         getBaseVotingWeightInfo();
-        loadDelegationInfo(userAddress);
+        loadDelegationInfo(accountAddress);
 
         const proposalType = getProposalTypeFromFormType(form.type);
         getProposals(proposalType);
@@ -174,7 +176,6 @@ export function useProposals () {
     type: VotingType;
     isVotedFor?: boolean;
   }) {
-    const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
     let tx: ContractTransaction | undefined;
@@ -182,14 +183,14 @@ export function useProposals () {
     switch (type) {
       case 'approve':
         if ('aprove' in contract) {
-          tx = await contract.aprove(proposal.id, { from: userAddress });
+          tx = await contract.aprove(proposal.id, { from: accountAddress });
         } else {
           methodError = 'aprove';
         }
         break;
       case 'constitution':
         if ('veto' in contract) {
-          tx = await contract.veto(proposal.id, { from: userAddress });
+          tx = await contract.veto(proposal.id, { from: accountAddress });
         } else {
           methodError = 'veto';
         }
@@ -197,8 +198,8 @@ export function useProposals () {
       case 'basic':
         if ('voteFor' in contract && 'voteAgainst' in contract) {
           tx = isVotedFor
-            ? await contract.voteFor(proposal.id, { from: userAddress })
-            : await contract.voteAgainst(proposal.id, { from: userAddress });
+            ? await contract.voteFor(proposal.id, { from: accountAddress })
+            : await contract.voteAgainst(proposal.id, { from: accountAddress });
         } else {
           methodError = isVotedFor ? 'voteFor' : 'voteAgainst';
         }
@@ -213,14 +214,13 @@ export function useProposals () {
       tx: tx as ContractTransaction,
       onSuccess: () => {
         getBaseVotingWeightInfo();
-        loadDelegationInfo(userAddress);
-        loadLockInfo(userAddress);
+        loadDelegationInfo(accountAddress);
+        loadLockInfo(accountAddress);
       }
     };
   }
 
   async function executeProposal (proposal: Proposal) {
-    const userAddress = getUserAddress();
     const contract = await getInstance(proposal.contract)();
 
     let tx: ContractTransaction | undefined;
@@ -228,14 +228,14 @@ export function useProposals () {
 
     if (promiseStatus === ProposalStatus.PASSED) {
       if ('execute' in contract) {
-        tx = await contract.execute(proposal.id, { from: userAddress });
+        tx = await contract.execute(proposal.id, { from: accountAddress });
 
         return {
           tx,
           onSuccess: () => {
             getProposalsByContract(proposal.contract);
             getBaseVotingWeightInfo();
-            loadDelegationInfo(userAddress);
+            loadDelegationInfo(accountAddress);
           }
         };
       } else {
@@ -244,7 +244,7 @@ export function useProposals () {
     } else {
       getProposalsByContract(proposal.contract);
       getBaseVotingWeightInfo();
-      loadDelegationInfo(userAddress);
+      loadDelegationInfo(accountAddress);
     }
   }
 

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { formatAsset, formatPercent } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import ProgressBar from 'components/Base/ProgressBar';
 import DelegateModal from 'pages/Staking/components/DelegationStaking/components/DelegateModal';
@@ -8,11 +9,9 @@ import DelegateModal from 'pages/Staking/components/DelegationStaking/components
 import { StyledWrapper } from '../styles';
 import { useValidator } from '../Validator';
 
-import { useUser } from 'store/user/hooks';
-
 function DelegationInfo () {
   const { t } = useTranslation();
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
   const { validator, refetchValidator } = useValidator();
   const { metric, payoutPerDelegatedQ, address } = validator;
 
@@ -20,7 +19,7 @@ function DelegationInfo () {
     <StyledWrapper gridArea="delegation-info" className="block">
       <div className="block__header">
         <h3 className="text-h3">{t('DELEGATION_INFO')}</h3>
-        {user.address !== address && (
+        {accountAddress !== address && (
           <DelegateModal
             btnTitle={t('DELEGATE')}
             validator={validator}

@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import isEmpty from 'lodash/isEmpty';
 import { Validator } from 'typings/validator';
 
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { getValidationRewardPoolsInstance } from 'contracts/contract-instance';
 import { getValidator } from 'contracts/helpers/validators-helper';
 
 const useFetchValidatorData = (address: string) => {
   const { t } = useTranslation();
-  const { chainId } = useUser();
+  const { chainId } = useWeb3Context();
   const { pendingTransactions } = useTransaction();
 
   const [validator, setValidator] = useState<Validator>({} as Validator);
@@ -23,7 +23,7 @@ const useFetchValidatorData = (address: string) => {
   const [updateCompoundRateLoading, setUpdateCompoundRateLoading] = useState(false);
 
   const getValidatorInfo = async () => {
-    const validatorInfo = await getValidator(address, chainId);
+    const validatorInfo = await getValidator(address, Number(chainId));
     if (isEmpty(validatorInfo)) {
       setIsValidator(false);
     } else {

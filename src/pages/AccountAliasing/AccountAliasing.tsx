@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Alias } from '@q-dev/q-js-sdk';
 import { Modal } from '@q-dev/q-ui-kit';
 import { trimString } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
@@ -16,16 +17,15 @@ import ReserveForm from './components/ReserveForm';
 
 import { useAliases, useAliasEvents } from 'store/aliases/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 function AccountAliasing () {
   const { t } = useTranslation();
   const { loadAliases } = useAliases();
   const { loadAliasEvents } = useAliasEvents();
-  const user = useUser();
+  const { address } = useWeb3Context();
   const { pendingTransactions } = useTransaction();
 
-  const [currentAddress, setCurrentAddress] = useState(user.address);
+  const [currentAddress, setCurrentAddress] = useState(address);
   const [selectedAlias, setSelectedAlias] = useState<Alias | null>(null);
   const [isReserveModalShown, setIsReserveModalShown] = useState(false);
 
@@ -75,7 +75,7 @@ function AccountAliasing () {
       <Modal
         open={isReserveModalShown}
         title={t('RESERVE_ALIAS')}
-        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimString(user.address) })}
+        tip={t('RESERVE_YOUR_CURRENT_ADDRESS', { address: trimString(address) })}
         width={440}
         onClose={() => setIsReserveModalShown(false)}
       >

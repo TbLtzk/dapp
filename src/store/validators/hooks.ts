@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
 import { toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 
 import {
@@ -21,7 +22,7 @@ import {
   setWithdrawalInfo
 } from './reducer';
 
-import { getState, getUserAddress, useAppSelector } from 'store';
+import { getState, useAppSelector } from 'store';
 import { useConstitution } from 'store/constitution/hooks';
 
 import {
@@ -37,6 +38,7 @@ import { fromWei } from 'utils/web3';
 export function useValidators () {
   const dispatch = useDispatch();
   const { getConstitutionParameters } = useConstitution();
+  const { address: accountAddress, chainId } = useWeb3Context();
 
   const validators = useAppSelector(({ validators }) => validators.validators);
   const validatorsLoading = useAppSelector(({ validators }) => validators.validatorsLoading);
@@ -65,7 +67,7 @@ export function useValidators () {
   async function loadValidatorTotalStake () {
     try {
       const contract = await getValidatorsInstance();
-      const validatorTotalStake = await contract.getValidatorTotalStake(getUserAddress());
+      const validatorTotalStake = await contract.getValidatorTotalStake(accountAddress);
       dispatch(setTotalStake(fromWei(validatorTotalStake)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -76,7 +78,7 @@ export function useValidators () {
     try {
       const contract = await getValidatorsInstance();
       const validatorDelegatedStake = await contract.instance
-        .getValidatorDelegatedStake(getUserAddress());
+        .getValidatorDelegatedStake(accountAddress);
       dispatch(setDelegatedStake(fromWei(validatorDelegatedStake)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -86,7 +88,7 @@ export function useValidators () {
   async function loadValidatorAccountableTotalStake () {
     try {
       const contract = await getValidatorsInstance();
-      const accountableTotalStake = await contract.getAccountableTotalStake(getUserAddress());
+      const accountableTotalStake = await contract.getAccountableTotalStake(accountAddress);
       dispatch(setAccountableTotalStake(fromWei(accountableTotalStake)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -96,7 +98,7 @@ export function useValidators () {
   async function loadValidatorAccountableSelfStake (address?: string) {
     try {
       const contract = await getValidatorsInstance();
-      const accountableSelfStake = await contract.getAccountableSelfStake(address ?? getUserAddress());
+      const accountableSelfStake = await contract.getAccountableSelfStake(address ?? accountAddress);
       dispatch(setAccountableSelfStake(fromWei(accountableSelfStake)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -106,7 +108,7 @@ export function useValidators () {
   async function loadValidatorWithdrawalInfo () {
     try {
       const contract = await getValidatorsInstance();
-      const withdrawalInfo = await contract.getWithdrawalInfo(getUserAddress());
+      const withdrawalInfo = await contract.getWithdrawalInfo(accountAddress);
       dispatch(setWithdrawalInfo(withdrawalInfo));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -115,12 +117,11 @@ export function useValidators () {
 
   async function loadValidatorsShortList () {
     try {
-      const { chainId } = getState().user;
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
       const aliasesMap = await getAliasMap(
         shortList.map((item) => item.address),
-        chainId,
+        Number(chainId),
         AliasPurpose.BLOCK_SEALING
       );
 
@@ -206,11 +207,10 @@ export function useValidators () {
 
   async function checkIsValidator () {
     try {
-      const { address } = getState().user;
       const contract = await getValidatorsInstance();
       const [isInShortList, isInLongList] = await Promise.all([
-        contract.isInShortList(address),
-        contract.isInLongList(address)
+        contract.isInShortList(accountAddress),
+        contract.isInLongList(accountAddress)
       ]);
       dispatch(setIsValidator(isInShortList && isInLongList));
       dispatch(setIsValidatorInLongList(isInLongList));
@@ -224,7 +224,7 @@ export function useValidators () {
   async function loadCompoundRateKeeperExists () {
     try {
       const contract = await getValidationRewardPoolsInstance();
-      const compoundRateKeeperExists = await contract.compoundRateKeeperExists(getUserAddress());
+      const compoundRateKeeperExists = await contract.compoundRateKeeperExists(accountAddress);
       dispatch(setCompoundRateKeeperExists(compoundRateKeeperExists));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

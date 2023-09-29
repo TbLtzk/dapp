@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
 import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
 import flatten from 'lodash/flatten';
@@ -10,20 +11,23 @@ import { getAddressVotingInstance, getRootNodesInstance, getUpgradeVotingInstanc
 
 export async function getContractUpdateProposals (
   proposals: ProposalEvent[],
-  lastBlock: number
+  lastBlock: number,
+  chainId: ChainId
 ) {
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
       contract: await getAddressVotingInstance(),
       lastBlock,
-      contractName: 'addressVoting'
+      contractName: 'addressVoting',
+      chainId,
     }),
     getContractProposals({
       proposals,
       contract: await getUpgradeVotingInstance(),
       lastBlock,
-      contractName: 'upgradeVoting'
+      contractName: 'upgradeVoting',
+      chainId,
     }),
   ]);
 

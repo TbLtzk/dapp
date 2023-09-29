@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { useMultiStepForm } from '@q-dev/form-hooks';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { RootNodeProposalForm } from 'typings/forms';
 
 import MultiStepForm from 'components/MultiStepForm';
@@ -15,7 +16,6 @@ import TypeStep from './components/TypeStep';
 
 import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { ZERO_BYTES_32 } from 'constants/boundaries';
 import { RoutePaths } from 'constants/routes';
@@ -36,7 +36,7 @@ function NewRootProposal () {
   const { submitTransaction } = useTransaction();
   const { createNewProposal } = useProposals();
   const history = useHistory();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   const form = useMultiStepForm({
     initialValues: DEFAULT_VALUES,
@@ -45,7 +45,7 @@ function NewRootProposal () {
         successMessage: form.type === 'exit-root-node'
           ? t('LEFT_FROM_ROOT_NODE_PANEL_TX')
           : t('CREATE_PROPOSAL_TX'),
-        submitFn: () => createNewProposal(form.type === 'exit-root-node' ? ({ ...form, address: user.address }) : form),
+        submitFn: () => createNewProposal(form.type === 'exit-root-node' ? ({ ...form, address }) : form),
         onSuccess: () => history.push(RoutePaths.rootNodePanel),
       });
     },

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { Icon, media, Tag } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -8,7 +9,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { formatDateRelative, unixToDate } from 'utils/date';
@@ -38,9 +38,9 @@ function VotingAgent () {
 
   const { delegationInfo, setNewVotingAgent, announceNewVotingAgent } = useQVault();
   const { votingAgent, isPending, votingAgentPassOverTime } = delegationInfo;
-  const user = useUser();
+  const { address } = useWeb3Context();
 
-  const isUserAgent = votingAgent === user.address || votingAgent === ZERO_ADDRESS;
+  const isUserAgent = votingAgent === address || votingAgent === ZERO_ADDRESS;
   const canConfirmAgent = Date.now() > unixToDate(votingAgentPassOverTime).getTime();
 
   return (
@@ -88,7 +88,7 @@ function VotingAgent () {
             look="danger"
             onClick={() => submitTransaction({
               successMessage: t('ANNOUNCE_NEW_VOTING_AGENT_TX'),
-              submitFn: () => announceNewVotingAgent(user.address)
+              submitFn: () => announceNewVotingAgent(address)
             })}
           >
             {t('REMOVE')}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'components/Button';
@@ -9,21 +10,19 @@ import Button from 'components/Button';
 import ObjectionDetails from './components/ObjectionDetails';
 import ProposerRemarkForm from './components/ProposerRemarkForm';
 
-import { useUser } from 'store/user/hooks';
-
 import { ObjectionStatus } from 'constants/slashing';
 
 function ProposalObjection ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
 
-  const user = useUser();
+  const { address } = useWeb3Context();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleClose = () => {
     setModalOpen(false);
   };
 
-  const canConfirmAppeal = user.address === proposal.proposer &&
+  const canConfirmAppeal = address === proposal.proposer &&
     proposal.objEscrow.objection.status === ObjectionStatus.PENDING;
 
   return (

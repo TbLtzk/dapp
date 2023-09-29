@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { BaseContractInstance } from '@q-dev/q-js-sdk/lib/contracts/BaseContractInstance';
@@ -12,31 +12,26 @@ import { useProposals } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useServerConfig } from 'store/server-config/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { initContractRegistryInstance } from 'contracts/contract-instance';
 
-import { ZERO_ADDRESS } from 'constants/boundaries';
 import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 import { LOAD_TYPES } from 'constants/statuses';
 
 function AppInitializer ({ children }: { children: ReactElement }) {
   const { t } = useTranslation();
 
-  const { setAddress, setChainId } = useUser();
+  const [loadAppType, setLoadAppType] = useState(LOAD_TYPES.loading);
+
   const {
     currentProvider,
     currentSigner,
-    init,
-    address,
     chainId,
     isRightNetwork,
-    setLoadAppType,
-    loadAppType
   } = useWeb3Context();
   const { loadAllBalances } = useQVault();
   const { getAllProposals } = useProposals();
-  const { getAuctions } = useAuctions();
+  const { getAllAuctions } = useAuctions();
   const { checkRootNodeMembership } = useRootNodes();
   const { loadFeatures } = useServerConfig();
 
@@ -45,19 +40,6 @@ function AppInitializer ({ children }: { children: ReactElement }) {
     if (network) {
       BaseContractInstance.DEFAULT_GASBUFFER = networkConfigsMap[network].gasBuffer;
     }
-  }
-
-  function getAllAuctions () {
-    const network = chainIdToNetworkMap[Number(chainId)];
-    const { stablecoins } = networkConfigsMap[network];
-
-    stablecoins.forEach(asset => {
-      getAuctions('liquidation', asset);
-      getAuctions('systemDebt', asset);
-      getAuctions('systemSurplus', asset);
-    });
-
-    setTimeout(getAllAuctions, 240_000);
   }
 
   async function loadAdditionalInfo () {
@@ -86,31 +68,9 @@ function AppInitializer ({ children }: { children: ReactElement }) {
     }
   }
 
-  async function initApp () {
-    try {
-      await init();
-    } catch (error) {
-      setLoadAppType(LOAD_TYPES.initError);
-    }
-  }
-
-  useEffect(() => {
-    initApp();
-  }, []);
-
   useEffect(() => {
     loadAdditionalInfo();
   }, [currentProvider, currentSigner, isRightNetwork, chainId]);
-
-  useEffect(() => {
-    setAddress(address || ZERO_ADDRESS);
-  }, [address]);
-
-  useEffect(() => {
-    if (chainId) {
-      setChainId(Number(chainId));
-    }
-  }, [chainId]);
 
   switch (loadAppType) {
     case LOAD_TYPES.loaded:

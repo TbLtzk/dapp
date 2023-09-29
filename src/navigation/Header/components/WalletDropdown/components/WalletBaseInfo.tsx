@@ -7,8 +7,6 @@ import copy from 'copy-to-clipboard';
 import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
 
-import { useUser } from 'store/user/hooks';
-
 const WalletBaseInfoWrapper = styled.div`
    .wallet-base-info__address-button {
     padding: 12px 20px;
@@ -24,7 +22,6 @@ const WalletBaseInfoWrapper = styled.div`
     }
   }
 
-
   .wallet-base-info__address-button-icon {
     font-size: 20px;
   }
@@ -36,8 +33,7 @@ interface Props {
 
 function WalletBaseInfo ({ onClick }: Props) {
   const { t } = useTranslation();
-  const { disconnect } = useWeb3Context();
-  const user = useUser();
+  const { disconnect, address } = useWeb3Context();
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -50,7 +46,7 @@ function WalletBaseInfo ({ onClick }: Props) {
   };
 
   function copyAddress () {
-    copy(user.address);
+    copy(address);
     setIsCopied(true);
 
     setTimeout(() => {

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -9,7 +10,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { withdrawVesting } from 'contracts/helpers/vesting-helper';
 
@@ -33,7 +33,7 @@ interface Props {
 
 function WithdrawForm ({ onSubmit, balance, timeLockBalance }: Props) {
   const { t } = useTranslation();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
 
   const { submitTransaction } = useTransaction();
 

@@ -5,13 +5,13 @@ import { RootNodesInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/root
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ContractType } from 'typings/contracts';
 
 import { useSlashingActions } from 'pages/Governance/hooks/useSlashingActions';
 
 import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import {
   getInstance,
@@ -27,7 +27,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
   const { t } = useTranslation();
   const { purgeSlashing: purgeSlashingAction } = useSlashingActions(isRootSlashing);
 
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
   const { getActiveProposalsByType } = useProposals();
   const { pendingTransactions, submitTransaction } = useTransaction();
 
@@ -90,7 +90,7 @@ function usePurgeSlashing (address: string, isRootSlashing: boolean) {
     );
 
     const pendingProposalIds = proposalIds
-      .filter((_, i) => proposalOwners[i] === user.address);
+      .filter((_, i) => proposalOwners[i] === accountAddress);
     return pendingProposalIds.length > 0;
   };
 

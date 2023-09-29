@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { media } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -12,7 +13,6 @@ import useQVaultLimits from '../hooks/useQVaultLimits';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { amount, required } from 'utils/validators';
 
@@ -37,7 +37,7 @@ function WithdrawForm () {
   const { submitTransaction } = useTransaction();
 
   const { withdrawFromVault } = useQVault();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   const { maxWithdrawAmount } = useQVaultLimits();
   const form = useForm({
@@ -46,7 +46,7 @@ function WithdrawForm () {
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('WITHDRAW_FROM_Q_VAULT_TX'),
-        submitFn: async () => withdrawFromVault({ amount, address: user.address }),
+        submitFn: async () => withdrawFromVault({ amount, address }),
         onSuccess: () => form.reset(),
       });
     }

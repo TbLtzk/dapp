@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { formatAsset } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Button';
 
@@ -13,7 +14,6 @@ import { StatsContainer } from './styles';
 
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 import { formatDateDMY, formatTimeGMT, unixToDate } from 'utils/date';
@@ -24,7 +24,7 @@ function VotingStats () {
   const { loadDelegationInfo } = useQVault();
   const { baseVotingWeightInfo, getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
 
-  const user = useUser();
+  const { address } = useWeb3Context();
   const voterStatus = useVoterStatus();
 
   const { ownWeight, lockedUntil } = baseVotingWeightInfo;
@@ -32,7 +32,7 @@ function VotingStats () {
 
   useEffect(() => {
     getBaseVotingWeightInfo();
-    loadDelegationInfo(user.address);
+    loadDelegationInfo(address);
   }, []);
 
   const statsList = [

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { media } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import ValidatorStatusBar from 'components/Base/ValidatorStatusBar';
@@ -14,7 +15,6 @@ import { useGetValidatorRank, useValidatorStatus } from 'hooks/useValidatorStatu
 import { useEnterShortList } from '../hooks';
 
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
@@ -36,7 +36,7 @@ const StyledWrapper = styled.div`
 
 function ValidatorInfo () {
   const { t } = useTranslation();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
   const { walletBalance } = useQVault();
   const { isValidator, checkIsValidator } = useValidators();
   const { validatorRank } = useGetValidatorRank(address);

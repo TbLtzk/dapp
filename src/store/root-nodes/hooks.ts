@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AliasPurpose } from '@q-dev/q-js-sdk';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { orderBy, round, sumBy } from 'lodash';
 
@@ -17,7 +18,7 @@ import {
   setWithdrawalInfo
 } from './reducer';
 
-import { getState, getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
 
 import { getIndexerInstance, getRootNodesInstance } from 'contracts/contract-instance';
@@ -30,6 +31,7 @@ export function useRootNodes () {
   const dispatch = useDispatch();
   const { loadWalletBalance } = useQVault();
   const { indexerUrl } = useNetworkConfig();
+  const { address: accountAddress, chainId } = useWeb3Context();
 
   const withdrawalInfo = useAppSelector(({ rootNodes }) => rootNodes.withdrawalInfo);
   const isRootNode = useAppSelector(({ rootNodes }) => rootNodes.isRootNode);
@@ -43,51 +45,48 @@ export function useRootNodes () {
   const rootMinimumTimeLock = useAppSelector(({ rootNodes }) => rootNodes.minimumTimeLock);
 
   async function commitRootNodeStake (amount: string) {
-    const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const tx = await contract.commitStake({ from: userAddress, value: toWei(amount) });
+    const tx = await contract.commitStake({ from: accountAddress, value: toWei(amount) });
 
     return {
       tx,
       onSuccess: () => {
         loadWalletBalance();
-        getRootNodeStakes(userAddress);
-        getRootWithdrawalInfo(userAddress);
-        getMinimumRootTimeLock(userAddress);
+        getRootNodeStakes(accountAddress);
+        getRootWithdrawalInfo(accountAddress);
+        getMinimumRootTimeLock(accountAddress);
         getRootMembers();
       }
     };
   }
 
   async function announceRootStakeWithdrawal (amount: string) {
-    const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const tx = await contract.announceWithdrawal(toWei(amount), { from: userAddress });
+    const tx = await contract.announceWithdrawal(toWei(amount), { from: accountAddress });
 
     return {
       tx,
       onSuccess: () => {
         loadWalletBalance();
-        getRootNodeStakes(userAddress);
-        getRootWithdrawalInfo(userAddress);
-        getMinimumRootTimeLock(userAddress);
+        getRootNodeStakes(accountAddress);
+        getRootWithdrawalInfo(accountAddress);
+        getMinimumRootTimeLock(accountAddress);
         getRootMembers();
       }
     };
   }
 
   async function withdrawRootStake (amount: string) {
-    const userAddress = getUserAddress();
     const contract = await getRootNodesInstance();
-    const tx = await contract.withdraw(toWei(amount), userAddress, { from: userAddress });
+    const tx = await contract.withdraw(toWei(amount), accountAddress, { from: accountAddress });
 
     return {
       tx,
       onSuccess: () => {
         loadWalletBalance();
-        getRootNodeStakes(userAddress);
-        getRootWithdrawalInfo(userAddress);
-        getMinimumRootTimeLock(userAddress);
+        getRootNodeStakes(accountAddress);
+        getRootWithdrawalInfo(accountAddress);
+        getMinimumRootTimeLock(accountAddress);
         getRootMembers();
       }
     };
@@ -103,7 +102,7 @@ export function useRootNodes () {
       const [aliasesMap, metrics] = await Promise.all([
         getAliasMap(
           members,
-          getState().user.chainId,
+          Number(chainId),
           AliasPurpose.ROOT_NODE_OPERATION
         ),
         getOnchainRootNodeMetrics()
@@ -151,7 +150,7 @@ export function useRootNodes () {
   async function checkRootNodeMembership () {
     try {
       const contract = await getRootNodesInstance();
-      const isMember = await contract.instance.isMember(getUserAddress());
+      const isMember = await contract.instance.isMember(accountAddress);
       dispatch(setIsRootNode(isMember));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

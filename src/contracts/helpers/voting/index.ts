@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import { ParameterType, ProposalStatus, RawParameter, VotingStats } from '@q-dev/q-js-sdk';
 import { ConstitutionVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/constitution/ConstitutionVotingInstance';
 import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
@@ -39,8 +40,6 @@ import {
   getSlashingProposals,
 } from './slashing';
 
-import { getState, getUserAddress } from 'store';
-
 import { getInstance, getRootNodesInstance } from 'contracts/contract-instance';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
@@ -55,28 +54,27 @@ async function checkProposal (contract: ProposalsContract, proposal: ProposalEve
   };
 }
 
-function getOldestActiveBlockFromStorage () {
-  const { user } = getState();
-  return JSON.parse(localStorage.getItem('oldestActiveBlock ' + user.chainId) || '{}');
+function getOldestActiveBlockFromStorage (chainId: ChainId) {
+  return JSON.parse(localStorage.getItem('oldestActiveBlock ' + chainId) || '{}');
 }
 
-async function getOldestBlock (contractName: ContractType) {
+async function getOldestBlock (contractName: ContractType, chainId: ChainId) {
   const { minimalActiveBlockHeight } = await getMinimalActiveBlockHeight();
-  const oldestActiveBlocks = getOldestActiveBlockFromStorage();
+  const oldestActiveBlocks = getOldestActiveBlockFromStorage(chainId);
   return oldestActiveBlocks[contractName] ?? minimalActiveBlockHeight;
 }
 
-async function changeOldestBlock (contractName: ContractType, proposals: ProposalEvent[]) {
+async function changeOldestBlock (contractName: ContractType, proposals: ProposalEvent[], chainId: ChainId) {
   const { lastBlockHeight } = await getMinimalActiveBlockHeight();
 
-  const oldestActiveBlocks = getOldestActiveBlockFromStorage();
+  const oldestActiveBlocks = getOldestActiveBlockFromStorage(chainId);
 
   const oldestActiveProposal = Math.min(
     ...proposals.filter(({ status }) => status === 'active').map(({ blockNumber }) => blockNumber)
   );
 
   localStorage.setItem(
-    'oldestActiveBlock ' + getState().user.chainId,
+    'oldestActiveBlock ' + chainId,
     JSON.stringify(
       merge(oldestActiveBlocks, {
         [contractName]: isFinite(oldestActiveProposal) ? oldestActiveProposal : lastBlockHeight,
@@ -90,11 +88,13 @@ export async function getContractProposals ({
   contract,
   lastBlock,
   contractName,
+  chainId,
 }: {
   proposals: ProposalEvent[];
   contract: ProposalsContract;
   lastBlock: number;
   contractName: ContractType;
+  chainId: ChainId;
 }): Promise<ProposalEvent[]> {
   try {
     const contractProposals = proposals.filter(({ contract }) => contract === contractName);
@@ -105,7 +105,7 @@ export async function getContractProposals ({
       contractName,
     });
 
-    const oldestBlock = await getOldestBlock(contractName);
+    const oldestBlock = await getOldestBlock(contractName, chainId);
 
     const proposalsBeforeActiveBlock = newProposals
       .filter((proposal) => proposal.blockNumber < oldestBlock)
@@ -117,7 +117,7 @@ export async function getContractProposals ({
       [...activeProposals, ...proposalsAfterActiveBlock].map((proposal) => checkProposal(contract, proposal))
     );
 
-    await changeOldestBlock(contractName, proposalsWithStatus);
+    await changeOldestBlock(contractName, proposalsWithStatus, chainId);
 
     return uniqBy([...proposalsWithStatus, ...proposalsBeforeActiveBlock, ...contractProposals], 'id');
   } catch (error) {
@@ -145,18 +145,23 @@ export async function getProposalPastEvents (
   }));
 }
 
-export function getProposalEvents (proposalType: ProposalType, proposals: ProposalEvent[], lastBlock: number) {
+export function getProposalEvents (
+  proposalType: ProposalType,
+  proposals: ProposalEvent[],
+  lastBlock: number,
+  chainId: ChainId
+) {
   switch (proposalType) {
     case 'q':
-      return getQProposals(proposals, lastBlock);
+      return getQProposals(proposals, lastBlock, chainId);
     case 'rootNode':
-      return getRootNodeProposals(proposals, lastBlock);
+      return getRootNodeProposals(proposals, lastBlock, chainId);
     case 'expert':
-      return getExpertProposals(proposals, lastBlock);
+      return getExpertProposals(proposals, lastBlock, chainId);
     case 'slashing':
-      return getSlashingProposals(proposals, lastBlock);
+      return getSlashingProposals(proposals, lastBlock, chainId);
     case 'contractUpdate':
-      return getContractUpdateProposals(proposals, lastBlock);
+      return getContractUpdateProposals(proposals, lastBlock, chainId);
   }
 }
 
@@ -211,10 +216,10 @@ export function getProposalTypeByContract (contract: ProposalContractType): Prop
 
 export async function getProposal<T extends ProposalContractType> (
   contractType: T,
-  id: string
+  id: string,
+  userAddress: string,
 ): Promise<Proposal | null> {
   try {
-    const userAddress = getUserAddress();
     const contract = await getInstance<T>(contractType)();
     const status = await contract.getStatus(id);
     if (status === ProposalStatus.NONE) return null;

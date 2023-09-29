@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Alias, AliasPurpose } from '@q-dev/q-js-sdk';
 import { Tooltip } from '@q-dev/q-ui-kit';
 import { trimString } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import invert from 'lodash/invert';
 
 import Button from 'components/Button';
@@ -10,7 +11,6 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'components/Table';
 
 import { useAliases } from 'store/aliases/hooks';
-import { useUser } from 'store/user/hooks';
 
 interface Props {
   address: string;
@@ -21,7 +21,7 @@ function AliasesTable ({ address, onSelect }: Props) {
   const { t } = useTranslation();
 
   const { aliases, isAliasesLoading } = useAliases();
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
 
   const columns = [
     {
@@ -43,12 +43,12 @@ function AliasesTable ({ address, onSelect }: Props) {
     role: invert(AliasPurpose)[item.purpose] || t('UNKNOWN'),
     action: (
       <Tooltip
-        disabled={user.address === address}
+        disabled={accountAddress === address}
         trigger={
           <Button
             compact
             look="ghost"
-            disabled={user.address !== address}
+            disabled={accountAddress !== address}
             onClick={() => onSelect(item)}
           >
             <span>{t('MANAGE')}</span>

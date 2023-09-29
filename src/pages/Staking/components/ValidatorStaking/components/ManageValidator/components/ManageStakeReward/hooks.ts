@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { getFixedPercentage } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
-import { useUser } from 'store/user/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
 
@@ -40,16 +40,16 @@ function useUpdateValidatorCompoundRate () {
   } = useValidationRewards();
   const { loadValidatorDelegatedStake } = useValidators();
 
-  const user = useUser();
+  const { address } = useWeb3Context();
   const [loading, setLoading] = useState(false);
 
   const updateCompoundRate = async () => {
     try {
       setLoading(true);
       const contract = await getValidationRewardPoolsInstance();
-      const tx = await contract.updateValidatorsCompoundRate(user.address);
+      const tx = await contract.updateValidatorsCompoundRate(address);
       await tx.wait();
-      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(user.address);
+      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(address);
       if (lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
         throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));
       }

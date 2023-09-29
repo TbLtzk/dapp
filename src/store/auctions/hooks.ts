@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ContractTransaction } from 'ethers';
 import { ErrorHandler } from 'helpers';
 import {
@@ -17,9 +18,11 @@ import {
 } from 'typings/auctions';
 import { StablecoinAsset } from 'typings/defi';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { setAuctions } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 
 import {
   bidForLiquidationAuction,
@@ -44,6 +47,8 @@ import { getMinimalActiveBlockHeight } from 'contracts/helpers/block-number';
 export function useAuctions () {
   const dispatch = useDispatch();
   const auctions = useAppSelector(({ auctions }) => auctions);
+  const { stablecoins } = useNetworkConfig();
+  const { address: accountAddress } = useWeb3Context();
 
   async function getAuctions (auctionType: AuctionType, asset: StablecoinAsset) {
     try {
@@ -77,19 +82,28 @@ export function useAuctions () {
     }
   }
 
+  function getAllAuctions () {
+    stablecoins.forEach(asset => {
+      getAuctions('liquidation', asset);
+      getAuctions('systemDebt', asset);
+      getAuctions('systemSurplus', asset);
+    });
+
+    setTimeout(getAllAuctions, 240_000);
+  }
+
   async function createAuction ({ form, auctionType }: {
     form: CreateAuction;
     auctionType: AuctionType;
   }) {
-    const userAddress = getUserAddress();
     let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation': {
-        tx = await createLiquidationAuction(form as CreateLiquidationAuction, userAddress);
+        tx = await createLiquidationAuction(form as CreateLiquidationAuction, accountAddress);
         break;
       }
       case 'systemDebt': {
-        tx = await createSystemDebtAuction(form as CreateAuction, userAddress);
+        tx = await createSystemDebtAuction(form as CreateAuction, accountAddress);
         break;
       }
       case 'systemSurplus': {
@@ -111,18 +125,16 @@ export function useAuctions () {
     auctionType: AuctionType;
     asset: StablecoinAsset;
   }) {
-    const userAddress = getUserAddress();
-
     let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation':
-        tx = await bidForLiquidationAuction(asset, form as LiquidationAuctionBid, userAddress);
+        tx = await bidForLiquidationAuction(asset, form as LiquidationAuctionBid, accountAddress);
         break;
       case 'systemDebt':
-        tx = await bidForSystemDebtAuction(asset, form as AuctionBid, userAddress);
+        tx = await bidForSystemDebtAuction(asset, form as AuctionBid, accountAddress);
         break;
       case 'systemSurplus':
-        tx = await bidForSystemSurplusAction(asset, form as AuctionBid, userAddress);
+        tx = await bidForSystemSurplusAction(asset, form as AuctionBid, accountAddress);
         break;
     }
 
@@ -139,20 +151,18 @@ export function useAuctions () {
     auctionType: AuctionType;
     asset: StablecoinAsset;
   }) {
-    const userAddress = getUserAddress();
-
     let tx: ContractTransaction;
     switch (auctionType) {
       case 'liquidation': {
-        tx = await executeLiquidationAuction(asset, form as LiquidationAuctionExecute, userAddress);
+        tx = await executeLiquidationAuction(asset, form as LiquidationAuctionExecute, accountAddress);
         break;
       }
       case 'systemDebt': {
-        tx = await executeSystemDebtAuction(asset, userAddress);
+        tx = await executeSystemDebtAuction(asset, accountAddress);
         break;
       }
       case 'systemSurplus': {
-        tx = await executeSystemSurplusAuction(asset, form as AuctionExecute, userAddress);
+        tx = await executeSystemSurplusAuction(asset, form as AuctionExecute, accountAddress);
         break;
       }
     }
@@ -182,6 +192,7 @@ export function useAuctions () {
     activeAuctionsCount,
 
     getActiveAuctionsCountByAsset,
+    getAllAuctions: useCallback(getAllAuctions, []),
     getAuctions: useCallback(getAuctions, []),
     createAuction: useCallback(createAuction, []),
     bidForAuction: useCallback(bidForAuction, []),

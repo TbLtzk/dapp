@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { Range } from '@q-dev/q-ui-kit';
 import { formatAsset, formatNumber, toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -11,7 +12,6 @@ import Input from 'components/Input';
 
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { max, required } from 'utils/validators';
 
@@ -29,7 +29,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { vaultBalance, votingWeight, lockAmount, unlockAmount } = useQVault();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   const form = useForm({
     initialValues: { amount: votingWeight },
@@ -41,7 +41,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
         submitFn: () => {
           const delta = toBigNumber(form.amount).minus(toBigNumber(votingWeight));
           const opts = {
-            address: user.address,
+            address,
             amount: delta.abs().toString(),
           };
 

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { calculateInterestRate } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 
 import {
@@ -16,7 +17,7 @@ import {
   setWalletBalance
 } from './reducer';
 
-import { getState, getUserAddress, useAppSelector } from 'store';
+import { getState, useAppSelector } from 'store';
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useValidators } from 'store/validators/hooks';
 
@@ -30,6 +31,7 @@ export function useQVault () {
   const dispatch = useDispatch();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
   const { loadValidatorStats } = useValidators();
+  const { address: accountAddress } = useWeb3Context();
 
   const vaultBalance = useAppSelector(({ qVault }) => qVault.vaultBalance);
   const walletBalance = useAppSelector(({ qVault }) => qVault.walletBalance);
@@ -50,7 +52,7 @@ export function useQVault () {
 
   async function loadWalletBalance () {
     try {
-      const balance = await currentProvider?.getBalance(getUserAddress());
+      const balance = await currentProvider?.getBalance(accountAddress);
       dispatch(setWalletBalance(fromWei(balance || '0')));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -60,7 +62,7 @@ export function useQVault () {
   async function loadVaultBalance (address?: string) {
     try {
       const contract = await getQVaultInstance();
-      const balance = await contract.balanceOf(address ?? getUserAddress());
+      const balance = await contract.balanceOf(address ?? accountAddress);
       dispatch(setVaultBalance(fromWei(balance)));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -143,9 +145,8 @@ export function useQVault () {
     addresses: string[];
     stakes: string[];
   }) {
-    const userAddress = getUserAddress();
     const contract = await getQVaultInstance();
-    const tx = await contract.delegateStake(addresses, stakes, { from: userAddress });
+    const tx = await contract.delegateStake(addresses, stakes, { from: accountAddress });
 
     return {
       tx,
@@ -153,7 +154,7 @@ export function useQVault () {
         loadDelegationStakeInfo();
         loadDelegationList();
         loadWalletBalance();
-        loadDelegationInfo(userAddress);
+        loadDelegationInfo(accountAddress);
         loadValidatorStats();
       }
     };
@@ -197,9 +198,8 @@ export function useQVault () {
 
   async function loadDelegationList () {
     try {
-      const userAddress = getUserAddress();
       const contract = await getQVaultInstance();
-      const delegationsList = await contract.getDelegationsList(userAddress);
+      const delegationsList = await contract.getDelegationsList(accountAddress);
       const delegationsListWithShare = await Promise.all(delegationsList.map(getDelegatorsShare));
       dispatch(setDelegationList(delegationsListWithShare));
     } catch (error) {
@@ -209,11 +209,10 @@ export function useQVault () {
 
   async function loadDelegationStakeInfo () {
     try {
-      const userAddress = getUserAddress();
       const contract = await getQVaultInstance();
-      const delegationsList = await contract.getDelegationsList(userAddress);
-      const totalDelegatedStake = await contract.getTotalDelegatedStake(userAddress);
-      const delegatableAmount = await contract.getDelegatableAmount(userAddress);
+      const delegationsList = await contract.getDelegationsList(accountAddress);
+      const totalDelegatedStake = await contract.getTotalDelegatedStake(accountAddress);
+      const delegatableAmount = await contract.getDelegatableAmount(accountAddress);
 
       dispatch(setDelegationStakeInfo({
         totalDelegatedStake: fromWei(totalDelegatedStake),
@@ -226,9 +225,8 @@ export function useQVault () {
   }
 
   async function claimStakeDelegatorReward () {
-    const userAddress = getUserAddress();
     const contract = await getQVaultInstance();
-    const tx = await contract.claimStakeDelegatorReward({ from: userAddress });
+    const tx = await contract.claimStakeDelegatorReward({ from: accountAddress });
 
     return {
       tx,
@@ -242,9 +240,8 @@ export function useQVault () {
 
   async function loadQVBalanceDetails () {
     try {
-      const userAddress = getUserAddress();
       const contract = await getQVaultInstance();
-      const balanceDetailsData = await contract.getBalanceDetails(userAddress);
+      const balanceDetailsData = await contract.getBalanceDetails(accountAddress);
       const qHolderRewardPool = await getQHolderRewardPool();
 
       const { vaultBalance } = getState().qVault;
@@ -272,28 +269,26 @@ export function useQVault () {
   }
 
   async function announceNewVotingAgent (address: string) {
-    const userAddress = getUserAddress();
     const contract = await getVotingWeightProxyInstance();
     const tx = await contract.announceNewVotingAgent(address);
 
     return {
       tx,
       onSuccess: () => {
-        loadDelegationInfo(userAddress);
+        loadDelegationInfo(accountAddress);
         loadWalletBalance();
       }
     };
   }
 
   async function setNewVotingAgent () {
-    const userAddress = getUserAddress();
     const contract = await getVotingWeightProxyInstance();
     const tx = await contract.setNewVotingAgent();
 
     return {
       tx,
       onSuccess: () => {
-        loadDelegationInfo(userAddress);
+        loadDelegationInfo(accountAddress);
         loadWalletBalance();
       }
     };

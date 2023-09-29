@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 
@@ -11,8 +12,6 @@ import { useTimeLocksAddress } from '../TimeLocks';
 
 import DepositForm from './DepositForm';
 import WithdrawForm from './WithdrawForm';
-
-import { useUser } from 'store/user/hooks';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -38,7 +37,7 @@ function LockActions ({
 }: Props) {
   const { t } = useTranslation();
 
-  const { address: userAddress } = useUser();
+  const { address: accountAddress } = useWeb3Context();
   const { address } = useTimeLocksAddress();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
@@ -55,7 +54,7 @@ function LockActions ({
 
       {contract === 'vesting' && (
         <Button
-          disabled={userAddress !== address}
+          disabled={accountAddress !== address}
           onClick={() => setWithdrawModalOpen(true)}
         >
           {t('WITHDRAW')}

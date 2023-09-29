@@ -1,4 +1,5 @@
-import { createContext, FC, ReactElement, useContext, useMemo, useState } from 'react';
+import { createContext, FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   ChainId,
@@ -11,8 +12,11 @@ import {
 } from '@distributedlab/w3p';
 import { useLocalStorage } from '@q-dev/react-hooks';
 import { ethers } from 'ethers';
+import { motion } from 'framer-motion';
 import { DevnetFallback, ErrorHandler, MainnetFallback, TestnetFallback } from 'helpers';
 import { ProviderWrapper, SupportedProviders } from 'typings/provider';
+
+import { Wrap } from 'components/AppInitializer/styles';
 
 import { useProvider } from 'hooks/useProvider';
 
@@ -25,8 +29,6 @@ export interface Web3Data extends Omit<ProviderWrapper, 'init' | 'switchNetwork'
   connectWallet: (providerType: SupportedProviders, onSuccess?: () => void | Promise<void>) => Promise<void>;
   switchNetwork: (chainId: ChainId) => Promise<void> | undefined;
   isRightNetwork: boolean;
-  loadAppType: LOAD_TYPES;
-  setLoadAppType: (type: LOAD_TYPES) => void;
 };
 
 function getFallbackProviderType (chainId?: number | string) {
@@ -46,6 +48,8 @@ function getFallbackProviderType (chainId?: number | string) {
 export const Web3Context = createContext({} as Web3Data);
 
 const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
+  const { t } = useTranslation();
+
   const providerDetector = useMemo(
     () => new ProviderDetector<FALLBACK_PROVIDER_NAMES>(),
     []);
@@ -187,22 +191,67 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
     }
   }
 
-  return (
-    <Web3Context.Provider
-      value={{
-        ...provider,
-        switchNetwork,
-        isRightNetwork,
-        init,
-        disconnect,
-        loadAppType,
-        setLoadAppType,
-        connectWallet,
-      }}
-    >
-      {children}
-    </Web3Context.Provider>
-  );
+  async function initProvider () {
+    try {
+      await init();
+      setLoadAppType(LOAD_TYPES.loaded);
+    } catch (error) {
+      setLoadAppType(LOAD_TYPES.initError);
+    }
+  }
+
+  useEffect(() => {
+    initProvider();
+  }, []);
+
+  switch (loadAppType) {
+    case LOAD_TYPES.loaded:
+      return (
+        <Web3Context.Provider
+          value={{
+            ...provider,
+            switchNetwork,
+            isRightNetwork,
+            init,
+            disconnect,
+            connectWallet,
+          }}
+        >
+          {children}
+        </Web3Context.Provider>
+      );
+    case LOAD_TYPES.initError:
+      return (
+        <Wrap>
+          <div>
+            <p>{t('APP_INIT_ERROR')}</p>
+            <p>{t('APP_INIT_ERROR_MESSAGE')}</p>
+          </div>
+        </Wrap>
+      );
+    case LOAD_TYPES.loading:
+    default:
+      return (
+        <Wrap>
+          <motion.div
+            className="breathing-q"
+            animate={{ scale: 1.3 }}
+            transition={{
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeOut',
+              duration: 0.75
+            }}
+          >
+            <img
+              className="breathing-q__logo"
+              src="/logo.png"
+              alt="q"
+            />
+          </motion.div>
+        </Wrap>
+      );
+  }
 };
 
 export const useWeb3Context = () => useContext(Web3Context);

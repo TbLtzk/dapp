@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Modal, Tooltip } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { SlashingProposal } from 'typings/proposals';
 
 import Button from 'components/Button';
@@ -11,7 +12,6 @@ import ProposeDecisionForm from './ProposeDecisionForm';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { checkConfirmedDecision } from 'contracts/helpers/voting/slashing';
 
@@ -25,7 +25,7 @@ interface Props {
 function DecisionActions ({ proposal }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
   const {
     confirmDecision,
     recallDecision,
@@ -33,7 +33,6 @@ function DecisionActions ({ proposal }: Props) {
   } = useSlashingActions(proposal.contract === 'rootNodesSlashingVoting');
 
   const { isRootNode } = useRootNodes();
-  const user = useUser();
 
   const [hasConfirmed, setHasConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,7 +40,7 @@ function DecisionActions ({ proposal }: Props) {
   const { objection, decision } = proposal.objEscrow;
   const isDecisionEnded = decision.endDate.getTime() < Date.now() || objection.status === ObjectionStatus.EXECUTED;
   const isDecisionPassed = Number(decision.confirmationCount) >= Number(decision.requiredConfirmations);
-  const canProposeDecision = decision.proposer !== user.address &&
+  const canProposeDecision = decision.proposer !== address &&
     (isDecisionEnded || decision.proposer === ZERO_ADDRESS) &&
     objection.status === ObjectionStatus.PENDING;
 
@@ -61,7 +60,7 @@ function DecisionActions ({ proposal }: Props) {
 
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      {!isDecisionEnded && decision.proposer === user.address && (
+      {!isDecisionEnded && decision.proposer === address && (
         <Tooltip
           trigger={(
             <Button

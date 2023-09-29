@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { calculateInterestRate } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { StablecoinAsset } from 'typings/defi';
 
@@ -17,7 +18,7 @@ import {
   setTotalSavingBalance
 } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 
 import { getEpdrParametersInstance, getSavingInstance, getStableCoinInstance } from 'contracts/contract-instance';
 import { getSavingBalanceDetailsHelper } from 'contracts/helpers/saving-assets-helper';
@@ -29,6 +30,7 @@ import { fromWei, toWei } from 'utils/web3';
 export function useSaving (asset: StablecoinAsset) {
   const dispatch = useDispatch();
   const { loadSavingAssets } = useSavingAssets();
+  const { address: accountAddress } = useWeb3Context();
 
   const totalSavingBalance = useAppSelector(({ saving }) => saving.stablecoinMap[asset].totalSavingBalance);
   const savingRate = useAppSelector(({ saving }) => saving.stablecoinMap[asset].savingRate);
@@ -42,7 +44,7 @@ export function useSaving (asset: StablecoinAsset) {
       const stableCoinInstance = await getStableCoinInstance(asset);
       const savingInstance = await getSavingInstance(asset);
       const [allowance, decimals] = await Promise.all([
-        stableCoinInstance.allowance(getUserAddress(), savingInstance.address),
+        stableCoinInstance.allowance(accountAddress, savingInstance.address),
         stableCoinInstance.decimals()
       ]);
 
@@ -58,7 +60,7 @@ export function useSaving (asset: StablecoinAsset) {
   async function loadSavingBalanceDetails () {
     try {
       const contract = await getSavingInstance(asset);
-      const balanceDetails = await contract.getBalanceDetails(getUserAddress());
+      const balanceDetails = await contract.getBalanceDetails(accountAddress);
       const result = await getSavingBalanceDetailsHelper(balanceDetails);
       dispatch(setBalanceDetails({ asset, balanceDetails: result }));
     } catch (error) {
@@ -69,7 +71,7 @@ export function useSaving (asset: StablecoinAsset) {
   async function loadSavingAvailableToDeposit () {
     try {
       const contract = await getStableCoinInstance(asset);
-      const result = await contract.balanceOf(getUserAddress());
+      const result = await contract.balanceOf(accountAddress);
       dispatch(setAvailableToDeposit({
         asset,
         amount: fromWei(result)
@@ -82,7 +84,7 @@ export function useSaving (asset: StablecoinAsset) {
   async function loadTotalSavingBalance () {
     try {
       const contract = await getSavingInstance(asset);
-      const savingAmount = await contract.instance.getBalance({ from: getUserAddress() });
+      const savingAmount = await contract.instance.getBalance({ from: accountAddress });
       dispatch(setTotalSavingBalance({
         asset,
         balance: fromWei(savingAmount)
@@ -113,7 +115,7 @@ export function useSaving (asset: StablecoinAsset) {
 
   async function depositSaving (amount: string) {
     const contract = await getSavingInstance(asset);
-    const tx = await contract.deposit(toWei(amount), { from: getUserAddress() });
+    const tx = await contract.deposit(toWei(amount), { from: accountAddress });
 
     return {
       tx,
@@ -123,7 +125,7 @@ export function useSaving (asset: StablecoinAsset) {
 
   async function withdrawSaving (amount: string) {
     const contract = await getSavingInstance(asset);
-    const tx = await contract.withdraw(toWei(amount), { from: getUserAddress() });
+    const tx = await contract.withdraw(toWei(amount), { from: accountAddress });
 
     return {
       tx,
@@ -137,7 +139,7 @@ export function useSaving (asset: StablecoinAsset) {
       getSavingInstance(asset)
     ]);
     const tx = await contract.approve(contractSaving.address, MAX_APPROVE_AMOUNT, {
-      from: getUserAddress()
+      from: accountAddress
     });
 
     return {
@@ -148,7 +150,7 @@ export function useSaving (asset: StablecoinAsset) {
 
   async function updateSavingCompoundRate () {
     const contract = await getSavingInstance(asset);
-    return contract.updateCompoundRate({ from: getUserAddress() });
+    return contract.updateCompoundRate({ from: accountAddress });
   }
 
   return {
@@ -173,6 +175,7 @@ export function useSaving (asset: StablecoinAsset) {
 export function useSavingAssets () {
   const dispatch = useDispatch();
   const { stablecoins } = useNetworkConfig();
+  const { address: accountAddress } = useWeb3Context();
 
   const savingAssets = useAppSelector(({ saving }) => saving.savingAssets);
   const savingAssetsLoading = useAppSelector(({ saving }) => saving.savingAssetsLoading);
@@ -185,10 +188,9 @@ export function useSavingAssets () {
         contract: await getSavingInstance(asset)
       })));
 
-      const userAddress = getUserAddress();
       const savingAssets = await Promise.all(
         contracts.map(async ({ contract, asset }) => {
-          const balanceDetails = await contract.getBalanceDetails(userAddress);
+          const balanceDetails = await contract.getBalanceDetails(accountAddress);
 
           return {
             assetName: asset,

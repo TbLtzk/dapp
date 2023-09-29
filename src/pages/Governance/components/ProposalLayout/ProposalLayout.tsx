@@ -1,6 +1,7 @@
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Tag } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
 
 import PageLayout from 'components/PageLayout';
@@ -17,10 +18,8 @@ import ProposalVeto from './components/ProposalVeto';
 import ProposalVoting from './components/ProposalVoting';
 import { ProposalLayoutContainer } from './styles';
 
-import { useUser } from 'store/user/hooks';
-
 function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: ProposalType }) {
-  const user = useUser();
+  const { address } = useWeb3Context();
   const { title, status, state } = useProposalDetails(proposal);
 
   const isSlashingProposal = type === 'slashing' &&
@@ -33,7 +32,7 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: Proposa
       action={<ProposalActions proposal={proposal} title={title} />}
     >
       <ProposalLayoutContainer>
-        {isSlashingProposal && proposal.candidate === user.address && (
+        {isSlashingProposal && proposal.candidate === address && (
           <CastObjection proposal={proposal as SlashingProposal} />
         )}
 

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { Modal, Tip } from '@q-dev/q-ui-kit';
 import { formatAsset, toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import snakeCase from 'lodash/snakeCase';
 import styled from 'styled-components';
 import { AuctionBid, AuctionCompletedInfos, LiquidationAuctionBid } from 'typings/auctions';
@@ -14,7 +15,6 @@ import Input from 'components/Input';
 
 import { useAuctions } from 'store/auctions/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 import { getAuctionInstance } from 'contracts/helpers/auction';
@@ -48,7 +48,7 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
   const [allowance, setAllowance] = useState('0');
   const [balance, setBalance] = useState('0');
   const modalTitle = useMemo(() => `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`, [t, auction.auctionType]);
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
 
   const form = useForm({
     initialValues: { bid: '' },
@@ -91,13 +91,13 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
   async function loadAllowanceValue () {
     const stableCoin = await getStableCoinInstance(stablecoinAsset);
     const { address } = await getAuctionInstance(stablecoinAsset, auction.auctionType);
-    const allowance = await stableCoin.allowance(user.address, address);
+    const allowance = await stableCoin.allowance(accountAddress, address);
     setAllowance(fromWei(allowance));
   }
 
   async function loadUserBalance () {
     const stableCoin = await getStableCoinInstance(stablecoinAsset);
-    const balance = await stableCoin.balanceOf(user.address);
+    const balance = await stableCoin.balanceOf(accountAddress);
     setBalance(fromWei(balance));
   }
 
@@ -112,7 +112,7 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
 
     await submitTransaction({
       successMessage: t('APPROVE_TX'),
-      submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: user.address }),
+      submitFn: () => contract.approve(address, MAX_APPROVE_AMOUNT, { from: accountAddress }),
       onSuccess: () => {
         loadUserBalance();
         loadAllowanceValue();

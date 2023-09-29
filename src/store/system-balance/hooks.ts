@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { StablecoinAsset } from 'typings/defi';
 
@@ -15,7 +16,7 @@ import {
   setSystemReserveCoolDownPhase
 } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 
 import { getStableCoinInstance, getSystemBalanceInstance, getSystemReserveInstance } from 'contracts/contract-instance';
 
@@ -23,6 +24,7 @@ import { fromWei } from 'utils/web3';
 
 export function useSystemAssetBalance (asset: StablecoinAsset) {
   const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
 
   const stablecoinTotalSupply = useAppSelector(({ systemBalance }) => systemBalance.stablecoinMap[asset].totalSupply);
   const systemBalance = useAppSelector(({ systemBalance }) => systemBalance.stablecoinMap[asset].systemBalance);
@@ -33,7 +35,7 @@ export function useSystemAssetBalance (asset: StablecoinAsset) {
 
   async function performNetting () {
     const contract = await getSystemBalanceInstance(asset);
-    return contract.performNetting({ from: getUserAddress() });
+    return contract.performNetting({ from: accountAddress });
   }
 
   async function loadStableCoinTotalSupply () {

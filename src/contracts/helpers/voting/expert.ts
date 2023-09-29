@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import { EPDRMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPDRMembershipVotingInstance';
 import { EPDRParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPDRParametersVotingInstance';
 import { EPQFIMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPQFIMembershipVotingInstance';
@@ -24,44 +25,51 @@ import { fromWei } from 'utils/web3';
 
 export async function getExpertProposals (
   proposals: ProposalEvent[],
-  lastBlock: number
+  lastBlock: number,
+  chainId: ChainId,
 ) {
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
       contract: await getEpqfiMembershipVotingInstance(),
       lastBlock,
-      contractName: 'epqfiMembershipVoting'
+      contractName: 'epqfiMembershipVoting',
+      chainId
     }),
     getContractProposals({
       proposals,
       contract: await getEpdrMembershipVotingInstance(),
       lastBlock,
-      contractName: 'epdrMembershipVoting'
+      contractName: 'epdrMembershipVoting',
+      chainId,
     }),
     getContractProposals({
       proposals,
       contract: await getEpqfiParametersVotingInstance(),
       lastBlock,
-      contractName: 'epqfiParametersVoting'
+      contractName: 'epqfiParametersVoting',
+      chainId,
     }),
     getContractProposals({
       proposals,
       contract: await getEpdrParametersVotingInstance(),
       lastBlock,
-      contractName: 'epdrParametersVoting'
+      contractName: 'epdrParametersVoting',
+      chainId
     }),
     getContractProposals({
       proposals,
       contract: await getEprsParametersVotingInstance(),
       lastBlock,
-      contractName: 'eprsParametersVoting'
+      contractName: 'eprsParametersVoting',
+      chainId
     }),
     getContractProposals({
       proposals,
       contract: await getEprsMembershipVotingInstance(),
       lastBlock,
-      contractName: 'eprsMembershipVoting'
+      contractName: 'eprsMembershipVoting',
+      chainId
     })
   ]);
 

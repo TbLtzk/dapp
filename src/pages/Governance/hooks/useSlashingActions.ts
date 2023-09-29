@@ -1,7 +1,6 @@
 
 import { getFixedPercentage } from '@q-dev/utils';
-
-import { getUserAddress } from 'store';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import {
   getRootNodesInstance,
@@ -17,9 +16,11 @@ function getEscrowContractInstance (isRootNode: boolean) {
 }
 
 export function useSlashingActions (isRootNode: boolean) {
+  const { address: accountAddress } = useWeb3Context();
+
   async function castObjection ({ remark, proposalId }: { remark: string; proposalId: string }) {
     const contract = await getEscrowContractInstance(isRootNode);
-    return contract.castObjection(proposalId, remark, { from: getUserAddress() });
+    return contract.castObjection(proposalId, remark, { from: accountAddress });
   }
 
   async function proposeDecision ({ percentage, isAppealNeglected, externalLink, proposalId }: {
@@ -34,7 +35,7 @@ export function useSlashingActions (isRootNode: boolean) {
       getFixedPercentage(percentage),
       isAppealNeglected,
       externalLink,
-      { from: getUserAddress() }
+      { from: accountAddress }
     );
   }
 
@@ -45,31 +46,31 @@ export function useSlashingActions (isRootNode: boolean) {
   }) {
     const contract = await getEscrowContractInstance(isRootNode);
     return contract.setProposerRemark(proposalId, remark, isAppealConfirmed, {
-      from: getUserAddress(),
+      from: accountAddress,
     });
   }
 
   async function confirmDecision (proposalId: string) {
     const contract = await getEscrowContractInstance(isRootNode);
     const { decision } = await contract.arbitrationInfos(proposalId);
-    return contract.confirmDecision(proposalId, decision.hash, { from: getUserAddress() });
+    return contract.confirmDecision(proposalId, decision.hash, { from: accountAddress });
   }
 
   async function recallDecision (proposalId: string) {
     const contract = await getEscrowContractInstance(isRootNode);
-    return contract.recallProposedDecision(proposalId, { from: getUserAddress() });
+    return contract.recallProposedDecision(proposalId, { from: accountAddress });
   }
 
   async function executeDecision (proposalId: string) {
     const contract = await getEscrowContractInstance(isRootNode);
-    return contract.execute(proposalId, { from: getUserAddress() });
+    return contract.execute(proposalId, { from: accountAddress });
   }
 
   async function purgeSlashing (address: string) {
     const contract = isRootNode
       ? await getRootNodesInstance()
       : await getValidatorsInstance();
-    return contract.purgePendingSlashings(address, { from: getUserAddress() });
+    return contract.purgePendingSlashings(address, { from: accountAddress });
   }
 
   return {

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { RadioGroup } from '@q-dev/q-ui-kit';
 import { formatAsset, toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { Proposal } from 'typings/proposals';
 
@@ -12,7 +13,6 @@ import Button from 'components/Button';
 
 import { StyledVoteForm } from './styles';
 
-import { getUserAddress } from 'store';
 import { useProposals } from 'store/proposals/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -29,6 +29,7 @@ interface Props {
 
 function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   const { t } = useTranslation();
+  const { address } = useWeb3Context();
   const { submitTransaction } = useTransaction();
   const { voteForProposal } = useProposals();
   const [baseWeight, setBaseWeight] = useState('0');
@@ -37,7 +38,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   async function getBaseVotingWeightInfo () {
     try {
       const contract = await getVotingWeightProxyInstance();
-      const result = await contract.getBaseVotingWeightInfo(getUserAddress(), proposal.votingEndTime.toString());
+      const result = await contract.getBaseVotingWeightInfo(address, proposal.votingEndTime.toString());
       setBaseWeight(fromWei(result.ownWeight));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

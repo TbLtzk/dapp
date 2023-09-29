@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon, media } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -14,7 +15,6 @@ import VotingOverview from './components/VotingOverview';
 
 import { useBaseVotingWeightInfo } from 'store/proposals/hooks';
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -49,14 +49,14 @@ const StyledWrapper = styled.div`
 
 function VotingPower () {
   const { t } = useTranslation();
-  const user = useUser();
+  const { address } = useWeb3Context();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
   const { loadLockInfo, loadDelegationStakeInfo, loadQVBalanceDetails, loadDelegationInfo } = useQVault();
 
   useEffect(() => {
     getBaseVotingWeightInfo();
-    loadLockInfo(user.address);
-    loadDelegationInfo(user.address);
+    loadLockInfo(address);
+    loadDelegationInfo(address);
     loadDelegationStakeInfo();
     loadQVBalanceDetails();
   }, []);

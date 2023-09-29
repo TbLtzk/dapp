@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
@@ -9,7 +10,6 @@ import Input from 'components/Input';
 
 import { useAliases, useAliasEvents } from 'store/aliases/hooks';
 import { useTransaction } from 'store/transaction/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { address, required } from 'utils/validators';
@@ -17,13 +17,13 @@ import { address, required } from 'utils/validators';
 function ReserveForm () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
-  const user = useUser();
+  const { address: accountAddress } = useWeb3Context();
 
   const { reserveAlias } = useAliases();
   const { events } = useAliasEvents();
 
   const reserveEvent = events
-    .find((item) => item.alias === user.address && item.event === 'Reserved');
+    .find((item) => item.alias === accountAddress && item.event === 'Reserved');
   const reservedAddress = reserveEvent?.address || ZERO_ADDRESS;
 
   const form = useForm({

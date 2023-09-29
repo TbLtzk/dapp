@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 
 import { setEpdrMember, setEpdrMembers, setEpdrMembersError, setEpqfiMember, setEpqfiMembers, setEpqfiMembersError, setEprsMember, setEprsMembers, setEprsMembersError } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 
 import {
   getEpdrMembershipInstance,
@@ -15,6 +16,7 @@ import {
 
 export function useExperts () {
   const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
 
   const isEpqfiMember = useAppSelector(({ experts }) => experts.isEpqfiMember);
   const isEpdrMember = useAppSelector(({ experts }) => experts.isEpdrMember);
@@ -35,7 +37,7 @@ export function useExperts () {
   async function checkEpdrMembership () {
     try {
       const contract = await getEpdrMembershipInstance();
-      const isMember = await contract.isMember(getUserAddress());
+      const isMember = await contract.isMember(accountAddress);
       dispatch(setEpdrMember(isMember));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -45,7 +47,7 @@ export function useExperts () {
   async function checkEpqfiMembership () {
     try {
       const contract = await getEpqfiMembershipInstance();
-      const isMember = await contract.isMember(getUserAddress());
+      const isMember = await contract.isMember(accountAddress);
       dispatch(setEpqfiMember(isMember));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -55,7 +57,7 @@ export function useExperts () {
   async function checkEprsMembership () {
     try {
       const contract = await getEprsMembershipInstance();
-      const isMember = await contract.isMember(getUserAddress());
+      const isMember = await contract.isMember(accountAddress);
       dispatch(setEprsMember(isMember));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

@@ -16,13 +16,11 @@ import serverConfig from './server-config/reducer';
 import systemBalance from './system-balance/reducer';
 import tokenomics from './tokenomics/reducer';
 import transaction from './transaction/reducer';
-import user from './user/reducer';
 import validationRewards from './validation-rewards/reducer';
 import validators from './validators/reducer';
 
 export const store = configureStore({
   reducer: {
-    user,
     rootNodes,
     qVault,
     borrowing,
@@ -50,8 +48,4 @@ export function useAppSelector<T> (selector: (state: AppState) => T) {
 
 export function getState () {
   return store.getState();
-}
-
-export function getUserAddress () {
-  return getState().user.address;
 }

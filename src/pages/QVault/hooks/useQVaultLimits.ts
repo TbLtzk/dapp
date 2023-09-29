@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 
 import { BigNumber, toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 
 function useQVaultLimits () {
   const {
@@ -15,10 +15,10 @@ function useQVaultLimits () {
     loadLockInfo,
     loadDelegationStakeInfo
   } = useQVault();
-  const user = useUser();
+  const { address } = useWeb3Context();
 
   useEffect(() => {
-    loadLockInfo(user.address);
+    loadLockInfo(address);
     loadDelegationStakeInfo();
   }, []);
 

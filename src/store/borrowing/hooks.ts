@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { toBigNumber } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import { Asset, StablecoinAsset } from 'typings/defi';
 
@@ -13,7 +14,7 @@ import {
   setInterestRates,
 } from './reducer';
 
-import { getUserAddress, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
 
 import { getBorrowingCoreInstance, getBorrowingInstance } from 'contracts/contract-instance';
 import { prepareVaultdata } from 'contracts/helpers/borrow-assets-helper';
@@ -23,6 +24,7 @@ import { fromWei } from 'utils/web3';
 
 export function useBorrowing () {
   const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
 
   const assets = useAppSelector(({ borrowing }) => borrowing.assetsMap);
 
@@ -58,7 +60,7 @@ export function useBorrowing () {
   async function loadCollateralBalance (asset: Asset) {
     try {
       const borrowingInstance = await getBorrowingInstance(asset);
-      const balance = await borrowingInstance.balanceOf(getUserAddress());
+      const balance = await borrowingInstance.balanceOf(accountAddress);
       dispatch(setCollateralBalance({ asset, balance }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -76,7 +78,7 @@ export function useBorrowing () {
 
   async function updateBorrowingCompoundRate (asset: Asset, stablecoinAsset: StablecoinAsset) {
     const contract = await getBorrowingCoreInstance(stablecoinAsset);
-    return contract.updateCompoundRate(asset, { from: getUserAddress() });
+    return contract.updateCompoundRate(asset, { from: accountAddress });
   }
 
   return {
@@ -93,20 +95,20 @@ export function useBorrowing () {
 
 export function useInterestRates (asset: StablecoinAsset) {
   const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
 
   const interestRates = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].interestRates);
   const interestRatesLoading = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].interestRatesLoading);
 
   async function loadInterestRates (collaterals: Asset[]) {
     try {
-      const userAddress = getUserAddress();
       const contract = await getBorrowingCoreInstance(asset);
-      const vaults = await contract.getAllUserVaults(userAddress);
+      const vaults = await contract.getAllUserVaults(accountAddress);
 
       const debts = await Promise.all(
         vaults.map(async (v, id) => ({
           asset: v.colKey,
-          debt: fromWei(await contract.getFullDebt(userAddress, id))
+          debt: fromWei(await contract.getFullDebt(accountAddress, id))
         }))
       );
 
@@ -137,6 +139,7 @@ export function useInterestRates (asset: StablecoinAsset) {
 
 export function useBorrowingVaults (asset: StablecoinAsset) {
   const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
 
   const borrowingVaults = useAppSelector(({ borrowing }) => borrowing.stablecoinMap[asset].borrowingVaults);
   const borrowingVaultsLoading = useAppSelector(({ borrowing }) =>
@@ -146,12 +149,12 @@ export function useBorrowingVaults (asset: StablecoinAsset) {
   async function loadBorrowingVaults () {
     try {
       const contract = await getBorrowingCoreInstance(asset);
-      const allUserVaults = await contract.getAllUserVaults(getUserAddress());
+      const allUserVaults = await contract.getAllUserVaults(accountAddress);
       const vaultsWithId = allUserVaults.map((vault, id) => ({ ...vault, id }));
 
       const vaults = await Promise.all(vaultsWithId.map(async (vault) => {
-        const vaultStats = await contract.getVaultStats(getUserAddress(), vault.id);
-        const borrowVault = await prepareVaultdata(asset, vaultStats, getUserAddress());
+        const vaultStats = await contract.getVaultStats(accountAddress, vault.id);
+        const borrowVault = await prepareVaultdata(asset, vaultStats, accountAddress);
         return {
           ...vault,
           assetPrice: borrowVault.collateralDetails.assetPrice,
@@ -168,7 +171,7 @@ export function useBorrowingVaults (asset: StablecoinAsset) {
 
   async function createVault (borrowingAsset: Asset) {
     const contract = await getBorrowingCoreInstance(asset);
-    const tx = await contract.createVault(borrowingAsset, { from: getUserAddress() });
+    const tx = await contract.createVault(borrowingAsset, { from: accountAddress });
 
     return {
       tx,

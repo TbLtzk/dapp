@@ -1,16 +1,16 @@
 import { useTranslation } from 'react-i18next';
 
 import { trimString } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import { useQVault } from 'store/q-vault/hooks';
-import { useUser } from 'store/user/hooks';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 
 function useVoteDelegation () {
   const { t } = useTranslation();
   const { delegationInfo } = useQVault();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
 
   const agent = delegationInfo.votingAgent;
 

@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import { RootNodeSlashingEscrowInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodeSlashingEscrowInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorSlashingEscrowInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorSlashingEscrowInstance';
@@ -18,20 +19,24 @@ import { fromWei } from 'utils/web3';
 
 export async function getSlashingProposals (
   proposals: ProposalEvent[],
-  lastBlock: number
+  lastBlock: number,
+  chainId: ChainId
+
 ) {
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
       contract: await getValidatorsSlashingVotingInstance(),
       lastBlock,
-      contractName: 'validatorsSlashingVoting'
+      contractName: 'validatorsSlashingVoting',
+      chainId
     }),
     getContractProposals({
       proposals,
       contract: await getRootNodesSlashingVotingInstance(),
       lastBlock,
-      contractName: 'rootNodesSlashingVoting'
+      contractName: 'rootNodesSlashingVoting',
+      chainId
     }),
   ]);
 

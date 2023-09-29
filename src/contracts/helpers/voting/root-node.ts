@@ -1,3 +1,4 @@
+import type { ChainId } from '@distributedlab/w3p';
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { transformToPercentage } from '@q-dev/utils';
 import { ProposalEvent } from 'typings/contracts';
@@ -13,13 +14,15 @@ import { fromWei } from 'utils/web3';
 
 export async function getRootNodeProposals (
   proposals: ProposalEvent[],
-  lastBlock: number
+  lastBlock: number,
+  chainId: ChainId
 ) {
   return getContractProposals({
     proposals,
     contract: await getRootNodesMembershipVotingInstance(),
     lastBlock,
-    contractName: 'rootNodesMembershipVoting'
+    contractName: 'rootNodesMembershipVoting',
+    chainId,
   });
 }
 

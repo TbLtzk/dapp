@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useWeb3Context } from 'context/Web3ContextProvider';
+
 import { useExperts } from 'store/experts/hooks';
 import { useQVault } from 'store/q-vault/hooks';
 import { useRootNodes } from 'store/root-nodes/hooks';
-import { useUser } from 'store/user/hooks';
 import { useValidators } from 'store/validators/hooks';
 
 function useVoterStatus () {
@@ -21,7 +22,7 @@ function useVoterStatus () {
     checkEpqfiMembership,
     checkEprsMembership,
   } = useExperts();
-  const { address } = useUser();
+  const { address } = useWeb3Context();
 
   useEffect(() => {
     checkIsValidator();
