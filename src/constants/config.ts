@@ -61,7 +61,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD'],
     gasBuffer: 2,
-    featureFlags: { aliases: true, rootNodesMetrics: false },
+    featureFlags: { aliases: true, rootNodesMetrics: true },
   },
   devnet: {
     chainId: 35442,
