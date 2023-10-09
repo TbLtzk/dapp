@@ -33,7 +33,10 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   const { submitTransaction } = useTransaction();
   const { voteForProposal } = useProposals();
   const [baseWeight, setBaseWeight] = useState('0');
-  const canUserVote = useMemo(() => toBigNumber(baseWeight).isGreaterThan(0), [baseWeight]);
+  const canUserVote = useMemo(
+    () => isMemberVoting || toBigNumber(baseWeight).isGreaterThan(0),
+    [baseWeight, isMemberVoting]
+  );
 
   async function getBaseVotingWeightInfo () {
     try {
