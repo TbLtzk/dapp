@@ -9,7 +9,7 @@ import { SavingAsset } from 'typings/defi';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { useSaving } from 'store/saving/hooks';
+import { useSaving, useStablecoinBalance } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { amount, required } from 'utils/validators';
@@ -40,8 +40,8 @@ const StyledForm = styled.form`
 function DepositForm ({ asset }: { asset: SavingAsset }) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { stablecoinBalance } = useStablecoinBalance(asset.assetName);
   const {
-    savingAvailableToDeposit,
     savingBalanceDetails,
     savingAllowance,
     depositSaving,
@@ -50,7 +50,7 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
 
   const form = useForm({
     initialValues: { amount: '' },
-    validators: { amount: [required, amount(savingAvailableToDeposit)] },
+    validators: { amount: [required, amount(stablecoinBalance)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
         successMessage: t('DEPOSIT_SAVING_ASSET_TX'),
@@ -71,8 +71,8 @@ function DepositForm ({ asset }: { asset: SavingAsset }) {
         type="number"
         label={t('AMOUNT_TO_DEPOSIT')}
         prefix={asset.assetName}
-        max={savingAvailableToDeposit}
-        labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(savingAvailableToDeposit) })}
+        max={stablecoinBalance}
+        labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(stablecoinBalance) })}
         placeholder="0.00"
       />
 

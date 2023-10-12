@@ -14,6 +14,8 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { useAuctions } from 'store/auctions/hooks';
+import { useQVault } from 'store/q-vault/hooks';
+import { useStablecoinBalance } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
@@ -45,10 +47,21 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
   const { bidForAuction } = useAuctions();
+  const { stablecoinBalance, loadStablecoinBalance } = useStablecoinBalance(stablecoinAsset);
+  const { loadWalletBalance, walletBalance } = useQVault();
+
   const [allowance, setAllowance] = useState('0');
-  const [balance, setBalance] = useState('0');
-  const modalTitle = useMemo(() => `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`, [t, auction.auctionType]);
   const { address: accountAddress } = useWeb3Context();
+
+  const isSystemSurplus = auction.auctionType === 'systemSurplus';
+  const balance = isSystemSurplus
+    ? walletBalance
+    : stablecoinBalance;
+
+  const modalTitle = useMemo(
+    () => `${t('BID_FOR')} ${t(snakeCase(auction.auctionType).toUpperCase())}`,
+    [t, auction.auctionType]
+  );
 
   const form = useForm({
     initialValues: { bid: '' },
@@ -75,8 +88,8 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
   });
 
   const isApproved = useMemo(() => {
-    return toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(allowance);
-  }, [form.values.bid, allowance]);
+    return isSystemSurplus || toBigNumber(form.values.bid || 0).isLessThanOrEqualTo(allowance);
+  }, [form.values.bid, allowance, auction.auctionType]);
 
   const canBid = useMemo(() => {
     return toBigNumber(balance).isGreaterThanOrEqualTo(auction.raisingBid) &&
@@ -96,15 +109,10 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
   }
 
   async function loadUserBalance () {
-    const stableCoin = await getStableCoinInstance(stablecoinAsset);
-    const balance = await stableCoin.balanceOf(accountAddress);
-    setBalance(fromWei(balance));
+    return isSystemSurplus
+      ? loadWalletBalance()
+      : loadStablecoinBalance();
   }
-
-  useEffect(() => {
-    loadAllowanceValue();
-    loadUserBalance();
-  }, []);
 
   async function approveContract () {
     const contract = await getStableCoinInstance(stablecoinAsset);
@@ -119,6 +127,15 @@ function BidModal ({ modalOpen, auction, stablecoinAsset, onHide, onSubmit }: Pr
       }
     });
   }
+
+  useEffect(() => {
+    if (modalOpen) {
+      if (!isSystemSurplus) {
+        loadAllowanceValue();
+      }
+      loadUserBalance();
+    }
+  }, [isSystemSurplus, stablecoinAsset, auction.auctionType, accountAddress, modalOpen]);
 
   return (
     <Modal

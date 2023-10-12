@@ -87,14 +87,12 @@ function AuctionLayout ({ auction }: Props) {
             </div>
             <div className="auction-card__row">
               <p className="color-secondary text-md">{t('AUCTION_INITIATED_BY')}</p>
-              <p className="color-primary text-md">
-                {<ExplorerAddress
-                  iconed
-                  short
-                  className="text-md"
-                  address={auction.bidder}
-                />}
-              </p>
+              <ExplorerAddress
+                iconed
+                short
+                className="text-md"
+                address={auction.bidder}
+              />
             </div>
 
           </>

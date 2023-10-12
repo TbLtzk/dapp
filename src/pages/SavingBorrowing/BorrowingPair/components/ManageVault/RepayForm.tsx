@@ -12,7 +12,7 @@ import Input from 'components/Input';
 import { useManageVaultContext } from './ManageVaultContext';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
-import { useSaving } from 'store/saving/hooks';
+import { useStablecoinBalance } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { amount, required } from 'utils/validators';
@@ -44,7 +44,7 @@ function RepayForm ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { loadSavingAvailableToDeposit } = useSaving(stablecoin);
+  const { loadStablecoinBalance } = useStablecoinBalance(stablecoin);
   const { loadBorrowingVaults } = useBorrowingVaults(stablecoin);
 
   const {
@@ -74,7 +74,7 @@ function RepayForm ({ vault, stablecoin }: Props) {
             borrowType: 'repay',
             asset: vault.colKey as Asset
           });
-          loadSavingAvailableToDeposit();
+          loadStablecoinBalance();
           loadBorrowingVaults();
         },
       });

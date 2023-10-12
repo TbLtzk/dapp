@@ -10,7 +10,7 @@ import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
 
 import { AuctionStatsContainer } from './styles';
 
-import { useSaving } from 'store/saving/hooks';
+import { useStablecoinBalance } from 'store/saving/hooks';
 import { useSystemAssetBalance, useSystemReserve } from 'store/system-balance/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -38,7 +38,8 @@ function AuctionStats ({ stablecoinAsset }: Props) {
   const { t } = useTranslation();
   const { pendingTransactions, submitTransaction } = useTransaction();
 
-  const { savingAvailableToDeposit, loadSavingAvailableToDeposit } = useSaving(stablecoinAsset);
+  const { stablecoinBalance, loadStablecoinBalance } = useStablecoinBalance(stablecoinAsset);
+
   const {
     systemBalance,
     systemBalanceDebt,
@@ -77,7 +78,7 @@ function AuctionStats ({ stablecoinAsset }: Props) {
   };
 
   useEffect(() => {
-    loadSavingAvailableToDeposit();
+    loadStablecoinBalance();
     loadSystemBalance();
     loadSystemBalanceDebt();
     loadSystemBalanceSurplus();
@@ -99,7 +100,7 @@ function AuctionStats ({ stablecoinAsset }: Props) {
       items: [
         {
           title: t('YOUR_ASSET_BALANCE', { asset: stablecoinAsset }),
-          value: formatAsset(savingAvailableToDeposit, stablecoinAsset),
+          value: formatAsset(stablecoinBalance, stablecoinAsset),
         },
         {
           title: t('DEBT_AUCTION_LOT'),
@@ -182,10 +183,10 @@ function AuctionStats ({ stablecoinAsset }: Props) {
 
           {items.map(({ title, value, tooltipTopic }, index) => (
             <div key={index} className="stats-item auction-item">
-              <p className="stats-item-lbl text-md">
+              <div className="stats-item-lbl text-md">
                 {title}
                 {tooltipTopic && <InfoTooltip topic={tooltipTopic} />}
-              </p>
+              </div>
               <p className="stats-item-val text-xl" title={value}>
                 {value}
               </p>

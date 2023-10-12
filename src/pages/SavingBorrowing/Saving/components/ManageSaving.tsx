@@ -10,7 +10,7 @@ import Tabs from 'components/Tabs';
 import DepositForm from './DepositForm';
 import WithdrawForm from './WithdrawForm';
 
-import { useSaving } from 'store/saving/hooks';
+import { useSaving, useStablecoinBalance } from 'store/saving/hooks';
 
 const StyledWrapper = styled.div`
   .manage-saving-content {
@@ -26,16 +26,14 @@ function ManageSaving ({ asset }: Props) {
   const { t } = useTranslation();
   const { hash, pathname } = useLocation();
 
-  const {
-    loadSavingAllowance,
-    loadSavingBalanceDetails,
-    loadSavingAvailableToDeposit
-  } = useSaving(asset.assetName);
+  const { loadStablecoinBalance } = useStablecoinBalance(asset.assetName);
+
+  const { loadSavingAllowance, loadSavingBalanceDetails } = useSaving(asset.assetName);
 
   useEffect(() => {
     loadSavingAllowance();
     loadSavingBalanceDetails();
-    loadSavingAvailableToDeposit();
+    loadStablecoinBalance();
   }, []);
 
   const tabs = [

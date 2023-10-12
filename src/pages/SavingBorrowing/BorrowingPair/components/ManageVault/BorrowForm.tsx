@@ -14,7 +14,7 @@ import LiquidationInfoBlock from './LiquidationInfoBlock';
 import { useManageVaultContext } from './ManageVaultContext';
 
 import { useBorrowingVaults } from 'store/borrowing/hooks';
-import { useSaving } from 'store/saving/hooks';
+import { useStablecoinBalance } from 'store/saving/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
 import { getEpdrParametersInstance } from 'contracts/contract-instance';
@@ -54,7 +54,7 @@ function BorrowForm ({ vault, stablecoin }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
 
-  const { loadSavingAvailableToDeposit } = useSaving(stablecoin);
+  const { loadStablecoinBalance } = useStablecoinBalance(stablecoin);
   const { loadBorrowingVaults } = useBorrowingVaults(stablecoin);
   const { borrowVault, borrowAsset } = useManageVaultContext();
 
@@ -69,7 +69,7 @@ function BorrowForm ({ vault, stablecoin }: Props) {
         submitFn: () => borrowAsset({ amount, vaultId: vault.id }),
         onSuccess: () => {
           form.reset();
-          loadSavingAvailableToDeposit();
+          loadStablecoinBalance();
           loadBorrowingVaults();
         },
       });

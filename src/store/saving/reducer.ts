@@ -10,13 +10,13 @@ interface BalanceDetails {
 interface StablecoinState {
   savingRate: number;
   allowance: string;
-  availableToDeposit: string;
   balanceDetails: BalanceDetails;
   totalSavingBalance: string;
 }
 
 interface SavingState {
   stablecoinMap: Record<StablecoinAsset, StablecoinState>;
+  stablecoinBalancesMap: Record<StablecoinAsset, string>;
 
   savingAssets: SavingAsset[];
   savingAssetsLoading: boolean;
@@ -27,7 +27,6 @@ function getDefaultStablecoinState (): StablecoinState {
   return {
     savingRate: 0,
     allowance: '0',
-    availableToDeposit: '0',
     balanceDetails: {
       interestRate: 0,
       currentBalance: '0',
@@ -41,6 +40,11 @@ const initialState: SavingState = {
   stablecoinMap: {
     QUSD: getDefaultStablecoinState(),
     QEUR: getDefaultStablecoinState(),
+  },
+
+  stablecoinBalancesMap: {
+    QUSD: '0',
+    QEUR: '0'
   },
 
   savingAssets: [],
@@ -66,13 +70,6 @@ const savingSlice = createSlice({
       state.stablecoinMap[payload.asset].allowance = payload.allowance;
     },
 
-    setAvailableToDeposit (state, { payload }: PayloadAction<{
-      asset: StablecoinAsset;
-      amount: string;
-    }>) {
-      state.stablecoinMap[payload.asset].availableToDeposit = payload.amount;
-    },
-
     setSavingAssets (state, { payload }: PayloadAction<SavingAsset[]>) {
       state.savingAssets = payload;
       state.savingAssetsLoading = false;
@@ -96,16 +93,23 @@ const savingSlice = createSlice({
     }>) {
       state.stablecoinMap[payload.asset].savingRate = payload.rate;
     },
+
+    setStablecoinBalance (state, { payload }: PayloadAction<{
+      asset: StablecoinAsset;
+      balance: string;
+    }>) {
+      state.stablecoinBalancesMap[payload.asset] = payload.balance;
+    },
   }
 });
 
 export const {
   setBalanceDetails,
   setAllowance,
-  setAvailableToDeposit,
   setSavingAssets,
   setSavingAssetsError,
   setTotalSavingBalance,
   setSavingRate,
+  setStablecoinBalance,
 } = savingSlice.actions;
 export default savingSlice.reducer;

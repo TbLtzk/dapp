@@ -10,11 +10,11 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import {
   setAllowance,
-  setAvailableToDeposit,
   setBalanceDetails,
   setSavingAssets,
   setSavingAssetsError,
   setSavingRate,
+  setStablecoinBalance,
   setTotalSavingBalance
 } from './reducer';
 
@@ -30,13 +30,14 @@ import { fromWei, toWei } from 'utils/web3';
 export function useSaving (asset: StablecoinAsset) {
   const dispatch = useDispatch();
   const { loadSavingAssets } = useSavingAssets();
+  const { loadStablecoinBalance } = useStablecoinBalance(asset);
+
   const { address: accountAddress } = useWeb3Context();
 
   const totalSavingBalance = useAppSelector(({ saving }) => saving.stablecoinMap[asset].totalSavingBalance);
   const savingRate = useAppSelector(({ saving }) => saving.stablecoinMap[asset].savingRate);
 
   const savingBalanceDetails = useAppSelector(({ saving }) => saving.stablecoinMap[asset].balanceDetails);
-  const savingAvailableToDeposit = useAppSelector(({ saving }) => saving.stablecoinMap[asset].availableToDeposit);
   const savingAllowance = useAppSelector(({ saving }) => saving.stablecoinMap[asset].allowance);
 
   async function loadSavingAllowance () {
@@ -63,19 +64,6 @@ export function useSaving (asset: StablecoinAsset) {
       const balanceDetails = await contract.getBalanceDetails(accountAddress);
       const result = await getSavingBalanceDetailsHelper(balanceDetails);
       dispatch(setBalanceDetails({ asset, balanceDetails: result }));
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error);
-    }
-  }
-
-  async function loadSavingAvailableToDeposit () {
-    try {
-      const contract = await getStableCoinInstance(asset);
-      const result = await contract.balanceOf(accountAddress);
-      dispatch(setAvailableToDeposit({
-        asset,
-        amount: fromWei(result)
-      }));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
     }
@@ -109,7 +97,7 @@ export function useSaving (asset: StablecoinAsset) {
     loadSavingBalanceDetails();
     loadSavingAllowance();
     loadTotalSavingBalance();
-    loadSavingAvailableToDeposit();
+    loadStablecoinBalance();
     loadSavingAssets();
   }
 
@@ -157,12 +145,10 @@ export function useSaving (asset: StablecoinAsset) {
     totalSavingBalance,
     savingRate,
     savingBalanceDetails,
-    savingAvailableToDeposit,
     savingAllowance,
 
     loadSavingAllowance: useCallback(loadSavingAllowance, [asset]),
     loadSavingBalanceDetails: useCallback(loadSavingBalanceDetails, [asset]),
-    loadSavingAvailableToDeposit: useCallback(loadSavingAvailableToDeposit, [asset]),
     depositSaving: useCallback(depositSaving, [asset]),
     withdrawSaving: useCallback(withdrawSaving, [asset]),
     approveSaving: useCallback(approveSaving, [asset]),
@@ -213,5 +199,30 @@ export function useSavingAssets () {
     savingAssetsLoading,
     savingAssetsError,
     loadSavingAssets: useCallback(loadSavingAssets, []),
+  };
+}
+
+export function useStablecoinBalance (asset: StablecoinAsset) {
+  const dispatch = useDispatch();
+  const { address: accountAddress } = useWeb3Context();
+
+  const stablecoinBalance = useAppSelector(({ saving }) => saving.stablecoinBalancesMap[asset]);
+
+  async function loadStablecoinBalance () {
+    try {
+      const contract = await getStableCoinInstance(asset);
+      const result = await contract.balanceOf(accountAddress);
+      dispatch(setStablecoinBalance({
+        asset,
+        balance: fromWei(result)
+      }));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  return {
+    stablecoinBalance,
+    loadStablecoinBalance: useCallback(loadStablecoinBalance, [asset]),
   };
 }

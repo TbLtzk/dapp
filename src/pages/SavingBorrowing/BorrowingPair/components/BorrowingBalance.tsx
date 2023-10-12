@@ -9,7 +9,7 @@ import { StablecoinAsset } from 'typings/defi';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import AssetMenu from 'pages/SavingBorrowing/components/AssetMenu';
 
-import { useSaving } from 'store/saving/hooks';
+import { useStablecoinBalance } from 'store/saving/hooks';
 
 import { getStableCoinInstance } from 'contracts/contract-instance';
 
@@ -31,13 +31,13 @@ const StyledWrapper = styled.div`
 
 function BorrowingBalance ({ stablecoin }: Props) {
   const { t } = useTranslation();
-  const { savingAvailableToDeposit, loadSavingAvailableToDeposit } = useSaving(stablecoin);
+  const { stablecoinBalance, loadStablecoinBalance } = useStablecoinBalance(stablecoin);
 
   const [contractAddress, setContractAddress] = useState('…');
-  const balanceInQVaultRef = useAnimateNumber(savingAvailableToDeposit || 0, '');
+  const balanceInQVaultRef = useAnimateNumber(stablecoinBalance || 0, '');
 
   useEffect(() => {
-    loadSavingAvailableToDeposit();
+    loadStablecoinBalance();
     getStableCoinInstance(stablecoin).then(({ address }) => setContractAddress(address));
   }, []);
 
