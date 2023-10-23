@@ -1,3 +1,4 @@
+export * from './browser';
 export * from './decode-errors';
 export * from './error-handler';
 export * from './ethers';

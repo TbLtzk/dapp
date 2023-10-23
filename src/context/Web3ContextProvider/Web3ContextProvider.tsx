@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   ChainId,
+  CoinbaseProvider,
   createProvider,
   EthereumProvider,
   MetamaskProvider,
@@ -29,6 +30,7 @@ export interface Web3Data extends Omit<ProviderWrapper, 'init' | 'switchNetwork'
   connectWallet: (providerType: SupportedProviders, onSuccess?: () => void | Promise<void>) => Promise<void>;
   switchNetwork: (chainId: ChainId) => Promise<void> | undefined;
   isRightNetwork: boolean;
+  providerDetector: ProviderDetector<FALLBACK_PROVIDER_NAMES>;
 };
 
 function getFallbackProviderType (chainId?: number | string) {
@@ -75,6 +77,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         [FALLBACK_PROVIDER_NAMES.testnetFallback]: TestnetFallback,
         [FALLBACK_PROVIDER_NAMES.devnetFallback]: DevnetFallback,
         [PROVIDERS.Metamask]: MetamaskProvider,
+        [PROVIDERS.Coinbase]: CoinbaseProvider,
       };
 
       const currentProviderType: SupportedProviders = providerType ?? storeProviderType;
@@ -122,6 +125,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       [key in SupportedProviders]?: ProviderProxyConstructor
     } = {
       [PROVIDERS.Metamask]: MetamaskProvider,
+      [PROVIDERS.Coinbase]: CoinbaseProvider,
     };
 
     const providerProxyConstructor: ProviderProxyConstructor =
@@ -215,6 +219,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             init,
             disconnect,
             connectWallet,
+            providerDetector,
           }}
         >
           {children}

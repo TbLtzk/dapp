@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
@@ -20,7 +20,11 @@ export default defineConfig(({ mode }) => {
     ],
     optimizeDeps: {
       esbuildOptions: {
+        target: 'esnext',
         define: { global: 'globalThis' },
+      },
+      supported: {
+        bigint: true
       },
     },
     resolve: {
@@ -32,7 +36,6 @@ export default defineConfig(({ mode }) => {
         util: 'util',
         // HACK: https://github.com/webpack/webpack/issues/12197
         'react-bootstrap-table2-toolkit': 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit',
-        events: 'rollup-plugin-node-polyfills/polyfills/events',
         assets: path.resolve(__dirname, './src/assets'),
         components: path.resolve(__dirname, './src/components'),
         constants: path.resolve(__dirname, './src/constants'),
@@ -54,6 +57,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      target: ['esnext'],
       rollupOptions: {
         output: {
           manualChunks: {
@@ -65,7 +69,7 @@ export default defineConfig(({ mode }) => {
         plugins: [
           nodePolyfills()
         ]
-      }
+      },
     }
   };
 });

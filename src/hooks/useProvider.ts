@@ -8,7 +8,6 @@ import {
   FallbackEvmProvider,
   IProvider,
   ProviderProxyConstructor,
-  PROVIDERS,
   TransactionResponse,
   TxRequestBody,
 } from '@distributedlab/w3p';
@@ -121,9 +120,7 @@ export const useProvider = (): ProviderWrapper => {
       },
     );
 
-    const rawProvider = createProviderOpts.providerDetector?.getProvider(
-      providerProxyConstructor.providerType as PROVIDERS,
-    )?.instance;
+    const rawProvider = _provider.current.rawProvider;
 
     if (rawProvider) {
       const web3Provider = providerProxyConstructor.prototype instanceof FallbackEvmProvider
