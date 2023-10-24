@@ -25,7 +25,10 @@ export interface ProviderWrapper {
   currentProvider?: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider;
   currentSigner?: Signer;
 
-  init: (proxy: ProviderProxyConstructor, detector: CreateProviderOpts<FALLBACK_PROVIDER_NAMES>) =>Promise<void>;
+  init: (
+    proxy: ProviderProxyConstructor,
+    detector: CreateProviderOpts<FALLBACK_PROVIDER_NAMES>
+  ) => Promise<{ isConnected: boolean }>;
   chainId: ChainId;
   chainType?: CHAIN_TYPES;
   providerType?: string;

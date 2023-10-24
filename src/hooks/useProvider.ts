@@ -135,6 +135,10 @@ export const useProvider = (): ProviderWrapper => {
       setCurrentProvider(web3Provider);
     }
     _updateProviderState();
+
+    return {
+      isConnected: _provider.current?.isConnected || false
+    };
   }, []);
 
   const _updateProviderState = () => {

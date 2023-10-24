@@ -85,7 +85,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       const providerProxyConstructor: ProviderProxyConstructor =
         supportedProviders[currentProviderType]!;
 
-      await provider.init(providerProxyConstructor, {
+      const { isConnected } = await provider.init(providerProxyConstructor, {
         providerDetector,
         listeners: {
           onAccountChanged: () => {
@@ -105,7 +105,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
         }
       });
 
-      if (!provider.isConnected) {
+      if (!isConnected) {
         await provider.connect();
       }
 
