@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
-import { toBigNumber, unixToDate } from '@q-dev/utils';
+import { useInterval } from '@q-dev/react-hooks';
+import { BigNumber, formatAsset, toBigNumber, unixToDate } from '@q-dev/utils';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
@@ -37,13 +39,16 @@ interface Props {
 
 function RootNodeForms ({ formType, onReset }: Props) {
   const { t } = useTranslation();
+  const { address: accountAddress } = useWeb3Context();
   const { submitTransaction } = useTransaction();
   const {
     rootNodeStake,
     withdrawalInfo,
     commitRootNodeStake,
     announceRootStakeWithdrawal,
-    withdrawRootStake
+    withdrawRootStake,
+    getMinimumRootTimeLock,
+    rootMinimumTimeLock,
   } = useRootNodes();
   const { walletBalance } = useQVault();
 
@@ -51,7 +56,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
     return unixToDate(withdrawalInfo.endTime) > new Date();
   }, [withdrawalInfo.endTime]);
 
-  const getMaxAmount = () => {
+  const maxAmount = useMemo(() => {
     const withdrawalAmount = fromWei(withdrawalInfo.amount);
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
@@ -59,16 +64,18 @@ function RootNodeForms ({ formType, onReset }: Props) {
       case FORM_TYPES.announceWithdrawal:
         return toBigNumber(rootNodeStake).plus(toBigNumber(withdrawalAmount)).toFixed();
       case FORM_TYPES.withdrawFromRanking:
-        return isAnnouncementPending ? '0' : withdrawalAmount;
+        const notLockedStake = toBigNumber(rootNodeStake)
+          .minus(rootMinimumTimeLock);
+        return BigNumber.min(notLockedStake, withdrawalAmount).toFixed();
       default:
         return '0';
     }
-  };
+  }, [withdrawalInfo.amount, walletBalance, rootNodeStake, formType, rootMinimumTimeLock]);
 
   const maxRootAmount = () => {
     return formType === FORM_TYPES.announceWithdrawal
-      ? max(getMaxAmount())
-      : amount(getMaxAmount());
+      ? max(maxAmount)
+      : amount(maxAmount);
   };
 
   const form = useForm({
@@ -101,6 +108,21 @@ function RootNodeForms ({ formType, onReset }: Props) {
     }
   });
 
+  const inputHint = useMemo(() => {
+    switch (formType) {
+      case FORM_TYPES.stakeToRanking:
+        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : '';
+      case FORM_TYPES.withdrawFromRanking:
+        return toBigNumber(rootMinimumTimeLock).isZero()
+          ? ''
+          : t('TIME_LOCKED_STAKE', { stake: formatAsset(rootMinimumTimeLock, 'Q') });
+      default:
+        return '';
+    }
+  }, [formType, form.values.amount, rootMinimumTimeLock, maxAmount, t]);
+
+  useInterval(() => getMinimumRootTimeLock(accountAddress), 5000, { immediate: true });
+
   return (
     <StyledForm noValidate onSubmit={form.submit}>
       {formType === FORM_TYPES.withdrawFromRanking && isAnnouncementPending && (
@@ -116,11 +138,8 @@ function RootNodeForms ({ formType, onReset }: Props) {
         type="number"
         label={t('AMOUNT')}
         placeholder="0.00"
-        hint={formType === FORM_TYPES.stakeToRanking && form.values.amount === getMaxAmount()
-          ? t('WARNING_NO_Q_LEFT')
-          : ''
-        }
-        max={getMaxAmount()}
+        hint={inputHint}
+        max={maxAmount}
       />
 
       <Button

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@q-dev/form-hooks';
 import { Tip } from '@q-dev/q-ui-kit';
 import { useInterval } from '@q-dev/react-hooks';
-import { dateToUnix, formatAsset, formatNumber, toBigNumber, unixToDate } from '@q-dev/utils';
+import { BigNumber, dateToUnix, formatAsset, formatNumber, toBigNumber, unixToDate } from '@q-dev/utils';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ErrorHandler } from 'helpers';
 import styled from 'styled-components';
@@ -69,9 +69,10 @@ function ValidatorForms ({ formType, onClose }: Props) {
           .plus(toBigNumber(withdrawalAmount))
           .toFixed();
       case FORM_TYPES.withdrawFromRanking:
-        return toBigNumber(fromWei(validatorWithdrawalInfo.amount))
-          .minus(lockedStake)
-          .toFixed();
+        const notLockedStake = toBigNumber(selfStake)
+          .plus(toBigNumber(withdrawalAmount))
+          .minus(lockedStake);
+        return BigNumber.min(notLockedStake, withdrawalAmount).toFixed();
       default:
         return '0';
     }
