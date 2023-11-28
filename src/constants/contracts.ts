@@ -28,6 +28,8 @@ export enum CONTRACT_TYPES {
 export const CONTRACTS_NAMES = {
   addressVoting: 'addressVoting',
   upgradeVoting: 'upgradeVoting',
+  genericContractRegistryVoting: 'genericContractRegistryVoting',
+
   constitutionVoting: 'constitutionVoting',
   emergencyUpdateVoting: 'emergencyUpdateVoting',
   generalUpdateVoting: 'generalUpdateVoting',

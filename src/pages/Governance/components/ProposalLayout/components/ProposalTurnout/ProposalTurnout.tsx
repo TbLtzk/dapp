@@ -13,7 +13,8 @@ function ProposalTurnout ({ proposal }: { proposal: Proposal }) {
 
   const isUpdateContract = [
     CONTRACTS_NAMES.addressVoting,
-    CONTRACTS_NAMES.upgradeVoting
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting
   ].includes(proposal.contract);
 
   const isRootNodeContract = [

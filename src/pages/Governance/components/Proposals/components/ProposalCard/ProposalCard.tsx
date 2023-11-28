@@ -40,7 +40,8 @@ function ProposalCard ({ proposal }: { proposal: ProposalEvent }) {
 
   const isUpdateContract = [
     CONTRACTS_NAMES.addressVoting,
-    CONTRACTS_NAMES.upgradeVoting
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting
   ].includes(proposal.contract);
 
   return proposalInfo

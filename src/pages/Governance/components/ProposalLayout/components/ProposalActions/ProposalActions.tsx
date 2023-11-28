@@ -50,9 +50,14 @@ function ProposalActions ({ proposal, title }: Props) {
     CONTRACTS_NAMES.ePDRParametersVoting,
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting,
   ].includes(proposal.contract);
 
-  const isApprovalContract = [CONTRACTS_NAMES.addressVoting, CONTRACTS_NAMES.upgradeVoting].includes(proposal.contract);
+  const isApprovalContract = [
+    CONTRACTS_NAMES.addressVoting,
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting
+  ].includes(proposal.contract);
 
   const getVotingState = (): { tooltip: string; enabled: boolean } => {
     switch (true) {

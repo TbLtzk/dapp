@@ -96,7 +96,10 @@ export function useTokenomics () {
     dispatch(setRootNodeRewardProxyLoading(true));
     try {
       const contract = await getRootNodeRewardProxyInstance();
-      const tx = await contract.allocate({ from: accountAddress });
+      const tx = await contract.allocate({
+        from: accountAddress,
+        gasBuffer: 4
+      });
 
       return {
         tx,

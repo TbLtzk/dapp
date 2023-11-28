@@ -182,10 +182,10 @@ export function useProposals () {
     let methodError: string | undefined;
     switch (type) {
       case 'approve':
-        if ('aprove' in contract) {
-          tx = await contract.aprove(proposal.id, { from: accountAddress });
+        if ('approve' in contract) {
+          tx = await contract.approve(proposal.id, { from: accountAddress });
         } else {
-          methodError = 'aprove';
+          methodError = 'approve';
         }
         break;
       case 'constitution':

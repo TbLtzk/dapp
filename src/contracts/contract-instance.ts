@@ -64,6 +64,7 @@ export function getInstanceWithAsset<T extends ContractType> (
 
 export const getUpgradeVotingInstance = getInstance('upgradeVoting');
 export const getAddressVotingInstance = getInstance('addressVoting');
+export const getGenericContractRegistryVoting = getInstance('genericContractRegistryVoting');
 
 export const getGeneralUpdateVotingInstance = getInstance('generalUpdateVoting');
 

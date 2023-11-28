@@ -305,7 +305,7 @@
   "ONLY_AVAILABLE_FOR_VALIDATORS": "Nur für Validatoren verfügbar",
   "CURRENT_RANK": "Aktueller Rang",
   "STAKE_IN_VALIDATOR_RANKING": "Stake in Validator Ranking",
-  "ACTIVE_VALIDATOR": "Active Validator",
+  "ACTIVE_VALIDATOR": "Aktiver Validator",
   "NOT_A_VALIDATOR": "Kein Validator",
   "WITHDRAW_FROM_RANKING": "Aus Ranking auszahlen",
   "STAKE_TO_RANKING": "Ins Ranking einzahlen",
@@ -1419,5 +1419,13 @@
   "RESERVE_BALANCE_TOOLTIP": "\"Reserve Balance\" shows the total reserved balance.",
   "RESERVE_AVAILABLE_TOOLTIP": "To limit the risk of the Q System Reserve draining empty too quickly the reserve amount to withdraw is limited to the \"Immediately Available\" amount (defined by \"governed.EPQFI.reserveCoolDownThreshold\" parameter). This amount can be refreshed when the cool-down period is over.",
   "RESERVE_STATE_TOOLTIP": "When the reserve state is paused, the funds are not available for withdrawal. Only root nodes and EPQFI experts can pause the reserve system.",
-  "RESERVE_COOL_DOWN_TOOLTIP": "\"Cool-down End Time\" defines when the \"Immediately Available\" amount can be refreshed. This refresh happens on every new withdrawal request if the current cool-down end time has passed. The cool-down period before the new refresh is defined as \"governed.EPQFI.reserveCoolDownP\" parameter."
+  "RESERVE_COOL_DOWN_TOOLTIP": "\"Cool-down End Time\" defines when the \"Immediately Available\" amount can be refreshed. This refresh happens on every new withdrawal request if the current cool-down end time has passed. The cool-down period before the new refresh is defined as \"governed.EPQFI.reserveCoolDownP\" parameter.",
+  "CONTRACT_REGISTRY_VOTING_PROPOSAL": "Contract Registry Voting Proposal",
+  "CALL_DATA": "Call Data",
+  "CANNOT_PARSE_CALL_DATA": "Cannot parse call data",
+  "REGISTRY_UPDATES": "Registry Updates",
+  "FORMATTED": "Formatted",
+  "RAW": "Raw",
+  "ARGUMENT_NUMBER": "Argument #{{number}}",
+  "FUNCTION": "Function"
 }

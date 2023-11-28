@@ -31,7 +31,10 @@ function ProposalDetails ({ proposal, type }: Props) {
 
       <div className="block__content">
         <div className="details-list single-column">
-          {detailsByTypeMap[type]}
+          {proposal.contract === 'genericContractRegistryVoting'
+            ? <QDetails proposal={proposal} />
+            : detailsByTypeMap[type]
+          }
         </div>
       </div>
     </div>

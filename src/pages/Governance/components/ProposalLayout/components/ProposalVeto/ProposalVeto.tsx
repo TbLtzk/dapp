@@ -16,6 +16,7 @@ function ProposalVeto ({ proposal }: { proposal: Proposal }) {
   const hasNoVeto = [
     CONTRACTS_NAMES.addressVoting,
     CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting,
     CONTRACTS_NAMES.validatorsSlashingVoting,
     CONTRACTS_NAMES.emergencyUpdateVoting,
   ].includes(proposal.contract);

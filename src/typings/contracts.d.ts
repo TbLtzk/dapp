@@ -18,9 +18,15 @@ import { EPRSMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/gove
 import { EPRSParametersInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSParametersInstance';
 import { EPRSParametersVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/experts/EPRSParametersVotingInstance';
 import { GeneralUpdateVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/GeneralUpdateVotingInstance';
+import { GenericContractRegistryVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/GenericContractRegistryVoting';
 import { RootNodesMembershipVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesMembershipVotingInstance';
 import { RootNodesSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/rootNodes/RootNodesSlashingVotingInstance';
 import { ValidatorsSlashingVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/validators/ValidatorsSlashingVotingInstance';
+
+export type ContractUpdateProposalsContractType =
+  | ContractRegistryAddressVotingInstance
+  | ContractRegistryUpgradeVotingInstance
+  | GenericContractRegistryVotingInstance;
 
 export type ProposalsContract =
   | ConstitutionVotingInstance
@@ -29,8 +35,7 @@ export type ProposalsContract =
   | RootNodesMembershipVotingInstance
   | RootNodesSlashingVotingInstance
   | ValidatorsSlashingVotingInstance
-  | ContractRegistryAddressVotingInstance
-  | ContractRegistryUpgradeVotingInstance
+  | ContractUpdateProposalsContractType
   | EPQFIMembershipVotingInstance
   | EPDRMembershipVotingInstance
   | EPQFIParametersVotingInstance
@@ -64,7 +69,8 @@ export type ProposalContractType =
   | 'epqfiParametersVoting'
   | 'epdrParametersVoting'
   | 'eprsMembershipVoting'
-  | 'eprsParametersVoting';
+  | 'eprsParametersVoting'
+  | 'genericContractRegistryVoting';
 
 export interface ProposalEvent {
   blockNumber: number;

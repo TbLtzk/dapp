@@ -57,6 +57,7 @@ export interface Proposal {
   amountToSlash: string | number;
   proposer: string;
   rootNodes?: ProposalRootNodesInfo;
+  callData?: string;
 }
 
 export interface SlashingProposal extends Proposal {

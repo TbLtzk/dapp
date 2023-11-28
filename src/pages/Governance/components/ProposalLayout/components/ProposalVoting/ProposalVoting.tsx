@@ -17,7 +17,8 @@ function ProposalVoting ({ proposal }: { proposal: Proposal }) {
 
   const isUpdateContract = [
     CONTRACTS_NAMES.addressVoting,
-    CONTRACTS_NAMES.upgradeVoting
+    CONTRACTS_NAMES.upgradeVoting,
+    CONTRACTS_NAMES.genericContractRegistryVoting
   ].includes(proposal.contract);
 
   const votingEndTime = useEndTime(new Date(proposal.votingEndTime * 1000));

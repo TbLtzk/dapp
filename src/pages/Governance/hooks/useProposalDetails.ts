@@ -77,6 +77,8 @@ function useProposalDetails (proposal: Proposal | null) {
         return t('ADDRESS_VOTING_PROPOSAL');
       case 'upgradeVoting':
         return t('UPGRADE_VOTING_PROPOSAL');
+      case 'genericContractRegistryVoting':
+        return t('CONTRACT_REGISTRY_VOTING_PROPOSAL');
       default:
         return t('UNKNOWN_PROPOSAL');
     }

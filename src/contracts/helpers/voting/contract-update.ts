@@ -1,19 +1,21 @@
 import type { ChainId } from '@distributedlab/w3p';
-import { ContractRegistryAddressVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryAddressVoting';
-import { ContractRegistryUpgradeVotingInstance } from '@q-dev/q-js-sdk/lib/contracts/governance/ContractRegistryUpgradeVoting';
 import flatten from 'lodash/flatten';
-import { ProposalEvent } from 'typings/contracts';
+import { ContractUpdateProposalsContractType, ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
 import { getContractProposals } from '.';
 
-import { getAddressVotingInstance, getRootNodesInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
+import { getAddressVotingInstance, getGenericContractRegistryVoting, getRootNodesInstance, getUpgradeVotingInstance } from 'contracts/contract-instance';
+
+import { chainIdToNetworkMap, networkConfigsMap } from 'constants/config';
 
 export async function getContractUpdateProposals (
   proposals: ProposalEvent[],
   lastBlock: number,
   chainId: ChainId
 ) {
+  const { genericContractRegistryVoting } = networkConfigsMap[chainIdToNetworkMap[chainId]].featureFlags;
+
   const newProposals = await Promise.all([
     getContractProposals({
       proposals,
@@ -29,13 +31,22 @@ export async function getContractUpdateProposals (
       contractName: 'upgradeVoting',
       chainId,
     }),
+    genericContractRegistryVoting
+      ? getContractProposals({
+        proposals,
+        contract: await getGenericContractRegistryVoting(),
+        lastBlock,
+        contractName: 'genericContractRegistryVoting',
+        chainId,
+      })
+      : [],
   ]);
 
   return flatten(newProposals);
 }
 
 export async function getContractUpdateProposal (
-  contract: ContractRegistryAddressVotingInstance | ContractRegistryUpgradeVotingInstance,
+  contract: ContractUpdateProposalsContractType,
   id: string
 ): Promise<Partial<Proposal>> {
   const proposal = await contract.getProposal(id);
@@ -45,10 +56,12 @@ export async function getContractUpdateProposal (
   const rootNodesNumber = await rootNodesInstance.getSize();
 
   return {
-    votingEndTime: Number(proposal.votingExpiredTime),
-    proxy: proposal.proxy,
+    proxy: 'proxy' in proposal ? proposal.proxy : '',
     implementation: 'implementation' in proposal ? proposal.implementation : '',
     key: 'key' in proposal ? proposal.key : '',
+    remark: 'remark' in proposal ? proposal.remark : '',
+    callData: 'callData' in proposal ? proposal.callData : '',
+    votingEndTime: Number(proposal.votingExpiredTime),
     votesFor: Number(voteCount),
     votesAgainst: Number(rootNodesNumber) - Number(voteCount),
     currentQuorum: Number(voteCount) / Number(rootNodesNumber) * 100,

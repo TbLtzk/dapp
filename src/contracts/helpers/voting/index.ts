@@ -140,7 +140,7 @@ export async function getProposalPastEvents (
     blockNumber: evt.blockNumber,
     // TODO: fix types
     // @ts-ignore-next-line
-    id: evt.args?._id?.toString() || evt.args?._proposalId?.toString(),
+    id: evt.args?._id?.toString() || evt.args?._proposalId?.toString() || evt.args?.proposalId?.toString(),
     contract: contractName as ProposalContractType,
   }));
 }
@@ -210,6 +210,7 @@ export function getProposalTypeByContract (contract: ProposalContractType): Prop
       return 'slashing';
     case 'upgradeVoting':
     case 'addressVoting':
+    case 'genericContractRegistryVoting':
       return 'contractUpdate';
   }
 }
@@ -318,6 +319,7 @@ async function getContractProposal ({
       break;
     case 'upgradeVoting':
     case 'addressVoting':
+    case 'genericContractRegistryVoting':
       proposal = await getContractUpdateProposal(contract as ContractRegistryAddressVotingInstance, id);
       break;
   }

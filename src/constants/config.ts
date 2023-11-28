@@ -23,6 +23,7 @@ interface NetworkConfig {
   featureFlags: {
     aliases: boolean;
     rootNodesMetrics: boolean;
+    genericContractRegistryVoting: boolean;
   };
 }
 
@@ -43,7 +44,11 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     collaterals: ['QBTC', 'QUSDC', 'QDAI'],
     stablecoins: ['QUSD'],
     gasBuffer: 1.5,
-    featureFlags: { aliases: true, rootNodesMetrics: true },
+    featureFlags: {
+      aliases: true,
+      rootNodesMetrics: true,
+      genericContractRegistryVoting: false,
+    },
   },
   testnet: {
     chainId: 35443,
@@ -61,7 +66,11 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD'],
     gasBuffer: 2,
-    featureFlags: { aliases: true, rootNodesMetrics: true },
+    featureFlags: {
+      aliases: true,
+      rootNodesMetrics: true,
+      genericContractRegistryVoting: false
+    },
   },
   devnet: {
     chainId: 35442,
@@ -79,7 +88,11 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD', 'QEUR'],
     gasBuffer: 1.5,
-    featureFlags: { aliases: true, rootNodesMetrics: true },
+    featureFlags: {
+      aliases: true,
+      rootNodesMetrics: true,
+      genericContractRegistryVoting: true,
+    },
   },
 };
 

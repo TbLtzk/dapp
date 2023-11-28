@@ -11,6 +11,7 @@ import CastObjection from './components/CastObjection';
 import ProposalActions from './components/ProposalActions';
 import ProposalDecision from './components/ProposalDecision';
 import ProposalDetails from './components/ProposalDetails';
+import GenericContractRegistryVotingDetails from './components/ProposalDetails/components/GenericContractRegistryVotingDetails';
 import ProposalObjection from './components/ProposalObjection';
 import ProposalParameters from './components/ProposalParameters';
 import ProposalTurnout from './components/ProposalTurnout';
@@ -39,6 +40,9 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: Proposa
         <ProposalDetails proposal={proposal} type={type} />
         {proposal.parameters?.length > 0 && (
           <ProposalParameters proposal={proposal} />
+        )}
+        {proposal.contract === 'genericContractRegistryVoting' && (
+          <GenericContractRegistryVotingDetails proposal={proposal} />
         )}
 
         {isSlashingProposal && (
