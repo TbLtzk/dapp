@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { CosignatureStats } from 'typings/root-nodes';
 
 interface Props {
-  cosignatureStats: CosignatureStats;
+  cosignatureStats: CosignatureStats | null;
 }
 
 const StyledWrapper = styled.div`
@@ -33,23 +33,41 @@ function CosignatureStatsColumn ({ cosignatureStats }: Props) {
   return (
     <StyledWrapper>
       <span>
-        {formatPercent(cosignatureStats.availability, 2)}
+        {cosignatureStats
+          ? formatPercent(cosignatureStats.availability, 2)
+          : 'N/a'
+        }
       </span>
       <Tooltip trigger={<Icon name="info" className="text-md color-secondary" />}>
         <div className="cosignature-stats-column__tooltip-content">
           <div className="cosignature-stats-column__tooltip-content-item">
             <span className="text-sm">{t('DUE_APPROVALS')}</span>
-            <span className="text-md font-semibold">{formatNumber(cosignatureStats.dueCycles)}</span>
+            <span className="text-md font-semibold">
+              {cosignatureStats
+                ? formatNumber(cosignatureStats.dueCycles)
+                : 'N/a'
+              }
+            </span>
           </div>
 
           <div className="cosignature-stats-column__tooltip-content-item">
             <span className="text-sm">{t('ACTUAL_APPROVALS')}</span>
-            <span className="text-md font-semibold">{formatNumber(cosignatureStats.actualApprovals)}</span>
+            <span className="text-md font-semibold">
+              {cosignatureStats
+                ? formatNumber(cosignatureStats.actualApprovals)
+                : 'N/a'
+              }
+            </span>
           </div>
 
           <div className="cosignature-stats-column__tooltip-content-item">
             <span className="text-sm">{t('AVAILABILITY')}</span>
-            <span className="text-md font-semibold">{formatPercent(cosignatureStats.availability, 2)}</span>
+            <span className="text-md font-semibold">
+              {cosignatureStats
+                ? formatPercent(cosignatureStats.availability, 2)
+                : 'N/a'
+              }
+            </span>
           </div>
         </div>
       </Tooltip>

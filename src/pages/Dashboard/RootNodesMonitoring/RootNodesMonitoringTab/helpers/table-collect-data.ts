@@ -111,20 +111,17 @@ export function getCosignatureStatus (address: string, latestCosignatureMetrics:
   return 'offline';
 }
 
-export function getCosignatureStats (address: string, metrics: RootNodeMetric | null): CosignatureStats {
+export function getCosignatureStats (address: string, metrics: RootNodeMetric | null): CosignatureStats | null {
   const accountMetrics = metrics?.byAddress.find(({ mainAccount }) =>
     mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
   );
 
-  if (!accountMetrics) {
-    return {
-      dueCycles: 0,
-      offlineCycles: 0,
-      actualApprovals: 0,
-      availability: 0,
-    };
-  }
+  if (!accountMetrics) return null;
+
   const { lastObservedApproval, firstObservedApproval } = accountMetrics;
+
+  if (firstObservedApproval.dueCycles === null) return null;
+
   const actualApprovals = firstObservedApproval.dueCycles - lastObservedApproval.offlineCycles;
 
   return {

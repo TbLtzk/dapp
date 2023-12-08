@@ -51,7 +51,11 @@ export const cosignatureStatusSortFunc: TableColumn['sortFunc'] = (a: Cosignatur
   return baseSort(aNum, bNum, order);
 };
 
-export const cosignatureStatsSortFunc: TableColumn['sortFunc'] = (a: CosignatureStats, b: CosignatureStats, order) => {
+export const cosignatureStatsSortFunc: TableColumn['sortFunc'] = (a: CosignatureStats | null, b: CosignatureStats | null, order) => {
+  if (!a && !b) return 0;
+  if (!a) return order === 'asc' ? -1 : 1;
+  if (!b) return order === 'asc' ? 1 : -1;
+
   const aNum = a.availability;
   const bNum = b.availability;
 

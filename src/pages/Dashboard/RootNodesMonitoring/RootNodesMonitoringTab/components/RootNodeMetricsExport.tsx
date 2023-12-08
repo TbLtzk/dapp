@@ -104,8 +104,8 @@ function RootNodeMetricsExport () {
         listsSigned.isExclusionProposedSigned,
 
         getCosignatureStatus(address, latestCosignatureMetrics),
-        getCosignatureStats(address, cosignatureMetrics20).availability,
-        getCosignatureStats(address, cosignatureMetrics1000).availability,
+        getCosignatureStats(address, cosignatureMetrics20)?.availability ?? 'N/a',
+        getCosignatureStats(address, cosignatureMetrics1000)?.availability ?? 'N/a',
 
         rootNodeVotings.totalOfUser,
         rootNodeVotings.emergencyUpdateVoting,
