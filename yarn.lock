@@ -1643,10 +1643,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@q-dev/q-js-sdk@^2.0.0-rc.19":
-  version "2.0.0-rc.19"
-  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.19.tgz#8da605f3cadb727b4b5f45556642d2be913d48d5"
-  integrity sha1-jaYF88rbcntLX0VVZkLSvpE9SNU=
+"@q-dev/q-js-sdk@^2.0.0-rc.20":
+  version "2.0.0-rc.20"
+  resolved "https://gitlab.com/api/v4/projects/24690776/packages/npm/@q-dev/q-js-sdk/-/@q-dev/q-js-sdk-2.0.0-rc.20.tgz#4a63c47337fb7a4f4f9e744e3cb90f22b931bf80"
+  integrity sha1-SmPEczf7ek9PnnROPLkPIrkxv4A=
   dependencies:
     axios "^0.26.1"
     bignumber.js "^9.0.0"

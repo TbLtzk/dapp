@@ -69,7 +69,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     featureFlags: {
       aliases: true,
       rootNodesMetrics: true,
-      genericContractRegistryVoting: false
+      genericContractRegistryVoting: true,
     },
   },
   devnet: {
