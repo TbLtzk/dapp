@@ -58,7 +58,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     rpcUrl: 'https://rpc.qtestnet.org',
     indexerUrl: 'https://indexer.qtestnet.org',
     explorerUrl: 'https://explorer.qtestnet.org',
-    gnosisSafeUrl: 'https://multisig.qtestnet.org',
+    gnosisSafeUrl: 'https://multisig-ui.qtestnet.org',
     qBridgeUrl: 'https://bridge.qtestnet.org',
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
