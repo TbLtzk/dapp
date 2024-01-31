@@ -3,41 +3,46 @@ import { useTranslation } from 'react-i18next';
 
 import { SegmentedButton } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { Proposal } from 'typings/proposals';
 
 import DecodedCallDataItemViewer from './DecodedCallDataItemViewer';
 import RawDecodedCallDataViewer from './RawDecodedCallDataViewer';
 
-import { decodeContractRegistryCallData, flattenDecodedCallDataItem } from 'contracts/helpers/call-data';
+import { decodeCallDataByAbi, decodeContractRegistryCallData, flattenDecodedCallDataItem } from 'contracts/helpers/call-data';
 
 const StyledWrapper = styled.div`
-  .generic-contract-registry-voting-details__head {
+  .proposal-call-data-viewer__head {
     display: flex;
     justify-content: space-between;
   }
 
-  .generic-contract-registry-voting-details__stub {
+  .proposal-call-data-viewer__stub {
     display: grid;
     gap: 4px;
   }
 `;
 
 interface Props {
-  proposal: Proposal;
+  header: string;
+  callData: string;
+  abi?: string | string[] | null;
+  isContractRegistry?: boolean;
 }
 
-function GenericContractRegistryVotingDetails ({ proposal }: Props) {
+function ProposalCallDataViewer ({ callData, abi, isContractRegistry, header }: Props) {
   const { t } = useTranslation();
   const [isRawMode, setIsRawMode] = useState(false);
 
   const decodedCallData = useMemo(() => {
     try {
-      return decodeContractRegistryCallData(proposal.callData || '');
+      if (isContractRegistry) return decodeContractRegistryCallData(callData);
+      return abi
+        ? decodeCallDataByAbi(callData, abi)
+        : null;
     } catch (error) {
       console.error(error);
       return null;
     }
-  }, [proposal.callData]);
+  }, [callData, isContractRegistry, abi]);
 
   const flattenedDecodedCallData = useMemo(() => {
     return decodedCallData ? flattenDecodedCallDataItem(decodedCallData) : [];
@@ -45,8 +50,8 @@ function GenericContractRegistryVotingDetails ({ proposal }: Props) {
 
   return (
     <StyledWrapper className="block">
-      <div className="generic-contract-registry-voting-details__head">
-        <h2 className="text-h2">{t('REGISTRY_UPDATES')}</h2>
+      <div className="proposal-call-data-viewer__head">
+        <h2 className="text-h2">{header}</h2>
         <SegmentedButton
           value={isRawMode}
           options={[
@@ -75,8 +80,8 @@ function GenericContractRegistryVotingDetails ({ proposal }: Props) {
           : (
             <div className="details-item">
               <p className="text-md color-secondary">{t('CALL_DATA')}</p>
-              <div className="generic-contract-registry-voting-details__stub">
-                <p className="text-md break-word">{proposal.callData || '–'}</p>
+              <div className="proposal-call-data-viewer__stub">
+                <p className="text-md break-word">{callData || '–'}</p>
                 <p className="color-error text-md">{t('CANNOT_PARSE_CALL_DATA')}</p>
               </div>
             </div>
@@ -87,4 +92,4 @@ function GenericContractRegistryVotingDetails ({ proposal }: Props) {
   );
 }
 
-export default GenericContractRegistryVotingDetails;
+export default ProposalCallDataViewer;

@@ -7,8 +7,7 @@ import { Proposal } from 'typings/proposals';
 
 import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
-
-import useEndTime from '../../hooks/useEndTime';
+import useEndTime from 'pages/Governance/hooks/useEndTime';
 
 import VoteForm from './components/VoteForm';
 

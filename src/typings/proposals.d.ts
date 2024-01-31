@@ -83,3 +83,31 @@ export interface SlashingProposal extends Proposal {
     };
   };
 }
+
+export interface DAOProposal {
+  id: string;
+  requiredVetoQuorum: string;
+  participants: string[];
+  proposalDescription: string;
+  vetoed: string[];
+  abiExternalLink: string;
+  calldata: string;
+  currentVetoQuorum: string;
+  vetoStartTimestamp: string;
+  vetoEndTimestamp: string;
+  proposalId: string;
+  votingTarget: string;
+  dao: {
+    name: string;
+    id: string;
+    governanceService: string;
+    constitutionSource: string;
+    constitutionHash: string;
+  };
+  votingContract: {
+    expertPanelName: string;
+    id: string;
+    votingSituationNames: string;
+  };
+  votingSituationName: string;
+}

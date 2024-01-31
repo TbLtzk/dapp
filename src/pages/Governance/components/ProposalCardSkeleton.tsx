@@ -1,8 +1,12 @@
 import ContentLoader from 'react-content-loader';
 
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
-import { SkeletonContainer } from './styles';
+export const SkeletonContainer = styled.div`
+  background-color: ${({ theme }) => theme.colors.backgroundPrimary};
+  border-radius: 16px;
+  display: block;
+`;
 
 function ProposalCardSkeleton () {
   const { colors } = useTheme();

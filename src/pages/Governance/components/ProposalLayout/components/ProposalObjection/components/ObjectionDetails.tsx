@@ -5,8 +5,8 @@ import { Tooltip } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
 import { SlashingProposal } from 'typings/proposals';
 
-import useEndTime from '../../../hooks/useEndTime';
-import LinkViewer from '../../LinkViewer';
+import LinkViewer from 'pages/Governance/components/LinkViewer';
+import useEndTime from 'pages/Governance/hooks/useEndTime';
 
 import { ObjectionStatus } from 'constants/slashing';
 

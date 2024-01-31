@@ -7,9 +7,9 @@ import { ProposalEvent } from 'typings/contracts';
 import { ProposalFilterStatus, ProposalType } from 'typings/proposals';
 
 import Button from 'components/Button';
+import ProposalCardSkeleton from 'pages/Governance/components/ProposalCardSkeleton';
 
 import ProposalCard from '../ProposalCard';
-import ProposalCardSkeleton from '../ProposalCardSkeleton';
 
 import { ListEmptyStub, ListNextContainer, ListWrapper } from './styles';
 

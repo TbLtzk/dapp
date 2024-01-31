@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 
 import { ProposalStatus } from '@q-dev/q-js-sdk';
 import { Tag } from '@q-dev/q-ui-kit';
@@ -5,13 +6,13 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 import { Proposal, ProposalType, SlashingProposal } from 'typings/proposals';
 
 import PageLayout from 'components/PageLayout';
+import ProposalCallDataViewer from 'pages/Governance/components/ProposalCallDataViewer';
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
 
 import CastObjection from './components/CastObjection';
 import ProposalActions from './components/ProposalActions';
 import ProposalDecision from './components/ProposalDecision';
 import ProposalDetails from './components/ProposalDetails';
-import GenericContractRegistryVotingDetails from './components/ProposalDetails/components/GenericContractRegistryVotingDetails';
 import ProposalObjection from './components/ProposalObjection';
 import ProposalParameters from './components/ProposalParameters';
 import ProposalTurnout from './components/ProposalTurnout';
@@ -20,6 +21,7 @@ import ProposalVoting from './components/ProposalVoting';
 import { ProposalLayoutContainer } from './styles';
 
 function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: ProposalType }) {
+  const { t } = useTranslation();
   const { address } = useWeb3Context();
   const { title, status, state } = useProposalDetails(proposal);
 
@@ -42,7 +44,11 @@ function ProposalLayout ({ proposal, type }: { proposal: Proposal; type: Proposa
           <ProposalParameters proposal={proposal} />
         )}
         {proposal.contract === 'genericContractRegistryVoting' && (
-          <GenericContractRegistryVotingDetails proposal={proposal} />
+          <ProposalCallDataViewer
+            isContractRegistry
+            callData={proposal.callData || ''}
+            header={t('REGISTRY_UPDATES')}
+          />
         )}
 
         {isSlashingProposal && (

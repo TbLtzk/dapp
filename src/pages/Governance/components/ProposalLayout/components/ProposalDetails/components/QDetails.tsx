@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Proposal } from 'typings/proposals';
 
-import LinkViewer from '../../LinkViewer';
+import LinkViewer from 'pages/Governance/components/LinkViewer';
 
 interface Props {
   proposal: Proposal;

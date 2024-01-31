@@ -16,6 +16,7 @@ interface ProposalsState {
   minimalActiveBlock: number;
   constitutionHash: string;
   constitutionUpdateDate: number;
+  activeDAOProposalsCount: number;
   newParameter: boolean;
 }
 
@@ -28,6 +29,7 @@ const initialState: ProposalsState = {
   constitutionUpdateDate: 0,
   newParameter: false,
   minimalActiveBlock: 0,
+  activeDAOProposalsCount: 0,
   baseVotingWeightInfo: {
     delegationStatus: '',
     lockedUntil: '',
@@ -77,6 +79,10 @@ const proposalsSlice = createSlice({
 
     setBaseVotingWeightInfo: (state, { payload }: PayloadAction<BaseVotingWeightInfo>) => {
       state.baseVotingWeightInfo = payload;
+    },
+
+    setActiveDAOProposalsCount: (state, { payload }: PayloadAction<number>) => {
+      state.activeDAOProposalsCount = payload;
     }
   }
 });
@@ -88,5 +94,6 @@ export const {
   setNewParameter,
   setBaseVotingWeightInfo,
   setConstitutionUpdateDate,
+  setActiveDAOProposalsCount,
 } = proposalsSlice.actions;
 export default proposalsSlice.reducer;

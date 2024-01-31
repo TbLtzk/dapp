@@ -1428,5 +1428,21 @@
   "FORMATTED": "Форматовано",
   "RAW": "RAW",
   "ARGUMENT_NUMBER": "Аргумент #{{number}}",
-  "FUNCTION": "Функція"
+  "FUNCTION": "Функція",
+  "VETOED_PERCENT": "Накладено вето {{percent}}",
+  "DAO_APPEALS": "Апеляції DAO",
+  "DAO_PROPOSAL": "Пропозиція DAO",
+  "DAO_DETAILS": "Деталі DAO",
+  "DAO_NAME": "Назва ДАО",
+  "DAO_REGISTRY_ADDRESS": "Реєстраційна адреса DAO",
+  "EXPERT_PANEL_NAME": "Назва експертної групи",
+  "VOTING_SITUATION_NAME": "Назва ситуації голосування",
+  "VOTING_CONTRACT_ADDRESS": "Адреса контракту голосування",
+  "CONSTITUTION_HASH": "Хеш конституції",
+  "GOVERNANCE_SERVICE": "Служба управління",
+  "EXTERNAL_LINK_WITH_ABI": "Зовнішнє посилання на ABI",
+  "DESCRIPTION": "Опис",
+  "LINK_DISCLAIMER": "Увага: будь-хто може додати посилання. Огляньте його уважно",
+  "PROPOSAL_DETAILS": "Деталі пропозиції",
+  "VOTING_TARGET": "Мета голосування"
 }

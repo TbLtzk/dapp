@@ -41,7 +41,14 @@ function Tabs ({ tabs, noAnimation, ...rest }: Props) {
               />
             )}
 
-            {Number(count) > 0 && <span className="tab-count">{count}</span>}
+            {Number(count) > 0 && (
+              <span className="tab-count">
+                {Number(count) >= 100
+                  ? '99+'
+                  : count
+                }
+              </span>
+            )}
           </NavLink>
         ))}
       </AnimateSharedLayout>

@@ -6,9 +6,8 @@ import { formatPercent } from '@q-dev/utils';
 import { SlashingProposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
-import useEndTime from '../../../hooks/useEndTime';
-import LinkViewer from '../../LinkViewer';
+import LinkViewer from 'pages/Governance/components/LinkViewer';
+import useEndTime from 'pages/Governance/hooks/useEndTime';
 
 function DecisionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();

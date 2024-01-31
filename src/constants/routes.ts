@@ -16,8 +16,10 @@ export enum RoutePaths {
   expertProposals = '/governance/expert-proposals',
   slashingProposals = '/governance/slashing-proposals',
   contractUpdates = '/governance/contract-updates',
+  daoProposals = '/governance/dao-proposals',
 
   proposal = '/governance/proposal/:contract?/:id?',
+  daoProposal = '/governance/proposal/dao/:id?',
 
   newQProposal = '/governance/q-proposals/new',
   newRootNodeProposal = '/governance/root-node-panel/new',

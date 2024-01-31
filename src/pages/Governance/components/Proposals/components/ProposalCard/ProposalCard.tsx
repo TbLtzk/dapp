@@ -7,9 +7,9 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ProposalEvent } from 'typings/contracts';
 import { Proposal } from 'typings/proposals';
 
+import ProposalCardSkeleton from 'pages/Governance/components/ProposalCardSkeleton';
 import useProposalDetails from 'pages/Governance/hooks/useProposalDetails';
 
-import ProposalCardSkeleton from '../ProposalCardSkeleton';
 import VotingPeriods from '../VotingPeriods';
 
 import { ProposalCardLink } from './styles';

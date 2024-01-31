@@ -1428,5 +1428,21 @@
   "FORMATTED": "Formatted",
   "RAW": "Raw",
   "ARGUMENT_NUMBER": "Argument #{{number}}",
-  "FUNCTION": "Function"
+  "FUNCTION": "Function",
+  "VETOED_PERCENT": "Vetoed {{percent}}",
+  "DAO_APPEALS": "DAO Appeals",
+  "DAO_PROPOSAL": "DAO Proposal",
+  "DAO_DETAILS": "DAO Details",
+  "DAO_NAME": "DAO name",
+  "DAO_REGISTRY_ADDRESS": "DAO registry address",
+  "EXPERT_PANEL_NAME": "Expert panel name",
+  "VOTING_SITUATION_NAME": "Voting situation name",
+  "VOTING_CONTRACT_ADDRESS": "Voting contract address",
+  "CONSTITUTION_HASH": "Constitution hash",
+  "GOVERNANCE_SERVICE": "Governance Service",
+  "EXTERNAL_LINK_WITH_ABI": "External link with ABI",
+  "DESCRIPTION": "Description",
+  "LINK_DISCLAIMER": "Note: Anybody can add a link. Inspect it with care",
+  "PROPOSAL_DETAILS": "Proposal Details",
+  "VOTING_TARGET": "Voting target"
 }

@@ -11,9 +11,17 @@ import { ContractType, ProposalEvent } from 'typings/contracts';
 import { CreateProposalForm } from 'typings/forms';
 import { FormProposalType, Proposal, ProposalType, VotingType } from 'typings/proposals';
 
+import { useDAOSubgraph } from 'hooks/useDAOSubgraph';
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
-import { setBaseVotingWeightInfo, setConstitutionHash, setConstitutionUpdateDate, setMinimalActiveBlock, setProposals } from './reducer';
+import {
+  setActiveDAOProposalsCount,
+  setBaseVotingWeightInfo,
+  setConstitutionHash,
+  setConstitutionUpdateDate,
+  setMinimalActiveBlock,
+  setProposals
+} from './reducer';
 
 import { useAppSelector } from 'store';
 import { useQVault } from 'store/q-vault/hooks';
@@ -114,6 +122,7 @@ export function useProposals () {
   const { loadDelegationInfo, loadLockInfo } = useQVault();
   const { getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
   const { address: accountAddress, chainId } = useWeb3Context();
+  const { loadActiveDAOProposalsCount } = useDaoProposals();
 
   const minimalActiveBlock = useAppSelector(({ proposals }) => proposals.minimalActiveBlock);
   const proposalsMap = useAppSelector(({ proposals }) => proposals.proposalsMap);
@@ -273,6 +282,7 @@ export function useProposals () {
   }
 
   async function getAllProposals () {
+    loadActiveDAOProposalsCount();
     getProposals('q');
     // Delay for localstorage sync with lastblock
     setTimeout(() => getProposals('rootNode'), 100);
@@ -299,5 +309,27 @@ export function useProposals () {
     createNewProposal: useCallback(createNewProposal, []),
     voteForProposal: useCallback(voteForProposal, []),
     executeProposal: useCallback(executeProposal, []),
+  };
+}
+
+export function useDaoProposals () {
+  const dispatch = useDispatch();
+  const { getActiveDaoProposalsCount } = useDAOSubgraph();
+
+  const activeDAOProposalsCount = useAppSelector(({ proposals }) => proposals.activeDAOProposalsCount);
+
+  async function loadActiveDAOProposalsCount () {
+    try {
+      const count = await getActiveDaoProposalsCount();
+      dispatch(setActiveDAOProposalsCount(count));
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error);
+    }
+  }
+
+  return {
+    activeDAOProposalsCount,
+
+    loadActiveDAOProposalsCount: useCallback(loadActiveDAOProposalsCount, []),
   };
 }

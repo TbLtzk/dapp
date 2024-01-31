@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Proposal } from 'typings/proposals';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
-import LinkViewer from '../../LinkViewer';
+import LinkViewer from 'pages/Governance/components/LinkViewer';
 
 import { ZERO_ADDRESS } from 'constants/boundaries';
 

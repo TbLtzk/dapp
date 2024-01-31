@@ -9,10 +9,11 @@ import PageLayout from 'components/PageLayout';
 import Tabs from 'components/Tabs';
 import { TabRoute, TabSwitch } from 'components/Tabs/components';
 
+import DAOProposals from './components/DAOProposals';
 import Proposals from './components/Proposals';
 import VotingStats from './components/VotingStats';
 
-import { useProposals } from 'store/proposals/hooks';
+import { useDaoProposals, useProposals } from 'store/proposals/hooks';
 
 import { RoutePaths } from 'constants/routes';
 
@@ -20,6 +21,7 @@ function Governance () {
   const { pathname } = useLocation();
   const { t } = useTranslation();
   const { getActiveProposalsByType } = useProposals();
+  const { activeDAOProposalsCount } = useDaoProposals();
 
   const tabs = [
     {
@@ -52,6 +54,12 @@ function Governance () {
       count: getActiveProposalsByType('contractUpdate').length,
       link: RoutePaths.contractUpdates,
     },
+    {
+      id: 'dao-proposals',
+      label: t('DAO_APPEALS'),
+      count: activeDAOProposalsCount,
+      link: RoutePaths.daoProposals,
+    },
   ];
 
   const pathToNewProposalPath: Record<string, string> = {
@@ -66,7 +74,7 @@ function Governance () {
   return (
     <PageLayout
       title={t('GOVERNANCE')}
-      action={pathname !== RoutePaths.contractUpdates && (
+      action={pathname !== RoutePaths.contractUpdates && pathname !== RoutePaths.daoProposals && (
         <Link to={pathToNewProposalPath[pathname] || RoutePaths.newQProposal}>
           <Button block>
             <Icon name="add" />
@@ -101,6 +109,10 @@ function Governance () {
 
           <TabRoute exact path={RoutePaths.contractUpdates}>
             <Proposals type="contractUpdate" />
+          </TabRoute>
+
+          <TabRoute exact path={RoutePaths.daoProposals}>
+            <DAOProposals />
           </TabRoute>
         </>
       </TabSwitch>

@@ -25,7 +25,12 @@ function SidebarLink ({ to, title, icon, count = 0, exact = true }: Props) {
       </div>
       {count > 0 && (
         <div className="sidebar-link-group">
-          <span className="sidebar-link-count text-sm font-semibold">{count}</span>
+          <span className="sidebar-link-count text-sm font-semibold">
+            {count >= 100
+              ? '99+'
+              : count
+            }
+          </span>
         </div>
       )}
     </StyledLink>

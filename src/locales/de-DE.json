@@ -1428,5 +1428,21 @@
   "FORMATTED": "Formatted",
   "RAW": "Raw",
   "ARGUMENT_NUMBER": "Argument #{{number}}",
-  "FUNCTION": "Function"
+  "FUNCTION": "Function",
+  "VETOED_PERCENT": "Veto eingelegt {{percent}}",
+  "DAO_APPEALS": "DAO-Beschwerden",
+  "DAO_PROPOSAL": "DAO Vorschlag",
+  "DAO_DETAILS": "DAO Einzelheiten",
+  "DAO_NAME": "DAO Name",
+  "DAO_REGISTRY_ADDRESS": "DAO-Registrierungsadresse",
+  "EXPERT_PANEL_NAME": "Name des Expertengremiums",
+  "VOTING_SITUATION_NAME": "Name der Abstimmungssituation",
+  "VOTING_CONTRACT_ADDRESS": "Adresse des Abstimmungsvertrags",
+  "CONSTITUTION_HASH": "Verfassung Raute",
+  "GOVERNANCE_SERVICE": "Governance Dienst",
+  "EXTERNAL_LINK_WITH_ABI": "Externer Link mit ABI",
+  "DESCRIPTION": "Beschreibung",
+  "LINK_DISCLAIMER": "Achtung: Jeder kann einen Link hinzufügen. Prüfen Sie den Link sorgfältig",
+  "PROPOSAL_DETAILS": "Vorschlag Details",
+  "VOTING_TARGET": "Ziel der Stimmabgabe"
 }

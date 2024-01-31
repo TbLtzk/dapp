@@ -4,7 +4,7 @@ import { Progress, Tooltip } from '@q-dev/q-ui-kit';
 import { formatNumber, formatPercent } from '@q-dev/utils';
 import { Proposal } from 'typings/proposals';
 
-import useEndTime from '../../hooks/useEndTime';
+import useEndTime from 'pages/Governance/hooks/useEndTime';
 
 import { StyledProposalVeto } from './styles';
 

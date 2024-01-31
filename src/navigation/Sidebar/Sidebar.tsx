@@ -15,7 +15,7 @@ import VersionModal from './components/VersionModal';
 import { SidebarContainer } from './styles';
 
 import { useAuctions } from 'store/auctions/hooks';
-import { useProposals } from 'store/proposals/hooks';
+import { useDaoProposals, useProposals } from 'store/proposals/hooks';
 import { useServerConfig } from 'store/server-config/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -28,6 +28,7 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   const { activeAuctionsCount } = useAuctions();
   const { activeProposalsCount } = useProposals();
+  const { activeDAOProposalsCount } = useDaoProposals();
 
   const [versionModalOpen, setVersionModalOpen] = useState(false);
 
@@ -59,7 +60,7 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
                 to={RoutePaths.governance}
                 title={t('GOVERNANCE')}
                 icon="vote"
-                count={activeProposalsCount}
+                count={activeProposalsCount + activeDAOProposalsCount}
               />
               <SidebarLink
                 exact={false}

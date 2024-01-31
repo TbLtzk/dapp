@@ -11,7 +11,7 @@ import { Proposal as ProposalInterface, ProposalType } from 'typings/proposals';
 import Button from 'components/Button';
 
 import ProposalLayout from './components/ProposalLayout';
-import ProposalSkeleton from './components/Proposals/components/ProposalSkeleton';
+import ProposalSkeleton from './components/ProposalSkeleton';
 
 import { useTransaction } from 'store/transaction/hooks';
 

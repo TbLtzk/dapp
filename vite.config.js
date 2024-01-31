@@ -54,6 +54,7 @@ export default defineConfig(({ mode }) => {
         ui: path.resolve(__dirname, './src/ui'),
         styles: path.resolve(__dirname, './src/styles'),
         locales: path.resolve(__dirname, './src/locales'),
+        'gql-queries': path.resolve(__dirname, './src/gql-queries'),
       },
     },
     build: {

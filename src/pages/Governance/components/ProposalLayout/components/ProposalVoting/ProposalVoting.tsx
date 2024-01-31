@@ -5,7 +5,7 @@ import { formatNumber, formatPercent } from '@q-dev/utils';
 import { useTheme } from 'styled-components';
 import { Proposal } from 'typings/proposals';
 
-import useEndTime from '../../hooks/useEndTime';
+import useEndTime from 'pages/Governance/hooks/useEndTime';
 
 import { StyledProposalVoting } from './styles';
 

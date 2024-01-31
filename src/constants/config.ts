@@ -17,6 +17,7 @@ interface NetworkConfig {
   docsUrl: string;
   constitutionUrl: string;
   serverConfigUrl: string;
+  daoSubgraph: string;
   collaterals: Asset[];
   stablecoins: StablecoinAsset[];
   gasBuffer: number;
@@ -41,6 +42,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.q.org',
     constitutionUrl: 'https://constitution.q.org',
     serverConfigUrl: 'https://hq-config.q.org',
+    daoSubgraph: '',
     collaterals: ['QBTC', 'QUSDC', 'QDAI'],
     stablecoins: ['QUSD'],
     gasBuffer: 1.5,
@@ -63,6 +65,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qtestnet.org',
     serverConfigUrl: 'https://hq-config.q.org',
+    daoSubgraph: '',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD'],
     gasBuffer: 2,
@@ -85,6 +88,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     docsUrl: 'https://docs.qtestnet.org',
     constitutionUrl: 'https://constitution.qdevnet.org',
     serverConfigUrl: 'https://hq-config.q.org',
+    daoSubgraph: 'http://13.43.86.84:8000/subgraphs/name/dao-connector-graph',
     collaterals: ['QBTC', 'QUSDC', 'QDAI', 'QVNXAU'],
     stablecoins: ['QUSD', 'QEUR'],
     gasBuffer: 1.5,

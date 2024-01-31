@@ -5,9 +5,10 @@ import { Icon } from '@q-dev/q-ui-kit';
 
 interface Props {
   link: string;
+  isCommonLink?: boolean;
 }
 
-function LinkViewer ({ link }: Props) {
+function LinkViewer ({ link, isCommonLink }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +30,11 @@ function LinkViewer ({ link }: Props) {
       }
 
       {link && (
-        <p className="text-sm color-secondary">{t('PROPOSAL_LINK_DISCLAIMER')}</p>
+        <p className="text-sm color-secondary">{
+          isCommonLink
+            ? t('LINK_DISCLAIMER')
+            : t('PROPOSAL_LINK_DISCLAIMER')
+        }</p>
       )}
     </div>
   );

@@ -8,7 +8,7 @@ import { StablecoinAsset } from 'typings/defi';
 
 import Button from 'components/Button';
 import { ListEmptyStub, ListWrapper } from 'pages/Auctions/styles';
-import ProposalCardSkeleton from 'pages/Governance/components/Proposals/components/ProposalCardSkeleton';
+import ProposalCardSkeleton from 'pages/Governance/components/ProposalCardSkeleton';
 import { ListNextContainer } from 'pages/Governance/components/Proposals/components/ProposalsList/styles';
 
 import AuctionCard from './components/AuctionCard';

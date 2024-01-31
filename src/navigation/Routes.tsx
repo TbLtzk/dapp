@@ -28,6 +28,7 @@ const Governance = lazy(() => import('pages/Governance'));
 const VotingPower = lazy(() => import('pages/Governance/components/VotingPower'));
 const NewProposal = lazy(() => import('pages/Governance/NewProposal'));
 const Proposal = lazy(() => import('pages/Governance/Proposal'));
+const DAOProposal = lazy(() => import('pages/Governance/DAOProposal'));
 const Imprint = lazy(() => import('pages/Imprint'));
 const NotFound = lazy(() => import('pages/NotFound'));
 const SavingBorrowing = lazy(() => import('pages/SavingBorrowing'));
@@ -73,6 +74,14 @@ function Routes () {
           <Route exact path={RoutePaths.governanceTab}>
             <Governance />
           </Route>
+
+          <Route
+            exact
+            path={[RoutePaths.daoProposal, '/q-governance/proposal/dao/:id?']}
+            component={(props: RouteComponentProps<{ id: string }>) => (
+              <DAOProposal {...props} />
+            )}
+          />
 
           <Route
             exact
