@@ -42,7 +42,8 @@ function RemarkViewer ({ remark }: Props) {
         )
         : <p
           dangerouslySetInnerHTML={{ __html: parseRemark(remark) }}
-          className="text-md pre-line"
+          className="text-md"
+          style={{ whiteSpace: 'pre-line' }}
         />
       }
     </div>
