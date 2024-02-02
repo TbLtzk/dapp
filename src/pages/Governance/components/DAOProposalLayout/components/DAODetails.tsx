@@ -53,6 +53,11 @@ function DAODetails ({ proposal }: Props) {
             </div>
 
             <div className="details-item">
+              <p className="text-md color-secondary">{t('VOTING_TARGET')}</p>
+              <p className="text-md ellipsis">{proposal.votingTarget}</p>
+            </div>
+
+            <div className="details-item">
               <p className="text-md color-secondary">{t('CONSTITUTION_HASH')}</p>
               <p className="text-md ellipsis">{proposal.dao.constitutionHash}</p>
             </div>

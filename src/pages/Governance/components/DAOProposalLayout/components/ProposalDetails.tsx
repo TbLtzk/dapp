@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next';
 
 import { DAOProposal } from 'typings/proposals';
 
-import LinkViewer from 'pages/Governance/components/LinkViewer';
-
 import RemarkViewer from './RemarkViewer';
 
 interface Props {
@@ -22,16 +20,6 @@ function ProposalDetails ({ proposal }: Props) {
             <div className="details-item">
               <p className="text-md color-secondary">{t('DESCRIPTION')}</p>
               <RemarkViewer remark={proposal.proposalDescription}/>
-            </div>
-
-            <div className="details-item">
-              <p className="text-md color-secondary">{t('VOTING_TARGET')}</p>
-              <p className="text-md ellipsis">{proposal.votingTarget}</p>
-            </div>
-
-            <div className="details-item">
-              <p className="text-md color-secondary">{t('EXTERNAL_LINK_WITH_ABI')}</p>
-              <LinkViewer isCommonLink link={proposal.abiExternalLink} />
             </div>
 
             <div className="details-item">

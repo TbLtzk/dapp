@@ -1440,7 +1440,6 @@
   "VOTING_CONTRACT_ADDRESS": "Voting contract address",
   "CONSTITUTION_HASH": "Constitution hash",
   "GOVERNANCE_SERVICE": "Governance Service",
-  "EXTERNAL_LINK_WITH_ABI": "External link with ABI",
   "DESCRIPTION": "Description",
   "LINK_DISCLAIMER": "Note: Anybody can add a link. Inspect it with care",
   "PROPOSAL_DETAILS": "Proposal Details",
