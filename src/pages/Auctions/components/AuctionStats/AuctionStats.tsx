@@ -8,6 +8,8 @@ import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip/InfoTooltip';
 import { StatsContainer } from 'pages/Governance/components/VotingStats/styles';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { AuctionStatsContainer } from './styles';
 
 import { useStablecoinBalance } from 'store/saving/hooks';
@@ -37,6 +39,7 @@ interface Props {
 function AuctionStats ({ stablecoinAsset }: Props) {
   const { t } = useTranslation();
   const { pendingTransactions, submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
 
   const { stablecoinBalance, loadStablecoinBalance } = useStablecoinBalance(stablecoinAsset);
 
@@ -104,7 +107,7 @@ function AuctionStats ({ stablecoinAsset }: Props) {
         },
         {
           title: t('DEBT_AUCTION_LOT'),
-          value: formatAsset(reserveLot, 'Q'),
+          value: formatAsset(reserveLot, qTicker),
           tooltipTopic: 'debt-auction-lot',
         },
         {
@@ -150,12 +153,12 @@ function AuctionStats ({ stablecoinAsset }: Props) {
       items: [
         {
           title: t('RESERVE_BALANCE'),
-          value: formatAsset(systemReserveBalance, 'Q'),
+          value: formatAsset(systemReserveBalance, qTicker),
           tooltipTopic: 'reserve-balance',
         },
         {
           title: t('IMMEDIATELY_AVAILABLE'),
-          value: formatAsset(systemReserveAvailableAmount, 'Q'),
+          value: formatAsset(systemReserveAvailableAmount, qTicker),
           tooltipTopic: 'reserve-available',
         },
         {

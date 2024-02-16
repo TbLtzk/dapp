@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import { formatAsset } from '@q-dev/utils';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateGMT, unixToDate } from 'utils/date';
@@ -10,6 +12,7 @@ import { fromWei } from 'utils/web3';
 function RootBalanceInfo () {
   const { t, i18n } = useTranslation();
   const { isRootNode, rootNodeStake, withdrawalInfo, rootMinimumTimeLock } = useRootNodes();
+  const { qTicker } = useNetworkConfig();
 
   return (
     <div className="block-body">
@@ -20,19 +23,19 @@ function RootBalanceInfo () {
 
       <div>
         <p className="color-secondary text-md">{t('STAKE_IN_ROOT_NODE_RANKING')}</p>
-        <p className="text-xl font-semibold">{formatAsset(rootNodeStake, 'Q')}</p>
+        <p className="text-xl font-semibold">{formatAsset(rootNodeStake, qTicker)}</p>
       </div>
 
       {Number(rootMinimumTimeLock) > 0 && (
         <div>
           <p className="color-secondary text-md">{t('TIME_LOCKED_AMOUNT')}</p>
-          <p className="text-xl font-semibold">{formatAsset(rootMinimumTimeLock, 'Q')}</p>
+          <p className="text-xl font-semibold">{formatAsset(rootMinimumTimeLock, qTicker)}</p>
         </div>
       )}
 
       <div>
         <p className="color-secondary text-md">{t('ANNOUNCED_FOR_WITHDRAWAL')}</p>
-        <p className="text-xl font-semibold">{formatAsset(fromWei(withdrawalInfo.amount || '0'), 'Q')}</p>
+        <p className="text-xl font-semibold">{formatAsset(fromWei(withdrawalInfo.amount || '0'), qTicker)}</p>
       </div>
 
       <div>

@@ -6,6 +6,8 @@ import { Proposal } from 'typings/proposals';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import LinkViewer from 'pages/Governance/components/LinkViewer';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { ZERO_ADDRESS } from 'constants/boundaries';
 import { fromWei } from 'utils/web3';
 
@@ -15,6 +17,7 @@ interface Props {
 
 function RootNodeDetails ({ proposal }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   const nodesInfo = [
     {
@@ -51,14 +54,14 @@ function RootNodeDetails ({ proposal }: Props) {
             <div className="details-item">
               <p className="text-md color-secondary">{t('ROOT_NODE_STAKE')}</p>
               <p className="text-md">
-                {formatAsset(fromWei(item.stake), 'Q')}
+                {formatAsset(fromWei(item.stake), qTicker)}
               </p>
             </div>
 
             <div className="details-item">
               <p className="text-md color-secondary">{t('ANNOUNCED_FOR_WITHDRAWAL')}</p>
               <p className="text-md">
-                {formatAsset(fromWei(item.withdrawalAmount), 'Q')}
+                {formatAsset(fromWei(item.withdrawalAmount), qTicker)}
               </p>
             </div>
           </div>

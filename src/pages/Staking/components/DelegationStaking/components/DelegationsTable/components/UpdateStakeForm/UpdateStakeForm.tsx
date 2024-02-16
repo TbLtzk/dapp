@@ -9,6 +9,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 import { StakeFormContainer } from 'pages/Staking/styles';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import ClaimTip from '../../../ClaimTip';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -24,6 +26,7 @@ interface Props {
 
 function UpdateStakeForm ({ delegation, onSubmit }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { submitTransaction } = useTransaction();
   const { delegationStakeInfo, delegateStake } = useQVault();
 
@@ -69,7 +72,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
         label={t('AMOUNT')}
         placeholder="0.00"
         max={String(maxAmountToDelegate)}
-        hint={`${t('CURRENT_DELEGATION')} ${formatAsset(delegation.actualStake, 'Q')}`}
+        hint={`${t('CURRENT_DELEGATION')} ${formatAsset(delegation.actualStake, qTicker)}`}
       />
       <ClaimTip />
       <Button

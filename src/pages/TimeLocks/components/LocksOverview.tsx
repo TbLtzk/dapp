@@ -9,6 +9,8 @@ import { TimeLockContractType } from 'typings/contracts';
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useTimeLocksAddress } from '../TimeLocks';
 
 import AddressForm from './AddressForm';
@@ -77,10 +79,11 @@ function LocksOverview ({
 }: Props) {
   const { t } = useTranslation();
   const { address } = useTimeLocksAddress();
+  const { qTicker } = useNetworkConfig();
   const [addressModalOpen, setAddressModalOpen] = useState(false);
 
-  const balanceRef = useAnimateNumber(balance);
-  const timeLockBalanceRef = useAnimateNumber(timeLockBalance);
+  const balanceRef = useAnimateNumber(balance, ` ${qTicker}`);
+  const timeLockBalanceRef = useAnimateNumber(timeLockBalance, ` ${qTicker}`);
 
   return (
     <StyledWrapper className="block">
@@ -123,12 +126,12 @@ function LocksOverview ({
 
         <div className="lock-value">
           <p className="text-md color-secondary">{title}</p>
-          <p ref={balanceRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={balanceRef} className="text-xl font-semibold" />
         </div>
 
         <div className="lock-value">
           <p className="text-md color-secondary">{t('TIME_LOCKED_BALANCE')}</p>
-          <p ref={timeLockBalanceRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={timeLockBalanceRef} className="text-xl font-semibold" />
         </div>
 
         <Modal

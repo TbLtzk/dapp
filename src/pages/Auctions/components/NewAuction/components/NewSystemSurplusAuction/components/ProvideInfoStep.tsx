@@ -28,7 +28,7 @@ interface Props {
 
 function ProvideInfoStep ({ surplusLot, setSurplusLot }: Props) {
   const { t } = useTranslation();
-  const { stablecoins } = useNetworkConfig();
+  const { stablecoins, qTicker } = useNetworkConfig();
   const { goNext } = useSystemSurplusAuctionForm();
   const { loadWalletBalance, walletBalance } = useQVault();
 
@@ -69,7 +69,7 @@ function ProvideInfoStep ({ surplusLot, setSurplusLot }: Props) {
       <Input
         {...form.fields.bid}
         type="number"
-        label={t('YOUR_INITIAL_BID_IN_ASSET', { asset: 'Q' })}
+        label={t('YOUR_INITIAL_BID_IN_ASSET', { asset: qTicker })}
         placeholder={t('BID')}
         labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatNumber(walletBalance) })}
       />

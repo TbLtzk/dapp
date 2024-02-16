@@ -10,6 +10,8 @@ import styled, { useTheme } from 'styled-components';
 
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { getDelegatorShare } from 'contracts/helpers/validators-helper';
 
 import { address, max, required } from 'utils/validators';
@@ -62,6 +64,7 @@ async function loadDelegatorShare (
 function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addresses }: Props) {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const { qTicker } = useNetworkConfig();
   const [delegatorShare, setDelegatorShare] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -102,7 +105,7 @@ function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addr
               ? <>
                 <p className="text-md">{`${t('DELEGATOR_SHARE')} : ${formatAsset(delegatorShare, '%')}`}</p>
                 <p className="text-md">
-                  {`${t('DELEGATED_STAKE')} : ${formatAsset(delegatedStake, 'Q')}`}
+                  {`${t('DELEGATED_STAKE')} : ${formatAsset(delegatedStake, qTicker)}`}
                 </p>
               </>
               : <ContentLoader

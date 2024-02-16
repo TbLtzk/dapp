@@ -5,6 +5,8 @@ import { Validator } from 'typings/validator';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { StyledWrapper } from '../styles';
 
 import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
@@ -17,22 +19,23 @@ interface Props {
 
 function RewardStats ({ validator, onButtonClick, buttonLoading }: Props) {
   const { t, i18n } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   const rewardStatsArray = [
     {
       id: 'collected-pool',
       label: t('COLLECTED_POOL_REWARDS'),
-      value: formatAsset(validator.poolInfo.validatorPoolBalance, 'Q'),
+      value: formatAsset(validator.poolInfo.validatorPoolBalance, qTicker),
     },
     {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
-      value: formatAsset(validator.poolInfo.reservedForClaims, 'Q'),
+      value: formatAsset(validator.poolInfo.reservedForClaims, qTicker),
     },
     {
       id: 'delegator-reward',
       label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(validator.poolInfo.distributableDelegatorsRewards, 'Q'),
+      value: formatAsset(validator.poolInfo.distributableDelegatorsRewards, qTicker),
     },
     {
       id: 'rewards-allocated',

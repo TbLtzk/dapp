@@ -9,6 +9,8 @@ import Button from 'components/Button';
 import { ShareButton } from 'components/ShareButton';
 import useEndTime from 'pages/Governance/hooks/useEndTime';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import VoteForm from './components/VoteForm';
 
 import { useExperts } from 'store/experts/hooks';
@@ -29,6 +31,7 @@ function ProposalActions ({ proposal, title }: Props) {
 
   const { submitTransaction } = useTransaction();
   const { voteForProposal, executeProposal } = useProposals();
+  const { qTicker } = useNetworkConfig();
 
   const { isEpdrMember, isEpqfiMember, isEprsMember } = useExperts();
   const { isRootNode } = useRootNodes();
@@ -150,7 +153,7 @@ function ProposalActions ({ proposal, title }: Props) {
         tip={
           isMemberVoting
             ? ''
-            : t('VOTE_MODAL_TIP', { time: votingEndTime.formatted })
+            : t('VOTE_MODAL_TIP', { asset: qTicker, time: votingEndTime.formatted })
         }
         onClose={() => setModalOpen(false)}
       >

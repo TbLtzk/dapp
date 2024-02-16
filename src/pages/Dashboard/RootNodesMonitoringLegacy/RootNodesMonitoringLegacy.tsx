@@ -9,6 +9,8 @@ import PageLayout from 'components/PageLayout';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import DashboardLink from '../components/DashboardLink';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
@@ -28,6 +30,7 @@ const StyledWrapper = styled.div`
 function RootNodesMonitoringLegacy () {
   const { t } = useTranslation();
   const { rootMembers, rootMembersLoading, getRootMembers } = useRootNodes();
+  const { qTicker } = useNetworkConfig();
 
   useEffect(() => {
     getRootMembers();
@@ -55,7 +58,7 @@ function RootNodesMonitoringLegacy () {
       dataField: 'amount',
       text: t('STAKED_AMOUNT'),
       sort: true,
-      formatter: (cell) => formatAsset(cell, 'Q'),
+      formatter: (cell) => formatAsset(cell, qTicker),
     },
     {
       headerStyle: () => ({ minWidth: '190px' }),

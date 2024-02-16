@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useSystemReserve } from 'store/system-balance/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';
 
@@ -61,11 +63,12 @@ const StyledWrapper = styled.div`
 
 function TokenomicsBlock () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { defaultAllocationProxy, getDefaultAllocationProxy } = useTokenomics();
   const { systemReserveBalance, loadSystemReserveBalance } = useSystemReserve();
 
-  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
-  const allocationProxyRef = useAnimateNumber(defaultAllocationProxy, ' Q');
+  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ` ${qTicker}`);
+  const allocationProxyRef = useAnimateNumber(defaultAllocationProxy, ` ${qTicker}`);
 
   useEffect(() => {
     getDefaultAllocationProxy();
@@ -94,7 +97,7 @@ function TokenomicsBlock () {
 
       <div className="tokenomics__values">
         <div className="tokenomics__value">
-          <p ref={reserveBalanceRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={reserveBalanceRef} className="text-xl font-semibold" />
           <p className="text-md color-secondary">{t('Q_SYSTEM_RESERVE')}</p>
         </div>
 

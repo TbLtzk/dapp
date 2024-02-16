@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useInfinityNumber } from '@q-dev/react-hooks';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useSystemReserve } from 'store/system-balance/hooks';
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 
@@ -15,10 +17,11 @@ const StyledWrapper = styled.div`
 function PoolBalances () {
   const { t } = useTranslation();
   const { poolBalance, getVRPBalance } = useValidationRewards();
+  const { qTicker } = useNetworkConfig();
   const { systemReserveBalance, loadSystemReserveBalance } = useSystemReserve();
 
-  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ' Q');
-  const rewardPoolsBalanceRef = useInfinityNumber(poolBalance, ' Q');
+  const reserveBalanceRef = useInfinityNumber(systemReserveBalance, ` ${qTicker}`);
+  const rewardPoolsBalanceRef = useInfinityNumber(poolBalance, ` ${qTicker}`);
 
   useEffect(() => {
     getVRPBalance();

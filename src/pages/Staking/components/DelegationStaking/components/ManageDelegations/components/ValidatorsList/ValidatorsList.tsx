@@ -7,6 +7,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import DelegateModal from '../../../DelegateModal';
 
 import { useValidators } from 'store/validators/hooks';
@@ -14,6 +16,7 @@ import { useValidators } from 'store/validators/hooks';
 function ValidatorsList () {
   const { t } = useTranslation();
   const { validatorStats, validatorStatsLoading } = useValidators();
+  const { qTicker } = useNetworkConfig();
 
   return (
     <Table
@@ -68,7 +71,7 @@ function ValidatorsList () {
             <AliasTooltip alias={validator.alias} />
           </div>
         ),
-        totalDelegatedStake: formatAsset(validator.poolInfo.delegatedStake, 'Q'),
+        totalDelegatedStake: formatAsset(validator.poolInfo.delegatedStake, qTicker),
         delegatorsShare: formatPercent(validator.poolInfo.delegatorsShare),
         delegationEfficiency: formatPercent(validator.metric?.delegationEfficiency || '0'),
         delegationSaturation: <ProgressBar value={validator.metric?.delegationSaturation || '0'} />,

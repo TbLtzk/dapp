@@ -6,12 +6,15 @@ import { Proposal } from 'typings/proposals';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import LinkViewer from 'pages/Governance/components/LinkViewer';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 interface Props {
   proposal: Proposal;
 }
 
 function SlashingDetails ({ proposal }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   return (
     <div className="details-list-item">
@@ -27,7 +30,7 @@ function SlashingDetails ({ proposal }: Props) {
 
       <div className="details-item">
         <p className="text-md color-secondary">{t('DETAILS_AMOUNT_TO_SLASH')}</p>
-        <p className="text-md">{formatAsset(proposal.amountToSlash, 'Q')}</p>
+        <p className="text-md">{formatAsset(proposal.amountToSlash, qTicker)}</p>
       </div>
 
       <div className="details-item">

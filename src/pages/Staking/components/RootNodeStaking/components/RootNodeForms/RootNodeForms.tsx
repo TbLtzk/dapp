@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { FORM_TYPES } from '../RootNodeMenu/RootNodeMenu';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -41,6 +43,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
   const { t } = useTranslation();
   const { address: accountAddress } = useWeb3Context();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
   const {
     rootNodeStake,
     withdrawalInfo,
@@ -111,11 +114,11 @@ function RootNodeForms ({ formType, onReset }: Props) {
   const inputHint = useMemo(() => {
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : '';
+        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : '';
       case FORM_TYPES.withdrawFromRanking:
         return toBigNumber(rootMinimumTimeLock).isZero()
           ? ''
-          : t('TIME_LOCKED_STAKE', { stake: formatAsset(rootMinimumTimeLock, 'Q') });
+          : t('TIME_LOCKED_STAKE', { stake: formatAsset(rootMinimumTimeLock, qTicker) });
       default:
         return '';
     }

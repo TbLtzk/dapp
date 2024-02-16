@@ -17,11 +17,12 @@ import { getSystemSurplusAuctionInstance } from 'contracts/contract-instance';
 import { dateToUnix } from 'utils/date';
 import { fromWei } from 'utils/web3';
 
-export function prepareAuctionData (
+function prepareAuctionData (
   asset: StablecoinAsset,
   info: SystemSurplusAuctionInfo,
   event: SystemDebtAndSurplusEvent | undefined,
-  raisingBid: string | null
+  raisingBid: string | null,
+  qTicker: string
 ): SystemSurplusCompletedInfo {
   const completedInfo = {} as SystemSurplusCompletedInfo;
   if (!event) return completedInfo;
@@ -35,7 +36,7 @@ export function prepareAuctionData (
 
   completedInfo.lot = fromWei(info.lot);
 
-  completedInfo.bidAsset = 'Q';
+  completedInfo.bidAsset = qTicker;
   completedInfo.lotAsset = asset;
 
   completedInfo.endTime = String(dateToUnix(info.endTime));
@@ -77,7 +78,7 @@ export async function getSystemSurplus (asset: StablecoinAsset, auctions: Auctio
   return allAcutions;
 }
 
-export async function getOneSystemSurplusAuction (asset: StablecoinAsset, id: string | number) {
+export async function getOneSystemSurplusAuction (asset: StablecoinAsset, id: string | number, qTicker: string) {
   try {
     const instance = await getSystemSurplusAuctionInstance(asset);
     const info = await instance.getAuctionInfo(id);
@@ -90,7 +91,7 @@ export async function getOneSystemSurplusAuction (asset: StablecoinAsset, id: st
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(id);
       }
-      return prepareAuctionData(asset, info, event, raisingBid);
+      return prepareAuctionData(asset, info, event, raisingBid, qTicker);
     }
   } catch (error) {
     return { error: ERROR_TYPES.wrongLink };

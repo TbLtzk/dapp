@@ -6,9 +6,10 @@ import { Icon } from '@q-dev/q-ui-kit';
 import { useInterval } from '@q-dev/react-hooks';
 import { formatNumberCompact } from '@q-dev/utils';
 import { motion } from 'framer-motion';
-import { useTheme } from 'styled-components';
 
 import Button from 'components/Button';
+
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { BalanceDropdown, QLogo } from './styles';
 
@@ -21,9 +22,9 @@ import { fromWei } from 'utils/web3';
 function Balance () {
   const { t } = useTranslation();
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const { qTicker } = useNetworkConfig();
   const totalVotingWeight = fromWei(baseVotingWeightInfo.ownWeight);
   const { vaultBalance, walletBalance, loadAllBalances } = useQVault();
-  const { isDarkTheme } = useTheme();
 
   useInterval(loadAllBalances, 5000);
 
@@ -36,10 +37,7 @@ function Balance () {
       trigger={
         <Button alwaysEnabled look="secondary">
           <div className="balance">
-            <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance, 2)}</p>
-            <QLogo width={28} margin="0 0 0 2px">
-              <img src={isDarkTheme ? '/logo-white.png' : '/logo-dark.png'} alt="q" />
-            </QLogo>
+            <p className="text-lg color-primary font-semibold">{formatNumberCompact(walletBalance, 2)} {qTicker}</p>
           </div>
           <motion.span
             style={{ height: '100%' }}

@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -27,6 +29,7 @@ const StyledForm = styled.form`
 
 function LockForm ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { submitTransaction } = useTransaction();
   const { vaultBalance, votingWeight, lockAmount, unlockAmount } = useQVault();
   const { address } = useWeb3Context();
@@ -87,7 +90,7 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
         value={Number(form.values.amount) ? percentValue : '0'}
         absoluteValue={form.values.amount}
         max={vaultBalance}
-        formatter={(value) => formatAsset(value, 'Q')}
+        formatter={(value) => formatAsset(value, qTicker)}
         onChange={handleRangeChange}
       />
 

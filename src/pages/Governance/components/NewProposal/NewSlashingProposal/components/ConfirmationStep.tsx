@@ -6,11 +6,14 @@ import { SlashingProposalForm } from 'typings/forms';
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
 function ConfirmationStep () {
   const { t } = useTranslation();
   const { values, confirm, goBack, updateStep } = useNewSlashingProposal();
+  const { qTicker } = useNetworkConfig();
 
   const proposalTypeMap: Record<SlashingProposalForm['type'], string> = {
     'root-slashing': t('ROOT_NODE_SLASHING'),
@@ -45,7 +48,7 @@ function ConfirmationStep () {
         <div>
           <p className="text-md color-secondary">{t('AMOUNT_TO_SLASH')}</p>
           <p className="text-lg">
-            <span>{formatAsset(values.amount, 'Q')}</span>
+            <span>{formatAsset(values.amount, qTicker)}</span>
             <span className="font-light" style={{ marginLeft: '4px' }}>
               ({formatPercent(values.percent)})
             </span>

@@ -4,6 +4,8 @@ import { media } from '@q-dev/q-ui-kit';
 import { formatAsset, formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useValidationRewards } from 'store/validation-rewards/hooks';
 import { useValidators } from 'store/validators/hooks';
 
@@ -39,6 +41,7 @@ const StyledWrapper = styled.div`
 function RewardStats () {
   const { t } = useTranslation();
   const { validatorDelegatedStake } = useValidators();
+  const { qTicker } = useNetworkConfig();
   const { poolInfo } = useValidationRewards();
   const reserverdForClaims = Number(fromWei(poolInfo?.reservedForClaims ?? '0'));
 
@@ -49,17 +52,17 @@ function RewardStats () {
     {
       id: 'collected-pool',
       label: t('COLLECTED_POOL_REWARDS'),
-      value: formatAsset(fromWei(poolInfo.poolBalance), 'Q'),
+      value: formatAsset(fromWei(poolInfo.poolBalance), qTicker),
     },
     {
       id: 'outstanding-claims',
       label: t('OUTSTANDING_DELEGATOR_CLAIMS'),
-      value: formatAsset(reserverdForClaims, 'Q'),
+      value: formatAsset(reserverdForClaims, qTicker),
     },
     {
       id: 'delegator-reward',
       label: t('DISTRIBUTABLE_DELEGATOR_REWARDS'),
-      value: formatAsset(distributableDelegatorsRewards, 'Q'),
+      value: formatAsset(distributableDelegatorsRewards, qTicker),
     },
     {
       id: 'delegator-percentage',

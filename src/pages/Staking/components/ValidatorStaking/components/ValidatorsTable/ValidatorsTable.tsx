@@ -9,6 +9,8 @@ import RedirectAddress from 'components/Custom/RedirectAddress';
 import Table from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useEnterShortList } from '../ManageValidator/components/ManageBalance/hooks';
 
 import ValidatorsTableHeader from './ValidatorsTableHeader';
@@ -32,6 +34,7 @@ const ValidatorsTableContainer = styled.div`
 
 function ValidatorsTable () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const {
     isValidator,
     validatorStats,
@@ -126,9 +129,9 @@ function ValidatorsTable () {
                 <AliasTooltip alias={validator.alias} />
               </div>
             ),
-            totalStake: formatAsset(validator.poolInfo.totalStake, 'Q'),
-            selfStake: formatAsset(validator.poolInfo.selfStake, 'Q'),
-            delegatedStake: formatAsset(validator.poolInfo.delegatedStake, 'Q'),
+            totalStake: formatAsset(validator.poolInfo.totalStake, qTicker),
+            selfStake: formatAsset(validator.poolInfo.selfStake, qTicker),
+            delegatedStake: formatAsset(validator.poolInfo.delegatedStake, qTicker),
             validatorShare: formatPercent(validator.poolInfo.validatorShare),
             delegatorShare: formatPercent(validator.poolInfo.delegatorsShare),
           }))

@@ -8,6 +8,8 @@ import { ParameterValue } from 'typings/parameters';
 import CopyToClipboard from 'components/CopyToClipboard';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { TableWrapper } from './styles';
 
 import { formatDuration } from 'utils/date';
@@ -26,6 +28,7 @@ interface Props {
 
 function ParametersTable ({ parameters, simplified }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   const renderValue = (item: ParameterValue) => {
     const type = parametersDictionary[item.key]?.type;
@@ -63,7 +66,7 @@ function ParametersTable ({ parameters, simplified }: Props) {
       case 'Q':
       case 'QUSD':
       case 'QEUR':
-        return formatAsset(fromWei(item.value), type);
+        return formatAsset(fromWei(item.value), type === 'Q' ? qTicker : type);
       default:
         return item.value;
     }

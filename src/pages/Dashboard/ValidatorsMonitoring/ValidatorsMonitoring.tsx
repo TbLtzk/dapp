@@ -47,7 +47,7 @@ const StyledWrapper = styled.div`
 
 function ValidatorsMonitoring () {
   const { t, i18n } = useTranslation();
-  const { indexerUrl } = useNetworkConfig();
+  const { indexerUrl, qTicker } = useNetworkConfig();
   const {
     validatorsMonitoring,
     validatorsMonitoringLoading,
@@ -102,7 +102,7 @@ function ValidatorsMonitoring () {
               dataField: 'balance',
               text: t('TOTAL_ACCOUNTABLE_STAKE'),
               sort: true,
-              formatter: (cell) => formatAsset(cell, 'Q'),
+              formatter: (cell) => formatAsset(cell, qTicker),
             },
             {
               headerStyle: () => ({ minWidth: '200px', cursor: 'pointer' }),

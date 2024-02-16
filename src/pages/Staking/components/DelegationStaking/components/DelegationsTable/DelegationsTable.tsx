@@ -7,6 +7,8 @@ import Button from 'components/Button';
 import RedirectAddress from 'components/Custom/RedirectAddress';
 import Table from 'components/Table';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import DelegateModal from '../DelegateModal';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -17,6 +19,7 @@ import { RoutePaths } from 'constants/routes';
 function DelegationsTable () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
 
   const {
     delegationList,
@@ -120,8 +123,8 @@ function DelegationsTable () {
           />
         ),
         delegatorsShare: formatPercent(delegation.delegatorsShare),
-        amount: formatAsset(delegation.actualStake, 'Q'),
-        reward: formatAsset(delegation.claimableReward, 'Q'),
+        amount: formatAsset(delegation.actualStake, qTicker),
+        reward: formatAsset(delegation.claimableReward, qTicker),
         manage: (
           <>
             <DelegateModal delegation={delegation} />

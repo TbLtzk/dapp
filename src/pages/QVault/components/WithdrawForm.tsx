@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import useQVaultLimits from '../hooks/useQVaultLimits';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -38,6 +40,7 @@ function WithdrawForm () {
 
   const { withdrawFromVault } = useQVault();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
 
   const { maxWithdrawAmount } = useQVaultLimits();
   const form = useForm({
@@ -69,7 +72,7 @@ function WithdrawForm () {
           prefix="Q"
           max={maxWithdrawAmount}
           placeholder="0.0"
-          hint={t('AVAILABLE_TO_WITHDRAW', { amount: formatAsset(maxWithdrawAmount, 'Q') })}
+          hint={t('AVAILABLE_TO_WITHDRAW', { amount: formatAsset(maxWithdrawAmount, qTicker) })}
         />
 
         <Button

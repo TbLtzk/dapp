@@ -7,6 +7,7 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';
 
@@ -23,6 +24,7 @@ function VotingStats () {
   const { t, i18n } = useTranslation();
   const { loadDelegationInfo } = useQVault();
   const { baseVotingWeightInfo, getBaseVotingWeightInfo } = useBaseVotingWeightInfo();
+  const { qTicker } = useNetworkConfig();
 
   const { address } = useWeb3Context();
   const voterStatus = useVoterStatus();
@@ -38,7 +40,7 @@ function VotingStats () {
   const statsList = [
     {
       title: t('TOTAL_VOTING_WEIGHT'),
-      value: formatAsset(fromWei(ownWeight || '0'), 'Q'),
+      value: formatAsset(fromWei(ownWeight || '0'), qTicker),
     },
     {
       title: t('VOTING_LOCKING_END'),

@@ -11,6 +11,8 @@ import { Proposal } from 'typings/proposals';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { StyledVoteForm } from './styles';
 
 import { useProposals } from 'store/proposals/hooks';
@@ -31,6 +33,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
   const { t } = useTranslation();
   const { address } = useWeb3Context();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
   const { voteForProposal } = useProposals();
   const [baseWeight, setBaseWeight] = useState('0');
   const canUserVote = useMemo(
@@ -88,7 +91,7 @@ function VoteForm ({ proposal, isMemberVoting, onSubmit }: Props) {
             className="text-xl font-semibold"
             title={baseWeight}
           >
-            {formatAsset(baseWeight, 'Q')}
+            {formatAsset(baseWeight, qTicker)}
           </p>
         </div>
       }

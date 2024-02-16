@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import TopUpForm from './TopUpForm';
 
 const StyledWrapper = styled.div`
@@ -24,6 +26,7 @@ interface Props {
 
 function TopUpQVault ({ onSubmit = () => {} }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleSubmit = () => {
@@ -46,7 +49,7 @@ function TopUpQVault ({ onSubmit = () => {} }: Props) {
       <Modal
         open={modalOpen}
         title={t('TOP_UP_Q_VAULT')}
-        tip={t('TOP_UP_MODAL_HINT')}
+        tip={t('TOP_UP_MODAL_HINT', { asset: qTicker })}
         onClose={() => setModalOpen(false)}
       >
         <TopUpForm onSubmit={handleSubmit} />

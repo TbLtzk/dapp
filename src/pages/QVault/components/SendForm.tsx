@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import useQVaultLimits from '../hooks/useQVaultLimits';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -42,6 +44,7 @@ function SendForm () {
   const { submitTransaction } = useTransaction();
   const { sendToVault } = useQVault();
   const { maxWithdrawAmount } = useQVaultLimits();
+  const { qTicker } = useNetworkConfig();
 
   const form = useForm({
     initialValues: { address: '', amount: '' },
@@ -83,7 +86,7 @@ function SendForm () {
             prefix="Q"
             max={maxWithdrawAmount}
             placeholder="0.0"
-            labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatAsset(maxWithdrawAmount, 'Q') })}
+            labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatAsset(maxWithdrawAmount, qTicker) })}
           />
         </div>
 

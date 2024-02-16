@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -38,6 +40,7 @@ function TransferForm () {
   const { walletBalance, depositToVault } = useQVault();
   const { submitTransaction } = useTransaction();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
 
   const [maxAmount, setMaxAmount] = useState('0');
 
@@ -78,8 +81,8 @@ function TransferForm () {
           label={t('AMOUNT')}
           prefix="Q"
           hint={Number(maxAmount) > 0 && form.values.amount === maxAmount
-            ? t('WARNING_NO_Q_LEFT')
-            : t('AVAILABLE_TO_TRANSFER', { amount: formatAsset(maxAmount, 'Q') })
+            ? t('WARNING_NO_Q_LEFT', { asset: qTicker })
+            : t('AVAILABLE_TO_TRANSFER', { amount: formatAsset(maxAmount, qTicker) })
           }
           max={maxAmount}
           placeholder="0.0"

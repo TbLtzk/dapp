@@ -5,12 +5,15 @@ import { formatAsset } from '@q-dev/utils';
 import sumBy from 'lodash/sumBy';
 import { ValidatorStats } from 'typings/validator';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { ValidatorsOverviewContainer } from '../../styles';
 
 import { useValidators } from 'store/validators/hooks';
 
 function ValidatorsOverview () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { validatorStats, validatorStatsLoading } = useValidators();
 
   const totalStake = useMemo(() => {
@@ -30,12 +33,12 @@ function ValidatorsOverview () {
 
       <div className="field_item">
         <p className="color-secondary text-md">{t('TOTAL_STAKE')}</p>
-        <p className="text-xl font-semibold">{validatorStatsLoading ? '... Q' : formatAsset(totalStake, 'Q')}</p>
+        <p className="text-xl font-semibold">{validatorStatsLoading ? `... ${qTicker}` : formatAsset(totalStake, qTicker)}</p>
       </div>
 
       <div className="field_item">
         <p className="color-secondary text-md">{t('TOTAL_DELEGATED_STAKE')}</p>
-        <p className="text-xl font-semibold">{validatorStatsLoading ? '... Q' : formatAsset(totalDelegatedStake, 'Q')}</p>
+        <p className="text-xl font-semibold">{validatorStatsLoading ? `... ${qTicker}` : formatAsset(totalDelegatedStake, qTicker)}</p>
       </div>
     </ValidatorsOverviewContainer>
   );

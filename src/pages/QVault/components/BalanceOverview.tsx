@@ -6,6 +6,8 @@ import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 
 const StyledWrapper = styled.div`
@@ -39,10 +41,11 @@ function BalanceOverview () {
     loadMinimumQVaultTimeLock
   } = useQVault();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
 
-  const userQVBalanceRef = useAnimateNumber(vaultBalance);
-  const userAccountBalanceRef = useAnimateNumber(walletBalance);
-  const qVaultLockedAmountRef = useAnimateNumber(qVaultMinimumTimeLock);
+  const userQVBalanceRef = useAnimateNumber(vaultBalance, ` ${qTicker}`);
+  const userAccountBalanceRef = useAnimateNumber(walletBalance, ` ${qTicker}`);
+  const qVaultLockedAmountRef = useAnimateNumber(qVaultMinimumTimeLock, ` ${qTicker}`);
 
   useEffect(() => {
     loadWalletBalance();
@@ -59,17 +62,17 @@ function BalanceOverview () {
       <div className="balance-values">
         <div>
           <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')}</p>
-          <p ref={userQVBalanceRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={userQVBalanceRef} className="text-xl font-semibold" />
         </div>
 
         <div>
           <p className="text-md color-secondary">{t('Q_ADDRESS_BALANCE')}</p>
-          <p ref={userAccountBalanceRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={userAccountBalanceRef} className="text-xl font-semibold" />
         </div>
 
         <div>
           <p className="text-md color-secondary">{t('TIME_LOCKED_AMOUNT')}</p>
-          <p ref={qVaultLockedAmountRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={qVaultLockedAmountRef} className="text-xl font-semibold" />
         </div>
       </div>
     </StyledWrapper>

@@ -12,6 +12,8 @@ import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 import { AuctionContainer } from 'pages/Auctions/styles';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import AuctionActions from './components/AuctionActions';
 import AuctionLayout from './components/AuctionLayout';
 import { AuctionNotFoundContainer } from './styles';
@@ -29,6 +31,7 @@ function Auction ({ match }: RouteComponentProps<{
 }>) {
   const { t } = useTranslation();
   const history = useHistory();
+  const { qTicker } = useNetworkConfig();
 
   const linkToAuctions = match.params.type;
   const auctionType = camelCase(linkToAuctions) as AuctionType;
@@ -48,7 +51,7 @@ function Auction ({ match }: RouteComponentProps<{
 
   const loadOneAuction = async () => {
     try {
-      const result = await getAuction(match.params.asset, auctionType, match.params);
+      const result = await getAuction(match.params.asset, auctionType, match.params, qTicker);
       if ('error' in result && result?.error) {
         setAuctionError(result?.error);
       } else {

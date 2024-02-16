@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@q-dev/q-ui-kit';
 import { useAnimateNumber, useInterval } from '@q-dev/react-hooks';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useUpdateValidatorCompoundRate } from '../../hooks';
 
 import RefreshBlock from './components/RefreshBlock';
@@ -18,6 +20,7 @@ import { formatDate, formatDateRelative, unixToDate } from 'utils/date';
 function ValidatorAllocation () {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
 
   const {
     defaultAllocationProxy,
@@ -34,8 +37,8 @@ function ValidatorAllocation () {
   const { compoundRateKeeperExists, loadCompoundRateKeeperExists } = useValidators();
   const { compoundRateLoading, updateCompoundRate } = useUpdateValidatorCompoundRate();
 
-  const defaultAllocationProxyRef = useAnimateNumber(defaultAllocationProxy);
-  const validationRewardProxyRef = useAnimateNumber(validationRewardProxy);
+  const defaultAllocationProxyRef = useAnimateNumber(defaultAllocationProxy, ` ${qTicker}`);
+  const validationRewardProxyRef = useAnimateNumber(validationRewardProxy, ` ${qTicker}`);
 
   useEffect(() => {
     loadCompoundRateKeeperExists();
@@ -63,7 +66,7 @@ function ValidatorAllocation () {
           submitFn: allocateDefaultProxyRewards
         })}
       >
-        <p ref={defaultAllocationProxyRef} className="color-primary text-md">0 Q</p>
+        <p ref={defaultAllocationProxyRef} className="color-primary text-md" />
       </RefreshBlock>
 
       <RefreshBlock
@@ -76,7 +79,7 @@ function ValidatorAllocation () {
           submitFn: allocateValidationProxyRewards
         })}
       >
-        <p ref={validationRewardProxyRef} className="color-primary text-md">0 Q</p>
+        <p ref={validationRewardProxyRef} className="color-primary text-md" />
       </RefreshBlock>
 
       <RefreshBlock

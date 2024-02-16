@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip/InfoTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 const StyledWrapper = styled.div`
   .allocation-block-btn {
     margin-top: 16px;
@@ -24,16 +26,15 @@ interface Props {
 
 function AllocationBlock ({ value, title, tooltipTopic, loading, onAllocate }: Props) {
   const { t } = useTranslation();
-  const valueRef = useAnimateNumber(value);
+  const { qTicker } = useNetworkConfig();
+  const valueRef = useAnimateNumber(value, ` ${qTicker}`);
 
   return (
     <StyledWrapper className="block">
       <p
         ref={valueRef}
         className="text-xl font-semibold"
-      >
-        0 Q
-      </p>
+      />
 
       <p className="text-md color-secondary">
         <span>{title}</span>

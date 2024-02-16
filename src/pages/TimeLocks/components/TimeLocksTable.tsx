@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
 
 import { TimeLockEntry } from '@q-dev/q-js-sdk';
+import { formatAsset } from '@q-dev/utils';
 import { getLockStatus } from 'helpers/time-locks';
 import styled from 'styled-components';
 import { TimeLockContractType } from 'typings/contracts';
 
 import Button from 'components/Button';
 import Table from 'components/Table';
+
+import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -55,6 +58,7 @@ function TimeLocksTable ({
 }: Props) {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
 
   const statusToText: Record<TimeLockStatus, string> = {
     locked: t('LOCKED'),
@@ -90,7 +94,7 @@ function TimeLocksTable ({
           loading={isLoading}
           table={lockAmountData.map((lock, i) => ({
             id: i + 1,
-            amount: fromWei(lock.amount) + ' Q',
+            amount: formatAsset(fromWei(lock.amount), qTicker),
             status: (
               <>
                 <StatusMark status={getLockStatus(lock)} />

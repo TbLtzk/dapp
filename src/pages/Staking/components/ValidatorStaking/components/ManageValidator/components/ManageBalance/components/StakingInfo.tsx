@@ -4,6 +4,8 @@ import { media } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import ValidatorMenu from './ValidatorMenu';
 
 import { useValidators } from 'store/validators/hooks';
@@ -29,6 +31,7 @@ const StyledWrapper = styled.div`
 function StakingInfo () {
   const { t, i18n } = useTranslation();
   const { validatorAccountableTotalStake, validatorWithdrawalInfo } = useValidators();
+  const { qTicker } = useNetworkConfig();
 
   return (
     <StyledWrapper className="block">
@@ -40,11 +43,11 @@ function StakingInfo () {
       <div className="block__content">
         <div>
           <p className="color-secondary text-md">{t('STAKE_IN_VALIDATOR_RANKING')}</p>
-          <p className="text-lg">{formatAsset(validatorAccountableTotalStake, 'Q')}</p>
+          <p className="text-lg">{formatAsset(validatorAccountableTotalStake, qTicker)}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ANNOUNCED_FOR_WITHDRAWAL')}</p>
-          <p className="text-lg">{formatAsset(fromWei(validatorWithdrawalInfo.amount || '0'), 'Q')}</p>
+          <p className="text-lg">{formatAsset(fromWei(validatorWithdrawalInfo.amount || '0'), qTicker)}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ANNOUNCEMENT_STATUS')}</p>

@@ -4,6 +4,8 @@ import { media } from '@q-dev/q-ui-kit';
 import { formatAsset } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useValidators } from 'store/validators/hooks';
 
 const StyledWrapper = styled.div`
@@ -35,6 +37,7 @@ const StyledWrapper = styled.div`
 
 function ValidatorPool () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const {
     validatorTotalStake,
     validatorDelegatedStake,
@@ -46,22 +49,22 @@ function ValidatorPool () {
     {
       id: 'total-stake',
       label: t('TOTAL_STAKE'),
-      value: formatAsset(validatorTotalStake, 'Q'),
+      value: formatAsset(validatorTotalStake, qTicker),
     },
     {
       id: 'own-stake',
       label: t('VALIDATOR_OWN_STAKE'),
-      value: formatAsset(validatorAccountableSelfStake, 'Q'),
+      value: formatAsset(validatorAccountableSelfStake, qTicker),
     },
     {
       id: 'delegated-stake',
       label: t('DELEGATED_STAKE'),
-      value: formatAsset(validatorDelegatedStake, 'Q'),
+      value: formatAsset(validatorDelegatedStake, qTicker),
     },
     {
       id: 'accountable-stake',
       label: t('ACCOUNTABLE_STAKE'),
-      value: formatAsset(validatorAccountableTotalStake, 'Q'),
+      value: formatAsset(validatorAccountableTotalStake, qTicker),
     },
   ];
 

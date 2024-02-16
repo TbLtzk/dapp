@@ -50,7 +50,12 @@ export async function getAuctionsEvents (
   })) as SystemDebtAndSurplusEvent[];
 }
 
-export const getAuction = async (asset: StablecoinAsset, auctionType: AuctionType, params: { slug: string }) => {
+export const getAuction = async (
+  asset: StablecoinAsset,
+  auctionType: AuctionType,
+  params: { slug: string },
+  qTicker: string
+) => {
   switch (auctionType) {
     case 'liquidation': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
@@ -58,11 +63,11 @@ export const getAuction = async (asset: StablecoinAsset, auctionType: AuctionTyp
     }
     case 'systemDebt': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
-      return await getOneSystemDebtAuction(asset, searchParams.auctionId);
+      return await getOneSystemDebtAuction(asset, searchParams.auctionId, qTicker);
     }
     case 'systemSurplus': {
       const searchParams = Object.fromEntries(new URLSearchParams(params.slug));
-      return await getOneSystemSurplusAuction(asset, searchParams.auctionId);
+      return await getOneSystemSurplusAuction(asset, searchParams.auctionId, qTicker);
     }
     default: {
       return { error: ERROR_TYPES.notExist };

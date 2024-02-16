@@ -7,6 +7,8 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';
 import { useTransaction } from 'store/transaction/hooks';
@@ -35,6 +37,7 @@ const StyledWrapper = styled.div`
 function TokenHolderRewards () {
   const { t, i18n } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
   const { qvBalance, loadQVBalanceDetails } = useQVault();
   const {
     qHolderUpdateTime,
@@ -43,7 +46,7 @@ function TokenHolderRewards () {
     allocateQHolderRewards
   } = useTokenomics();
 
-  const balanceRewardPoolRef = useAnimateNumber(qvBalance.qHolderRewardPool);
+  const balanceRewardPoolRef = useAnimateNumber(qvBalance.qHolderRewardPool, ` ${qTicker}`);
 
   useEffect(() => {
     loadQVBalanceDetails();
@@ -57,7 +60,7 @@ function TokenHolderRewards () {
   return (
     <StyledWrapper className="block">
       <div>
-        <p ref={balanceRewardPoolRef} className="text-xl font-semibold">0 Q</p>
+        <p ref={balanceRewardPoolRef} className="text-xl font-semibold" />
         <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_POOL')}</p>
       </div>
       <div className="token-holder-time">
@@ -74,7 +77,7 @@ function TokenHolderRewards () {
           icon
           loading={qHolderUpdateTimeLoading}
           onClick={() => submitTransaction({
-            successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX'),
+            successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
             isClosedModal: true,
             submitFn: allocateQHolderRewards
           })}

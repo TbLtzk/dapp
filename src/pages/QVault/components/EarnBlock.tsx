@@ -7,6 +7,8 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTokenomics } from 'store/tokenomics/hooks';
 import { useTransaction } from 'store/transaction/hooks';
@@ -34,6 +36,7 @@ function EarnBlock () {
   const { submitTransaction } = useTransaction();
 
   const { qvBalance, loadQVBalanceDetails } = useQVault();
+  const { qTicker } = useNetworkConfig();
   const {
     qHolderUpdateTime,
     qHolderUpdateTimeLoading,
@@ -42,7 +45,7 @@ function EarnBlock () {
   } = useTokenomics();
 
   const interestRatePercentageRef = useAnimateNumber(qvBalance.interestRatePercentage, ' %');
-  const yearlyExpectedEarningsRef = useAnimateNumber(qvBalance.yearlyExpectedEarnings);
+  const yearlyExpectedEarningsRef = useAnimateNumber(qvBalance.yearlyExpectedEarnings, ` ${qTicker}`);
 
   useEffect(() => {
     loadQVBalanceDetails();
@@ -57,7 +60,7 @@ function EarnBlock () {
     <StyledWrapper className="block">
       <div>
         <h2 className="text-h2">{t('EARN')}</h2>
-        <p className="text-md color-secondary">{t('EARN_DESCRIPTION')}</p>
+        <p className="text-md color-secondary">{t('EARN_DESCRIPTION', { asset: qTicker })}</p>
       </div>
 
       <div className="reward-values">
@@ -68,7 +71,7 @@ function EarnBlock () {
 
         <div>
           <p className="text-md color-secondary">{t('YEARLY_EXPECTED_REWARD')}</p>
-          <p ref={yearlyExpectedEarningsRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={yearlyExpectedEarningsRef} className="text-xl font-semibold" />
         </div>
 
         <div>
@@ -86,7 +89,7 @@ function EarnBlock () {
         className="update-reward-action"
         loading={qHolderUpdateTimeLoading}
         onClick={() => submitTransaction({
-          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX'),
+          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
           submitFn: allocateQHolderRewards
         })}
       >

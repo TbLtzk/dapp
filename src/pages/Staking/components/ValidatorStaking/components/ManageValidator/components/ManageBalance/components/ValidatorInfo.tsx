@@ -10,6 +10,7 @@ import ValidatorStatusBar from 'components/Base/ValidatorStatusBar';
 import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
 import { useGetValidatorRank, useValidatorStatus } from 'hooks/useValidatorStatus';
 
 import { useEnterShortList } from '../hooks';
@@ -37,6 +38,7 @@ const StyledWrapper = styled.div`
 function ValidatorInfo () {
   const { t } = useTranslation();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
   const { walletBalance } = useQVault();
   const { isValidator, checkIsValidator } = useValidators();
   const { validatorRank } = useGetValidatorRank(address);
@@ -73,7 +75,7 @@ function ValidatorInfo () {
         </div>
         <div>
           <p className="color-secondary text-md">{t('AVAILABLE_Q_BALANCE')}</p>
-          <p className="text-lg">{formatAsset(walletBalance, 'Q')}</p>
+          <p className="text-lg">{formatAsset(walletBalance, qTicker)}</p>
         </div>
         <div>
           <p className="color-secondary text-md">{t('ADDRESS')}</p>

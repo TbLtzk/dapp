@@ -10,6 +10,8 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import { FormStep } from 'components/MultiStepForm';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import usePurgeSlashing from '../hooks/usePurgeSlashing';
 import { useNewSlashingProposal } from '../NewSlashingProposal';
 
@@ -23,6 +25,7 @@ function DetailsStep () {
   const { t } = useTranslation();
   const { validatorStats, loadValidatorStats } = useValidators();
   const { rootMembers, getRootMembers } = useRootNodes();
+  const { qTicker } = useNetworkConfig();
 
   const { values, goNext, goBack, onChange } = useNewSlashingProposal();
   const form = useForm({
@@ -115,7 +118,7 @@ function DetailsStep () {
         {...form.fields.percent}
         label={t('AMOUNT_TO_SLASH')}
         max={String(stake || '0')}
-        formatter={(value) => formatAsset(value, 'Q')}
+        formatter={(value) => formatAsset(value, qTicker)}
         disabled={isNil(stake)}
         onChange={handleAmountChange}
       />

@@ -8,10 +8,13 @@ import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 function RootNodeTable () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const {
     rootMembers,
     rootMembersLoading,
@@ -44,7 +47,7 @@ function RootNodeTable () {
       dataField: 'stakeAmount',
       text: t('STAKED_AMOUNT'),
       sort: true,
-      formatter: (cell) => formatAsset(cell, 'Q'),
+      formatter: (cell) => formatAsset(cell, qTicker),
     },
     {
       headerStyle: () => ({ minWidth: '90px', cursor: 'pointer' }),
@@ -74,7 +77,7 @@ function RootNodeTable () {
           </h2>
           {!rootMembersLoading && (
             <p style={{ margin: 0 }}>
-              <strong>{t('TOTAL_STAKE')}</strong> {formatAsset(rootTotalStake, 'Q')}
+              <strong>{t('TOTAL_STAKE')}</strong> {formatAsset(rootTotalStake, qTicker)}
             </p>
           )}
         </div>

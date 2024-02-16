@@ -6,11 +6,14 @@ import { useWeb3Context } from 'context/Web3ContextProvider';
 import ProgressBar from 'components/Base/ProgressBar';
 import DelegateModal from 'pages/Staking/components/DelegationStaking/components/DelegateModal';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { StyledWrapper } from '../styles';
 import { useValidator } from '../Validator';
 
 function DelegationInfo () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { address: accountAddress } = useWeb3Context();
   const { validator, refetchValidator } = useValidator();
   const { metric, payoutPerDelegatedQ, address } = validator;
@@ -29,8 +32,8 @@ function DelegationInfo () {
       </div>
 
       <div className="row block__content">
-        <p className="color-secondary text-md">{t('PAYOUT_DELEGATED_Q')}</p>
-        <p className="color-primary text-md">{formatAsset(payoutPerDelegatedQ, 'Q')}</p>
+        <p className="color-secondary text-md">{t('PAYOUT_DELEGATED_Q', { asset: qTicker })}</p>
+        <p className="color-primary text-md">{formatAsset(payoutPerDelegatedQ, qTicker)}</p>
       </div>
 
       <div className="row">

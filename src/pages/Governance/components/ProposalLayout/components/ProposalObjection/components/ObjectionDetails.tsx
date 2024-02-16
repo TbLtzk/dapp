@@ -8,10 +8,13 @@ import { SlashingProposal } from 'typings/proposals';
 import LinkViewer from 'pages/Governance/components/LinkViewer';
 import useEndTime from 'pages/Governance/hooks/useEndTime';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { ObjectionStatus } from 'constants/slashing';
 
 function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   const objection = proposal.objEscrow.objection;
   const objectionEndTime = useEndTime(objection.objectionEndTime);
@@ -48,7 +51,7 @@ function ObjectionDetails ({ proposal }: { proposal: SlashingProposal }) {
 
         <div className="details-item">
           <p className="text-md color-secondary">{t('SLASHED_AMOUNT')}</p>
-          <p className="text-md">{formatAsset(objection.slashedAmount, 'Q')}</p>
+          <p className="text-md">{formatAsset(objection.slashedAmount, qTicker)}</p>
         </div>
 
         <div className="details-item">

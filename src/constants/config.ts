@@ -8,6 +8,7 @@ interface NetworkConfig {
   chainId: number;
   name: string;
   networkName: NetworkName;
+  qTicker: string;
   dAppUrl: string;
   rpcUrl: string;
   indexerUrl: string;
@@ -33,6 +34,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     chainId: 35441,
     name: 'Q Mainnet',
     networkName: 'mainnet',
+    qTicker: 'QGOV',
     dAppUrl: 'https://hq.q.org',
     rpcUrl: 'https://rpc.q.org',
     indexerUrl: 'https://indexer.q.org',
@@ -56,6 +58,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     chainId: 35443,
     name: 'Q Testnet',
     networkName: 'testnet',
+    qTicker: 'Q',
     dAppUrl: 'https://hq.qtestnet.org',
     rpcUrl: 'https://rpc.qtestnet.org',
     indexerUrl: 'https://indexer.qtestnet.org',
@@ -79,6 +82,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     chainId: 35442,
     name: 'Q Devnet',
     networkName: 'devnet',
+    qTicker: 'Q',
     dAppUrl: 'https://hq.qdevnet.org',
     rpcUrl: 'https://rpc.qdevnet.org',
     indexerUrl: 'https://indexer.qdevnet.org',
@@ -114,9 +118,11 @@ export const connectorParametersMap = Object.values(networkConfigsMap)
     rpcUrl: config.rpcUrl,
     explorerUrl: config.explorerUrl,
     token: {
-      name: 'Q',
+      name: config.qTicker,
       // HACK: MetaMask requires the symbol to have at least 2 characters
-      symbol: 'Q ',
+      symbol: config.qTicker.length > 1
+        ? config.qTicker
+        : `${config.qTicker} `,
       decimals: 18,
     },
     type: CHAIN_TYPES.EVM,

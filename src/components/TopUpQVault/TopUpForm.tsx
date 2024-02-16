@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useQVault } from 'store/q-vault/hooks';
 import { useTransaction } from 'store/transaction/hooks';
 
@@ -28,6 +30,7 @@ const StyledForm = styled.form`
 
 function TopUpForm ({ onSubmit }: { onSubmit: () => void }) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { walletBalance, depositToVault } = useQVault();
   const { submitTransaction } = useTransaction();
   const { address } = useWeb3Context();
@@ -65,7 +68,7 @@ function TopUpForm ({ onSubmit }: { onSubmit: () => void }) {
     >
       {Number(maxAmount) > 0 && form.values.amount === maxAmount && (
         <Tip compact type="warning">
-          {t('MAX_TRANSFER_AMOUNT_WARNING')}
+          {t('MAX_TRANSFER_AMOUNT_WARNING', { asset: qTicker })}
         </Tip>
       )}
 
@@ -74,7 +77,7 @@ function TopUpForm ({ onSubmit }: { onSubmit: () => void }) {
         label={t('AMOUNT')}
         max={maxAmount}
         placeholder={t('AMOUNT_TO_TRANSFER')}
-        hint={t('AVAILABLE_AMOUNT', { amount: formatAsset(maxAmount, 'Q') })}
+        hint={t('AVAILABLE_AMOUNT', { amount: formatAsset(maxAmount, qTicker) })}
       />
 
       <Button

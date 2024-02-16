@@ -13,6 +13,8 @@ import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useTimeLocksAddress } from '../TimeLocks';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -54,6 +56,7 @@ const MIN_DEPOSIT_AMOUNT = 10; // Q
 function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
   const { t, i18n } = useTranslation();
   const { address } = useTimeLocksAddress();
+  const { qTicker } = useNetworkConfig();
 
   const { submitTransaction } = useTransaction();
 
@@ -143,11 +146,11 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         type="number"
         value={form.values.amount as string}
         label={t('AMOUNT')}
-        labelTip={t('MINIMUM_AMOUNT', { amount: formatAsset(MIN_DEPOSIT_AMOUNT, 'Q') })}
+        labelTip={t('MINIMUM_AMOUNT', { amount: formatAsset(MIN_DEPOSIT_AMOUNT, qTicker) })}
         prefix="Q"
         placeholder="0.0"
         max={maxAmount}
-        hint={form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : ''}
+        hint={form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : ''}
         disabled={isDepositsLimitReached}
       />
 

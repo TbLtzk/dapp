@@ -19,13 +19,14 @@ function prepareSystemDebtAuctionInfo (
   asset: StablecoinAsset,
   info: SystemDebtAuctionInfo,
   auctionId: string | number,
-  raisingBid: string | null
+  raisingBid: string | null,
+  qTicker: string
 ): SystemDebtCompletedInfo {
   const completedInfo = {} as SystemDebtCompletedInfo;
   const status = getStatusTransformation(info.status);
 
   completedInfo.bidAsset = asset;
-  completedInfo.lotAsset = 'Q';
+  completedInfo.lotAsset = qTicker;
 
   completedInfo.auctionType = AUCTIONS_TYPES.systemDebt;
   completedInfo.auctionId = auctionId;
@@ -69,7 +70,7 @@ export async function getSystemDebt (asset: StablecoinAsset, auctions: AuctionIn
   return allAcutions;
 }
 
-export async function getOneSystemDebtAuction (asset: StablecoinAsset, auctionId: string | number) {
+export async function getOneSystemDebtAuction (asset: StablecoinAsset, auctionId: string | number, qTicker: string) {
   try {
     const instance = await getSystemDebtAuctionInstance(asset);
     const info = await instance.getAuctionInfo(auctionId);
@@ -80,7 +81,7 @@ export async function getOneSystemDebtAuction (asset: StablecoinAsset, auctionId
       if (info.status === '1') {
         raisingBid = await instance.getRaisingBid(auctionId);
       }
-      return prepareSystemDebtAuctionInfo(asset, info, auctionId, raisingBid);
+      return prepareSystemDebtAuctionInfo(asset, info, auctionId, raisingBid, qTicker);
     }
   } catch (error) {
     return { error: ERROR_TYPES.wrongLink };

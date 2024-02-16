@@ -10,6 +10,8 @@ import Button from 'components/Button';
 import FormBlock from 'components/FormBlock';
 import { StakingContainer } from 'pages/Staking/styles';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import ClaimTip from '../../../ClaimTip';
 import DelegationForm from '../DelegationForm';
 
@@ -22,6 +24,7 @@ import { toWei } from 'utils/web3';
 function ManageDelegations () {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
 
   const {
     delegateStake,
@@ -91,21 +94,21 @@ function ManageDelegations () {
         <div className="delegation-info_container">
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('CURRENT_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold ellipsis">{formatAsset(delegationStakeInfo?.totalDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(delegationStakeInfo?.totalDelegatedStake, qTicker)}</p>
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('AVAILABLE_TO_DELEGATE')}</p>
             <p className="text-xl font-semibold ellipsis">
               {
                 toBigNumber(availableAmountToDelegate).isNegative()
-                  ? '0 Q'
-                  : formatAsset(availableAmountToDelegate, 'Q')
+                  ? formatAsset('0', qTicker)
+                  : formatAsset(availableAmountToDelegate, qTicker)
               }
             </p>
           </div>
           <div className="delegation-item">
             <p className="color-secondary text-md">{t('NEW_DELEGATED_STAKE')}</p>
-            <p className="text-xl font-semibold ellipsis">{formatAsset(newDelegatedStake, 'Q')}</p>
+            <p className="text-xl font-semibold ellipsis">{formatAsset(newDelegatedStake, qTicker)}</p>
           </div>
         </div>
 

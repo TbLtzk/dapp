@@ -12,6 +12,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useSendValidatorForms } from '../hooks';
 
 import { FORM_TYPES } from './ValidatorMenu';
@@ -45,6 +47,7 @@ interface Props {
 function ValidatorForms ({ formType, onClose }: Props) {
   const { t } = useTranslation();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
   const {
     validatorAccountableSelfStake: selfStake,
     validatorWithdrawalInfo,
@@ -123,11 +126,11 @@ function ValidatorForms ({ formType, onClose }: Props) {
   const inputHint = useMemo(() => {
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT') : '';
+        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : '';
       case FORM_TYPES.withdrawFromRanking:
         return toBigNumber(lockedStake).isZero()
           ? ''
-          : t('TIME_LOCKED_STAKE', { stake: formatAsset(lockedStake, 'Q') });
+          : t('TIME_LOCKED_STAKE', { stake: formatAsset(lockedStake, qTicker) });
       default:
         return '';
     }

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import TopUpQVault from 'components/TopUpQVault';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
 import useVoteDelegation from 'hooks/useVoteDelegation';
 import useVoterStatus from 'hooks/useVoterStatus';
 
@@ -38,9 +39,10 @@ function VotingOverview () {
   const { t } = useTranslation();
   const { baseVotingWeightInfo } = useBaseVotingWeightInfo();
   const { vaultBalance } = useQVault();
+  const { qTicker } = useNetworkConfig();
 
-  const userQVBalanceRef = useAnimateNumber(vaultBalance);
-  const weightRef = useAnimateNumber(fromWei(baseVotingWeightInfo.ownWeight));
+  const userQVBalanceRef = useAnimateNumber(vaultBalance, ` ${qTicker}`);
+  const weightRef = useAnimateNumber(fromWei(baseVotingWeightInfo.ownWeight), ` ${qTicker}`);
 
   const voterStatus = useVoterStatus();
   const delegationStatus = useVoteDelegation();
@@ -51,7 +53,7 @@ function VotingOverview () {
       <div className="voting-values">
         <div>
           <p className="text-md color-secondary">{t('TOTAL_VOTING_WEIGHT')}</p>
-          <p ref={weightRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={weightRef} className="text-xl font-semibold" />
         </div>
 
         <div>
@@ -62,7 +64,7 @@ function VotingOverview () {
         <div>
           <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')}</p>
           <div>
-            <span ref={userQVBalanceRef} className="text-xl font-semibold">0 Q</span>
+            <span ref={userQVBalanceRef} className="text-xl font-semibold" />
             <TopUpQVault />
           </div>
         </div>

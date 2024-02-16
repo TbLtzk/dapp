@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import LockForm from './LockForm';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -40,7 +42,8 @@ const StyledWrapper = styled.div`
 function LockVoting () {
   const { t, i18n } = useTranslation();
   const { votingWeight, votingLockingEnd } = useQVault();
-  const userVotingWeightRef = useAnimateNumber(votingWeight);
+  const { qTicker } = useNetworkConfig();
+  const userVotingWeightRef = useAnimateNumber(votingWeight, ` ${qTicker}`);
 
   const [lockModalOpen, setLockModalOpen] = useState(false);
 
@@ -48,7 +51,7 @@ function LockVoting () {
     <StyledWrapper className="block">
       <div>
         <h2 className="text-h2">
-          {t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
+          {t('LOCK_YOUR_Q_TOKENS_FOR_VOTING', { asset: qTicker })}
           <InfoTooltip topic="lock-tokens-for-voting" />
         </h2>
 
@@ -60,7 +63,7 @@ function LockVoting () {
       <div className="lock-values">
         <div>
           <p className="text-md color-secondary">{t('LOCKED_VOTING_WEIGHT')}</p>
-          <p ref={userVotingWeightRef} className="text-xl font-semibold">0 Q</p>
+          <p ref={userVotingWeightRef} className="text-xl font-semibold" />
         </div>
 
         <div>
@@ -83,7 +86,7 @@ function LockVoting () {
 
       <Modal
         open={lockModalOpen}
-        title={t('LOCK_YOUR_Q_TOKENS_FOR_VOTING')}
+        title={t('LOCK_YOUR_Q_TOKENS_FOR_VOTING', { asset: qTicker })}
         onClose={() => setLockModalOpen(false)}
       >
         <LockForm onSubmit={() => setLockModalOpen(false)} />
