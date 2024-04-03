@@ -50,6 +50,14 @@ function ExclusionProposedBlock () {
       );
   }, [rootNodesExclusionProposed, rootNodesExclusionActive]);
 
+  const signersPercentage = useMemo(() => {
+    if (rootNodesExclusionProposed?.signers?.length && rootNodesL0Active?.roots.length) {
+      return rootNodesExclusionProposed.signers.length * 100 / rootNodesL0Active.roots.length;
+    }
+
+    return 0;
+  }, [rootNodesExclusionProposed, rootNodesL0Active]);
+
   return (
     <StyledWrapper
       className="block"
@@ -67,7 +75,7 @@ function ExclusionProposedBlock () {
                 })}
               </span>
               <span className="exclusion-proposed-block__val-percent">
-                {formatPercent(rootNodesExclusionProposed?.activeRootPercentage || 0, 0)}
+                {formatPercent(signersPercentage, 0)}
               </span>
             </>)
             : t('NO_LIST')

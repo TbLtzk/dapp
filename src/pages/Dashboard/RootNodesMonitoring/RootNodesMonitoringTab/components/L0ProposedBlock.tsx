@@ -68,6 +68,14 @@ function L0ProposedBlock () {
       );
   }, [rootNodesOnchainList, rootNodesL0Proposed]);
 
+  const signersPercentage = useMemo(() => {
+    if (rootNodesL0Proposed?.signers?.length && rootNodesL0Active?.roots.length) {
+      return rootNodesL0Proposed.signers.length * 100 / rootNodesL0Active.roots.length;
+    }
+
+    return 0;
+  }, [rootNodesL0Proposed, rootNodesL0Active]);
+
   return (
     <StyledWrapper
       className="block"
@@ -86,7 +94,7 @@ function L0ProposedBlock () {
                 })}
               </span>
               <span className="l0-proposed-block__val-percent">
-                {formatPercent(rootNodesL0Proposed?.activeRootPercentage || 0, 0)}
+                {formatPercent(signersPercentage, 0)}
               </span>
             </>)
             : t('NO_LIST')
