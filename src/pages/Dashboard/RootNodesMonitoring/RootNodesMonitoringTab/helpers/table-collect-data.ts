@@ -43,7 +43,8 @@ export function getL0ApprovalStatus ({
   rootNodesExclusionActive,
   rootNodesExclusionProposed,
 }: L0ApprovalStatusArgs): {
-    l0ApprovalStatus: L0ApprovalStatus;
+    l0RootApprovalStatus: L0ApprovalStatus;
+    l0ExclusionApprovalStatus: L0ApprovalStatus;
     listsSigned: L0ApprovalMap;
   } {
   const listsSigned = {
@@ -55,7 +56,8 @@ export function getL0ApprovalStatus ({
 
   if (!isL0Active) {
     return {
-      l0ApprovalStatus: 'not-in-list',
+      l0RootApprovalStatus: 'not-in-list',
+      l0ExclusionApprovalStatus: 'not-in-list',
       listsSigned,
     };
   }
@@ -69,11 +71,19 @@ export function getL0ApprovalStatus ({
   listsSigned.isExclusionProposedSigned = !rootNodesExclusionProposed?.signers ||
     rootNodesExclusionProposed.signers.some(({ mainAccount }) => mainAccount === address);
 
-  const l0ApprovalStatus = Object.values(listsSigned).every(i => i)
-    ? 'all-signed'
-    : 'not-signed';
+  const l0RootApprovalStatus: L0ApprovalStatus =
+    (listsSigned.isRootActiveSigned && listsSigned.isRootProposedSigned)
+      ? 'all-signed'
+      : 'not-signed';
+
+  const l0ExclusionApprovalStatus: L0ApprovalStatus =
+    (listsSigned.isExclusionActiveSigned && listsSigned.isExclusionProposedSigned)
+      ? 'all-signed'
+      : 'not-signed';
+
   return {
-    l0ApprovalStatus,
+    l0RootApprovalStatus,
+    l0ExclusionApprovalStatus,
     listsSigned,
   };
 }

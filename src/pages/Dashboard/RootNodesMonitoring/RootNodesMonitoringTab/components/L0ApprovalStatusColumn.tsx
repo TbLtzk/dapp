@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 import { Icon, Tooltip } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
-import { L0ApprovalMap, L0ApprovalStatus } from 'typings/root-nodes';
+import { L0ApprovalStatus } from 'typings/root-nodes';
 
 interface Props {
   status: L0ApprovalStatus;
-  listsSigned: L0ApprovalMap;
+  tooltipHeader: string;
+  unsignedListsItems: string[];
 }
 
 const StyledWrapper = styled.div<{$status: L0ApprovalStatus}>`
@@ -40,7 +41,7 @@ const StyledWrapper = styled.div<{$status: L0ApprovalStatus}>`
   }
 `;
 
-function L0ApprovalStatusColumn ({ status, listsSigned }: Props) {
+function L0ApprovalStatusColumn ({ tooltipHeader, unsignedListsItems, status }: Props) {
   const { t } = useTranslation();
 
   const statusTextMap: Record<L0ApprovalStatus, string> = {
@@ -63,33 +64,16 @@ function L0ApprovalStatusColumn ({ status, listsSigned }: Props) {
       <Tooltip trigger={<Icon name="info" className="text-md color-secondary" />}>
         <div className="root-node-metric-tooltip__content">
           <h4 className="text-md font-semibold">
-            {t('L0_APPROVAL_STATUS')}
+            {tooltipHeader}
           </h4>
           <span>
             {descriptionMap[status]}
           </span>
-          {status === 'not-signed' && (
+          {status === 'not-signed' && unsignedListsItems.length && (
             <ul className="l0-approval-status-column__not-signed-list">
-              {!listsSigned.isRootActiveSigned && (
-                <li>
-                  {t('ACTIVE_ROOT_LIST')}
-                </li>
-              )}
-              {!listsSigned.isRootProposedSigned && (
-                <li>
-                  {t('PROPOSED_ROOT_LIST')}
-                </li>
-              )}
-              {!listsSigned.isExclusionActiveSigned && (
-                <li>
-                  {t('ACTIVE_EXCLUSION_LIST')}
-                </li>
-              )}
-              {!listsSigned.isExclusionProposedSigned && (
-                <li>
-                  {t('PROPOSED_EXCLUSION_LIST')}
-                </li>
-              )}
+              {unsignedListsItems.map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
             </ul>
           )}
         </div>

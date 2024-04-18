@@ -73,7 +73,7 @@ function RootNodesMonitoringTable () {
       rootNodesL0Active,
       rootNodesL0Proposed,
     });
-    const { l0ApprovalStatus, listsSigned } = getL0ApprovalStatus({
+    const { l0RootApprovalStatus, l0ExclusionApprovalStatus, listsSigned } = getL0ApprovalStatus({
       address: rootNode.address,
       isL0Active: l0MembershipStatus === 'active',
       rootNodesL0Active,
@@ -97,7 +97,8 @@ function RootNodesMonitoringTable () {
       date: rootNode.metric?.attributes.startTime,
       metric: rootNode.metric,
       cosignatureStatus,
-      l0ApprovalStatus,
+      l0RootApprovalStatus,
+      l0ExclusionApprovalStatus,
       listsSigned,
       l0MembershipStatus,
       cosignatureStats20,
@@ -152,7 +153,7 @@ function RootNodesMonitoringTable () {
       formatter: (cell) => (<CosignatureStatsColumn cosignatureStats={cell} />),
     },
     {
-      headerStyle: () => ({ minWidth: '140px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '150px', whiteSpace: 'pre-line', }),
       dataField: 'l0MembershipStatus',
       text: t('L0_MEMBERSHIP_STATUS'),
       sort: true,
@@ -162,17 +163,41 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '120px', whiteSpace: 'pre-line', }),
-      dataField: 'l0ApprovalStatus',
-      text: t('L0_APPROVAL_STATUS'),
+      headerStyle: () => ({ minWidth: '160px', whiteSpace: 'pre-line', }),
+      dataField: 'l0RootApprovalStatus',
+      text: t('L0_ROOT_APPROVAL_STATUS'),
       sort: true,
       sortFunc: l0ApprovalStatusSortFunc,
       formatter: (cell, row) => (
-        <L0ApprovalStatusColumn status={cell} listsSigned={row.listsSigned} />
+        <L0ApprovalStatusColumn
+          status={cell}
+          tooltipHeader={t('L0_ROOT_APPROVAL_STATUS')}
+          unsignedListsItems={[
+            ...(!row.listsSigned.isRootActiveSigned ? [t('ACTIVE_ROOT_LIST')] : []),
+            ...(!row.listsSigned.isRootProposedSigned ? [t('PROPOSED_ROOT_LIST')] : []),
+          ]}
+        />
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '120px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '160px', whiteSpace: 'pre-line', }),
+      dataField: 'l0ExclusionApprovalStatus',
+      text: t('L0_EXCLUSION_APPROVAL_STATUS'),
+      sort: true,
+      sortFunc: l0ApprovalStatusSortFunc,
+      formatter: (cell, row) => (
+        <L0ApprovalStatusColumn
+          status={cell}
+          tooltipHeader={t('L0_EXCLUSION_APPROVAL_STATUS')}
+          unsignedListsItems={[
+            ...(!row.listsSigned.isExclusionActiveSigned ? [t('ACTIVE_EXCLUSION_LIST')] : []),
+            ...(!row.listsSigned.isExclusionProposedSigned ? [t('PROPOSED_EXCLUSION_LIST')] : []),
+          ]}
+        />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: i18n.language === 'en-GB' ? '120px' : '180px', whiteSpace: 'pre-line', }),
       dataField: 'cosignatureStatus',
       text: t('CO_SIGNATURE_STATUS'),
       sort: true,
@@ -182,7 +207,7 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '135px', whiteSpace: 'pre-line', }),
+      headerStyle: () => ({ minWidth: '160px', whiteSpace: 'pre-line', }),
       dataField: 'votingParticipationStats',
       text: t('VOTING_PARTICIPATION'),
       sort: true,
