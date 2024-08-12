@@ -77,12 +77,12 @@ function LockForm ({ onSubmit }: { onSubmit: () => void }) {
       <Input
         {...form.fields.amount}
         type="number"
-        prefix="Q"
+        prefix={qTicker}
         label={t('LOCKED_AMOUNT')}
         placeholder="0.0"
         maxLength={10}
         max={vaultBalance}
-        hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(votingWeight, 4)} Q`}
+        hint={`${t('CURRENT_LOCKED_AMOUNT')} ${formatNumber(votingWeight, 4)} ${qTicker}`}
       />
 
       <Range

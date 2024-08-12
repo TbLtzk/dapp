@@ -83,7 +83,7 @@ function SendForm () {
             {...form.fields.amount}
             type="number"
             label={t('AMOUNT')}
-            prefix="Q"
+            prefix={qTicker}
             max={maxWithdrawAmount}
             placeholder="0.0"
             labelTip={t('AVAILABLE_WITH_AMOUNT', { amount: formatAsset(maxWithdrawAmount, qTicker) })}

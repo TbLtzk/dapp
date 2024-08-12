@@ -4,6 +4,8 @@ import { formatNumber } from '@q-dev/utils';
 
 import DonutChart from 'components/DonutChart';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { StyledWrapper } from '../Validator/styles';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
 }
 function ValidatorCharts ({ validatorShare = 0, delegatorsShare = 0, selfStake = 0, delegatedStake = 0 }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
 
   const stakeOptions = [
     { label: t('SELF_STAKE'), value: Number(selfStake) },
@@ -36,7 +39,7 @@ function ValidatorCharts ({ validatorShare = 0, delegatorsShare = 0, selfStake =
         <div className="block__content">
           <DonutChart
             totalLabel={t('TOTAL_STAKE')}
-            formatValue={(val) => `${formatNumber(val, 2)} Q`}
+            formatValue={(val) => `${formatNumber(val, 2)} ${qTicker}`}
             options={stakeOptions}
           />
         </div>

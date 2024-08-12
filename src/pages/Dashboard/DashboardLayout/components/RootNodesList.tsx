@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import AddressIcon from 'components/Custom/AddressIcon';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 export const RootNodesListContainer = styled.div`
@@ -37,6 +39,7 @@ export const RootNodesListContainer = styled.div`
 
 function RootNodesList () {
   const { rootMembers } = useRootNodes();
+  const { qTicker } = useNetworkConfig();
 
   const items = useMemo(() => rootMembers.slice(0, 15), [rootMembers]);
 
@@ -55,7 +58,7 @@ function RootNodesList () {
             />
           </div>
 
-          <p className="root-nodes-list__val text-md">{`${formatNumber(item.stakeAmount, 2)} Q`}</p>
+          <p className="root-nodes-list__val text-md">{`${formatNumber(item.stakeAmount, 2)} ${qTicker}`}</p>
         </div>
       ))}
     </RootNodesListContainer>

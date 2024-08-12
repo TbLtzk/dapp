@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useSystemSurplusAuctionForm } from '../NewSystemSurplusAuction';
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 }
 function ConfirmStep ({ surplusLot }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { values, goBack, confirm, updateStep } = useSystemSurplusAuctionForm();
 
   return (
@@ -33,7 +36,7 @@ function ConfirmStep ({ surplusLot }: Props) {
         onAction={() => updateStep(0)}
       >
         <p className="text-lg">
-          {values.bid} Q
+          {values.bid} {qTicker}
         </p>
       </FormBlock>
 

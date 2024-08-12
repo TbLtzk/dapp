@@ -79,7 +79,7 @@ function TransferForm () {
           {...form.fields.amount}
           type="number"
           label={t('AMOUNT')}
-          prefix="Q"
+          prefix={qTicker}
           hint={Number(maxAmount) > 0 && form.values.amount === maxAmount
             ? t('WARNING_NO_Q_LEFT', { asset: qTicker })
             : t('AVAILABLE_TO_TRANSFER', { amount: formatAsset(maxAmount, qTicker) })

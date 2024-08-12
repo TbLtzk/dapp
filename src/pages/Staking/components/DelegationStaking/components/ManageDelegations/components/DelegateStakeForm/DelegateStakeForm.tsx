@@ -9,6 +9,8 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 import { StakeFormContainer } from 'pages/Staking/styles';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import ClaimTip from '../../../ClaimTip';
 
 import { useQVault } from 'store/q-vault/hooks';
@@ -25,6 +27,7 @@ interface Props {
 function DelegateStakeForm ({ validator, onSubmit }: Props) {
   const { t } = useTranslation();
   const { submitTransaction } = useTransaction();
+  const { qTicker } = useNetworkConfig();
   const { delegationStakeInfo, delegateStake } = useQVault();
 
   const form = useForm({
@@ -63,7 +66,7 @@ function DelegateStakeForm ({ validator, onSubmit }: Props) {
       </div>
 
       <Input
-        prefix="Q"
+        prefix={qTicker}
         {...form.fields.amount}
         type="number"
         label={t('AMOUNT')}

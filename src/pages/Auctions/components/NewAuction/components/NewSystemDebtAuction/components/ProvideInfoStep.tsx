@@ -25,7 +25,7 @@ interface Props {
 function ProvideInfoStep ({ reserveLot }: Props) {
   const { t } = useTranslation();
   const { goNext } = useSystemDebtAuctionForm();
-  const { stablecoins } = useNetworkConfig();
+  const { stablecoins, qTicker } = useNetworkConfig();
   const [userAssetBalance, setUserAssetBalance] = useState('0');
 
   const form = useForm({
@@ -54,7 +54,7 @@ function ProvideInfoStep ({ reserveLot }: Props) {
     <FormStep disabled={!form.isValid} onNext={form.submit}>
       <FormBlock title={t('DEBT_AUCTION_LOT')}>
         <p className="text-lg">
-          {reserveLot} Q
+          {reserveLot} {qTicker}
         </p>
       </FormBlock>
 

@@ -147,7 +147,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         value={form.values.amount as string}
         label={t('AMOUNT')}
         labelTip={t('MINIMUM_AMOUNT', { amount: formatAsset(MIN_DEPOSIT_AMOUNT, qTicker) })}
-        prefix="Q"
+        prefix={qTicker}
         placeholder="0.0"
         max={maxAmount}
         hint={form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : ''}

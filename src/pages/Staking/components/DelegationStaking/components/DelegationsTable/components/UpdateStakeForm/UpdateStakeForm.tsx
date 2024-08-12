@@ -66,7 +66,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
       </div>
 
       <Input
-        prefix="Q"
+        prefix={qTicker}
         {...form.fields.amount}
         type="number"
         label={t('AMOUNT')}

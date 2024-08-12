@@ -9,6 +9,8 @@ import Button from 'components/Button';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Input from 'components/Input';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useTransaction } from 'store/transaction/hooks';
 
 import { withdrawVesting } from 'contracts/helpers/vesting-helper';
@@ -34,6 +36,7 @@ interface Props {
 function WithdrawForm ({ onSubmit, balance, timeLockBalance }: Props) {
   const { t } = useTranslation();
   const { address } = useWeb3Context();
+  const { qTicker } = useNetworkConfig();
 
   const { submitTransaction } = useTransaction();
 
@@ -70,7 +73,7 @@ function WithdrawForm ({ onSubmit, balance, timeLockBalance }: Props) {
         {...form.fields.amount}
         type="number"
         label={t('AMOUNT')}
-        prefix="Q"
+        prefix={qTicker}
         placeholder="0.0"
         max={maxAmont}
       />

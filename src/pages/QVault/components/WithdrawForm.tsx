@@ -69,7 +69,7 @@ function WithdrawForm () {
           {...form.fields.amount}
           type="number"
           label={t('AMOUNT')}
-          prefix="Q"
+          prefix={qTicker}
           max={maxWithdrawAmount}
           placeholder="0.0"
           hint={t('AVAILABLE_TO_WITHDRAW', { amount: formatAsset(maxWithdrawAmount, qTicker) })}

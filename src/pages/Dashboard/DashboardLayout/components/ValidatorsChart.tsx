@@ -11,6 +11,8 @@ import AddressIcon from 'components/Custom/AddressIcon';
 import DonutChart from 'components/DonutChart';
 import InfoTooltip from 'components/Tooltips/InfoTooltip';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useValidators } from 'store/validators/hooks';
 
 import { RoutePaths } from 'constants/routes';
@@ -31,6 +33,7 @@ const StyledWrapper = styled.div`
 
 function ValidatorsChart () {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { validators, validatorsLoading, loadValidatorsShortList } = useValidators();
 
   useEffect(() => {
@@ -67,7 +70,7 @@ function ValidatorsChart () {
           : (
             <DonutChart
               totalLabel={t('TOTAL_STAKE')}
-              formatValue={(val) => `${formatNumber(val, 2)} Q`}
+              formatValue={(val) => `${formatNumber(val, 2)} ${qTicker}`}
               options={validators.map((item) => ({
                 label: item.address,
                 value: Number(item.balance),

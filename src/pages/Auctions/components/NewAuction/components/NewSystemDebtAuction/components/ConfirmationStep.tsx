@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import FormBlock from 'components/FormBlock';
 import { FormStep } from 'components/MultiStepForm';
 
+import useNetworkConfig from 'hooks/useNetworkConfig';
+
 import { useSystemDebtAuctionForm } from '../NewSystemDebtAuction';
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 }
 function ConfirmStep ({ reserveLot }: Props) {
   const { t } = useTranslation();
+  const { qTicker } = useNetworkConfig();
   const { values, goBack, confirm, updateStep } = useSystemDebtAuctionForm();
 
   return (
@@ -19,7 +22,7 @@ function ConfirmStep ({ reserveLot }: Props) {
       </FormBlock>
 
       <FormBlock title={t('AUCTION_LOT')}>
-        <p className="text-lg">{reserveLot} Q</p>
+        <p className="text-lg">{reserveLot} {qTicker}</p>
       </FormBlock>
 
       <FormBlock
