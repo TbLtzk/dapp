@@ -22,7 +22,7 @@ stages:
   script:
     - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
     - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="${CI_REGISTRY_IMAGE}E:$CI_COMMIT_SHA" docker-compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker-compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker-compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker-compose up -d"
 
 
 .host-deploy: &host-deploy
