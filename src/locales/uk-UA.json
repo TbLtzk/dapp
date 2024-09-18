@@ -958,7 +958,7 @@
   "CURRENT_VALIDATORS": "Поточні валідатори",
   "GO_TO_VALIDATOR_STAKING": "Перейти до стейкінгу валідаторів",
   "ERROR_PLEASE_TRY_AGAIN": "Помилка, спробуйте ще раз",
-  "PAYOUT_DELEGATED_{{ASSET}}": "Виплата делегованих {{asset}}",
+  "PAYOUT_DELEGATED_Q": "Виплата делегованих {{asset}}",
   "DELEGATE": "Делегувати",
   "MAIN_INFO": "Основна інформація",
   "ACTIVE_VALIDATOR": "Активний валідатор",

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { formatAsset, formatPercent } from '@q-dev/utils';
 
 import ProgressBar from 'components/Base/ProgressBar';
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import RedirectAddress from 'components/Custom/RedirectAddress';
 import Table from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 
@@ -12,6 +12,8 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import DelegateModal from '../../../DelegateModal';
 
 import { useValidators } from 'store/validators/hooks';
+
+import { RoutePaths } from 'constants/routes';
 
 function ValidatorsList () {
   const { t } = useTranslation();
@@ -62,11 +64,12 @@ function ValidatorsList () {
         rank: validator.rank,
         validator: (
           <div style={{ display: 'flex' }}>
-            <ExplorerAddress
+            <RedirectAddress
               short
               iconed
               semibold
               address={validator.address}
+              to={`${RoutePaths.stakingValidators}/${validator.address}`}
             />
             <AliasTooltip alias={validator.alias} />
           </div>

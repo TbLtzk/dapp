@@ -5,12 +5,14 @@ const secret = require('../translation-key.json');
 require('dotenv').config();
 
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADS_SHEET_KEY);
+const GERMAN_LANG = 'de-DE';
 
 const read = async () => {
   await doc.loadInfo();
   const sheet = doc.sheetsByTitle.Sheet1;
   await sheet.loadHeaderRow();
-  const colTitles = sheet.headerValues;
+  // Now we don't use German language, but we don't remove it from the sheet
+  const colTitles = sheet.headerValues.filter(item => item !== GERMAN_LANG);
   const rows = await sheet.getRows({ limit: sheet.rowCount });
   let result = {};
   rows.forEach((row) => {

@@ -1,11 +1,12 @@
 import { HTMLAttributes } from 'react';
 
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import RedirectAddress from 'components/Custom/RedirectAddress';
 
 import { DonutLegendItem } from '../../types';
 
 import { LegendContainer } from './styles';
 
+import { RoutePaths } from 'constants/routes';
 import { isAddress } from 'utils/web3';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -31,11 +32,12 @@ function DonutLegend ({ items }: Props) {
             )}
             {isAddress(item.label)
               ? (
-                <ExplorerAddress
+                <RedirectAddress
                   short
                   semibold
                   className="text-md"
                   address={item.label}
+                  to={`${RoutePaths.stakingValidators}/${item.label}`}
                 />
               )
               : <p className="text-md font-semibold ellipsis">{item.label}</p>

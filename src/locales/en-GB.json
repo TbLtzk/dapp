@@ -958,7 +958,7 @@
   "CURRENT_VALIDATORS": "Current validators",
   "GO_TO_VALIDATOR_STAKING": "Go to Validator Staking",
   "ERROR_PLEASE_TRY_AGAIN": "Error, please try again",
-  "PAYOUT_DELEGATED_{{ASSET}}": "Payout Delegated {{asset}}",
+  "PAYOUT_DELEGATED_Q": "Payout Delegated {{asset}}",
   "DELEGATE": "Delegate",
   "MAIN_INFO": "Main Info",
   "ACTIVE_VALIDATOR": "Active Validator",

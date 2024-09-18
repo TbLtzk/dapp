@@ -23,6 +23,11 @@ export const StyledWrapper = styled.div<{ gridArea: string }>`
           width: auto;
         }
       }
+      &:last-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 `;

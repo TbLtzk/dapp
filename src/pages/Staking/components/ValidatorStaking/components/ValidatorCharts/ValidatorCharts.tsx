@@ -19,8 +19,8 @@ function ValidatorCharts ({ validatorShare = 0, delegatorsShare = 0, selfStake =
   const { qTicker } = useNetworkConfig();
 
   const stakeOptions = [
-    { label: t('SELF_STAKE'), value: Number(selfStake) },
     { label: t('DELEGATOR_STAKE'), value: Number(delegatedStake) },
+    { label: t('SELF_STAKE'), value: Number(selfStake) },
   ];
 
   const shareOptions = [

@@ -120,6 +120,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
           label={t('START_DATE')}
           placeholder={t('CHOOSE_DATE_AND_TIME')}
           timeCaption={t('TIME')}
+          dateFormat={'dd.MM.yyyy HH:mm'}
           startDate={form.values.startDate ? new Date(form.values.startDate) : null}
           endDate={form.values.endDate ? new Date(form.values.endDate) : null}
           minDate={new Date()}
@@ -134,6 +135,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
           label={t('END_DATE')}
           placeholder={t('CHOOSE_DATE_AND_TIME')}
           timeCaption={t('TIME')}
+          dateFormat={'dd.MM.yyyy HH:mm'}
           disabled={!form.values.startDate || isDepositsLimitReached}
           startDate={form.values.startDate as Date}
           endDate={form.values.endDate as Date}

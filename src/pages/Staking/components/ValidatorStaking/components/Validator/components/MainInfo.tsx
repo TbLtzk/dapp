@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import ValidatorStatusBar from 'components/Base/ValidatorStatusBar';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import ValidatorLink from 'components/Custom/ValidatorLink';
 
 import { useValidatorStatus } from 'hooks/useValidatorStatus';
 
@@ -40,6 +41,7 @@ function MainInfo () {
             iconed
             address={address}
           />
+          <ValidatorLink address={address} />
         </div>
       </div>
     </StyledWrapper>
