@@ -32,7 +32,7 @@ function ReserveForm () {
     onSubmit: (form) => {
       submitTransaction({
         successMessage: t('RESERVE_ALIAS_TX'),
-        submitFn: () => reserveAlias(form.address)
+        submitFn: () => reserveAlias(form.address.toLowerCase())
       });
     },
   });

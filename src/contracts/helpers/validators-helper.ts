@@ -34,30 +34,31 @@ export async function getValidator (
   address: string,
   chainId: number
 ): Promise<Validator> {
-  if (!isAddress(address)) throw new Error('Invalid Address');
+  const preparedAddress = address.toLowerCase();
+  if (!isAddress(preparedAddress)) throw new Error('Invalid Address');
   const network = chainIdToNetworkMap[chainId];
   const indexerUrl = networkConfigsMap[network].indexerUrl;
   const indexer = getIndexerInstance(indexerUrl);
   const validatorsInstance = await getValidatorsInstance();
   const shortList = await validatorsInstance.getShortList();
-  const validatorRank = shortList.findIndex((val) => val.address === address);
+  const validatorRank = shortList.findIndex((val) => val.address.toLowerCase() === preparedAddress);
 
   const [
     inactiveValidators,
     validatorMetrics,
     aliasesMap
   ] = await Promise.all([
-    indexer.getInactiveValidators([address]),
+    indexer.getInactiveValidators([preparedAddress]),
     getValidatorMetrics(),
-    getAliasMap([address], chainId, AliasPurpose.BLOCK_SEALING),
+    getAliasMap([preparedAddress], chainId, AliasPurpose.BLOCK_SEALING),
   ]);
 
   const isActiveValidator = inactiveValidators === 0;
-  const metric = validatorMetrics.find((v) => v.address === address);
-
+  const metric = validatorMetrics.find((v) => v.address.toLowerCase() === preparedAddress);
+  const alias = Object.keys(aliasesMap).find((v) => v.toLowerCase() === preparedAddress) || preparedAddress;
   const [poolInfo, [monitoring]] = await Promise.all([
-    getPoolInfo(address),
-    getMonitoringValidators([address], indexerUrl)
+    getPoolInfo(preparedAddress),
+    getMonitoringValidators([preparedAddress], indexerUrl)
   ]);
 
   return {
@@ -66,7 +67,7 @@ export async function getValidator (
     monitoring,
     address,
     isActiveValidator,
-    alias: aliasesMap[address],
+    alias: aliasesMap[alias],
     rank: validatorRank + 1,
     payoutPerDelegatedQ: fromWei(toBigNumber(metric?.payoutPerDelegatedQ || 0).toFixed(0)),
   };

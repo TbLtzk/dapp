@@ -39,7 +39,7 @@ function AddressForm ({ selectedAddress, onSubmit }: Props) {
     initialValues: { address: selectedAddress },
     validators: { address: [required, address] },
     onSubmit: (form) => {
-      onSubmit(form.address);
+      onSubmit(form.address.toLowerCase());
     }
   });
 

@@ -50,7 +50,7 @@ export async function createRootNodeSlashingProposal (
   const contract = await getRootNodesSlashingVotingInstance();
   return contract.createProposal(
     form.externalLink,
-    form.address,
+    form.address.toLowerCase(),
     getFixedPercentage(form.percent),
     { from: address }
   );
@@ -63,7 +63,7 @@ export async function createValidatorSlashingProposal (
   const contract = await getValidatorsSlashingVotingInstance();
   return contract.createProposal(
     form.externalLink,
-    form.address,
+    form.address.toLowerCase(),
     getFixedPercentage(form.percent),
     { from: address }
   );
@@ -138,7 +138,7 @@ export async function checkConfirmedDecision ({ proposal, address }: {
 }): Promise<boolean> {
   const contract = await getEscrowInstance(proposal.contract);
   return contract.instance
-    .hasAlreadyConfirmedDecision(proposal.id, address);
+    .hasAlreadyConfirmedDecision(proposal.id, address.toLowerCase());
 }
 
 function getEscrowInstance (contractType: ProposalContractType):

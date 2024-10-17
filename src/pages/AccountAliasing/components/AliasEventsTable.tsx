@@ -18,8 +18,9 @@ function AliasEventsTable ({ address }: { address: string }) {
   const [isFiltered, setIsFiltered] = useState(false);
 
   const table = events
-    .filter((item) => !isFiltered || [item.address, item.alias].includes(address))
-    .map((item, i) => ({
+    .filter((item) =>
+      !isFiltered || [item.address.toLowerCase(), item.alias.toLowerCase()].includes(address.toLowerCase())
+    ).map((item, i) => ({
       id: i,
       event: item.event,
       address: <ExplorerAddress address={item.address} />,

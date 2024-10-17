@@ -30,7 +30,7 @@ function AliasForm ({ alias }: { alias: Alias | null }) {
       submitTransaction({
         successMessage: t('RESERVE_ALIAS_TX'),
         submitFn: () => setAlias({
-          address: form.address,
+          address: form.address.toLowerCase(),
           purpose: form.purpose as AliasPurpose,
         })
       });

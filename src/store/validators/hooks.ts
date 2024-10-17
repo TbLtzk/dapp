@@ -143,9 +143,7 @@ export function useValidators () {
       const metric = await getValidatorMetrics();
       const stats = await Promise.all(
         shortList.map(async (validator, index) => {
-          const poolInfo = await getValidatorStats(
-            validator.address
-          );
+          const poolInfo = await getValidatorStats(validator.address);
           return {
             poolInfo,
             metric: metric[index],
@@ -166,7 +164,9 @@ export function useValidators () {
     try {
       await loadValidatorsShortList();
       const { validators: shortList } = getState().validators;
-      const monitoringValidators = await getMonitoringValidators(shortList.map(v => v.address), indexerUrl);
+      const monitoringValidators = await getMonitoringValidators(
+        shortList.map(v => v.address), indexerUrl
+      );
       dispatch(setValidatorsMonitoring(shortList.map((validator, i) => ({
         rank: i + 1,
         ...validator,
@@ -197,7 +197,7 @@ export function useValidators () {
       const indexer = getIndexerInstance(indexerUrl);
       const validatorAddresses = shortList
         .slice(0, maxNValidators)
-        .map(user => user.address);
+        .map(user => user.address.toLowerCase());
       const inactiveValidators = await indexer.getInactiveValidators(validatorAddresses);
       dispatch(setInactiveCount(inactiveValidators));
     } catch (error) {

@@ -21,7 +21,7 @@ export function useAliases () {
     try {
       dispatch(setAliasesLoading(true));
       const contract = await getAccountAliasesInstance();
-      const aliases = await contract.getAliases(address);
+      const aliases = await contract.getAliases(address.toLowerCase());
       dispatch(setAliases(aliases));
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -33,12 +33,12 @@ export function useAliases () {
 
   async function setAlias ({ address, purpose }: { address: string; purpose: AliasPurpose }) {
     const contract = await getAccountAliasesInstance();
-    return contract.setAlias(address, purpose);
+    return contract.setAlias(address.toLowerCase(), purpose);
   }
 
   async function reserveAlias (address: string) {
     const contract = await getAccountAliasesInstance();
-    return contract.reserve(address);
+    return contract.reserve(address.toLowerCase());
   }
 
   return {

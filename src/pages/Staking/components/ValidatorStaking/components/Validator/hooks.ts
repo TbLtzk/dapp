@@ -47,9 +47,9 @@ const useFetchValidatorData = (address: string) => {
     try {
       setUpdateCompoundRateLoading(true);
       const contract = await getValidationRewardPoolsInstance();
-      const tx = await contract.updateValidatorsCompoundRate(address);
+      const tx = await contract.updateValidatorsCompoundRate(address.toLowerCase());
       await tx.wait();
-      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(address);
+      const nextUpdateCompoundRate = await contract.getLastUpdateOfCompoundRate(address.toLowerCase());
       if (validator.poolInfo.lastUpdateOfCompoundRate === nextUpdateCompoundRate) {
         throw new Error(t('STAKE_AMOUNT_BELOW_MINIMUM_TO_APPLY_NEW_RATE'));
       }

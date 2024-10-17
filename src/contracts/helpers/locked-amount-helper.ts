@@ -11,13 +11,13 @@ export async function purgeTimeLocks ({ contractType, address }: {
   address: string;
 }) {
   const contract = await getInstance(contractType)();
-  return contract.purgeTimeLocks(address);
+  return contract.purgeTimeLocks(address.toLowerCase());
 }
 
 export async function depositTimeLock (form: TimeLockForm) {
   const contract = await getInstance(form.contract)();
   return contract.depositOnBehalfOf(
-    form.address,
+    form.address.toLowerCase(),
     dateToUnix(form.startDate),
     dateToUnix(form.endDate),
     { value: toWei(form.amount) }

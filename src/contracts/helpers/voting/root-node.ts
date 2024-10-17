@@ -34,7 +34,7 @@ export async function createRootNodeProposal (
   return contract.createProposal(
     form.externalLink,
     form.type === 'add-root-node' ? address : ZERO_ADDRESS,
-    form.address || ZERO_ADDRESS,
+    form.address.toLowerCase() || ZERO_ADDRESS,
     form.hash || ZERO_BYTES_32,
     { from: address }
   );

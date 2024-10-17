@@ -47,20 +47,22 @@ function DetailsStep () {
     return isRootType ? rootMembers : validatorStats;
   }, [isRootType, rootMembers, validatorStats]);
 
-  const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(form.values.address, isRootType);
+  const { shouldPurge, hasActiveProposal, purgeSlashing } = usePurgeSlashing(
+    form.values.address.toLowerCase(), isRootType
+  );
 
   useEffect(() => {
     isRootType ? getRootMembers() : loadValidatorStats();
   }, [isRootType]);
 
   const getCurrentStake = () => {
-    const validator = validatorStats.find(v => v.address === form.values.address);
-    const rootNode = rootMembers.find(r => r.address === form.values.address);
+    const validator = validatorStats.find(v => v.address.toLowerCase() === form.values.address.toLowerCase());
+    const rootNode = rootMembers.find(r => r.address.toLowerCase() === form.values.address.toLowerCase());
     return isRootType ? rootNode?.stakeAmount : validator?.poolInfo.selfStake;
   };
 
   const stake = useMemo(() => {
-    if (isAddress(form.values.address)) {
+    if (isAddress(form.values.address.toLowerCase())) {
       const stake = getCurrentStake();
       const memberError = isRootType
         ? t('NOT_A_ROOT_NODE')

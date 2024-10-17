@@ -105,7 +105,7 @@ export async function createLiquidationAuction (
   userAddress: string
 ) {
   const instance = await getLiquidationAuctionInstance(form.asset);
-  await getAllowance(form.asset, userAddress, instance.address, form.bid);
+  await getAllowance(form.asset, userAddress, instance.address.toLowerCase(), form.bid);
   return instance.startAuction(form.vaultOwner, form.vaultId, toWei(form.bid), { from: userAddress });
 }
 
@@ -115,7 +115,7 @@ export async function bidForLiquidationAuction (
   userAddress: string
 ) {
   const instance = await getLiquidationAuctionInstance(asset);
-  await getAllowance(asset, userAddress, instance.address, form.bid);
+  await getAllowance(asset, userAddress, instance.address.toLowerCase(), form.bid);
   return instance.bid(form.vaultOwner, form.vaultId, toWei(String(form.bid)), { from: userAddress });
 }
 

@@ -18,7 +18,7 @@ const useGetValidatorRank = (address: string) => {
     try {
       const validatorsInstance = await getValidatorsInstance();
       const shortList = await validatorsInstance.getShortList();
-      const validatorRank = shortList.findIndex((val) => val.address === address);
+      const validatorRank = shortList.findIndex((val) => val.address.toLowerCase() === address.toLowerCase());
       setValidatorRank(validatorRank + 1);
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);
@@ -28,7 +28,7 @@ const useGetValidatorRank = (address: string) => {
   async function checkIsValidator () {
     try {
       const contract = await getValidatorsInstance();
-      const isInLongList = await contract.isInLongList(address);
+      const isInLongList = await contract.isInLongList(address.toLowerCase());
       setIsValidator(isInLongList);
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error);

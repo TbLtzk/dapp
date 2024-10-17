@@ -83,7 +83,7 @@ export async function createAddExpertProposal (
   const contract = await getMembershipContractByType(form.panelType);
   return contract.createAddExpertProposal(
     form.externalLink,
-    form.address,
+    form.address.toLowerCase(),
     { from: address }
   );
 }
@@ -95,7 +95,7 @@ export async function createRemoveExpertProposal (
   const contract = await getMembershipContractByType(form.panelType);
   return contract.createRemoveExpertProposal(
     form.externalLink,
-    form.address,
+    form.address.toLowerCase(),
     { from: address }
   );
 }
@@ -161,10 +161,10 @@ export async function getExpertProposal (
 
     remark: proposal.base.remark,
     addressToAdd: 'proposalDetails' in proposal
-      ? proposal.proposalDetails.addressToAdd
+      ? proposal.proposalDetails.addressToAdd.toLowerCase()
       : '',
     addressToRemove: 'proposalDetails' in proposal
-      ? proposal.proposalDetails.addressToRemove
+      ? proposal.proposalDetails.addressToRemove.toLowerCase()
       : '',
   };
 }

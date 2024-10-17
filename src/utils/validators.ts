@@ -85,12 +85,12 @@ export const url: Validator = val => ({
 });
 
 export const address: Validator<string> = val => ({
-  isValid: !val || isAddress(val),
+  isValid: !val || isAddress(val.toLowerCase()),
   message: i18n.t('VALIDATION_ADDRESS')
 });
 
 export const nonZeroAddress: Validator<string> = val => ({
-  isValid: !val || (isAddress(val) && val !== ZERO_ADDRESS),
+  isValid: !val || (isAddress(val.toLowerCase()) && val !== ZERO_ADDRESS),
   message: i18n.t('VALIDATION_ADDRESS')
 });
 

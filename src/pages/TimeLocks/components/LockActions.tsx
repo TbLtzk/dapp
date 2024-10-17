@@ -54,7 +54,7 @@ function LockActions ({
 
       {contract === 'vesting' && (
         <Button
-          disabled={accountAddress !== address}
+          disabled={accountAddress.toLowerCase() !== address.toLowerCase()}
           onClick={() => setWithdrawModalOpen(true)}
         >
           {t('WITHDRAW')}

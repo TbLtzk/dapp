@@ -26,7 +26,7 @@ function AddressForm ({ onSubmit }: { onSubmit: () => void }) {
     initialValues: { address: locksAddress },
     validators: { address: [required, address] },
     onSubmit: (values) => {
-      setAddress(values.address);
+      setAddress(values.address.toLowerCase());
       onSubmit();
     }
   });

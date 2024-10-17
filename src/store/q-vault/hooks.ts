@@ -114,7 +114,7 @@ export function useQVault () {
     amount: string;
   }) {
     const contract = await getQVaultInstance();
-    const tx = await contract.transfer(address, toWei(amount));
+    const tx = await contract.transfer(address.toLowerCase(), toWei(amount));
 
     return {
       tx,
@@ -146,7 +146,9 @@ export function useQVault () {
     stakes: string[];
   }) {
     const contract = await getQVaultInstance();
-    const tx = await contract.delegateStake(addresses, stakes, { from: accountAddress });
+    const tx = await contract.delegateStake(
+      addresses.map(item => item.toLowerCase()), stakes, { from: accountAddress }
+    );
 
     return {
       tx,

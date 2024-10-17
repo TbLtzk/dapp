@@ -40,7 +40,7 @@ function UpdateStakeForm ({ delegation, onSubmit }: Props) {
         successMessage: t('STAKE_UPDATE_TX'),
         onSuccess: () => onSubmit(),
         submitFn: () => delegateStake({
-          addresses: [delegation.validator],
+          addresses: [delegation.validator.toLowerCase()],
           stakes: [toWei(amount)],
         })
       });

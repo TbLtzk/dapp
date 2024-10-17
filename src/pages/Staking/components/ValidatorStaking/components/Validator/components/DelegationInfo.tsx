@@ -22,7 +22,7 @@ function DelegationInfo () {
     <StyledWrapper gridArea="delegation-info" className="block">
       <div className="block__header">
         <h3 className="text-h3">{t('DELEGATION_INFO')}</h3>
-        {accountAddress !== address && (
+        {accountAddress.toLowerCase() !== address.toLowerCase() && (
           <DelegateModal
             btnTitle={t('DELEGATE')}
             validator={validator}

@@ -43,12 +43,12 @@ function AliasesTable ({ address, onSelect }: Props) {
     role: invert(AliasPurpose)[item.purpose] || t('UNKNOWN'),
     action: (
       <Tooltip
-        disabled={accountAddress === address}
+        disabled={accountAddress.toLowerCase() === address.toLowerCase()}
         trigger={
           <Button
             compact
             look="ghost"
-            disabled={accountAddress !== address}
+            disabled={accountAddress.toLowerCase() !== address.toLowerCase()}
             onClick={() => onSelect(item)}
           >
             <span>{t('MANAGE')}</span>

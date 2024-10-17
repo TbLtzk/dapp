@@ -55,7 +55,7 @@ function SendForm () {
     onSubmit: (values) => {
       submitTransaction({
         successMessage: t('SEND_TO_FOREIGN_QVAULT_ACCOUNT_TX'),
-        submitFn: () => sendToVault(values),
+        submitFn: () => sendToVault({ address: values.address.toLowerCase(), amount: values.amount }),
         onSuccess: () => form.reset(),
       });
     }

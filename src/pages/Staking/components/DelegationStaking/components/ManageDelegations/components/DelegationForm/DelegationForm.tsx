@@ -33,14 +33,14 @@ const DelegationFormContainer = styled.form`
 
 const duplicateAddress = (addresses: string[]) => (address: string) => {
   return {
-    isValid: addresses.indexOf(address) === -1,
+    isValid: addresses.map(item => item.toLowerCase()).indexOf(address.toLowerCase()) === -1,
     message: 'Duplicate address'
   };
 };
 
 const validator = (validators: string[]) => (val: string) => {
   return {
-    isValid: validators.some((address) => address === val),
+    isValid: validators.some((address) => address.toLowerCase() === val.toLowerCase()),
     message: 'Not a validator'
   };
 };
@@ -81,12 +81,12 @@ function DelegationForm ({ onChange, validators, delegatedStake, maxAmount, addr
   }, [form.values, onChange]);
 
   useEffect(() => {
-    if (validators.some((address) => address === form.values.address)) {
-      loadDelegatorShare(form.values.address, setDelegatorShare, setIsLoaded);
+    if (validators.some((address) => address.toLowerCase() === form.values.address.toLowerCase())) {
+      loadDelegatorShare(form.values.address.toLowerCase(), setDelegatorShare, setIsLoaded);
     }
   }, [form.values.address]);
 
-  const chosenAddress = validators.find(address => address === form.values.address);
+  const chosenAddress = validators.find(address => address.toLowerCase() === form.values.address.toLowerCase());
 
   return (
     <DelegationFormContainer

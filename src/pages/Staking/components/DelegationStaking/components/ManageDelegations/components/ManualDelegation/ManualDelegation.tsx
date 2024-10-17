@@ -78,7 +78,7 @@ function ManageDelegations () {
   }, [formArray.forms, delegationStakeInfo, delegationList]);
 
   function getDelegatedStake (address: string) {
-    const delegate = delegationList.find(i => i.validator === address);
+    const delegate = delegationList.find(i => i.validator.toLowerCase() === address.toLowerCase());
     return delegate?.actualStake ?? '0';
   }
 

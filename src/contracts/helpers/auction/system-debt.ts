@@ -90,13 +90,13 @@ export async function getOneSystemDebtAuction (asset: StablecoinAsset, auctionId
 
 export async function createSystemDebtAuction (form: CreateAuction, userAddress: string) {
   const instance = await getSystemDebtAuctionInstance(form.asset);
-  await getAllowance(form.asset, userAddress, instance.address, form.bid);
+  await getAllowance(form.asset, userAddress, instance.address.toLowerCase(), form.bid);
   return instance.startAuction(toWei(form.bid), { from: userAddress });
 }
 
 export async function bidForSystemDebtAuction (asset: StablecoinAsset, form: AuctionBid, userAddress: string) {
   const instance = await getSystemDebtAuctionInstance(asset);
-  await getAllowance(asset, userAddress, instance.address, form.bid);
+  await getAllowance(asset, userAddress, instance.address.toLowerCase(), form.bid);
   return instance.bid(toWei(String(form.bid)), { from: userAddress });
 }
 

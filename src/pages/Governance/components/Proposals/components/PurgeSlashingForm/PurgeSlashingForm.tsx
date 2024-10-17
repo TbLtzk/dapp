@@ -30,7 +30,7 @@ function PurgeSlashingForm ({ onClose }: { onClose: () => void }) {
     onSubmit: ({ address }) => {
       submitTransaction({
         successMessage: t('PURGE_TX'),
-        submitFn: () => purgeSlashing(address),
+        submitFn: () => purgeSlashing(address.toLowerCase()),
         onSuccess: () => onClose(),
       });
     }
