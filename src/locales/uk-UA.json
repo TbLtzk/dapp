@@ -190,7 +190,7 @@
   "IT_CAN_BE_FINALIZED": "Інформація про делегацію розглядаєтся. Вона може бути фіналізована",
   "ANNOUNCE_NEW_VOTING_AGENT": "Оголосити нового виборчого агента",
   "ANNOUNCE": "Оголосити",
-  "THIS_WILL_IMMEDIATELY_REDUCE_VOTING_WEIGHT": "Це негайно зменшить вагу вашого агента для нового голосування",
+  "THIS_WILL_IMMEDIATELY_REDUCE_VOTING_WEIGHT": "Це негайно скоригує вагу голосу вашого агента голосування для нового голосування",
   "YOU_DELEGATED_YOUR_VOTING_RIGHTS_TO": "Ви делегували свої виборчі права",
   "YOUR_VOTING_AGENT_IS": "Ваш виборчий агент",
   "YOU_EXERCISE_YOUR_VOTING_RIGHT_YOURSELF": "Ви голосуєте самостійно",
