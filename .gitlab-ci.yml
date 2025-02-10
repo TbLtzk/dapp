@@ -20,16 +20,14 @@ stages:
 
 .host-deploy-dev: &host-deploy-dev
   script:
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
-    - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/$DEPLOY_FOLDER && if [ ! -f .env.local ]; then echo \"IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA\" > .env.local; else sed -i \"s|^IMAGE=.*|IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA|\" .env.local; fi"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/$DEPLOY_FOLDER && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_SHA" docker compose up -d"
 
 
 .host-deploy: &host-deploy
   script:
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "mkdir -p ~/dapp"
-    - scp production.yml $DEPLOY_USER@$DEPLOY_HOST:~/dapp/docker-compose.yml
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/dapp && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG" docker compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG" docker compose up -d"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/$DEPLOY_FOLDER && if [ ! -f .env.local ]; then echo \"IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG\" > .env.local; else sed -i \"s|^IMAGE=.*|IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG|\" .env.local; fi"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd ~/$DEPLOY_FOLDER && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG" docker compose pull && IMAGE="${CI_REGISTRY_IMAGE}:$CI_COMMIT_TAG" docker compose up -d"
 
 test:
   image: node:lts
@@ -45,16 +43,13 @@ test:
 
 build:
   image:
-    name: "gcr.io/kaniko-project/executor:v1.9.2-debug"
+    name: "gcr.io/kaniko-project/executor:v1.23.2-debug"
     entrypoint: [""]
   stage: build
-  only:
-    - master
-  tags:
-    - "gitlab-org-docker"
+  when: manual
   before_script:
     - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"},\"${CI_DEPENDENCY_PROXY_SERVER}\":{\"auth\":\"$(printf "%s:%s" ${CI_DEPENDENCY_PROXY_USER} "${CI_DEPENDENCY_PROXY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
   script:
     - >-
       /kaniko/executor
@@ -62,28 +57,25 @@ build:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}"
-      --build-arg PROXY="${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/"
       --cache=true
-      --cache-repo="${IMAGE}/cache"
-      --build-arg BUILD_TOKEN="$CI_JOB_TOKEN"
+      --cache-repo="${CI_REGISTRY_IMAGE}/cache"
       --build-arg COMMIT="${CI_COMMIT_SHA}"
       --build-arg VERSION="$CI_COMMIT_SHA"
       --build-arg BUILDNUM="${CI_JOB_ID}"
+      --build-arg CI_JOB_TOKEN="${CI_JOB_TOKEN}"
       --build-arg BUILD_TOKEN="${CI_JOB_TOKEN}"
       --build-arg USERNAME="gitlab-ci-token"
 
 build-tag:
   image:
-    name: "gcr.io/kaniko-project/executor:v1.9.2-debug"
+    name: "gcr.io/kaniko-project/executor:v1.23.2-debug"
     entrypoint: [""]
   stage: build
   only:
     - tags
-  tags:
-    - "gitlab-org-docker"
   before_script:
     - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"},\"${CI_DEPENDENCY_PROXY_SERVER}\":{\"auth\":\"$(printf "%s:%s" ${CI_DEPENDENCY_PROXY_USER} "${CI_DEPENDENCY_PROXY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
   script:
     - >-
       /kaniko/executor
@@ -91,13 +83,12 @@ build-tag:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
-      --build-arg PROXY="${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/"
       --cache=true
-      --cache-repo="${IMAGE}/cache"
-      --build-arg BUILD_TOKEN="$CI_JOB_TOKEN"
+      --cache-repo="${CI_REGISTRY_IMAGE}/cache"
       --build-arg COMMIT="${CI_COMMIT_SHA}"
       --build-arg VERSION="$CI_COMMIT_TAG"
       --build-arg BUILDNUM="${CI_JOB_ID}"
+      --build-arg CI_JOB_TOKEN="${CI_JOB_TOKEN}"
       --build-arg BUILD_TOKEN="${CI_JOB_TOKEN}"
       --build-arg USERNAME="gitlab-ci-token"
 
@@ -105,8 +96,7 @@ deploy:
   <<: [*host-login]
   <<: [*host-deploy-dev]
   stage: deploy
-  only:
-    - master
+  when: manual
 
 deploy-testnet:
   <<: [*host-login]
@@ -115,8 +105,7 @@ deploy-testnet:
   when: manual
   only:
     - /^v.*$/
-  environment:
-    name: testnet
+  environment: testnet
 
 deploy-mainnet:
   <<: [*host-login]
@@ -125,5 +114,4 @@ deploy-mainnet:
   when: manual
   only:
     - /^v.*$/
-  environment:
-    name: mainnet
+  environment: mainnet

@@ -1,4 +1,4 @@
-FROM ${PROXY}node:16.10.0 AS builder
+FROM node:16.10.0 AS builder
 
 RUN mkdir -p /app && chown -R node:node /app
 WORKDIR /app
@@ -6,8 +6,8 @@ USER node
 
 
 COPY --chown=node:node .npmrc tsconfig.json vite.config.js package.json yarn.lock .eslintrc ./
-ARG NPM_TOKEN
-RUN yarn config set '//gitlab.com/api/v4/packages/npm/:_authToken' $NPM_TOKEN
+ARG CI_JOB_TOKEN
+RUN yarn config set '//gitlab.com/api/v4/packages/npm/:_authToken' $CI_JOB_TOKEN
 RUN yarn --frozen-lockfile
 
 COPY --chown=node:node public/ public/
@@ -16,7 +16,7 @@ COPY --chown=node:node index.html ./
 
 RUN yarn build
 
-FROM ${PROXY}nginx:stable-alpine
+FROM nginx:stable-alpine
 
 COPY --from=builder /app/dist /app
 
