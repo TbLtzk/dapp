@@ -134,8 +134,7 @@ export const connectorParametersMap = Object.values(networkConfigsMap)
 const originToNetworkMap: { [key: string]: NetworkName } = {
   'https://hq.q.org': 'mainnet',
   'https://hq.qtestnet.org': 'testnet',
-  'https://hq.qdevnet.org': 'devnet',
-  'http://localhost:3000': 'devnet',
+  'http://localhost:3000': 'testnet',
 };
 
 export const ORIGIN_NETWORK_NAME: NetworkName = originToNetworkMap[window.location.origin] || 'devnet';
