@@ -104,7 +104,7 @@ deploy-testnet:
   stage: deploy
   when: manual
   only:
-    - /^v.*$/
+    - tags
   environment: testnet
 
 deploy-mainnet:
