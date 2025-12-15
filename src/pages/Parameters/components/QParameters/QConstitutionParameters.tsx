@@ -29,7 +29,7 @@ function QConstitutionParameters () {
 
   return (
     <ParametersBlock
-      title={t('Q_CONSTITUTION_PARAMETERS')}
+      title={t('QGOV_CONSTITUTION_PARAMETERS')}
       subtitle={`(${constitutionParametersAddress})`}
       docsId="#q-constitution-parameters"
       parameters={constitutionParams}

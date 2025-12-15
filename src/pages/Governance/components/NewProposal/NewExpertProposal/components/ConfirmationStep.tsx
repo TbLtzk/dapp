@@ -20,9 +20,9 @@ function ConfirmationStep () {
   };
 
   const expertPanelMap: Record<ExpertProposalForm['panelType'], string> = {
-    defi: t('Q_DEFI_MEMBERSHIP_PANEL'),
-    'fees-incentives': t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL'),
-    'root-node': t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL')
+    defi: t('QGOV_DEFI_MEMBERSHIP_PANEL'),
+    'fees-incentives': t('QGOV_FEES_INCENTIVES_MEMBERSHIP_PANEL'),
+    'root-node': t('QGOV_ROOT_NODE_SELECTION_EXPERT_PANEL')
   };
 
   return (
@@ -78,7 +78,7 @@ function ConfirmationStep () {
             </div>
 
             <div>
-              <p className="text-md color-secondary">{t('CANDIDATE_Q_ADDRESS')}</p>
+              <p className="text-md color-secondary">{t('CANDIDATE_QGOV_ADDRESS')}</p>
               <p className="text-lg ellipsis">{values.address}</p>
             </div>
 

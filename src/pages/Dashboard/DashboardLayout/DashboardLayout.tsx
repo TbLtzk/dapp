@@ -69,7 +69,7 @@ function DashboardLayout () {
         <Link to="/q-parameters">
           <Button block alwaysEnabled>
             <Icon name="list" />
-            <span>{t('Q_PARAMETERS')}</span>
+            <span>{t('QGOV_PARAMETERS')}</span>
           </Button>
         </Link>
       }

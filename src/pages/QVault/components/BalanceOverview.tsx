@@ -61,12 +61,12 @@ function BalanceOverview () {
       <h2 className="text-h2">{t('OVERVIEW')}</h2>
       <div className="balance-values">
         <div>
-          <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')}</p>
+          <p className="text-md color-secondary">{t('QGOV_VAULT_BALANCE')}</p>
           <p ref={userQVBalanceRef} className="text-xl font-semibold" />
         </div>
 
         <div>
-          <p className="text-md color-secondary">{t('Q_ADDRESS_BALANCE')}</p>
+          <p className="text-md color-secondary">{t('QGOV_ADDRESS_BALANCE')}</p>
           <p ref={userAccountBalanceRef} className="text-xl font-semibold" />
         </div>
 

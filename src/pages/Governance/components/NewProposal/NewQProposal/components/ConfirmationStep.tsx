@@ -23,7 +23,7 @@ function ConfirmationStep () {
 
   const proposalTypeMap: Record<QProposalForm['type'], string> = {
     constitution: t('CONSTITUTION_UPDATE'),
-    general: t('GENERAL_Q_UPDATE'),
+    general: t('GENERAL_QGOV_UPDATE'),
     emergency: t('EMERGENCY_UPDATE')
   };
 

@@ -67,7 +67,7 @@ function ConnectWalletModal ({ modalOpen, onModalClose }: Props) {
             href={`${docsUrl}/five-minutes/`}
             rel="noreferrer"
           >
-            {t('LEARN_MORE_ABOUT_Q')}
+            {t('LEARN_MORE_ABOUT_QGOV')}
           </a>
         </div>
       </StyledConnectWalletModal>

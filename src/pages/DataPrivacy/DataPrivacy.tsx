@@ -10,7 +10,7 @@ function DataPrivacy () {
         <div className="privacy-block">
           <h2 className="text-h2">I. Privacy Policy</h2>
           <p className="text-md">
-            This website hq.q.org is operated by Q Development AG. The following Data Privacy Policy shall provide the
+            This website hq.qgov.io is operated by Q Development AG. The following Data Privacy Policy shall provide the
             necessary information on how Q Development AG deals with personal data.
           </p>
           <h3 className="text-h3">1. Contact</h3>

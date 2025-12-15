@@ -54,7 +54,7 @@ function NewQProposal () {
     {
       id: 'type',
       name: t('PROPOSAL_TYPE'),
-      title: t('TYPE_OF_Q_PROPOSAL'),
+      title: t('TYPE_OF_QGOV_PROPOSAL'),
       children: <TypeStep />
     },
     ...(isConstitutionType

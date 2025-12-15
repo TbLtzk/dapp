@@ -57,7 +57,7 @@ function VersionModal ({ open, onClose }: Props) {
       ],
     },
     {
-      title: t('Q_CLIENT'),
+      title: t('QGOV_CLIENT'),
       items: [
         {
           name: 'RPC URL',

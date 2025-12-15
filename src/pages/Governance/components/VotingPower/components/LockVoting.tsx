@@ -51,12 +51,12 @@ function LockVoting () {
     <StyledWrapper className="block">
       <div>
         <h2 className="text-h2">
-          {t('LOCK_YOUR_Q_TOKENS_FOR_VOTING', { asset: qTicker })}
+          {t('LOCK_YOUR_QGOV_TOKENS_FOR_VOTING', { asset: qTicker })}
           <InfoTooltip topic="lock-tokens-for-voting" />
         </h2>
 
         <p className="text-md color-secondary">
-          {t('PARTICIPATE_IN_Q_GOVERNANCE_WITH_YOUR_LOCKED_AMOUNT')}
+          {t('PARTICIPATE_IN_QGOV_GOVERNANCE_WITH_YOUR_LOCKED_AMOUNT')}
         </p>
       </div>
 
@@ -86,7 +86,7 @@ function LockVoting () {
 
       <Modal
         open={lockModalOpen}
-        title={t('LOCK_YOUR_Q_TOKENS_FOR_VOTING', { asset: qTicker })}
+        title={t('LOCK_YOUR_QGOV_TOKENS_FOR_VOTING', { asset: qTicker })}
         onClose={() => setLockModalOpen(false)}
       >
         <LockForm onSubmit={() => setLockModalOpen(false)} />

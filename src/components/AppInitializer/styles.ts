@@ -15,12 +15,12 @@ export const Wrap = styled.div`
   text-align: center;
 
 
-  .breathing-q {
+  .breathing-qgov {
     width: 100px;
     height: 100px;
   }
   
-  .breathing-q__logo {
+  .breathing-qgov__logo {
     width: 100%;
     height: auto;
   }

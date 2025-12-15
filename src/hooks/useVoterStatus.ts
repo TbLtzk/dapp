@@ -37,10 +37,10 @@ function useVoterStatus () {
     const status = [
       { title: t('ROOT_NODE'), isTrue: isRootNode },
       { title: t('VALIDATOR'), isTrue: isValidator },
-      { title: t('Q_TOKEN_HOLDER'), isTrue: Number(vaultBalance) > 0 },
+      { title: t('QGOV_TOKEN_HOLDER'), isTrue: Number(vaultBalance) > 0 },
       { title: t('DEFI_RISK_EXPERT'), isTrue: isEpdrMember },
       { title: t('FEES_INCENTIVE_EXPERT'), isTrue: isEpqfiMember },
-      { title: t('Q_ROOT_NODE_SELECTION_EXPERT'), isTrue: isEprsMember }
+      { title: t('QGOV_ROOT_NODE_SELECTION_EXPERT'), isTrue: isEprsMember }
     ];
     const statuses = status.filter((value) => value.isTrue);
     if (!statuses.length) {

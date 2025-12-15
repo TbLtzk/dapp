@@ -58,13 +58,13 @@ function useProposalDetails (proposal: Proposal | null) {
           ? t('ROOT_NODE_ADDING_PROPOSAL')
           : t('ROOT_NODE_REMOVING_PROPOSAL');
       case 'eprsMembershipVoting':
-        return t('Q_ROOT_NODE_SELECTION_EXPERT_MEMBERSHIP_PROPOSAL');
+        return t('QGOV_ROOT_NODE_SELECTION_EXPERT_MEMBERSHIP_PROPOSAL');
       case 'epdrMembershipVoting':
         return t('DEFI_RISK_EXPERT_MEMBERSHIP_PROPOSAL');
       case 'epqfiMembershipVoting':
         return t('FEES_INCENTIVES_EXPERTS_MEMBERSHIP_PROPOSAL');
       case 'eprsParametersVoting':
-        return t('Q_ROOT_NODE_SELECTION_PARAMETERS_PROPOSAL');
+        return t('QGOV_ROOT_NODE_SELECTION_PARAMETERS_PROPOSAL');
       case 'epdrParametersVoting':
         return t('DEFI_RISK_PARAMETERS_PROPOSAL');
       case 'epqfiParametersVoting':

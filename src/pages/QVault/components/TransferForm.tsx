@@ -49,7 +49,7 @@ function TransferForm () {
     validators: { amount: [required, amount(maxAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('TRANSFER_INTO_Q_VAULT_TX'),
+        successMessage: t('TRANSFER_INTO_QGOV_VAULT_TX'),
         submitFn: () => depositToVault({ address, amount }),
         onSuccess: () => form.reset(),
       });
@@ -72,7 +72,7 @@ function TransferForm () {
       onSubmit={form.submit}
     >
       <h2 className="text-h2">{t('TRANSFER')}</h2>
-      <p className="text-md color-secondary">{t('FROM_Q_WALLET_TO_Q_VAULT')}</p>
+      <p className="text-md color-secondary">{t('FROM_QGOV_WALLET_TO_QGOV_VAULT')}</p>
 
       <div className="transfer-form-main">
         <Input
@@ -81,7 +81,7 @@ function TransferForm () {
           label={t('AMOUNT')}
           prefix={qTicker}
           hint={Number(maxAmount) > 0 && form.values.amount === maxAmount
-            ? t('WARNING_NO_Q_LEFT', { asset: qTicker })
+            ? t('WARNING_NO_QGOV_LEFT', { asset: qTicker })
             : t('AVAILABLE_TO_TRANSFER', { amount: formatAsset(maxAmount, qTicker) })
           }
           max={maxAmount}

@@ -42,13 +42,13 @@ function QContractRegistryParameters () {
 
   return (
     <ParametersBlock
-      title={t('Q_CONTRACT_REGISTRY')}
+      title={t('QGOV_CONTRACT_REGISTRY')}
       subtitle={`(${contractRegistryInstance?.address ?? '0x00'})`}
       parameters={contractRegistryList}
       gnosisSafeAddress={upgradeVoting}
       loading={contractRegistryLoading}
       errorMsg={contractRegistryError}
-      emptyMsg={t('Q_CONTRACT_REGISTRY_EMPTY_MSG')}
+      emptyMsg={t('QGOV_CONTRACT_REGISTRY_EMPTY_MSG')}
     />
   );
 }

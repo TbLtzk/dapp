@@ -60,7 +60,7 @@ function Proposal ({ match }: RouteComponentProps<{
   };
 
   const backTextMap: Record<ProposalType, string> = {
-    q: t('Q_PROPOSALS'),
+    q: t('QGOV_PROPOSALS'),
     rootNode: t('ROOT_NODE_PANEL'),
     expert: t('EXPERT_PROPOSALS'),
     slashing: t('SLASHING_PROPOSALS'),

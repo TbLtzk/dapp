@@ -239,7 +239,7 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
       return (
         <Wrap>
           <motion.div
-            className="breathing-q"
+            className="breathing-qgov"
             animate={{ scale: 1.3 }}
             transition={{
               repeat: Infinity,
@@ -249,9 +249,9 @@ const Web3ContextProvider: FC<{ children: ReactElement }> = ({ children }) => {
             }}
           >
             <img
-              className="breathing-q__logo"
+              className="breathing-qgov__logo"
               src="/logo.png"
-              alt="q"
+              alt="QGOV"
             />
           </motion.div>
         </Wrap>

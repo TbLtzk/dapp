@@ -148,7 +148,7 @@ function AuctionStats ({ stablecoinAsset }: Props) {
       )
     },
     {
-      title: t('Q_SYSTEM_RESERVE'),
+      title: t('QGOV_SYSTEM_RESERVE'),
       tooltipTopic: 'system-reserve',
       items: [
         {

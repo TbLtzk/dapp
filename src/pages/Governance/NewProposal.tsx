@@ -14,7 +14,7 @@ function NewProposal () {
   const tabs = [
     {
       id: 'q-proposal',
-      label: t('Q_PROPOSAL'),
+      label: t('QGOV_PROPOSAL'),
       link: RoutePaths.newQProposal
     },
     {

@@ -62,7 +62,7 @@ function VotingOverview () {
         </div>
 
         <div>
-          <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')}</p>
+          <p className="text-md color-secondary">{t('QGOV_VAULT_BALANCE')}</p>
           <div>
             <span ref={userQVBalanceRef} className="text-xl font-semibold" />
             <TopUpQVault />

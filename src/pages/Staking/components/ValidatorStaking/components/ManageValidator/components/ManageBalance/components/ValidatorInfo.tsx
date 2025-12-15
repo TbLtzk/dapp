@@ -74,7 +74,7 @@ function ValidatorInfo () {
           <p className="text-lg">{validatorRank ? `# ${validatorRank}` : '–'}</p>
         </div>
         <div>
-          <p className="color-secondary text-md">{t('AVAILABLE_Q_BALANCE')}</p>
+          <p className="color-secondary text-md">{t('AVAILABLE_QGOV_BALANCE')}</p>
           <p className="text-lg">{formatAsset(walletBalance, qTicker)}</p>
         </div>
         <div>

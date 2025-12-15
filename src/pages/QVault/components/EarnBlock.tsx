@@ -65,7 +65,7 @@ function EarnBlock () {
 
       <div className="reward-values">
         <div>
-          <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_RATE')}</p>
+          <p className="text-md color-secondary">{t('QGOV_TOKEN_HOLDER_REWARD_RATE')}</p>
           <p ref={interestRatePercentageRef} className="text-xl font-semibold">0 %</p>
         </div>
 
@@ -75,7 +75,7 @@ function EarnBlock () {
         </div>
 
         <div>
-          <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_UPDATED')}</p>
+          <p className="text-md color-secondary">{t('QGOV_TOKEN_HOLDER_REWARD_UPDATED')}</p>
           <p
             className="text-xl font-semibold"
             title={formatDate(unixToDate(qHolderUpdateTime), i18n.language)}
@@ -89,7 +89,7 @@ function EarnBlock () {
         className="update-reward-action"
         loading={qHolderUpdateTimeLoading}
         onClick={() => submitTransaction({
-          successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
+          successMessage: t('TIME_SINCE_QGOV_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
           submitFn: allocateQHolderRewards
         })}
       >

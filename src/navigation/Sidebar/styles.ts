@@ -55,8 +55,8 @@ export const SidebarContainer = styled.div<{ $open: boolean }>`
   }
 
   .sidebar-logo {
-    width: 64px;
-    height: 64px;
+    width: 144px;
+    height: auto;
   }
 
   .sidebar-main {

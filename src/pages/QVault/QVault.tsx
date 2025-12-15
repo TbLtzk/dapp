@@ -37,12 +37,12 @@ function QVault () {
 
   return (
     <PageLayout
-      title={t('Q_VAULT')}
+      title={t('QGOV_VAULT')}
       titleExtra={<InfoTooltip placement="bottom" topic="q-vault" />}
     >
       <StyledWrapper>
         <BalanceOverview />
-        <div className="q-vault-main">
+        <div className="qgov-vault-main">
           <TransferForm />
           <WithdrawForm />
           <SendForm />

@@ -152,7 +152,7 @@ function DepositForm ({ contract, isDepositsLimitReached, onSubmit }: Props) {
         prefix={qTicker}
         placeholder="0.0"
         max={maxAmount}
-        hint={form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : ''}
+        hint={form.values.amount === maxAmount ? t('WARNING_NO_QGOV_LEFT', { asset: qTicker }) : ''}
         disabled={isDepositsLimitReached}
       />
 

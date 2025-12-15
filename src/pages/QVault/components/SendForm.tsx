@@ -68,7 +68,7 @@ function SendForm () {
       onSubmit={form.submit}
     >
       <h2 className="text-h2">{t('SEND')}</h2>
-      <p className="text-md color-secondary">{t('FROM_YOUR_Q_VAULT_TO_OTHER_Q_VAULT')}</p>
+      <p className="text-md color-secondary">{t('FROM_YOUR_QGOV_VAULT_TO_OTHER_QGOV_VAULT')}</p>
 
       <div className="send-form-main">
         <div className="send-form-fields">

@@ -32,7 +32,7 @@ function PoolBalances () {
     <StyledWrapper className="block">
       <div>
         <p ref={reserveBalanceRef} className="text-xl font-semibold" />
-        <p className="text-md color-secondary">{t('Q_SYSTEM_RESERVE')}</p>
+        <p className="text-md color-secondary">{t('QGOV_SYSTEM_RESERVE')}</p>
       </div>
       <div>
         <p ref={rewardPoolsBalanceRef} className="text-xl font-semibold" />

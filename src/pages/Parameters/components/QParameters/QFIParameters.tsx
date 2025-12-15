@@ -37,7 +37,7 @@ function QFIParameters () {
   return (
     <StyledWrapper>
       <ParametersBlock
-        title={t('Q_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS')}
+        title={t('QGOV_FEES_INCENTIVES_EXPERT_PANEL_PARAMETERS')}
         subtitle={`(${ePQFIParametersAddress})`}
         docsId="#q-fees-and-incentives-expert-panel-epqfi-parameters"
         parameters={epqfiParameters}

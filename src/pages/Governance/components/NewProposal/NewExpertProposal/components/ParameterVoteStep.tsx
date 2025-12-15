@@ -45,15 +45,15 @@ function ParameterVoteStep () {
   const panelTypeOptions: FieldOptions<ExpertType> = [
     {
       value: 'fees-incentives',
-      label: t('Q_FEES_INCENTIVES_MEMBERSHIP_PANEL')
+      label: t('QGOV_FEES_INCENTIVES_MEMBERSHIP_PANEL')
     },
     {
       value: 'defi',
-      label: t('Q_DEFI_MEMBERSHIP_PANEL')
+      label: t('QGOV_DEFI_MEMBERSHIP_PANEL')
     },
     {
       value: 'root-node',
-      label: t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL')
+      label: t('QGOV_ROOT_NODE_SELECTION_EXPERT_PANEL')
     },
   ];
 

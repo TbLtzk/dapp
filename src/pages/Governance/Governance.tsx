@@ -26,7 +26,7 @@ function Governance () {
   const tabs = [
     {
       id: 'q-proposals',
-      label: t('Q_PROPOSALS'),
+      label: t('QGOV_PROPOSALS'),
       count: getActiveProposalsByType('q').length,
       link: RoutePaths.qProposals,
     },

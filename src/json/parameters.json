@@ -68,13 +68,13 @@
   "governed.EPQFI.QID_rewardPoolMaxClaimP": {
     "type": "period"
   },
-  "governed.EPQFI.Q_QUSD_source": {
+  "governed.EPQFI.QGOV_QUSD_source": {
     "type": "string"
   },
-  "governed.EPQFI.Q_reserveShare": {
+  "governed.EPQFI.QGOV_reserveShare": {
     "type": "fraction"
   },
-  "governed.EPQFI.Q_rewardPoolInterest": {
+  "governed.EPQFI.QGOV_rewardPoolInterest": {
     "type": "rate"
   },
   "governed.EPQFI.QID_rewardPoolInterest": {

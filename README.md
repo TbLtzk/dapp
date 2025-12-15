@@ -1,4 +1,4 @@
-# Interact with the Q blockchain and smart contracts easily and secure
+# Interact with the QGOV blockchain and smart contracts easily and secure
 
 App uses React, Redux/Redux-Saga, Styled Components
 

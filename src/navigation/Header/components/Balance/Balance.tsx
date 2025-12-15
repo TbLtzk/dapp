@@ -64,7 +64,7 @@ function Balance () {
 
         <Link to={RoutePaths.qVault}>
           <div className="balance balance-action">
-            <p className="text-md color-secondary">{t('Q_VAULT_BALANCE')} </p>
+            <p className="text-md color-secondary">{t('QGOV_VAULT_BALANCE')} </p>
             <p className="text-lg color-primary font-semibold">{formatNumberCompact(vaultBalance, 2)}</p>
           </div>
         </Link>

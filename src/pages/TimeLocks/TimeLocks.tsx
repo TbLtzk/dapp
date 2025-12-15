@@ -34,7 +34,7 @@ function TimeLocks () {
   const tabs = [
     {
       id: 'q-vault',
-      label: t('Q_VAULT'),
+      label: t('QGOV_VAULT'),
       link: RoutePaths.timeLocksQVault
     },
     {

@@ -55,7 +55,7 @@ function NetworkWarning () {
         className="network-warning__button"
         onClick={() => handleSwitch()}
       >
-        {t('SWITCH_TO_Q')}
+        {t('SWITCH_TO_QGOV')}
       </Button>
     </StyledWrapper>
   );

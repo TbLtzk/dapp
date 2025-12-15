@@ -54,7 +54,7 @@ function ManageParameters () {
 
   return (
     <PageLayout
-      title={t('Q_PARAMETERS')}
+      title={t('QGOV_PARAMETERS')}
       action={
         <div style={{ display: 'flex', gap: '16px' }}>
           <Link to="/">

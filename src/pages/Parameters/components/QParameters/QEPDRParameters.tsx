@@ -43,7 +43,7 @@ function QEPDRParameters () {
   return (
     <StyledWrapper>
       <ParametersBlock
-        title={t('Q_DEFI_RISK_EXPERT_PANEL_PARAMETERS')}
+        title={t('QGOV_DEFI_RISK_EXPERT_PANEL_PARAMETERS')}
         subtitle={`(${ePDRParametersAddress})`}
         docsId="#q-defi-risk-expert-panel-epdr-parameters"
         parameters={epdrParameters}

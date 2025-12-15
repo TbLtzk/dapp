@@ -89,7 +89,7 @@ function AppInitializer ({ children }: { children: ReactElement }) {
       return (
         <Wrap>
           <motion.div
-            className="breathing-q"
+            className="breathing-qgov"
             animate={{ scale: 1.3 }}
             transition={{
               repeat: Infinity,
@@ -99,9 +99,9 @@ function AppInitializer ({ children }: { children: ReactElement }) {
             }}
           >
             <img
-              className="breathing-q__logo"
+              className="breathing-qgov__logo"
               src="/logo.png"
-              alt="q"
+              alt="QGOV"
             />
           </motion.div>
         </Wrap>

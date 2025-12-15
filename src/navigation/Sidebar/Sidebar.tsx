@@ -65,7 +65,7 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
               <SidebarLink
                 exact={false}
                 to={RoutePaths.qVault}
-                title={t('Q_VAULT')}
+                title={t('QGOV_VAULT')}
                 icon="wallet"
               />
 

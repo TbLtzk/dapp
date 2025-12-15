@@ -48,7 +48,7 @@ function TopUpQVault ({ onSubmit = () => {} }: Props) {
 
       <Modal
         open={modalOpen}
-        title={t('TOP_UP_Q_VAULT')}
+        title={t('TOP_UP_QGOV_VAULT')}
         tip={t('TOP_UP_MODAL_HINT', { asset: qTicker })}
         onClose={() => setModalOpen(false)}
       >

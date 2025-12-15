@@ -29,8 +29,8 @@ function TypeStep () {
     },
     {
       value: 'general',
-      label: t('GENERAL_Q_UPDATE'),
-      tip: t('GENERAL_Q_UPDATE_TIP')
+      label: t('GENERAL_QGOV_UPDATE'),
+      tip: t('GENERAL_QGOV_UPDATE_TIP')
     },
     {
       value: 'emergency',

@@ -32,7 +32,7 @@ function QVaultTab () {
   return (
     <div>
       <LocksOverview
-        title={t('Q_VAULT_ACCOUNT_BALANCE')}
+        title={t('QGOV_VAULT_ACCOUNT_BALANCE')}
         balance={vaultBalance}
         contract="qVault"
         timeLockBalance={qVaultMinimumTimeLock}

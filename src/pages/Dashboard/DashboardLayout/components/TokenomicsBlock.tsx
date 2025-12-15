@@ -98,7 +98,7 @@ function TokenomicsBlock () {
       <div className="tokenomics__values">
         <div className="tokenomics__value">
           <p ref={reserveBalanceRef} className="text-xl font-semibold" />
-          <p className="text-md color-secondary">{t('Q_SYSTEM_RESERVE')}</p>
+          <p className="text-md color-secondary">{t('QGOV_SYSTEM_RESERVE')}</p>
         </div>
 
         <div className="tokenomics__value">

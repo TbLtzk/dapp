@@ -48,7 +48,7 @@ function WithdrawForm () {
     validators: { amount: [required, amount(maxWithdrawAmount)] },
     onSubmit: ({ amount }) => {
       submitTransaction({
-        successMessage: t('WITHDRAW_FROM_Q_VAULT_TX'),
+        successMessage: t('WITHDRAW_FROM_QGOV_VAULT_TX'),
         submitFn: async () => withdrawFromVault({ amount, address }),
         onSuccess: () => form.reset(),
       });
@@ -62,7 +62,7 @@ function WithdrawForm () {
       onSubmit={form.submit}
     >
       <h2 className="text-h2">{t('WITHDRAW')}</h2>
-      <p className="text-md color-secondary">{t('FROM_Q_VAULT_TO_Q_WALLET')}</p>
+      <p className="text-md color-secondary">{t('FROM_QGOV_VAULT_TO_QGOV_WALLET')}</p>
 
       <div className="withdraw-form-main">
         <Input

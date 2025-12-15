@@ -37,7 +37,7 @@ function QEPRSParameters () {
   return (
     <StyledWrapper>
       <ParametersBlock
-        title={t('Q_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
+        title={t('QGOV_ROOT_NODE_SELECTION_EXPERT_PANEL_PARAMETERS')}
         subtitle={`(${ePRSParametersAddress})`}
         parameters={eprsParameters}
         loading={eprsParametersLoading}

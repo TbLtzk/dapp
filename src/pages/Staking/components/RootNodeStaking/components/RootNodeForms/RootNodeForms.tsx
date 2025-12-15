@@ -114,7 +114,7 @@ function RootNodeForms ({ formType, onReset }: Props) {
   const inputHint = useMemo(() => {
     switch (formType) {
       case FORM_TYPES.stakeToRanking:
-        return form.values.amount === maxAmount ? t('WARNING_NO_Q_LEFT', { asset: qTicker }) : '';
+        return form.values.amount === maxAmount ? t('WARNING_NO_QGOV_LEFT', { asset: qTicker }) : '';
       case FORM_TYPES.withdrawFromRanking:
         return toBigNumber(rootMinimumTimeLock).isZero()
           ? ''

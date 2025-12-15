@@ -24,7 +24,7 @@ function QFeesMembersTable () {
     <div className="block">
       <div className="block__header">
         <h3 className="text-h3">
-          {t('LIST_OF_Q_FEES_INCENTIVES_EXPERTS')}
+          {t('LIST_OF_QGOV_FEES_INCENTIVES_EXPERTS')}
           <InfoTooltip topic="fees-incentives-experts" />
         </h3>
       </div>
@@ -32,7 +32,7 @@ function QFeesMembersTable () {
       <div className="block__content">
         <Table
           tiny
-          emptyTableMessage={t('NO_Q_FEES_INCENTIVES_MEMBERS')}
+          emptyTableMessage={t('NO_QGOV_FEES_INCENTIVES_MEMBERS')}
           loading={epqfiMembersLoading}
           error={epqfiMembersError}
           perPage={10}

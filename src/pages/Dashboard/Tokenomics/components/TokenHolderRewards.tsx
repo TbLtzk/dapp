@@ -61,7 +61,7 @@ function TokenHolderRewards () {
     <StyledWrapper className="block">
       <div>
         <p ref={balanceRewardPoolRef} className="text-xl font-semibold" />
-        <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_POOL')}</p>
+        <p className="text-md color-secondary">{t('QGOV_TOKEN_HOLDER_REWARD_POOL')}</p>
       </div>
       <div className="token-holder-time">
         <div>
@@ -71,13 +71,13 @@ function TokenHolderRewards () {
           >
             {formatDateRelative(unixToDate(qHolderUpdateTime), i18n.language)}
           </p>
-          <p className="text-md color-secondary">{t('Q_TOKEN_HOLDER_REWARD_UPDATED')}</p>
+          <p className="text-md color-secondary">{t('QGOV_TOKEN_HOLDER_REWARD_UPDATED')}</p>
         </div>
         <Button
           icon
           loading={qHolderUpdateTimeLoading}
           onClick={() => submitTransaction({
-            successMessage: t('TIME_SINCE_Q_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
+            successMessage: t('TIME_SINCE_QGOV_TOKEN_HOLDER_REWARD_UPDATE_TX', { asset: qTicker }),
             isClosedModal: true,
             submitFn: allocateQHolderRewards
           })}
