@@ -4,7 +4,7 @@ import { DAOProposal } from 'typings/proposals';
 
 import LinkViewer from 'pages/Governance/components/LinkViewer';
 
-const HQ_DAO_LINK = 'https://hq.q-dao.tools';
+const HQ_DAO_LINK = 'https://dao-hq.qgov.io';
 
 interface Props {
   proposal: DAOProposal;

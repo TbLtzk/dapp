@@ -41,7 +41,7 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
           <Link to="/" className="sidebar-logo-link">
             <img
               className="sidebar-logo"
-              alt="Q Logo"
+              alt="QGOV Logo"
               src={logo}
             />
           </Link>
