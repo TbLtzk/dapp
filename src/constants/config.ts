@@ -14,6 +14,7 @@ interface NetworkConfig {
   indexerUrl: string;
   explorerUrl: string;
   gnosisSafeUrl: string;
+  gnosisSafeChainPrefix: string;
   qBridgeUrl: string;
   docsUrl: string;
   constitutionUrl: string;
@@ -40,6 +41,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     indexerUrl: 'https://indexer.qgov.io',
     explorerUrl: 'https://explorer.qgov.io',
     gnosisSafeUrl: 'https://multisig-ui.qgov.io',
+    gnosisSafeChainPrefix: 'qgov',
     qBridgeUrl: 'https://bridge.qgov.io',
     docsUrl: 'https://docs.qgov.io',
     constitutionUrl: 'https://constitution.qgov.io',
@@ -64,6 +66,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     indexerUrl: 'https://indexer.qgov-test.io',
     explorerUrl: 'https://explorer.qgov-test.io',
     gnosisSafeUrl: 'https://multisig-ui.qgov-test.io',
+    gnosisSafeChainPrefix: 'qgov-test',
     qBridgeUrl: 'https://bridge.qgov-test.io',
     docsUrl: 'https://docs.qgov-test.io',
     constitutionUrl: 'https://constitution.qgov-test.io',
@@ -88,6 +91,7 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
     indexerUrl: 'https://indexer.qdevnet.org',
     explorerUrl: 'https://explorer.qdevnet.org',
     gnosisSafeUrl: 'https://multisig.qdevnet.org',
+    gnosisSafeChainPrefix: 'qgov-dev',
     qBridgeUrl: 'https://bridge.qdevnet.org',
     docsUrl: 'https://docs.qgov-test.io',
     constitutionUrl: 'https://constitution.qdevnet.org',

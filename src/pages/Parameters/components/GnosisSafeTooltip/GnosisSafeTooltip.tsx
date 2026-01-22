@@ -1,8 +1,6 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '@q-dev/q-ui-kit';
-import { useWeb3Context } from 'context/Web3ContextProvider';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 
@@ -10,20 +8,13 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { TooltipContent } from './styles';
 
-import { networkConfigsMap } from 'constants/config';
-
 interface Props {
   address: string;
 }
 
 function GnosisSafeTooltip ({ address }: Props) {
   const { t } = useTranslation();
-  const { gnosisSafeUrl } = useNetworkConfig();
-  const { chainId } = useWeb3Context();
-
-  const isDevChain = useMemo(() => {
-    return networkConfigsMap.devnet.chainId === chainId;
-  }, [chainId]);
+  const { gnosisSafeUrl, gnosisSafeChainPrefix } = useNetworkConfig();
 
   const gnosisIcon = (
     <svg width="12" height="12">
@@ -44,8 +35,7 @@ function GnosisSafeTooltip ({ address }: Props) {
         </div>
         <a
           className="link tooltip-link"
-          // NOTICE: We don't update devnet app
-          href={isDevChain ? `${gnosisSafeUrl}/#/safes/${address}` : `${gnosisSafeUrl}/home?safe=q:${address}`}
+          href={`${gnosisSafeUrl}/home?safe=${gnosisSafeChainPrefix}:${address}`}
           target="_blank"
           rel="noreferrer"
         >
