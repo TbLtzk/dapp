@@ -31,7 +31,7 @@ function L0Governance () {
               alwaysEnabled
               className="l0-governance__monitoring-link"
             >
-              <Icon name="dashboard" />
+              <Icon name="chevron-right" />
               <span>{t('OPEN_L0_MONITORING')}</span>
             </Button>
           </Link>
