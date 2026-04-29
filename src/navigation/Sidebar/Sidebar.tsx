@@ -82,6 +82,15 @@ function Sidebar ({ open, onClose }: { open: boolean; onClose: () => void }) {
                 title={t('ACCOUNT_ALIASING')}
               />}
 
+              {featureFlags.l0Governance && (
+                <SidebarLink
+                  exact={false}
+                  icon="vote"
+                  to={RoutePaths.l0Governance}
+                  title={t('L0_GOVERNANCE')}
+                />
+              )}
+
               {features.savingAndBorrowing && (
                 <>
                   <SidebarLink

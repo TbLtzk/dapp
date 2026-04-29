@@ -10,6 +10,7 @@ export enum RoutePaths {
 
   governance = '/governance',
   governanceTab = '/governance/:tab?',
+  l0Governance = '/l0-governance',
   votingPower = '/governance/voting-power',
   qProposals = '/governance/q-proposals',
   rootNodePanel = '/governance/root-node-panel',
