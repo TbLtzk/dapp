@@ -1,8 +1,14 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
+import { Icon } from '@q-dev/q-ui-kit';
+
+import Button from 'components/Button';
 import PageLayout from 'components/PageLayout';
 
 import { StyledWrapper } from './styles';
+
+import { RoutePaths } from 'constants/routes';
 
 function L0Governance () {
   const { t } = useTranslation();
@@ -20,6 +26,15 @@ function L0Governance () {
           <p className="l0-governance__description text-lg color-secondary">
             {t('L0_GOVERNANCE_LANDING_DESCRIPTION')}
           </p>
+          <Link to={RoutePaths.dashboardRootNodesMonitoring}>
+            <Button
+              alwaysEnabled
+              className="l0-governance__monitoring-link"
+            >
+              <Icon name="dashboard" />
+              <span>{t('OPEN_L0_MONITORING')}</span>
+            </Button>
+          </Link>
         </section>
 
         <section className="l0-governance__cards">

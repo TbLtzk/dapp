@@ -24,6 +24,12 @@ export const StyledWrapper = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
+  .l0-governance__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
   .l0-governance__cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
