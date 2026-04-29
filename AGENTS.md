@@ -15,6 +15,7 @@ Do not rely on the default `gh` authentication for GitHub writes. It may only ha
 
 When an agent is told to work on an issue:
 
+- Read the issue body and all issue comments before selecting, planning, or starting work. Treat comments from maintainers/owners as part of the issue requirements and reflect them in planning, implementation, and testing.
 - If the issue is not in `Ready`, explain that the issue is not marked as ready and ask whether to start anyway.
 - If the issue is already assigned to someone else, explain who is working on it and ask whether to reassign it and start anyway.
 - If the issue is in `Ready`, acknowledge it, assign it to the agent where possible, move it to `In progress`, and start working on the issue.
