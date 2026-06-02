@@ -5,12 +5,12 @@ export enum RoutePaths {
   dashboardSavingBorrowingTab = '/dashboard/saving-borrowing/:tab?',
   dashboardRootNodesMonitoring = '/dashboard/root-nodes-monitoring',
   dashboardRootNodesMonitoringTab = '/dashboard/root-nodes-monitoring/:tab?',
+  dashboardRootNodesMonitoringL0Governance = '/dashboard/root-nodes-monitoring/l0-governance',
   dashboardRootNodesMonitoringOnchainActiveDifference = '/dashboard/root-nodes-monitoring/onchain-active-difference',
   dashboardValidatorsMonitoring = '/dashboard/validators-monitoring',
 
   governance = '/governance',
   governanceTab = '/governance/:tab?',
-  l0Governance = '/l0-governance',
   votingPower = '/governance/voting-power',
   qProposals = '/governance/q-proposals',
   rootNodePanel = '/governance/root-node-panel',

@@ -107,6 +107,8 @@
   "VALIDATOR_EXCLUSION_GOVERNANCE": "Управління списком виключення валідаторів",
   "VALIDATOR_EXCLUSION_GOVERNANCE_DESCRIPTION": "Перевіряйте запити на виключення валідаторів, діапазони блоків і статуси перед виконанням дій.",
   "OPEN_L0_MONITORING": "Відкрити L0 моніторинг",
+  "OPEN_L0_GOVERNANCE": "Відкрити L0 управління",
+  "GO_TO_ROOT_NODES_MONITORING": "Перейти до моніторингу рут нод",
   "L0_ELIGIBILITY_TITLE": "Відповідність кореневого вузла",
   "L0_ELIGIBILITY_LOADING": "Завантаження активного списку L0 кореневих вузлів...",
   "L0_ELIGIBILITY_DISCONNECTED": "Підключіть гаманець, щоб перевірити чи може цей обліковий запис підписувати L0 пропозиції.",

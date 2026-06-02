@@ -48,6 +48,12 @@ function Routes () {
       <LazyLoading>
         <ScrollToTop />
         <Switch>
+          {featureFlags.l0Governance && (
+            <Route exact path={RoutePaths.dashboardRootNodesMonitoringL0Governance}>
+              <L0Governance />
+            </Route>
+          )}
+
           <Route
             exact
             path={[
@@ -75,12 +81,6 @@ function Routes () {
           <Route exact path={RoutePaths.governanceTab}>
             <Governance />
           </Route>
-
-          {featureFlags.l0Governance && (
-            <Route exact path={RoutePaths.l0Governance}>
-              <L0Governance />
-            </Route>
-          )}
 
           <Route
             exact

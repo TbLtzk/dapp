@@ -107,6 +107,8 @@
   "VALIDATOR_EXCLUSION_GOVERNANCE": "Validator exclusion-list governance",
   "VALIDATOR_EXCLUSION_GOVERNANCE_DESCRIPTION": "Review validator exclusion proposals and prepare the signing flow for validator governance actions.",
   "OPEN_L0_MONITORING": "Open L0 monitoring",
+  "OPEN_L0_GOVERNANCE": "Open L0 governance",
+  "GO_TO_ROOT_NODES_MONITORING": "Go to Root Nodes Monitoring",
   "L0_ELIGIBILITY_TITLE": "Root-node eligibility",
   "L0_ELIGIBILITY_LOADING": "Loading active L0 root data...",
   "L0_ELIGIBILITY_DISCONNECTED": "Connect your wallet to evaluate whether this account can sign L0 governance proposals.",
