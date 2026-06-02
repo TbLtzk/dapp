@@ -24,6 +24,13 @@ export const StyledWrapper = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
+  .l0-governance__eligibility {
+    padding: 16px;
+    display: grid;
+    gap: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.borderMain};
+  }
+
   .l0-governance__actions {
     display: flex;
     flex-wrap: wrap;
