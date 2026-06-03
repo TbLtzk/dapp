@@ -8,6 +8,7 @@ import PageLayout from 'components/PageLayout';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
+import { useCosignProposedRootList } from './hooks/useCosignProposedRootList';
 import { useL0GovernanceEligibility } from './hooks/useL0GovernanceEligibility';
 import { useProposeOnchainPanelRootList } from './hooks/useProposeOnchainPanelRootList';
 import { StyledWrapper } from './styles';
@@ -19,32 +20,64 @@ function L0Governance () {
   const { featureFlags } = useNetworkConfig();
   const l0GovernanceEligibility = useL0GovernanceEligibility();
   const {
-    phase,
-    isGovPubAvailable,
-    isCheckingGovPub,
+    phase: proposePhase,
+    isGovPubAvailable: isProposeGovPubAvailable,
+    isCheckingGovPub: isCheckingProposeGovPub,
     submittedProposalHash,
     proposeFromOnchainPanel,
   } = useProposeOnchainPanelRootList();
+  const {
+    phase: cosignPhase,
+    isGovPubAvailable: isCosignGovPubAvailable,
+    isCheckingGovPub: isCheckingCosignGovPub,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+    submittedAttestationHash,
+    cosignProposedRootList,
+  } = useCosignProposedRootList();
 
   const isEligibleForSigning = (
     l0GovernanceEligibility.status === 'eligible-root' ||
     l0GovernanceEligibility.status === 'eligible-alias'
   );
 
-  const isProposeRunning = phase === 'running';
+  const isGovPubAvailable = isProposeGovPubAvailable ?? isCosignGovPubAvailable;
+  const isCheckingGovPub = isCheckingProposeGovPub || isCheckingCosignGovPub;
+
+  const isProposeRunning = proposePhase === 'running';
   const isProposeDisabled = (
     !featureFlags.l0Governance ||
     !isEligibleForSigning ||
     isCheckingGovPub ||
     isGovPubAvailable === false ||
     isProposeRunning ||
-    phase === 'success'
+    proposePhase === 'success'
+  );
+
+  const isCosignRunning = cosignPhase === 'running';
+  const isCosignDisabled = (
+    !featureFlags.l0Governance ||
+    !isEligibleForSigning ||
+    isCheckingGovPub ||
+    isLoadingProposed ||
+    isGovPubAvailable === false ||
+    !hasProposed ||
+    hasAlreadySigned ||
+    isCosignRunning ||
+    cosignPhase === 'success'
   );
 
   const proposeButtonLabel = (() => {
     if (isProposeRunning) return t('L0_PROPOSE_IN_PROGRESS');
-    if (phase === 'success') return t('L0_PROPOSE_SUBMITTED');
+    if (proposePhase === 'success') return t('L0_PROPOSE_SUBMITTED');
     return t('L0_PROPOSE_FROM_ONCHAIN_PANEL');
+  })();
+
+  const cosignButtonLabel = (() => {
+    if (isCosignRunning) return t('L0_COSIGN_IN_PROGRESS');
+    if (cosignPhase === 'success') return t('L0_COSIGN_SUBMITTED');
+    return t('L0_COSIGN_PROPOSED_ROOT_LIST');
   })();
 
   return (
@@ -83,19 +116,40 @@ function L0Governance () {
               {isGovPubAvailable === false && (
                 <p className="text-sm color-secondary">{t('L0_PROPOSE_RPC_UNSUPPORTED')}</p>
               )}
-              {phase === 'success' && submittedProposalHash && (
+              {!isLoadingProposed && !hasProposed && isEligibleForSigning && (
+                <p className="text-sm color-secondary">{t('L0_COSIGN_NO_PROPOSAL')}</p>
+              )}
+              {hasAlreadySigned && (
+                <p className="text-sm color-secondary">{t('L0_COSIGN_ALREADY_SIGNED')}</p>
+              )}
+              {proposePhase === 'success' && submittedProposalHash && (
                 <p className="text-sm color-secondary">
                   {t('L0_PROPOSE_SUCCESS_HASH', { hash: submittedProposalHash })}
                 </p>
               )}
-              <Button
-                alwaysEnabled={isEligibleForSigning && featureFlags.l0Governance}
-                disabled={isProposeDisabled}
-                loading={isProposeRunning}
-                onClick={proposeFromOnchainPanel}
-              >
-                {proposeButtonLabel}
-              </Button>
+              {cosignPhase === 'success' && submittedAttestationHash && (
+                <p className="text-sm color-secondary">
+                  {t('L0_COSIGN_SUCCESS_HASH', { hash: submittedAttestationHash })}
+                </p>
+              )}
+              <div className="l0-governance__actions">
+                <Button
+                  alwaysEnabled={isEligibleForSigning && featureFlags.l0Governance}
+                  disabled={isProposeDisabled}
+                  loading={isProposeRunning}
+                  onClick={proposeFromOnchainPanel}
+                >
+                  {proposeButtonLabel}
+                </Button>
+                <Button
+                  alwaysEnabled={isEligibleForSigning && featureFlags.l0Governance}
+                  disabled={isCosignDisabled}
+                  loading={isCosignRunning}
+                  onClick={cosignProposedRootList}
+                >
+                  {cosignButtonLabel}
+                </Button>
+              </div>
             </article>
 
             <article className="l0-governance__card block">

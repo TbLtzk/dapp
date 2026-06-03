@@ -11,6 +11,14 @@ Examples:
 
 Do not rely on the default `gh` authentication for GitHub writes. It may only have read or metadata access.
 
+## Project board (Kanban for Coding Agents - dapp)
+
+When creating issues on the dapp project board:
+
+- Add new items with **Status: Backlog** only. Do **not** move new issues to **Ready**; the maintainer does that after manual review.
+- Set **Epic** when the issue body specifies one (e.g. Epic D → `Epic D - Signing and submission flows`).
+- Set **Priority** / **Size** from issue metadata when present.
+
 ## Starting issues
 
 When an agent is told to work on an issue:
