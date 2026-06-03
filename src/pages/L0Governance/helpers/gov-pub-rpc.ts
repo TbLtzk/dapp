@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 
 import {
+  GovPubExclusionList,
+  GovPubExclusionListSigningPayloadWithDigest,
   GovPubRootList,
   GovPubRootListSigningPayloadWithDigest,
   ZERO_HASH,
@@ -41,6 +43,29 @@ export async function probeGovPubRootListSigning (
   }
 }
 
+export async function probeGovPubExclusionListSigning (
+  provider: GovPubRpcProvider,
+): Promise<boolean> {
+  try {
+    await provider.send('govPub_signingPayloadExclusionListV1WithDigest', [{
+      timestamp: 1,
+      validators: [{
+        address: '0x0000000000000000000000000000000000000001',
+        block: 1,
+      }],
+      hash: ZERO_HASH,
+      signatures: [],
+    }]);
+    return true;
+  } catch (error) {
+    if (isRpcMethodMissing(error)) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
 export async function fetchSigningPayloadRootListV1WithDigest (
   provider: GovPubRpcProvider,
   list: GovPubRootList,
@@ -63,6 +88,33 @@ export function rootListFromSigningPayload (
   return {
     timestamp: metadata.timestamp,
     nodes,
+    hash: metadata.payloadHash,
+    signatures: [],
+  };
+}
+
+export async function fetchSigningPayloadExclusionListV1WithDigest (
+  provider: GovPubRpcProvider,
+  list: GovPubExclusionList,
+): Promise<GovPubExclusionListSigningPayloadWithDigest> {
+  return provider.send('govPub_signingPayloadExclusionListV1WithDigest', [list]);
+}
+
+export async function submitTypedSignedExclusionList (
+  provider: GovPubRpcProvider,
+  list: GovPubExclusionList,
+): Promise<string> {
+  return provider.send('govPub_submitTypedSignedExclusionList', [list]);
+}
+
+export function exclusionListFromSigningPayload (
+  payload: GovPubExclusionListSigningPayloadWithDigest,
+): GovPubExclusionList {
+  const { metadata, validators } = payload.payload;
+
+  return {
+    timestamp: metadata.timestamp,
+    validators,
     hash: metadata.payloadHash,
     signatures: [],
   };

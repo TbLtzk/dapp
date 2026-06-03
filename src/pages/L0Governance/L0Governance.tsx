@@ -10,6 +10,7 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import { useCosignProposedRootList } from './hooks/useCosignProposedRootList';
 import { useL0GovernanceEligibility } from './hooks/useL0GovernanceEligibility';
+import { useProposeExclusionListTimestampRefresh } from './hooks/useProposeExclusionListTimestampRefresh';
 import { useProposeOnchainPanelRootList } from './hooks/useProposeOnchainPanelRootList';
 import { StyledWrapper } from './styles';
 
@@ -36,14 +37,31 @@ function L0Governance () {
     submittedAttestationHash,
     cosignProposedRootList,
   } = useCosignProposedRootList();
+  const {
+    phase: exclusionProposePhase,
+    isGovPubAvailable: isExclusionGovPubAvailable,
+    isCheckingGovPub: isCheckingExclusionGovPub,
+    isLoadingActive,
+    hasActive,
+    submittedProposalHash: submittedExclusionProposalHash,
+    proposeExclusionListTimestampRefresh,
+  } = useProposeExclusionListTimestampRefresh();
 
   const isEligibleForSigning = (
     l0GovernanceEligibility.status === 'eligible-root' ||
     l0GovernanceEligibility.status === 'eligible-alias'
   );
 
-  const isGovPubAvailable = isProposeGovPubAvailable ?? isCosignGovPubAvailable;
-  const isCheckingGovPub = isCheckingProposeGovPub || isCheckingCosignGovPub;
+  const isGovPubAvailable = (
+    isProposeGovPubAvailable ??
+    isCosignGovPubAvailable ??
+    isExclusionGovPubAvailable
+  );
+  const isCheckingGovPub = (
+    isCheckingProposeGovPub ||
+    isCheckingCosignGovPub ||
+    isCheckingExclusionGovPub
+  );
 
   const isProposeRunning = proposePhase === 'running';
   const isProposeDisabled = (
@@ -78,6 +96,24 @@ function L0Governance () {
     if (isCosignRunning) return t('L0_COSIGN_IN_PROGRESS');
     if (cosignPhase === 'success') return t('L0_COSIGN_SUBMITTED');
     return t('L0_COSIGN_PROPOSED_ROOT_LIST');
+  })();
+
+  const isExclusionProposeRunning = exclusionProposePhase === 'running';
+  const isExclusionProposeDisabled = (
+    !featureFlags.l0Governance ||
+    !isEligibleForSigning ||
+    isCheckingGovPub ||
+    isLoadingActive ||
+    isGovPubAvailable === false ||
+    !hasActive ||
+    isExclusionProposeRunning ||
+    exclusionProposePhase === 'success'
+  );
+
+  const exclusionProposeButtonLabel = (() => {
+    if (isExclusionProposeRunning) return t('L0_EXCLUSION_PROPOSE_IN_PROGRESS');
+    if (exclusionProposePhase === 'success') return t('L0_EXCLUSION_PROPOSE_SUBMITTED');
+    return t('L0_EXCLUSION_PROPOSE_REFRESH_TIMESTAMP');
   })();
 
   return (
@@ -157,8 +193,24 @@ function L0Governance () {
               <p className="text-md color-secondary">
                 {t('VALIDATOR_EXCLUSION_GOVERNANCE_DESCRIPTION')}
               </p>
-              <Button alwaysEnabled={isEligibleForSigning} disabled={!isEligibleForSigning}>
-                {t('L0_SIGNING_COMING_SOON')}
+              {isGovPubAvailable === false && (
+                <p className="text-sm color-secondary">{t('L0_PROPOSE_RPC_UNSUPPORTED')}</p>
+              )}
+              {!isLoadingActive && !hasActive && isEligibleForSigning && (
+                <p className="text-sm color-secondary">{t('L0_EXCLUSION_PROPOSE_NO_ACTIVE')}</p>
+              )}
+              {exclusionProposePhase === 'success' && submittedExclusionProposalHash && (
+                <p className="text-sm color-secondary">
+                  {t('L0_EXCLUSION_PROPOSE_SUCCESS_HASH', { hash: submittedExclusionProposalHash })}
+                </p>
+              )}
+              <Button
+                alwaysEnabled={isEligibleForSigning && featureFlags.l0Governance}
+                disabled={isExclusionProposeDisabled}
+                loading={isExclusionProposeRunning}
+                onClick={proposeExclusionListTimestampRefresh}
+              >
+                {exclusionProposeButtonLabel}
               </Button>
             </article>
           </section>
