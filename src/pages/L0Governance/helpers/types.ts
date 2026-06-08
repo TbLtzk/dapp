@@ -5,6 +5,7 @@ export interface GovPubRootList {
   signatures: string[];
 }
 
+/** Legacy pre-#32 signing payload (metadata + nodes). */
 export interface GovPubRootListSigningMetadata {
   domain: string;
   version: string;
@@ -19,8 +20,27 @@ export interface GovPubRootListSigningPayload {
   nodes: string[];
 }
 
+export interface GovPubEip712TypeField {
+  name: string;
+  type: string;
+}
+
+export interface GovPubEip712TypedData {
+  types: Record<string, GovPubEip712TypeField[]>;
+  primaryType: string;
+  domain: {
+    name: string;
+    version: string;
+    chainId: string | number;
+    verifyingContract: string;
+  };
+  message: Record<string, unknown>;
+}
+
 export interface GovPubRootListSigningPayloadWithDigest {
-  payload: GovPubRootListSigningPayload;
+  typedData?: GovPubEip712TypedData;
+  /** @deprecated Pre-q-client #32; use typedData when present. */
+  payload?: GovPubRootListSigningPayload;
   digest: string;
 }
 
@@ -43,7 +63,9 @@ export interface GovPubExclusionListSigningPayload {
 }
 
 export interface GovPubExclusionListSigningPayloadWithDigest {
-  payload: GovPubExclusionListSigningPayload;
+  typedData?: GovPubEip712TypedData;
+  /** @deprecated Pre-q-client #32; use typedData when present. */
+  payload?: GovPubExclusionListSigningPayload;
   digest: string;
 }
 

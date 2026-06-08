@@ -2,6 +2,7 @@ import { _TypedDataEncoder } from '@ethersproject/hash';
 import { ethers, Signer } from 'ethers';
 
 import {
+  GovPubEip712TypedData,
   GovPubExclusionListSigningPayload,
   GovPubExclusionListSigningPayloadWithDigest,
   GovPubRootListSigningPayload,
@@ -18,10 +19,6 @@ const EXCLUDED_VALIDATOR_TYPE = 'QGOVL0ExcludedValidator';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-/**
- * Builds EIP-712 typed data for MetaMask from the govPub signing payload.
- * Schema aligned with q-client issue #32 (v1); RPC may later return this verbatim.
- */
 export function buildRootListEip712TypedData (payload: GovPubRootListSigningPayload) {
   const { metadata, nodes } = payload;
 
@@ -49,50 +46,11 @@ export function buildRootListEip712TypedData (payload: GovPubRootListSigningPayl
   };
 }
 
-/** EIP-712 signing hash (what MetaMask signs after eth_signTypedData_v4). */
 export function computeRootListEip712Digest (
   payload: GovPubRootListSigningPayload,
 ): string {
   const { domain, types, message } = buildRootListEip712TypedData(payload);
   return _TypedDataEncoder.hash(domain, types, message);
-}
-
-/**
- * Signs via eth_signTypedData_v4. Submit will succeed once q-client #32 ships
- * (digest from *WithDigest must match this hash on the fixed node).
- */
-export async function signRootListGovernancePayload (
-  signer: Signer,
-  bundle: GovPubRootListSigningPayloadWithDigest,
-): Promise<string> {
-  const { domain, types, message } = buildRootListEip712TypedData(bundle.payload);
-  const eip712Digest = computeRootListEip712Digest(bundle.payload);
-
-  if (
-    bundle.digest &&
-    bundle.digest.toLowerCase() !== eip712Digest.toLowerCase()
-  ) {
-    console.warn(
-      '[L0 governance] RPC digest does not match EIP-712 hash (expected until q-client #32):',
-      { rpcDigest: bundle.digest, eip712Digest },
-    );
-  }
-
-  const provider = signer.provider;
-  if (!provider) {
-    throw new Error('Signer has no provider');
-  }
-
-  const typedDataPayload = _TypedDataEncoder.getPayload(domain, types, message);
-  const signature: string = await (provider as ethers.providers.JsonRpcProvider).send(
-    'eth_signTypedData_v4',
-    [
-      await signer.getAddress(),
-      JSON.stringify(typedDataPayload),
-    ],
-  );
-
-  return ethers.utils.hexlify(ethers.utils.arrayify(signature));
 }
 
 export function buildExclusionListEip712TypedData (payload: GovPubExclusionListSigningPayload) {
@@ -138,10 +96,80 @@ export function computeExclusionListEip712Digest (
   return _TypedDataEncoder.hash(domain, types, message);
 }
 
+async function signWithEip712TypedData (
+  signer: Signer,
+  typedData: GovPubEip712TypedData,
+): Promise<string> {
+  const provider = signer.provider;
+  if (!provider) {
+    throw new Error('Signer has no provider');
+  }
+
+  const signature: string = await (provider as ethers.providers.JsonRpcProvider).send(
+    'eth_signTypedData_v4',
+    [
+      await signer.getAddress(),
+      JSON.stringify(typedData),
+    ],
+  );
+
+  return ethers.utils.hexlify(ethers.utils.arrayify(signature));
+}
+
+export async function signRootListGovernancePayload (
+  signer: Signer,
+  bundle: GovPubRootListSigningPayloadWithDigest,
+): Promise<string> {
+  if (bundle.typedData) {
+    return signWithEip712TypedData(signer, bundle.typedData);
+  }
+
+  if (!bundle.payload) {
+    throw new Error('govPub signing response missing typedData and legacy payload');
+  }
+
+  const { domain, types, message } = buildRootListEip712TypedData(bundle.payload);
+  const eip712Digest = computeRootListEip712Digest(bundle.payload);
+
+  if (
+    bundle.digest &&
+    bundle.digest.toLowerCase() !== eip712Digest.toLowerCase()
+  ) {
+    console.warn(
+      '[L0 governance] RPC digest does not match locally built EIP-712 hash:',
+      { rpcDigest: bundle.digest, eip712Digest },
+    );
+  }
+
+  const provider = signer.provider;
+  if (!provider) {
+    throw new Error('Signer has no provider');
+  }
+
+  const typedDataPayload = _TypedDataEncoder.getPayload(domain, types, message);
+  const signature: string = await (provider as ethers.providers.JsonRpcProvider).send(
+    'eth_signTypedData_v4',
+    [
+      await signer.getAddress(),
+      JSON.stringify(typedDataPayload),
+    ],
+  );
+
+  return ethers.utils.hexlify(ethers.utils.arrayify(signature));
+}
+
 export async function signExclusionListGovernancePayload (
   signer: Signer,
   bundle: GovPubExclusionListSigningPayloadWithDigest,
 ): Promise<string> {
+  if (bundle.typedData) {
+    return signWithEip712TypedData(signer, bundle.typedData);
+  }
+
+  if (!bundle.payload) {
+    throw new Error('govPub signing response missing typedData and legacy payload');
+  }
+
   const { domain, types, message } = buildExclusionListEip712TypedData(bundle.payload);
   const eip712Digest = computeExclusionListEip712Digest(bundle.payload);
 
@@ -150,7 +178,7 @@ export async function signExclusionListGovernancePayload (
     bundle.digest.toLowerCase() !== eip712Digest.toLowerCase()
   ) {
     console.warn(
-      '[L0 governance] RPC digest does not match EIP-712 hash (expected until q-client #32):',
+      '[L0 governance] RPC digest does not match locally built EIP-712 hash:',
       { rpcDigest: bundle.digest, eip712Digest },
     );
   }
