@@ -4,7 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
+
+import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+
+import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const StyledWrapper = styled.div<{$isActive: boolean}>`
   padding: 24px 24px 16px;
@@ -33,10 +38,25 @@ const StyledWrapper = styled.div<{$isActive: boolean}>`
   }
 `;
 
-function ExclusionProposedBlock () {
+interface Props {
+  showGovernanceActions: boolean;
+}
+
+function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
   const { t } = useTranslation();
 
   const { rootNodesExclusionActive, rootNodesExclusionProposed, rootNodesL0Active } = useRootNodesMonitoringContext();
+  const { cosignExclusionList } = useL0GovernanceActions();
+
+  const {
+    phase: cosignPhase,
+    isGovPubAvailable,
+    isCheckingGovPub,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+    cosignProposedExclusionList,
+  } = cosignExclusionList;
 
   const hasExclusionProposedList = Boolean(rootNodesExclusionProposed);
 
@@ -57,6 +77,23 @@ function ExclusionProposedBlock () {
 
     return 0;
   }, [rootNodesExclusionProposed, rootNodesL0Active]);
+
+  const isCosignRunning = cosignPhase === 'running';
+  const isCosignDisabled = (
+    isCheckingGovPub ||
+    isLoadingProposed ||
+    isGovPubAvailable === false ||
+    !hasProposed ||
+    hasAlreadySigned ||
+    isCosignRunning ||
+    cosignPhase === 'success'
+  );
+
+  const cosignButtonLabel = (() => {
+    if (isCosignRunning) return t('L0_EXCLUSION_COSIGN_IN_PROGRESS');
+    if (cosignPhase === 'success') return t('L0_EXCLUSION_COSIGN_SUBMITTED');
+    return t('L0_EXCLUSION_COSIGN_PROPOSED_EXCLUSION_LIST');
+  })();
 
   return (
     <StyledWrapper
@@ -89,6 +126,20 @@ function ExclusionProposedBlock () {
           </div>
         }
       </div>
+
+      {showGovernanceActions && (
+        <MonitoringGovernanceFooter>
+          <Button
+            alwaysEnabled
+            compact
+            disabled={isCosignDisabled}
+            loading={isCosignRunning}
+            onClick={cosignProposedExclusionList}
+          >
+            {cosignButtonLabel}
+          </Button>
+        </MonitoringGovernanceFooter>
+      )}
     </StyledWrapper>
   );
 }

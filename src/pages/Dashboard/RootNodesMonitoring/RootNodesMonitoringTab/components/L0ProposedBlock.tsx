@@ -4,7 +4,12 @@ import { Trans, useTranslation } from 'react-i18next';
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
+
+import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+
+import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const StyledWrapper = styled.div<{
   $isEqual: boolean;
@@ -43,10 +48,25 @@ const StyledWrapper = styled.div<{
   }
 `;
 
-function L0ProposedBlock () {
+interface Props {
+  showGovernanceActions: boolean;
+}
+
+function L0ProposedBlock ({ showGovernanceActions }: Props) {
   const { t } = useTranslation();
 
   const { rootNodesL0Active, rootNodesL0Proposed, rootNodesOnchainList } = useRootNodesMonitoringContext();
+  const { cosignRootList } = useL0GovernanceActions();
+
+  const {
+    phase: cosignPhase,
+    isGovPubAvailable,
+    isCheckingGovPub,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+    cosignProposedRootList,
+  } = cosignRootList;
 
   const hasRootNodesL0ProposedList = Boolean(rootNodesL0Proposed);
 
@@ -75,6 +95,23 @@ function L0ProposedBlock () {
 
     return 0;
   }, [rootNodesL0Proposed, rootNodesL0Active]);
+
+  const isCosignRunning = cosignPhase === 'running';
+  const isCosignDisabled = (
+    isCheckingGovPub ||
+    isLoadingProposed ||
+    isGovPubAvailable === false ||
+    !hasProposed ||
+    hasAlreadySigned ||
+    isCosignRunning ||
+    cosignPhase === 'success'
+  );
+
+  const cosignButtonLabel = (() => {
+    if (isCosignRunning) return t('L0_COSIGN_IN_PROGRESS');
+    if (cosignPhase === 'success') return t('L0_COSIGN_SUBMITTED');
+    return t('L0_COSIGN_PROPOSED_ROOT_LIST');
+  })();
 
   return (
     <StyledWrapper
@@ -116,6 +153,20 @@ function L0ProposedBlock () {
           </div>
         )}
       </div>
+
+      {showGovernanceActions && (
+        <MonitoringGovernanceFooter>
+          <Button
+            alwaysEnabled
+            compact
+            disabled={isCosignDisabled}
+            loading={isCosignRunning}
+            onClick={cosignProposedRootList}
+          >
+            {cosignButtonLabel}
+          </Button>
+        </MonitoringGovernanceFooter>
+      )}
     </StyledWrapper>
   );
 }

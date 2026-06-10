@@ -25,7 +25,6 @@ const Auction = lazy(() => import('pages/Auctions/components/Auction'));
 const NewAuction = lazy(() => import('pages/Auctions/components/NewAuction'));
 const DataPrivacy = lazy(() => import('pages/DataPrivacy'));
 const Governance = lazy(() => import('pages/Governance'));
-const L0Governance = lazy(() => import('pages/L0Governance'));
 const VotingPower = lazy(() => import('pages/Governance/components/VotingPower'));
 const NewProposal = lazy(() => import('pages/Governance/NewProposal'));
 const Proposal = lazy(() => import('pages/Governance/Proposal'));
@@ -48,11 +47,9 @@ function Routes () {
       <LazyLoading>
         <ScrollToTop />
         <Switch>
-          {featureFlags.l0Governance && (
-            <Route exact path={RoutePaths.dashboardRootNodesMonitoringL0Governance}>
-              <L0Governance />
-            </Route>
-          )}
+          <Route exact path="/dashboard/root-nodes-monitoring/l0-governance">
+            <Redirect to={RoutePaths.dashboardRootNodesMonitoring} />
+          </Route>
 
           <Route
             exact
