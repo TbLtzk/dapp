@@ -1,13 +1,23 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getCosignatureStatus } from '../helpers/table-collect-data';
+
+import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const BLOCK_DELTA = 10;
 const SIGNED_PERCENTAGE_MINORITY = 50;
+
+const presenceI18nKeyByStatus: Record<CosignatureStatus, string> = {
+  online: 'RN_CONNECTED_PRESENCE_ONLINE',
+  offline: 'RN_CONNECTED_PRESENCE_OFFLINE',
+  'waiting-approval': 'RN_CONNECTED_PRESENCE_AWAITING',
+};
 
 const StyledWrapper = styled.div<{$isSignedMinority: boolean}>`
   padding: 24px 24px 16px;
@@ -31,7 +41,33 @@ const StyledApprovalStatus = styled.p<{$isMajorityOffline: boolean}>`
   color: ${({ theme, $isMajorityOffline }) => $isMajorityOffline ? theme.colors.errorMain : theme.colors.warningPrimary};
 `;
 
-function RecentTransitionBlock () {
+const StyledConnectedPresence = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+`;
+
+const StyledPresenceAccent = styled.span<{$status: CosignatureStatus}>`
+  color: ${({ theme, $status }) => {
+    switch ($status) {
+      case 'online':
+        return theme.colors.successMain;
+      case 'waiting-approval':
+        return theme.colors.warningSecondary;
+      case 'offline':
+        return theme.colors.textAdditional;
+    }
+  }};
+`;
+
+interface Props {
+  showGovernanceActions: boolean;
+  connectedRootAccount?: string;
+}
+
+function RecentTransitionBlock ({ showGovernanceActions, connectedRootAccount }: Props) {
   const { t } = useTranslation();
 
   const { latestCosignatureMetrics, rootNodesL0Active, blockHeight } = useRootNodesMonitoringContext();
@@ -77,6 +113,12 @@ function RecentTransitionBlock () {
     };
   }, [blockHeight, latestCosignatureMetrics, rootNodesL0ActiveCount, t]);
 
+  const connectedPresenceStatus = useMemo((): CosignatureStatus | null => {
+    if (!showGovernanceActions || !connectedRootAccount) return null;
+
+    return getCosignatureStatus(connectedRootAccount, latestCosignatureMetrics);
+  }, [connectedRootAccount, latestCosignatureMetrics, showGovernanceActions]);
+
   return (
     <StyledWrapper className="block" $isSignedMinority={isSignedMinority}>
       <div>
@@ -101,6 +143,19 @@ function RecentTransitionBlock () {
           </StyledApprovalStatus>
         )}
       </div>
+
+      {connectedPresenceStatus && (
+        <MonitoringGovernanceFooter className="monitoring-governance-footer--presence">
+          <StyledConnectedPresence>
+            <Trans
+              i18nKey={presenceI18nKeyByStatus[connectedPresenceStatus]}
+              components={{
+                accent: <StyledPresenceAccent $status={connectedPresenceStatus} />,
+              }}
+            />
+          </StyledConnectedPresence>
+        </MonitoringGovernanceFooter>
+      )}
     </StyledWrapper>
   );
 }

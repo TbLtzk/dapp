@@ -33,6 +33,13 @@ const StyledWrapper = styled.div`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 24px;
     margin-bottom: 24px;
+    align-items: stretch;
+
+    > .block {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
     ${media.lessThan('large')} {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -77,7 +84,10 @@ function RootNodesMonitoring () {
             <OnchainActiveBlock showGovernanceActions={showGovernanceActions} />
             <L0ProposedBlock showGovernanceActions={showGovernanceActions} />
             <ExclusionProposedBlock showGovernanceActions={showGovernanceActions} />
-            <RecentTransitionBlock />
+            <RecentTransitionBlock
+              showGovernanceActions={showGovernanceActions}
+              connectedRootAccount={l0GovernanceEligibility.rootAccount}
+            />
           </div>
           <RootNodesMonitoringTable />
         </L0GovernanceActionsProvider>
