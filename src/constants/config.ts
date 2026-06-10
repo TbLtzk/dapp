@@ -27,7 +27,6 @@ interface NetworkConfig {
     aliases: boolean;
     rootNodesMetrics: boolean;
     genericContractRegistryVoting: boolean;
-    l0Governance: boolean;
   };
 }
 
@@ -55,7 +54,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
       aliases: true,
       rootNodesMetrics: true,
       genericContractRegistryVoting: false,
-      l0Governance: false,
     },
   },
   testnet: {
@@ -81,7 +79,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
       aliases: true,
       rootNodesMetrics: true,
       genericContractRegistryVoting: true,
-      l0Governance: true,
     },
   },
   devnet: {
@@ -107,7 +104,6 @@ export const networkConfigsMap: Record<NetworkName, NetworkConfig> = {
       aliases: true,
       rootNodesMetrics: true,
       genericContractRegistryVoting: true,
-      l0Governance: true,
     },
   },
 };

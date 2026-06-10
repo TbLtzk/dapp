@@ -9,7 +9,7 @@ import {
   ZERO_HASH,
 } from './types';
 
-function isRpcMethodMissing (error: unknown): boolean {
+export function isRpcMethodMissing (error: unknown): boolean {
   const candidate = error as { code?: number; message?: string };
   const message = candidate?.message?.toLowerCase() || '';
 

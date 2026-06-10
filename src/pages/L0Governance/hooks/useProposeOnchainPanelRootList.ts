@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
@@ -11,13 +11,14 @@ import {
   createGovPubProvider,
   extractRpcErrorMessage,
   fetchSigningPayloadRootListV1WithDigest,
-  probeGovPubRootListSigning,
   rootListFromSigningPayload,
   submitTypedSignedRootList,
 } from '../helpers/gov-pub-rpc';
 import { buildProposalTimestamp, computeRootListHash } from '../helpers/root-list-hash';
 import { signRootListGovernancePayload } from '../helpers/sign-governance-typed-data';
 import { GovPubRootList } from '../helpers/types';
+
+import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -39,54 +40,20 @@ interface UseProposeOnchainPanelRootListResult {
 export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootListResult {
   const { t } = useTranslation();
   const { rpcUrl } = useNetworkConfig();
-  const { currentSigner, isConnected } = useWeb3Context();
+  const { currentSigner } = useWeb3Context();
+
+  const {
+    isRootListSigningAvailable: isGovPubAvailable,
+    isChecking: isCheckingGovPub,
+  } = useGovPubCapabilitiesContext();
 
   const [phase, setPhase] = useState<ProposeOnchainPanelPhase>('idle');
-  const [isGovPubAvailable, setIsGovPubAvailable] = useState<boolean | null>(null);
-  const [isCheckingGovPub, setIsCheckingGovPub] = useState(false);
   const [submittedProposalHash, setSubmittedProposalHash] = useState<string | null>(null);
 
   const govPubProvider = useMemo(
     () => (rpcUrl ? createGovPubProvider(rpcUrl) : null),
     [rpcUrl],
   );
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function checkCapabilities () {
-      if (!govPubProvider || !isConnected) {
-        if (isMounted) {
-          setIsGovPubAvailable(null);
-          setIsCheckingGovPub(false);
-        }
-        return;
-      }
-
-      setIsCheckingGovPub(true);
-
-      try {
-        const isAvailable = await probeGovPubRootListSigning(govPubProvider);
-        if (isMounted) {
-          setIsGovPubAvailable(isAvailable);
-        }
-      } catch {
-        if (isMounted) {
-          setIsGovPubAvailable(false);
-        }
-      } finally {
-        if (isMounted) {
-          setIsCheckingGovPub(false);
-        }
-      }
-    }
-
-    checkCapabilities();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [govPubProvider, isConnected]);
 
   const proposeFromOnchainPanel = useCallback(async () => {
     if (!currentSigner || !govPubProvider) {

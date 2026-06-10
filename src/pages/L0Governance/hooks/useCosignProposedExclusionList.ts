@@ -14,7 +14,6 @@ import {
   exclusionListFromSigningPayload,
   extractRpcErrorMessage,
   fetchSigningPayloadExclusionListV1WithDigest,
-  probeGovPubExclusionListSigning,
   submitTypedSignedExclusionList,
 } from '../helpers/gov-pub-rpc';
 import {
@@ -23,6 +22,8 @@ import {
 } from '../helpers/proposed-exclusion-list-indexer';
 import { signExclusionListGovernancePayload } from '../helpers/sign-governance-typed-data';
 import { GovPubExclusionList } from '../helpers/types';
+
+import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
 
 import { Bus } from 'utils/event-bus';
 
@@ -47,9 +48,12 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
   const { rpcUrl, indexerUrl } = useNetworkConfig();
   const { address, currentSigner, isConnected } = useWeb3Context();
 
+  const {
+    isExclusionListSigningAvailable: isGovPubAvailable,
+    isChecking: isCheckingGovPub,
+  } = useGovPubCapabilitiesContext();
+
   const [phase, setPhase] = useState<CosignProposedExclusionListPhase>('idle');
-  const [isGovPubAvailable, setIsGovPubAvailable] = useState<boolean | null>(null);
-  const [isCheckingGovPub, setIsCheckingGovPub] = useState(false);
   const [isLoadingProposed, setIsLoadingProposed] = useState(false);
   const [proposedFromIndexer, setProposedFromIndexer] = useState<L0ExclusionListItem | null>(null);
   const [submittedAttestationHash, setSubmittedAttestationHash] = useState<string | null>(null);
@@ -61,43 +65,6 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
 
   const hasProposed = hasProposedExclusionList(proposedFromIndexer);
   const hasAlreadySigned = hasSignedProposedExclusionList(proposedFromIndexer, address);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function checkCapabilities () {
-      if (!govPubProvider || !isConnected) {
-        if (isMounted) {
-          setIsGovPubAvailable(null);
-          setIsCheckingGovPub(false);
-        }
-        return;
-      }
-
-      setIsCheckingGovPub(true);
-
-      try {
-        const isAvailable = await probeGovPubExclusionListSigning(govPubProvider);
-        if (isMounted) {
-          setIsGovPubAvailable(isAvailable);
-        }
-      } catch {
-        if (isMounted) {
-          setIsGovPubAvailable(false);
-        }
-      } finally {
-        if (isMounted) {
-          setIsCheckingGovPub(false);
-        }
-      }
-    }
-
-    checkCapabilities();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [govPubProvider, isConnected]);
 
   useEffect(() => {
     let isMounted = true;

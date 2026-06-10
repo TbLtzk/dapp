@@ -13,7 +13,6 @@ import {
   createGovPubProvider,
   extractRpcErrorMessage,
   fetchSigningPayloadRootListV1WithDigest,
-  probeGovPubRootListSigning,
   rootListFromSigningPayload,
   submitTypedSignedRootList,
 } from '../helpers/gov-pub-rpc';
@@ -23,6 +22,8 @@ import {
 } from '../helpers/proposed-root-list-indexer';
 import { signRootListGovernancePayload } from '../helpers/sign-governance-typed-data';
 import { GovPubRootList } from '../helpers/types';
+
+import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
 
 import { Bus } from 'utils/event-bus';
 
@@ -47,9 +48,12 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
   const { rpcUrl, indexerUrl } = useNetworkConfig();
   const { address, currentSigner, isConnected } = useWeb3Context();
 
+  const {
+    isRootListSigningAvailable: isGovPubAvailable,
+    isChecking: isCheckingGovPub,
+  } = useGovPubCapabilitiesContext();
+
   const [phase, setPhase] = useState<CosignProposedRootListPhase>('idle');
-  const [isGovPubAvailable, setIsGovPubAvailable] = useState<boolean | null>(null);
-  const [isCheckingGovPub, setIsCheckingGovPub] = useState(false);
   const [isLoadingProposed, setIsLoadingProposed] = useState(false);
   const [proposedFromIndexer, setProposedFromIndexer] = useState<L0RootListItem | null>(null);
   const [submittedAttestationHash, setSubmittedAttestationHash] = useState<string | null>(null);
@@ -61,43 +65,6 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
 
   const hasProposed = hasProposedRootList(proposedFromIndexer);
   const hasAlreadySigned = hasSignedProposedRootList(proposedFromIndexer, address);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function checkCapabilities () {
-      if (!govPubProvider || !isConnected) {
-        if (isMounted) {
-          setIsGovPubAvailable(null);
-          setIsCheckingGovPub(false);
-        }
-        return;
-      }
-
-      setIsCheckingGovPub(true);
-
-      try {
-        const isAvailable = await probeGovPubRootListSigning(govPubProvider);
-        if (isMounted) {
-          setIsGovPubAvailable(isAvailable);
-        }
-      } catch {
-        if (isMounted) {
-          setIsGovPubAvailable(false);
-        }
-      } finally {
-        if (isMounted) {
-          setIsCheckingGovPub(false);
-        }
-      }
-    }
-
-    checkCapabilities();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [govPubProvider, isConnected]);
 
   useEffect(() => {
     let isMounted = true;

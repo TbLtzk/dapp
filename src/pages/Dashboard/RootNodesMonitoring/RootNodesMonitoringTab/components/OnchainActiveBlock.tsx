@@ -6,10 +6,12 @@ import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
+import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 
+import GovernanceActionButton from './GovernanceActionButton';
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 import { RoutePaths } from 'constants/routes';
@@ -40,13 +42,11 @@ interface Props {
 function OnchainActiveBlock ({ showGovernanceActions }: Props) {
   const { t } = useTranslation();
 
-  const { rootNodesOnchainDiffList } = useRootNodesMonitoringContext();
+  const { rootNodesOnchainDiffList, rootNodesOnchainList } = useRootNodesMonitoringContext();
   const { proposeRootList } = useL0GovernanceActions();
 
   const {
     phase: proposePhase,
-    isGovPubAvailable,
-    isCheckingGovPub,
     proposeFromOnchainPanel,
   } = proposeRootList;
 
@@ -59,12 +59,11 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
   const isEqualLists = useMemo(() => !diffCount, [diffCount]);
 
   const isProposeRunning = proposePhase === 'running';
-  const isProposeDisabled = (
-    isCheckingGovPub ||
-    isGovPubAvailable === false ||
-    isProposeRunning ||
-    proposePhase === 'success'
-  );
+
+  const proposeGuard = useL0GovernanceActionGuard('propose-root', {
+    phase: proposePhase,
+    isOnchainPanelEmpty: rootNodesOnchainList.length === 0,
+  });
 
   const proposeButtonLabel = (() => {
     if (isProposeRunning) return t('L0_PROPOSE_IN_PROGRESS');
@@ -105,15 +104,13 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
 
       {showGovernanceActions && (
         <MonitoringGovernanceFooter>
-          <Button
-            alwaysEnabled
-            compact
-            disabled={isProposeDisabled}
-            loading={isProposeRunning}
+          <GovernanceActionButton
+            guard={proposeGuard}
+            loading={isProposeRunning || proposeGuard.isChecking}
             onClick={proposeFromOnchainPanel}
           >
             {proposeButtonLabel}
-          </Button>
+          </GovernanceActionButton>
         </MonitoringGovernanceFooter>
       )}
     </StyledWrapper>

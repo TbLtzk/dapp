@@ -4,11 +4,12 @@ import { Trans, useTranslation } from 'react-i18next';
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
-import Button from 'components/Button';
+import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 
+import GovernanceActionButton from './GovernanceActionButton';
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const StyledWrapper = styled.div<{
@@ -60,8 +61,6 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
 
   const {
     phase: cosignPhase,
-    isGovPubAvailable,
-    isCheckingGovPub,
     isLoadingProposed,
     hasProposed,
     hasAlreadySigned,
@@ -97,15 +96,13 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
   }, [rootNodesL0Proposed, rootNodesL0Active]);
 
   const isCosignRunning = cosignPhase === 'running';
-  const isCosignDisabled = (
-    isCheckingGovPub ||
-    isLoadingProposed ||
-    isGovPubAvailable === false ||
-    !hasProposed ||
-    hasAlreadySigned ||
-    isCosignRunning ||
-    cosignPhase === 'success'
-  );
+
+  const cosignGuard = useL0GovernanceActionGuard('cosign-root', {
+    phase: cosignPhase,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+  });
 
   const cosignButtonLabel = (() => {
     if (isCosignRunning) return t('L0_COSIGN_IN_PROGRESS');
@@ -156,15 +153,13 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
 
       {showGovernanceActions && (
         <MonitoringGovernanceFooter>
-          <Button
-            alwaysEnabled
-            compact
-            disabled={isCosignDisabled}
-            loading={isCosignRunning}
+          <GovernanceActionButton
+            guard={cosignGuard}
+            loading={isCosignRunning || cosignGuard.isChecking}
             onClick={cosignProposedRootList}
           >
             {cosignButtonLabel}
-          </Button>
+          </GovernanceActionButton>
         </MonitoringGovernanceFooter>
       )}
     </StyledWrapper>
