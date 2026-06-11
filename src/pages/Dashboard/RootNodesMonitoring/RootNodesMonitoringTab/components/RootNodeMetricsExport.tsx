@@ -103,7 +103,7 @@ function RootNodeMetricsExport () {
         listsSigned.isExclusionActiveSigned,
         listsSigned.isExclusionProposedSigned,
 
-        getCosignatureStatus(address, latestCosignatureMetrics),
+        getCosignatureStatus(address, latestCosignatureMetrics, blockHeight),
         getCosignatureStats(address, cosignatureMetrics20)?.availability ?? 'N/a',
         getCosignatureStats(address, cosignatureMetrics1000)?.availability ?? 'N/a',
 

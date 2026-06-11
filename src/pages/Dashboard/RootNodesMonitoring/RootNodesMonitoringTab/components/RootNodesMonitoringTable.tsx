@@ -121,6 +121,7 @@ function RootNodesMonitoringTable () {
     qTHVotingsStats,
     votingsStats,
     proposalsStats,
+    blockHeight,
   } = useRootNodesMonitoringContext();
 
   const connectedRootAccount = useMemo(() => (
@@ -149,7 +150,11 @@ function RootNodesMonitoringTable () {
       rootNodesExclusionActive,
       rootNodesExclusionProposed,
     });
-    const cosignatureStatus = getCosignatureStatus(rootNode.address, latestCosignatureMetrics);
+    const cosignatureStatus = getCosignatureStatus(
+      rootNode.address,
+      latestCosignatureMetrics,
+      blockHeight,
+    );
     const cosignatureStats20 = getCosignatureStats(rootNode.address, cosignatureMetrics20);
     const cosignatureStats1000 = getCosignatureStats(rootNode.address, cosignatureMetrics1000);
     const votingParticipationStats = getVotingParticipationStats({

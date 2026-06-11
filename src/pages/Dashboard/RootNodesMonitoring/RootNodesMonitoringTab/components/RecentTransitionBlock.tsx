@@ -6,11 +6,13 @@ import styled from 'styled-components';
 import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
-import { getCosignatureStatus } from '../helpers/table-collect-data';
+import {
+  COSIGNATURE_TRANSITION_BLOCK_DELTA,
+  getCosignatureStatus,
+} from '../helpers/table-collect-data';
 
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
-const BLOCK_DELTA = 10;
 const SIGNED_PERCENTAGE_MINORITY = 50;
 
 const presenceI18nKeyByStatus: Record<CosignatureStatus, string> = {
@@ -97,11 +99,10 @@ function RecentTransitionBlock ({ showGovernanceActions, connectedRootAccount }:
     if (!blockHeight || !rootNodesL0ActiveCount || !latestCosignatureMetrics) return null;
     const delta = blockHeight - latestCosignatureMetrics.lastTransitionBlock;
 
-    if (delta >= BLOCK_DELTA) return null;
+    if (delta >= COSIGNATURE_TRANSITION_BLOCK_DELTA) return null;
 
     const firstBlockSigned = latestCosignatureMetrics.byAddress
-      .filter(({ firstObservedApproval }) =>
-        firstObservedApproval.block === latestCosignatureMetrics.firstTransitionBlock)
+      .filter(({ lastObservedApproval }) => lastObservedApproval.block > 0)
       .length;
 
     const firstBlockSignedPercentage = firstBlockSigned / rootNodesL0ActiveCount * 100;
@@ -116,8 +117,8 @@ function RecentTransitionBlock ({ showGovernanceActions, connectedRootAccount }:
   const connectedPresenceStatus = useMemo((): CosignatureStatus | null => {
     if (!showGovernanceActions || !connectedRootAccount) return null;
 
-    return getCosignatureStatus(connectedRootAccount, latestCosignatureMetrics);
-  }, [connectedRootAccount, latestCosignatureMetrics, showGovernanceActions]);
+    return getCosignatureStatus(connectedRootAccount, latestCosignatureMetrics, blockHeight);
+  }, [blockHeight, connectedRootAccount, latestCosignatureMetrics, showGovernanceActions]);
 
   return (
     <StyledWrapper className="block" $isSignedMinority={isSignedMinority}>

@@ -8,10 +8,13 @@ import {
 } from '@q-dev/q-js-sdk';
 import {
   CosignatureStats,
+  CosignatureStatus,
   L0ApprovalMap,
   L0ApprovalStatus,
   L0MembershipStatus
 } from 'typings/root-nodes';
+
+export const COSIGNATURE_TRANSITION_BLOCK_DELTA = 10;
 
 interface L0ApprovalStatusArgs {
   address: string;
@@ -105,16 +108,29 @@ export function getL0MembershipStatus ({
     : 'not-in-list';
 }
 
-export function getCosignatureStatus (address: string, latestCosignatureMetrics: RootNodeMetric | null) {
+export function getCosignatureStatus (
+  address: string,
+  latestCosignatureMetrics: RootNodeMetric | null,
+  blockHeight?: number | null,
+): CosignatureStatus {
   const metrics = latestCosignatureMetrics?.byAddress.find(({ mainAccount }) =>
     mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
   );
-  if (!metrics) return 'offline';
-  if (metrics.lastObservedApproval.block === latestCosignatureMetrics?.lastTransitionBlock) {
-    return 'online';
-  }
-  if (metrics.firstObservedApproval.block ===
-      latestCosignatureMetrics?.firstTransitionBlock) {
+  if (!metrics || !latestCosignatureMetrics) return 'offline';
+
+  const { lastTransitionBlock } = latestCosignatureMetrics;
+  const { lastObservedApproval } = metrics;
+
+  if (lastObservedApproval.block === lastTransitionBlock) return 'online';
+
+  const inActiveTransitionWindow = blockHeight != null &&
+    blockHeight - lastTransitionBlock < COSIGNATURE_TRANSITION_BLOCK_DELTA;
+
+  if (
+    inActiveTransitionWindow &&
+    lastObservedApproval.block > 0 &&
+    lastObservedApproval.block < lastTransitionBlock
+  ) {
     return 'waiting-approval';
   }
 
