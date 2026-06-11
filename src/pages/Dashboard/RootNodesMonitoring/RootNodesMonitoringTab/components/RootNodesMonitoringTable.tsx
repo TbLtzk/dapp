@@ -1,4 +1,5 @@
 
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
@@ -6,6 +7,7 @@ import styled from 'styled-components';
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
+import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/useL0GovernanceEligibility';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import {
@@ -35,6 +37,8 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateRelative } from 'utils/date';
 
+const CONNECTED_ROW_CLASS = 'root-nodes-monitoring-table--connected-row';
+
 const StyledTable = styled(Table)`
   .table tr td {
     padding: 10px;
@@ -42,6 +46,11 @@ const StyledTable = styled(Table)`
     &:first-child {
       padding-left: 24px;
     }
+  }
+
+  .table .${CONNECTED_ROW_CLASS} {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.successMain};
+    background: ${({ theme }) => theme.colors.tertiaryMain};
   }
 `;
 
@@ -51,9 +60,56 @@ const DateColumnWrapper = styled.div`
   gap: 4px;
 `;
 
+const AddressColumnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const ConnectedRowBadge = styled.span`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.buttonTextPrimary};
+  background: ${({ theme }) => theme.colors.successMain};
+`;
+
+function isEligibleGovernanceVisitor (
+  status: ReturnType<typeof useL0GovernanceEligibility>['status'],
+): boolean {
+  return status === 'eligible-root' || status === 'eligible-alias';
+}
+
+function isConnectedRootRow (
+  row: { address: string; alias?: string },
+  rootAccount: string | null | undefined,
+  aliasAccount: string | null | undefined,
+): boolean {
+  if (!rootAccount && !aliasAccount) {
+    return false;
+  }
+
+  const rowAddress = row.address?.toLowerCase();
+  const rowAlias = row.alias?.toLowerCase();
+
+  if (rootAccount && rowAddress === rootAccount.toLowerCase()) {
+    return true;
+  }
+
+  if (aliasAccount && rowAlias === aliasAccount.toLowerCase()) {
+    return true;
+  }
+
+  return false;
+}
+
 function RootNodesMonitoringTable () {
   const { t, i18n } = useTranslation();
   const { rootMembers } = useRootNodes();
+  const l0GovernanceEligibility = useL0GovernanceEligibility();
   const {
     rootNodesL0Active,
     rootNodesL0Proposed,
@@ -66,6 +122,18 @@ function RootNodesMonitoringTable () {
     votingsStats,
     proposalsStats,
   } = useRootNodesMonitoringContext();
+
+  const connectedRootAccount = useMemo(() => (
+    isEligibleGovernanceVisitor(l0GovernanceEligibility.status)
+      ? l0GovernanceEligibility.rootAccount
+      : undefined
+  ), [l0GovernanceEligibility]);
+
+  const connectedAliasAccount = useMemo(() => (
+    isEligibleGovernanceVisitor(l0GovernanceEligibility.status)
+      ? l0GovernanceEligibility.aliasAccount
+      : undefined
+  ), [l0GovernanceEligibility]);
 
   const rootMembersMonitoring = rootMembers.map((rootNode) => {
     const l0MembershipStatus = getL0MembershipStatus({
@@ -91,9 +159,16 @@ function RootNodesMonitoringTable () {
       proposalsStats,
     });
 
+    const isConnectedRow = isConnectedRootRow(
+      rootNode,
+      connectedRootAccount,
+      connectedAliasAccount,
+    );
+
     return {
       address: rootNode.address,
       alias: rootNode.alias,
+      isConnectedRow,
       date: rootNode.metric?.attributes.startTime,
       metric: rootNode.metric,
       cosignatureStatus,
@@ -113,7 +188,7 @@ function RootNodesMonitoringTable () {
       dataField: 'address',
       text: t('ROOT_NODE_ADDRESS'),
       formatter: (cell, row) => (
-        <div style={{ display: 'flex' }}>
+        <AddressColumnWrapper>
           <ExplorerAddress
             short
             iconed
@@ -121,7 +196,10 @@ function RootNodesMonitoringTable () {
             address={cell}
           />
           <AliasTooltip isRootNode alias={row.alias} />
-        </div>
+          {row.isConnectedRow && (
+            <ConnectedRowBadge>{t('RN_CONNECTED_ROW_BADGE')}</ConnectedRowBadge>
+          )}
+        </AddressColumnWrapper>
       ),
     },
     {
@@ -227,6 +305,7 @@ function RootNodesMonitoringTable () {
       </h2>}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
       keyField="address"
+      rowClasses={(row) => (row.isConnectedRow ? CONNECTED_ROW_CLASS : '')}
       searchFormatted={false}
       table={rootMembersMonitoring}
       buttons={<RootNodeMetricsExport />}

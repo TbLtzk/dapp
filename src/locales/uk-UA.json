@@ -1436,6 +1436,7 @@
   "RN_CONNECTED_PRESENCE_ONLINE": "Ви <accent>онлайн</accent>",
   "RN_CONNECTED_PRESENCE_OFFLINE": "Ви <accent>офлайн</accent>",
   "RN_CONNECTED_PRESENCE_AWAITING": "<accent>Очікуємо</accent> ваше підтвердження",
+  "RN_CONNECTED_ROW_BADGE": "Ви",
   "AVAILABILITY": "Доступність",
   "ACTUAL_APPROVALS": "Фактичні погодження",
   "DUE_APPROVALS": "Належні погодження",

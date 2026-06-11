@@ -1436,6 +1436,7 @@
   "RN_CONNECTED_PRESENCE_ONLINE": "You are <accent>online</accent>",
   "RN_CONNECTED_PRESENCE_OFFLINE": "You are <accent>offline</accent>",
   "RN_CONNECTED_PRESENCE_AWAITING": "<accent>Awaiting</accent> your approval",
+  "RN_CONNECTED_ROW_BADGE": "You",
   "AVAILABILITY": "Availability",
   "ACTUAL_APPROVALS": "Actual approvals",
   "DUE_APPROVALS": "Due approvals",
