@@ -4,6 +4,7 @@ import { Button } from '@q-dev/q-ui-kit';
 import { saveAs } from 'file-saver';
 
 import { HALF_YEAR_BLOCKS, useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
 import { getCosignatureStats, getCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
@@ -14,6 +15,7 @@ function RootNodeMetricsExport () {
   const { t } = useTranslation();
   const { rootMembers } = useRootNodes();
   const {
+    rootNodesOnchainDiffList,
     rootNodesL0Active,
     rootNodesL0Proposed,
     rootNodesExclusionActive,
@@ -68,7 +70,9 @@ function RootNodeMetricsExport () {
   };
 
   const getExportedMetrics = () => {
-    return rootMembers.map(({ address, alias, metric }) => {
+    const monitoringTableMembers = buildMonitoringTableMembers(rootNodesOnchainDiffList, rootMembers);
+
+    return monitoringTableMembers.map(({ address, alias, metric }) => {
       const joinTimestamp = metric?.attributes.startTime;
       const l0MembershipStatus = getL0MembershipStatus({
         address,

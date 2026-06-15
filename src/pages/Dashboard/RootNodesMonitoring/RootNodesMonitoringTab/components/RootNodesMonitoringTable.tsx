@@ -10,6 +10,7 @@ import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/useL0GovernanceEligibility';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
 import {
   getCosignatureStats,
   getCosignatureStatus,
@@ -111,6 +112,7 @@ function RootNodesMonitoringTable () {
   const { rootMembers } = useRootNodes();
   const l0GovernanceEligibility = useL0GovernanceEligibility();
   const {
+    rootNodesOnchainDiffList,
     rootNodesL0Active,
     rootNodesL0Proposed,
     rootNodesExclusionActive,
@@ -136,7 +138,12 @@ function RootNodesMonitoringTable () {
       : undefined
   ), [l0GovernanceEligibility]);
 
-  const rootMembersMonitoring = rootMembers.map((rootNode) => {
+  const monitoringTableMembers = useMemo(
+    () => buildMonitoringTableMembers(rootNodesOnchainDiffList, rootMembers),
+    [rootMembers, rootNodesOnchainDiffList],
+  );
+
+  const rootMembersMonitoring = monitoringTableMembers.map((rootNode) => {
     const l0MembershipStatus = getL0MembershipStatus({
       address: rootNode.address,
       rootNodesL0Active,
@@ -214,7 +221,11 @@ function RootNodesMonitoringTable () {
       sort: true,
       formatter: (cell, row) => (
         <DateColumnWrapper>
-          <span>{formatDateRelative(cell * 1000, i18n.language)}</span>
+          <span>
+            {cell != null
+              ? formatDateRelative(cell * 1000, i18n.language)
+              : '–'}
+          </span>
           {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
         </DateColumnWrapper>
       ),
