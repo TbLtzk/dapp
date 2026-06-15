@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 
 import { HALF_YEAR_BLOCKS, useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
-import { getCosignatureStats, getCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
+import { getCosignatureStats, getCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getOnchainMembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
@@ -33,17 +33,17 @@ function RootNodeMetricsExport () {
     return [
       t('ADDRESS'),
       t('ALIAS'),
-      t('JOIN_DATE'),
+      t('ONCHAIN_MEMBERSHIP_STATUS'),
+
+      t('CO_SIGNATURE_STATUS'),
+      t('CYCLES_AVAILABILITY', { count: 20 }),
+      t('CYCLES_AVAILABILITY', { count: 1000 }),
 
       t('L0_MEMBERSHIP_STATUS'),
       t('ACTIVE_ROOT_LIST_SIGNED'),
       t('PROPOSED_ROOT_LIST_SIGNED'),
       t('ACTIVE_EXCLUSION_LIST_SIGNED'),
       t('PROPOSED_EXCLUSION_LIST_SIGNED'),
-
-      t('CO_SIGNATURE_STATUS'),
-      t('CYCLES_AVAILABILITY', { count: 20 }),
-      t('CYCLES_AVAILABILITY', { count: 1000 }),
 
       t('RNV_TOTAL_VOTINGS'),
       t('RNV_EMERGENCY_UPDATE_VOTINGS'),
@@ -66,14 +66,16 @@ function RootNodeMetricsExport () {
       t('RNP_VALIDATOR_SLASHING_PROPOSALS'),
 
       t('VOTING_PARTICIPATION'),
+      t('JOIN_DATE'),
     ].join(', ');
   };
 
   const getExportedMetrics = () => {
     const monitoringTableMembers = buildMonitoringTableMembers(rootNodesOnchainDiffList, rootMembers);
 
-    return monitoringTableMembers.map(({ address, alias, metric }) => {
+    return monitoringTableMembers.map(({ address, alias, metric, isOnchain }) => {
       const joinTimestamp = metric?.attributes.startTime;
+      const onchainMembershipStatus = getOnchainMembershipStatus(isOnchain);
       const l0MembershipStatus = getL0MembershipStatus({
         address,
         rootNodesL0Active,
@@ -99,17 +101,18 @@ function RootNodeMetricsExport () {
       return [
         address,
         alias || '',
-        formatDateDMY(joinTimestamp ? joinTimestamp * 1000 : '–'),
+        onchainMembershipStatus,
+
+        getCosignatureStatus(address, latestCosignatureMetrics, blockHeight),
+        getCosignatureStats(address, cosignatureMetrics20)?.availability ?? 'N/a',
+        getCosignatureStats(address, cosignatureMetrics1000)?.availability ?? 'N/a',
+
         l0MembershipStatus,
 
         listsSigned.isRootActiveSigned,
         listsSigned.isRootProposedSigned,
         listsSigned.isExclusionActiveSigned,
         listsSigned.isExclusionProposedSigned,
-
-        getCosignatureStatus(address, latestCosignatureMetrics, blockHeight),
-        getCosignatureStats(address, cosignatureMetrics20)?.availability ?? 'N/a',
-        getCosignatureStats(address, cosignatureMetrics1000)?.availability ?? 'N/a',
 
         rootNodeVotings.totalOfUser,
         rootNodeVotings.emergencyUpdateVoting,
@@ -131,7 +134,8 @@ function RootNodeMetricsExport () {
         rootNodeProposals.rootNodesSlashingVoting,
         rootNodeProposals.validatorsSlashingVoting,
 
-        aggregatePercentage
+        aggregatePercentage,
+        formatDateDMY(joinTimestamp ? joinTimestamp * 1000 : '–'),
       ].join(',');
     });
   };

@@ -1,3 +1,4 @@
+export type OnchainMembershipStatus = 'member' | 'not-member';
 export type L0MembershipStatus = 'active' | 'proposed' | 'not-in-list';
 export type L0ApprovalStatus = 'all-signed' | 'not-signed' | 'not-in-list';
 export type CosignatureStatus = 'online' | 'offline' | 'waiting-approval';

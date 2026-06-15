@@ -16,6 +16,7 @@ import {
   getCosignatureStatus,
   getL0ApprovalStatus,
   getL0MembershipStatus,
+  getOnchainMembershipStatus,
   getVotingParticipationStats,
 } from '../helpers/table-collect-data';
 import {
@@ -23,6 +24,7 @@ import {
   cosignatureStatusSortFunc,
   l0ApprovalStatusSortFunc,
   l0MembershipStatusSortFunc,
+  onchainMembershipStatusSortFunc,
   votingParticipationStatsSortFunc,
 } from '../helpers/table-sorting';
 
@@ -30,6 +32,7 @@ import CosignatureStatsColumn from './CosignatureStatsColumn';
 import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
+import OnchainMembershipStatusColumn from './OnchainMembershipStatusColumn';
 import RootNodeMetricsExport from './RootNodeMetricsExport';
 import RootNodeMetricTooltip from './RootNodeMetricTooltip';
 import VotingParticipationStatsColumn from './VotingParticipationStatsColumn';
@@ -162,6 +165,7 @@ function RootNodesMonitoringTable () {
       latestCosignatureMetrics,
       blockHeight,
     );
+    const onchainMembershipStatus = getOnchainMembershipStatus(rootNode.isOnchain);
     const cosignatureStats20 = getCosignatureStats(rootNode.address, cosignatureMetrics20);
     const cosignatureStats1000 = getCosignatureStats(rootNode.address, cosignatureMetrics1000);
     const votingParticipationStats = getVotingParticipationStats({
@@ -183,6 +187,7 @@ function RootNodesMonitoringTable () {
       isConnectedRow,
       date: rootNode.metric?.attributes.startTime,
       metric: rootNode.metric,
+      onchainMembershipStatus,
       cosignatureStatus,
       l0RootApprovalStatus,
       l0ExclusionApprovalStatus,
@@ -215,19 +220,23 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '150px', cursor: 'pointer' }),
-      dataField: 'date',
-      text: t('JOIN_TIME'),
+      headerStyle: () => ({ minWidth: '130px', whiteSpace: 'pre-line' }),
+      dataField: 'onchainMembershipStatus',
+      text: t('ONCHAIN_MEMBERSHIP_STATUS'),
       sort: true,
-      formatter: (cell, row) => (
-        <DateColumnWrapper>
-          <span>
-            {cell != null
-              ? formatDateRelative(cell * 1000, i18n.language)
-              : '–'}
-          </span>
-          {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
-        </DateColumnWrapper>
+      sortFunc: onchainMembershipStatusSortFunc,
+      formatter: (cell) => (
+        <OnchainMembershipStatusColumn status={cell} />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: i18n.language === 'en-GB' ? '120px' : '180px', whiteSpace: 'pre-line', }),
+      dataField: 'cosignatureStatus',
+      text: t('CO_SIGNATURE_STATUS'),
+      sort: true,
+      sortFunc: cosignatureStatusSortFunc,
+      formatter: (cell) => (
+        <CosignatureStatusColumn status={cell} />
       ),
     },
     {
@@ -291,16 +300,6 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: i18n.language === 'en-GB' ? '120px' : '180px', whiteSpace: 'pre-line', }),
-      dataField: 'cosignatureStatus',
-      text: t('CO_SIGNATURE_STATUS'),
-      sort: true,
-      sortFunc: cosignatureStatusSortFunc,
-      formatter: (cell) => (
-        <CosignatureStatusColumn status={cell} />
-      ),
-    },
-    {
       headerStyle: () => ({ minWidth: '160px', whiteSpace: 'pre-line', }),
       dataField: 'votingParticipationStats',
       text: t('VOTING_PARTICIPATION'),
@@ -308,6 +307,22 @@ function RootNodesMonitoringTable () {
       sortFunc: votingParticipationStatsSortFunc,
       formatter: (cell) => (
         <VotingParticipationStatsColumn stats={cell} />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: '150px', cursor: 'pointer' }),
+      dataField: 'date',
+      text: t('JOIN_TIME'),
+      sort: true,
+      formatter: (cell, row) => (
+        <DateColumnWrapper>
+          <span>
+            {cell != null
+              ? formatDateRelative(cell * 1000, i18n.language)
+              : '–'}
+          </span>
+          {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
+        </DateColumnWrapper>
       ),
     },
   ];

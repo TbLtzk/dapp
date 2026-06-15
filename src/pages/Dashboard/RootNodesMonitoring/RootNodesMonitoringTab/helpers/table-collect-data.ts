@@ -11,7 +11,8 @@ import {
   CosignatureStatus,
   L0ApprovalMap,
   L0ApprovalStatus,
-  L0MembershipStatus
+  L0MembershipStatus,
+  OnchainMembershipStatus,
 } from 'typings/root-nodes';
 
 export const COSIGNATURE_TRANSITION_BLOCK_DELTA = 10;
@@ -89,6 +90,10 @@ export function getL0ApprovalStatus ({
     l0ExclusionApprovalStatus,
     listsSigned,
   };
+}
+
+export function getOnchainMembershipStatus (isOnchain: boolean): OnchainMembershipStatus {
+  return isOnchain ? 'member' : 'not-member';
 }
 
 export function getL0MembershipStatus ({

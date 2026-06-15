@@ -3,10 +3,16 @@ import {
   CosignatureStatus,
   L0ApprovalStatus,
   L0MembershipStatus,
+  OnchainMembershipStatus,
   VotingParticipationStats
 } from 'typings/root-nodes';
 
 import { TableColumn } from 'components/Table';
+
+const onchainMembershipStatusSortNumberMap: Record<OnchainMembershipStatus, number> = {
+  member: 1,
+  'not-member': 0,
+};
 
 const l0ApprovalStatusSortNumberMap: Record<L0ApprovalStatus, number> = {
   'all-signed': 2,
@@ -28,6 +34,13 @@ const cosignatureStatusSortNumberMap: Record<CosignatureStatus, number> = {
 
 const baseSort = (a: number, b: number, order: 'asc' | 'desc') => {
   return order === 'asc' ? a - b : b - a;
+};
+
+export const onchainMembershipStatusSortFunc: TableColumn['sortFunc'] = (a: OnchainMembershipStatus, b: OnchainMembershipStatus, order) => {
+  const aNum = onchainMembershipStatusSortNumberMap[a];
+  const bNum = onchainMembershipStatusSortNumberMap[b];
+
+  return baseSort(aNum, bNum, order);
 };
 
 export const l0ApprovalStatusSortFunc: TableColumn['sortFunc'] = (a: L0ApprovalStatus, b: L0ApprovalStatus, order) => {
