@@ -8,6 +8,7 @@ import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0Govern
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getActiveQuorumSigningProgress } from '../helpers/l0-quorum-signing-progress';
 
 import GovernanceActionButton from './GovernanceActionButton';
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
@@ -69,13 +70,14 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
       );
   }, [rootNodesExclusionProposed, rootNodesExclusionActive]);
 
-  const signersPercentage = useMemo(() => {
-    if (rootNodesExclusionProposed?.signers?.length && rootNodesL0Active?.roots.length) {
-      return rootNodesExclusionProposed.signers.length * 100 / rootNodesL0Active.roots.length;
-    }
-
-    return 0;
-  }, [rootNodesExclusionProposed, rootNodesL0Active]);
+  const quorumSigningProgress = useMemo(
+    () => getActiveQuorumSigningProgress({
+      signers: rootNodesExclusionProposed?.signers ?? undefined,
+      activeRoots: rootNodesL0Active?.roots ?? undefined,
+      activeRootPercentage: rootNodesExclusionProposed?.activeRootPercentage,
+    }),
+    [rootNodesExclusionProposed, rootNodesL0Active],
+  );
 
   const isCosignRunning = cosignPhase === 'running';
 
@@ -104,12 +106,12 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
             ? (<>
               <span className="font-semibold">
                 {t('NUMBER_SIGNED', {
-                  currentCount: rootNodesExclusionProposed?.signers?.length || 0,
-                  fullCount: rootNodesL0Active?.roots.length || 0
+                  currentCount: quorumSigningProgress.signedCount,
+                  fullCount: quorumSigningProgress.quorumSize,
                 })}
               </span>
               <span className="exclusion-proposed-block__val-percent">
-                {formatPercent(signersPercentage, 0)}
+                {formatPercent(quorumSigningProgress.percentage, 0)}
               </span>
             </>)
             : t('NO_LIST')

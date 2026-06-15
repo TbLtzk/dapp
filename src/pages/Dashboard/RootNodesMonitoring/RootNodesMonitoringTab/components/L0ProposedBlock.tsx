@@ -8,6 +8,7 @@ import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0Govern
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getActiveQuorumSigningProgress } from '../helpers/l0-quorum-signing-progress';
 
 import GovernanceActionButton from './GovernanceActionButton';
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
@@ -87,13 +88,14 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
       );
   }, [rootNodesOnchainList, rootNodesL0Proposed]);
 
-  const signersPercentage = useMemo(() => {
-    if (rootNodesL0Proposed?.signers?.length && rootNodesL0Active?.roots.length) {
-      return rootNodesL0Proposed.signers.length * 100 / rootNodesL0Active.roots.length;
-    }
-
-    return 0;
-  }, [rootNodesL0Proposed, rootNodesL0Active]);
+  const quorumSigningProgress = useMemo(
+    () => getActiveQuorumSigningProgress({
+      signers: rootNodesL0Proposed?.signers ?? undefined,
+      activeRoots: rootNodesL0Active?.roots ?? undefined,
+      activeRootPercentage: rootNodesL0Proposed?.activeRootPercentage,
+    }),
+    [rootNodesL0Active, rootNodesL0Proposed],
+  );
 
   const isCosignRunning = cosignPhase === 'running';
 
@@ -123,12 +125,12 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
             ? (<>
               <span className="font-semibold">
                 {t('NUMBER_SIGNED', {
-                  currentCount: rootNodesL0Proposed?.signers?.length || 0,
-                  fullCount: rootNodesL0Active?.roots.length || 0
+                  currentCount: quorumSigningProgress.signedCount,
+                  fullCount: quorumSigningProgress.quorumSize,
                 })}
               </span>
               <span className="l0-proposed-block__val-percent">
-                {formatPercent(signersPercentage, 0)}
+                {formatPercent(quorumSigningProgress.percentage, 0)}
               </span>
             </>)
             : t('NO_LIST')
