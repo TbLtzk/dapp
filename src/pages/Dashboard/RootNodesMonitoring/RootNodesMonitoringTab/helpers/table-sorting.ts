@@ -27,9 +27,10 @@ const l0MembershipStatusSortNumberMap: Record<L0MembershipStatus, number> = {
 };
 
 const cosignatureStatusSortNumberMap: Record<CosignatureStatus, number> = {
-  online: 2,
-  'waiting-approval': 1,
-  offline: 0,
+  online: 3,
+  'waiting-approval': 2,
+  offline: 1,
+  'not-in-list': 0,
 };
 
 const baseSort = (a: number, b: number, order: 'asc' | 'desc') => {

@@ -8,12 +8,14 @@ import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
 import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/useL0GovernanceEligibility';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
 import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
 import {
   getCosignatureStats,
-  getCosignatureStatus,
+  getTableCosignatureStatus,
   getL0ApprovalStatus,
   getL0MembershipStatus,
   getOnchainMembershipStatus,
@@ -53,9 +55,35 @@ const StyledTable = styled(Table)`
   }
 
   .table .${CONNECTED_ROW_CLASS} {
-    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.successMain};
     background: ${({ theme }) => theme.colors.tertiaryMain};
   }
+
+  .table .${CONNECTED_ROW_CLASS}--online {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.successMain};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--offline {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.errorMain};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--waiting-approval {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.warningSecondary};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--not-in-list {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.textAdditional};
+  }
+`;
+
+const ConnectedRowBadge = styled.span<{ $status: CosignatureStatus }>`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.buttonTextPrimary};
+  background: ${({ theme, $status }) => getCosignatureStatusColor(theme, $status)};
 `;
 
 const DateColumnWrapper = styled.div`
@@ -68,17 +96,6 @@ const AddressColumnWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-const ConnectedRowBadge = styled.span`
-  flex-shrink: 0;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.buttonTextPrimary};
-  background: ${({ theme }) => theme.colors.successMain};
 `;
 
 function isEligibleGovernanceVisitor (
@@ -160,7 +177,8 @@ function RootNodesMonitoringTable () {
       rootNodesExclusionActive,
       rootNodesExclusionProposed,
     });
-    const cosignatureStatus = getCosignatureStatus(
+    const cosignatureStatus = getTableCosignatureStatus(
+      l0MembershipStatus,
       rootNode.address,
       latestCosignatureMetrics,
       blockHeight,
@@ -214,7 +232,9 @@ function RootNodesMonitoringTable () {
           />
           <AliasTooltip isRootNode alias={row.alias} />
           {row.isConnectedRow && (
-            <ConnectedRowBadge>{t('RN_CONNECTED_ROW_BADGE')}</ConnectedRowBadge>
+            <ConnectedRowBadge $status={row.cosignatureStatus}>
+              {t('RN_CONNECTED_ROW_BADGE')}
+            </ConnectedRowBadge>
           )}
         </AddressColumnWrapper>
       ),
@@ -336,7 +356,13 @@ function RootNodesMonitoringTable () {
       </h2>}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
       keyField="address"
-      rowClasses={(row) => (row.isConnectedRow ? CONNECTED_ROW_CLASS : '')}
+      rowClasses={(row) => {
+        if (!row.isConnectedRow) {
+          return '';
+        }
+
+        return `${CONNECTED_ROW_CLASS} ${CONNECTED_ROW_CLASS}--${row.cosignatureStatus}`;
+      }}
       searchFormatted={false}
       table={rootMembersMonitoring}
       buttons={<RootNodeMetricsExport />}

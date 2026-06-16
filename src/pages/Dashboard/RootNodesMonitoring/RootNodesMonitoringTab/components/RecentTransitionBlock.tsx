@@ -3,19 +3,20 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
-import { CosignatureStatus } from 'typings/root-nodes';
+import { ObservedCosignatureStatus } from 'typings/root-nodes';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import {
   COSIGNATURE_TRANSITION_BLOCK_DELTA,
   getCosignatureStatus,
 } from '../helpers/table-collect-data';
+import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
 
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const SIGNED_PERCENTAGE_MINORITY = 50;
 
-const presenceI18nKeyByStatus: Record<CosignatureStatus, string> = {
+const presenceI18nKeyByStatus: Record<ObservedCosignatureStatus, string> = {
   online: 'RN_CONNECTED_PRESENCE_ONLINE',
   offline: 'RN_CONNECTED_PRESENCE_OFFLINE',
   'waiting-approval': 'RN_CONNECTED_PRESENCE_AWAITING',
@@ -51,17 +52,8 @@ const StyledConnectedPresence = styled.p`
   font-weight: 600;
 `;
 
-const StyledPresenceAccent = styled.span<{$status: CosignatureStatus}>`
-  color: ${({ theme, $status }) => {
-    switch ($status) {
-      case 'online':
-        return theme.colors.successMain;
-      case 'waiting-approval':
-        return theme.colors.warningSecondary;
-      case 'offline':
-        return theme.colors.textAdditional;
-    }
-  }};
+const StyledPresenceAccent = styled.span<{$status: ObservedCosignatureStatus}>`
+  color: ${({ theme, $status }) => getCosignatureStatusColor(theme, $status)};
 `;
 
 interface Props {
@@ -114,7 +106,7 @@ function RecentTransitionBlock ({ showGovernanceActions, connectedRootAccount }:
     };
   }, [blockHeight, latestCosignatureMetrics, rootNodesL0ActiveCount, t]);
 
-  const connectedPresenceStatus = useMemo((): CosignatureStatus | null => {
+  const connectedPresenceStatus = useMemo((): ObservedCosignatureStatus | null => {
     if (!showGovernanceActions || !connectedRootAccount) return null;
 
     return getCosignatureStatus(connectedRootAccount, latestCosignatureMetrics, blockHeight);

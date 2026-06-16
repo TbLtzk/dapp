@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 
 import { HALF_YEAR_BLOCKS, useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
-import { getCosignatureStats, getCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getOnchainMembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
+import { getCosignatureStats, getTableCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getOnchainMembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
@@ -103,7 +103,7 @@ function RootNodeMetricsExport () {
         alias || '',
         onchainMembershipStatus,
 
-        getCosignatureStatus(address, latestCosignatureMetrics, blockHeight),
+        getTableCosignatureStatus(l0MembershipStatus, address, latestCosignatureMetrics, blockHeight),
         getCosignatureStats(address, cosignatureMetrics20)?.availability ?? 'N/a',
         getCosignatureStats(address, cosignatureMetrics1000)?.availability ?? 'N/a',
 

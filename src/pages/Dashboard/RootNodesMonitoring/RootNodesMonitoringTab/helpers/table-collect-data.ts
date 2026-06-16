@@ -12,6 +12,7 @@ import {
   L0ApprovalMap,
   L0ApprovalStatus,
   L0MembershipStatus,
+  ObservedCosignatureStatus,
   OnchainMembershipStatus,
 } from 'typings/root-nodes';
 
@@ -117,7 +118,7 @@ export function getCosignatureStatus (
   address: string,
   latestCosignatureMetrics: RootNodeMetric | null,
   blockHeight?: number | null,
-): CosignatureStatus {
+): ObservedCosignatureStatus {
   const metrics = latestCosignatureMetrics?.byAddress.find(({ mainAccount }) =>
     mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
   );
@@ -140,6 +141,20 @@ export function getCosignatureStatus (
   }
 
   return 'offline';
+}
+
+/** Table/export only: non-active L0 members are not evaluated for co-signature. */
+export function getTableCosignatureStatus (
+  l0MembershipStatus: L0MembershipStatus,
+  address: string,
+  latestCosignatureMetrics: RootNodeMetric | null,
+  blockHeight?: number | null,
+): CosignatureStatus {
+  if (l0MembershipStatus !== 'active') {
+    return 'not-in-list';
+  }
+
+  return getCosignatureStatus(address, latestCosignatureMetrics, blockHeight);
 }
 
 export function getCosignatureStats (address: string, metrics: RootNodeMetric | null): CosignatureStats | null {
