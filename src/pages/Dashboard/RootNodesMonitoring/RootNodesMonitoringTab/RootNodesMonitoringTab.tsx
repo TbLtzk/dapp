@@ -1,4 +1,5 @@
 
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { media, Spinner } from '@q-dev/q-ui-kit';
@@ -17,6 +18,7 @@ import L0ProposedBlock from './components/L0ProposedBlock';
 import OnchainActiveBlock from './components/OnchainActiveBlock';
 import RecentTransitionBlock from './components/RecentTransitionBlock';
 import RootNodesMonitoringTable from './components/RootNodesMonitoringTable';
+import { getCosignatureStatus } from './helpers/table-collect-data';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 
@@ -54,9 +56,36 @@ const StyledWrapper = styled.div`
 
 function RootNodesMonitoring () {
   const { t } = useTranslation();
-  const { isInitiallyLoaded, isLoadingFailed } = useRootNodesMonitoringContext();
+  const {
+    isInitiallyLoaded,
+    isLoadingFailed,
+    latestCosignatureMetrics,
+    blockHeight,
+  } = useRootNodesMonitoringContext();
   const { rootMembersLoading } = useRootNodes();
   const l0GovernanceEligibility = useL0GovernanceEligibility();
+
+  const showGovernanceActions = (
+    l0GovernanceEligibility.status === 'eligible-root' ||
+    l0GovernanceEligibility.status === 'eligible-alias'
+  );
+
+  const connectedCosignatureStatus = useMemo(() => {
+    if (!showGovernanceActions || !l0GovernanceEligibility.rootAccount) {
+      return null;
+    }
+
+    return getCosignatureStatus(
+      l0GovernanceEligibility.rootAccount,
+      latestCosignatureMetrics,
+      blockHeight,
+    );
+  }, [
+    blockHeight,
+    latestCosignatureMetrics,
+    l0GovernanceEligibility.rootAccount,
+    showGovernanceActions,
+  ]);
 
   if (!isInitiallyLoaded && isLoadingFailed) {
     return <NotFound title={t('ERROR_PLEASE_TRY_AGAIN')} />;
@@ -70,20 +99,24 @@ function RootNodesMonitoring () {
     );
   }
 
-  const showGovernanceActions = (
-    l0GovernanceEligibility.status === 'eligible-root' ||
-    l0GovernanceEligibility.status === 'eligible-alias'
-  );
-
   return (
     <StyledWrapper>
       <DashboardLink />
       <PageLayout title={t('ROOT_NODES_MONITORING')}>
         <L0GovernanceActionsProvider>
           <div className="root-nodes-monitoring__blocks-wrap">
-            <OnchainActiveBlock showGovernanceActions={showGovernanceActions} />
-            <L0ProposedBlock showGovernanceActions={showGovernanceActions} />
-            <ExclusionProposedBlock showGovernanceActions={showGovernanceActions} />
+            <OnchainActiveBlock
+              connectedCosignatureStatus={connectedCosignatureStatus}
+              showGovernanceActions={showGovernanceActions}
+            />
+            <L0ProposedBlock
+              connectedCosignatureStatus={connectedCosignatureStatus}
+              showGovernanceActions={showGovernanceActions}
+            />
+            <ExclusionProposedBlock
+              connectedCosignatureStatus={connectedCosignatureStatus}
+              showGovernanceActions={showGovernanceActions}
+            />
             <RecentTransitionBlock
               showGovernanceActions={showGovernanceActions}
               connectedRootAccount={l0GovernanceEligibility.rootAccount}

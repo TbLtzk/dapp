@@ -5,6 +5,8 @@ import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
+import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
@@ -41,10 +43,11 @@ const StyledWrapper = styled.div<{$isActive: boolean}>`
 `;
 
 interface Props {
+  connectedCosignatureStatus: CosignatureStatus | null;
   showGovernanceActions: boolean;
 }
 
-function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
+function ExclusionProposedBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
 
   const { rootNodesExclusionActive, rootNodesExclusionProposed, rootNodesL0Active } = useRootNodesMonitoringContext();
@@ -89,6 +92,10 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
     hasAlreadySigned,
   });
 
+  const { advisories: cosignAdvisories } = useL0GovernanceAdvisoryGuard('cosign-exclusion', {
+    connectedCosignatureStatus,
+  });
+
   const cosignButtonLabel = (() => {
     if (isCosignRunning) return t('L0_EXCLUSION_COSIGN_IN_PROGRESS');
     if (cosignPhase === 'success') return t('L0_EXCLUSION_COSIGN_SUBMITTED');
@@ -131,6 +138,7 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={cosignGuard}
+            advisories={cosignAdvisories}
             loading={isCosignRunning || cosignGuard.isChecking || isRefreshingAfterSubmit}
             onClick={cosignProposedExclusionList}
           >

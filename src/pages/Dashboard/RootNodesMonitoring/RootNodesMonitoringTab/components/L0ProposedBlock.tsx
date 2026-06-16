@@ -5,6 +5,8 @@ import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
 
 import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
+import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
@@ -51,10 +53,11 @@ const StyledWrapper = styled.div<{
 `;
 
 interface Props {
+  connectedCosignatureStatus: CosignatureStatus | null;
   showGovernanceActions: boolean;
 }
 
-function L0ProposedBlock ({ showGovernanceActions }: Props) {
+function L0ProposedBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
 
   const { rootNodesL0Active, rootNodesL0Proposed, rootNodesOnchainList } = useRootNodesMonitoringContext();
@@ -105,6 +108,10 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
     isLoadingProposed,
     hasProposed,
     hasAlreadySigned,
+  });
+
+  const { advisories: cosignAdvisories } = useL0GovernanceAdvisoryGuard('cosign-root', {
+    connectedCosignatureStatus,
   });
 
   const cosignButtonLabel = (() => {
@@ -158,6 +165,7 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={cosignGuard}
+            advisories={cosignAdvisories}
             loading={isCosignRunning || cosignGuard.isChecking || isRefreshingAfterSubmit}
             onClick={cosignProposedRootList}
           >

@@ -3,10 +3,13 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
+import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
+import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
@@ -36,13 +39,15 @@ const StyledWrapper = styled.div<{$isEqual: boolean}>`
 `;
 
 interface Props {
+  connectedCosignatureStatus: CosignatureStatus | null;
   showGovernanceActions: boolean;
 }
 
-function OnchainActiveBlock ({ showGovernanceActions }: Props) {
+function OnchainActiveBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
+  const { address } = useWeb3Context();
 
-  const { rootNodesOnchainDiffList, rootNodesOnchainList } = useRootNodesMonitoringContext();
+  const { rootNodesOnchainDiffList, rootNodesOnchainList, rootNodesL0Proposed } = useRootNodesMonitoringContext();
   const { proposeRootList } = useL0GovernanceActions();
 
   const {
@@ -64,6 +69,12 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
   const proposeGuard = useL0GovernanceActionGuard('propose-root', {
     phase: proposePhase,
     isOnchainPanelEmpty: rootNodesOnchainList.length === 0,
+  });
+
+  const { advisories: proposeAdvisories } = useL0GovernanceAdvisoryGuard('propose-root', {
+    connectedCosignatureStatus,
+    proposedRootList: rootNodesL0Proposed,
+    walletAddress: address,
   });
 
   const proposeButtonLabel = (() => {
@@ -107,6 +118,7 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={proposeGuard}
+            advisories={proposeAdvisories}
             loading={isProposeRunning || proposeGuard.isChecking || isRefreshingAfterSubmit}
             onClick={proposeFromOnchainPanel}
           >
