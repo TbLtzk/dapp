@@ -1,9 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useWeb3Context } from 'context/Web3ContextProvider';
 import { ethers } from 'ethers';
 import { ErrorHandler } from 'helpers';
+import { getRootNodesL0 } from 'helpers/root-node-metrics';
 
 import useNetworkConfig from 'hooks/useNetworkConfig';
 
@@ -14,11 +15,13 @@ import {
   rootListFromSigningPayload,
   submitTypedSignedRootList,
 } from '../helpers/gov-pub-rpc';
+import { refreshGovernanceStateAfterSubmit } from '../helpers/governance-submit-refresh';
 import { buildProposalTimestamp, computeRootListHash } from '../helpers/root-list-hash';
 import { signRootListGovernancePayload } from '../helpers/sign-governance-typed-data';
 import { GovPubRootList } from '../helpers/types';
 
 import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
+import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -33,21 +36,25 @@ interface UseProposeOnchainPanelRootListResult {
   phase: ProposeOnchainPanelPhase;
   isGovPubAvailable: boolean | null;
   isCheckingGovPub: boolean;
+  isRefreshingAfterSubmit: boolean;
   submittedProposalHash: string | null;
   proposeFromOnchainPanel: () => Promise<void>;
 }
 
 export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootListResult {
   const { t } = useTranslation();
-  const { rpcUrl } = useNetworkConfig();
-  const { currentSigner } = useWeb3Context();
+  const { rpcUrl, indexerUrl } = useNetworkConfig();
+  const { address, chainId, currentSigner } = useWeb3Context();
 
   const {
     isRootListSigningAvailable: isGovPubAvailable,
     isChecking: isCheckingGovPub,
   } = useGovPubCapabilitiesContext();
 
+  const { isAwaiting, clearAwaiting, markAwaiting } = useAwaitingGovernanceIndexerConfirmation('propose-root');
+
   const [phase, setPhase] = useState<ProposeOnchainPanelPhase>('idle');
+  const [isRefreshingAfterSubmit, setIsRefreshingAfterSubmit] = useState(false);
   const [submittedProposalHash, setSubmittedProposalHash] = useState<string | null>(null);
 
   const govPubProvider = useMemo(
@@ -55,8 +62,14 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
     [rpcUrl],
   );
 
+  useEffect(() => {
+    if (isAwaiting) {
+      setPhase('success');
+    }
+  }, [isAwaiting]);
+
   const proposeFromOnchainPanel = useCallback(async () => {
-    if (!currentSigner || !govPubProvider) {
+    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_PROPOSE_DISCONNECTED'));
       return;
     }
@@ -70,6 +83,9 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
     setSubmittedProposalHash(null);
 
     try {
+      const proposedBefore = await getRootNodesL0(indexerUrl, 'proposed');
+      const baselineSignerCount = proposedBefore?.signers?.length ?? 0;
+
       const rootNodesContract = await getRootNodesInstance();
       const panelMembers: string[] = await rootNodesContract.getMembers();
 
@@ -80,6 +96,7 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
       const timestamp = buildProposalTimestamp();
       const nodes = panelMembers.map((member) => ethers.utils.getAddress(member));
       const hash = computeRootListHash(timestamp, nodes);
+      const listFingerprint = String(timestamp);
 
       const unsignedList: GovPubRootList = {
         timestamp,
@@ -108,10 +125,40 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
 
       setSubmittedProposalHash(proposalHash);
       setPhase('success');
+      markAwaiting({
+        attestationHash: proposalHash,
+        action: 'propose-root',
+        walletAddress: address,
+        submittedAt: Date.now(),
+        listFingerprint,
+      });
+
       Bus.success({
         title: t('L0_PROPOSE_SUCCESS_TITLE'),
         message: t('L0_PROPOSE_SUCCESS_MESSAGE'),
       });
+
+      setIsRefreshingAfterSubmit(true);
+
+      const { result } = await refreshGovernanceStateAfterSubmit({
+        chainId,
+        indexerUrl,
+        walletAddress: address,
+        action: 'propose-root',
+        attestationHash: proposalHash,
+        listFingerprint,
+        baselineSignerCount,
+      });
+
+      if (result === 'confirmed') {
+        clearAwaiting(proposalHash);
+        setPhase('idle');
+      } else {
+        Bus.warning({
+          title: t('L0_GOVERNANCE_REFRESH_PENDING_TITLE'),
+          message: t('L0_GOVERNANCE_REFRESH_PENDING_MESSAGE'),
+        });
+      }
     } catch (error) {
       setPhase('idle');
 
@@ -122,13 +169,26 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
 
       const rpcMessage = extractRpcErrorMessage(error);
       ErrorHandler.process(error, rpcMessage || t('L0_PROPOSE_FAILED'));
+    } finally {
+      setIsRefreshingAfterSubmit(false);
     }
-  }, [currentSigner, govPubProvider, isGovPubAvailable, t]);
+  }, [
+    address,
+    chainId,
+    clearAwaiting,
+    currentSigner,
+    govPubProvider,
+    indexerUrl,
+    isGovPubAvailable,
+    markAwaiting,
+    t,
+  ]);
 
   return {
     phase,
     isGovPubAvailable,
     isCheckingGovPub,
+    isRefreshingAfterSubmit,
     submittedProposalHash,
     proposeFromOnchainPanel,
   };

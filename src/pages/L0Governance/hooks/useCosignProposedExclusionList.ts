@@ -16,6 +16,8 @@ import {
   fetchSigningPayloadExclusionListV1WithDigest,
   submitTypedSignedExclusionList,
 } from '../helpers/gov-pub-rpc';
+import { refreshGovernanceStateAfterSubmit } from '../helpers/governance-submit-refresh';
+import { removePendingAttestationsForWallet } from '../helpers/pending-attestation-store';
 import {
   hasProposedExclusionList,
   hasSignedProposedExclusionList,
@@ -24,6 +26,7 @@ import { signExclusionListGovernancePayload } from '../helpers/sign-governance-t
 import { GovPubExclusionList } from '../helpers/types';
 
 import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
+import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
 
 import { Bus } from 'utils/event-bus';
 
@@ -37,6 +40,7 @@ interface UseCosignProposedExclusionListResult {
   isGovPubAvailable: boolean | null;
   isCheckingGovPub: boolean;
   isLoadingProposed: boolean;
+  isRefreshingAfterSubmit: boolean;
   hasProposed: boolean;
   hasAlreadySigned: boolean;
   submittedAttestationHash: string | null;
@@ -46,15 +50,18 @@ interface UseCosignProposedExclusionListResult {
 export function useCosignProposedExclusionList (): UseCosignProposedExclusionListResult {
   const { t } = useTranslation();
   const { rpcUrl, indexerUrl } = useNetworkConfig();
-  const { address, currentSigner, isConnected } = useWeb3Context();
+  const { address, chainId, currentSigner, isConnected } = useWeb3Context();
 
   const {
     isExclusionListSigningAvailable: isGovPubAvailable,
     isChecking: isCheckingGovPub,
   } = useGovPubCapabilitiesContext();
 
+  const { isAwaiting, clearAwaiting, markAwaiting } = useAwaitingGovernanceIndexerConfirmation('cosign-exclusion');
+
   const [phase, setPhase] = useState<CosignProposedExclusionListPhase>('idle');
   const [isLoadingProposed, setIsLoadingProposed] = useState(false);
+  const [isRefreshingAfterSubmit, setIsRefreshingAfterSubmit] = useState(false);
   const [proposedFromIndexer, setProposedFromIndexer] = useState<L0ExclusionListItem | null>(null);
   const [submittedAttestationHash, setSubmittedAttestationHash] = useState<string | null>(null);
 
@@ -64,7 +71,8 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
   );
 
   const hasProposed = hasProposedExclusionList(proposedFromIndexer);
-  const hasAlreadySigned = hasSignedProposedExclusionList(proposedFromIndexer, address);
+  const hasAlreadySignedFromIndexer = hasSignedProposedExclusionList(proposedFromIndexer, address);
+  const hasAlreadySigned = hasAlreadySignedFromIndexer || isAwaiting;
 
   useEffect(() => {
     let isMounted = true;
@@ -84,6 +92,12 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
         const proposed = await getRootNodesExclusion(indexerUrl, 'proposed');
         if (isMounted) {
           setProposedFromIndexer(proposed);
+
+          if (proposed && address && chainId && hasSignedProposedExclusionList(proposed, address)) {
+            removePendingAttestationsForWallet(chainId, address, 'cosign-exclusion');
+            clearAwaiting();
+            setPhase('idle');
+          }
         }
       } catch {
         if (isMounted) {
@@ -101,10 +115,10 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
     return () => {
       isMounted = false;
     };
-  }, [indexerUrl, isConnected]);
+  }, [address, chainId, clearAwaiting, indexerUrl, isConnected]);
 
   const cosignProposedExclusionList = useCallback(async () => {
-    if (!currentSigner || !govPubProvider) {
+    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_EXCLUSION_COSIGN_DISCONNECTED'));
       return;
     }
@@ -123,6 +137,11 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
       ErrorHandler.process(new Error('Already signed'), t('L0_EXCLUSION_COSIGN_ALREADY_SIGNED'));
       return;
     }
+
+    const baselineSignerCount = proposedFromIndexer?.signers?.length ?? 0;
+    const listFingerprint = proposedFromIndexer?.timestamp != null
+      ? String(proposedFromIndexer.timestamp)
+      : undefined;
 
     setPhase('running');
     setSubmittedAttestationHash(null);
@@ -159,10 +178,44 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
 
       setSubmittedAttestationHash(attestationHash);
       setPhase('success');
+      markAwaiting({
+        attestationHash,
+        action: 'cosign-exclusion',
+        walletAddress: address,
+        submittedAt: Date.now(),
+        listFingerprint,
+      });
+
       Bus.success({
         title: t('L0_EXCLUSION_COSIGN_SUCCESS_TITLE'),
         message: t('L0_EXCLUSION_COSIGN_SUCCESS_MESSAGE'),
       });
+
+      setIsRefreshingAfterSubmit(true);
+
+      const { result, proposedExclusion } = await refreshGovernanceStateAfterSubmit({
+        chainId,
+        indexerUrl,
+        walletAddress: address,
+        action: 'cosign-exclusion',
+        attestationHash,
+        listFingerprint,
+        baselineSignerCount,
+      });
+
+      if (proposedExclusion) {
+        setProposedFromIndexer(proposedExclusion);
+      }
+
+      if (result === 'confirmed') {
+        clearAwaiting(attestationHash);
+        setPhase('idle');
+      } else {
+        Bus.warning({
+          title: t('L0_GOVERNANCE_REFRESH_PENDING_TITLE'),
+          message: t('L0_GOVERNANCE_REFRESH_PENDING_MESSAGE'),
+        });
+      }
     } catch (error) {
       setPhase('idle');
 
@@ -173,13 +226,21 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
 
       const rpcMessage = extractRpcErrorMessage(error);
       ErrorHandler.process(error, rpcMessage || t('L0_EXCLUSION_COSIGN_FAILED'));
+    } finally {
+      setIsRefreshingAfterSubmit(false);
     }
   }, [
+    address,
+    chainId,
+    clearAwaiting,
     currentSigner,
     govPubProvider,
     hasAlreadySigned,
     hasProposed,
+    indexerUrl,
     isGovPubAvailable,
+    markAwaiting,
+    proposedFromIndexer,
     t,
   ]);
 
@@ -188,6 +249,7 @@ export function useCosignProposedExclusionList (): UseCosignProposedExclusionLis
     isGovPubAvailable,
     isCheckingGovPub,
     isLoadingProposed,
+    isRefreshingAfterSubmit,
     hasProposed,
     hasAlreadySigned,
     submittedAttestationHash,

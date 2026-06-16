@@ -142,6 +142,8 @@
   "L0_COSIGN_SUCCESS_TITLE": "Атестацію root list надіслано",
   "L0_COSIGN_SUCCESS_MESSAGE": "Вашу typed-атестацію надіслано на цей вузол. Активація в мережі залежить від інших root nodes і поширення.",
   "L0_COSIGN_SUCCESS_HASH": "Хеш пропозиції: {{hash}}",
+  "L0_GOVERNANCE_REFRESH_PENDING_TITLE": "Очікування підтвердження мережею",
+  "L0_GOVERNANCE_REFRESH_PENDING_MESSAGE": "Вашу атестацію надіслано. Кількість підписантів може оновитися з затримкою, поки мережа поширює ваш підпис.",
   "L0_EXCLUSION_PROPOSE_REFRESH_TIMESTAMP": "Запропонувати exclusion list (оновити timestamp)",
   "L0_EXCLUSION_PROPOSE_IN_PROGRESS": "Пропозиція…",
   "L0_EXCLUSION_PROPOSE_SUBMITTED": "Пропозицію надіслано",

@@ -55,6 +55,7 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
     isLoadingProposed,
     hasProposed,
     hasAlreadySigned,
+    isRefreshingAfterSubmit,
     cosignProposedExclusionList,
   } = cosignExclusionList;
 
@@ -130,7 +131,7 @@ function ExclusionProposedBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={cosignGuard}
-            loading={isCosignRunning || cosignGuard.isChecking}
+            loading={isCosignRunning || cosignGuard.isChecking || isRefreshingAfterSubmit}
             onClick={cosignProposedExclusionList}
           >
             {cosignButtonLabel}

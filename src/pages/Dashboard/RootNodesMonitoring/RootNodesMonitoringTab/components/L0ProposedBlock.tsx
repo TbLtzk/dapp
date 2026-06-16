@@ -65,6 +65,7 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
     isLoadingProposed,
     hasProposed,
     hasAlreadySigned,
+    isRefreshingAfterSubmit,
     cosignProposedRootList,
   } = cosignRootList;
 
@@ -157,7 +158,7 @@ function L0ProposedBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={cosignGuard}
-            loading={isCosignRunning || cosignGuard.isChecking}
+            loading={isCosignRunning || cosignGuard.isChecking || isRefreshingAfterSubmit}
             onClick={cosignProposedRootList}
           >
             {cosignButtonLabel}

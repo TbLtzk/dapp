@@ -142,6 +142,8 @@
   "L0_COSIGN_SUCCESS_TITLE": "Root list attestation submitted",
   "L0_COSIGN_SUCCESS_MESSAGE": "Your typed attestation was submitted to this node. Network activation depends on other roots and propagation.",
   "L0_COSIGN_SUCCESS_HASH": "Proposal hash: {{hash}}",
+  "L0_GOVERNANCE_REFRESH_PENDING_TITLE": "Waiting for network confirmation",
+  "L0_GOVERNANCE_REFRESH_PENDING_MESSAGE": "Your attestation was submitted. Signer counts may take a moment to update while the network propagates your signature.",
   "L0_EXCLUSION_PROPOSE_REFRESH_TIMESTAMP": "Propose exclusion list (refresh timestamp)",
   "L0_EXCLUSION_PROPOSE_IN_PROGRESS": "Proposing…",
   "L0_EXCLUSION_PROPOSE_SUBMITTED": "Proposal submitted",

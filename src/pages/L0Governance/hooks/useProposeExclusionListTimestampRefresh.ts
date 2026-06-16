@@ -18,9 +18,12 @@ import {
   probeGovPubExclusionListSigning,
   submitTypedSignedExclusionList,
 } from '../helpers/gov-pub-rpc';
+import { refreshGovernanceStateAfterSubmit } from '../helpers/governance-submit-refresh';
 import { buildProposalTimestamp } from '../helpers/root-list-hash';
 import { signExclusionListGovernancePayload } from '../helpers/sign-governance-typed-data';
 import { GovPubExclusionList, ZERO_HASH } from '../helpers/types';
+
+import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
 
 import { Bus } from 'utils/event-bus';
 
@@ -34,6 +37,7 @@ interface UseProposeExclusionListTimestampRefreshResult {
   isGovPubAvailable: boolean | null;
   isCheckingGovPub: boolean;
   isLoadingActive: boolean;
+  isRefreshingAfterSubmit: boolean;
   hasActive: boolean;
   submittedProposalHash: string | null;
   proposeExclusionListTimestampRefresh: () => Promise<void>;
@@ -42,12 +46,15 @@ interface UseProposeExclusionListTimestampRefreshResult {
 export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionListTimestampRefreshResult {
   const { t } = useTranslation();
   const { rpcUrl, indexerUrl } = useNetworkConfig();
-  const { currentSigner, isConnected } = useWeb3Context();
+  const { address, chainId, currentSigner, isConnected } = useWeb3Context();
+
+  const { isAwaiting, clearAwaiting, markAwaiting } = useAwaitingGovernanceIndexerConfirmation('propose-exclusion');
 
   const [phase, setPhase] = useState<ProposeExclusionListPhase>('idle');
   const [isGovPubAvailable, setIsGovPubAvailable] = useState<boolean | null>(null);
   const [isCheckingGovPub, setIsCheckingGovPub] = useState(false);
   const [isLoadingActive, setIsLoadingActive] = useState(false);
+  const [isRefreshingAfterSubmit, setIsRefreshingAfterSubmit] = useState(false);
   const [activeFromIndexer, setActiveFromIndexer] = useState<L0ExclusionListItem | null>(null);
   const [submittedProposalHash, setSubmittedProposalHash] = useState<string | null>(null);
 
@@ -57,6 +64,12 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
   );
 
   const hasActive = hasActiveExclusionList(activeFromIndexer);
+
+  useEffect(() => {
+    if (isAwaiting) {
+      setPhase('success');
+    }
+  }, [isAwaiting]);
 
   useEffect(() => {
     let isMounted = true;
@@ -133,7 +146,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
   }, [indexerUrl, isConnected]);
 
   const proposeExclusionListTimestampRefresh = useCallback(async () => {
-    if (!currentSigner || !govPubProvider) {
+    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_EXCLUSION_PROPOSE_DISCONNECTED'));
       return;
     }
@@ -152,6 +165,9 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
     setSubmittedProposalHash(null);
 
     try {
+      const proposedBefore = await getRootNodesExclusion(indexerUrl, 'proposed');
+      const baselineSignerCount = proposedBefore?.signers?.length ?? 0;
+
       const activeList = await fetchGovPubActiveExclusionList(govPubProvider);
 
       if (!activeList) {
@@ -162,6 +178,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
         buildProposalTimestamp(),
         activeList.timestamp + 1,
       );
+      const listFingerprint = String(timestamp);
 
       const unsignedList: GovPubExclusionList = {
         timestamp,
@@ -190,10 +207,40 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
 
       setSubmittedProposalHash(proposalHash);
       setPhase('success');
+      markAwaiting({
+        attestationHash: proposalHash,
+        action: 'propose-exclusion',
+        walletAddress: address,
+        submittedAt: Date.now(),
+        listFingerprint,
+      });
+
       Bus.success({
         title: t('L0_EXCLUSION_PROPOSE_SUCCESS_TITLE'),
         message: t('L0_EXCLUSION_PROPOSE_SUCCESS_MESSAGE'),
       });
+
+      setIsRefreshingAfterSubmit(true);
+
+      const { result } = await refreshGovernanceStateAfterSubmit({
+        chainId,
+        indexerUrl,
+        walletAddress: address,
+        action: 'propose-exclusion',
+        attestationHash: proposalHash,
+        listFingerprint,
+        baselineSignerCount,
+      });
+
+      if (result === 'confirmed') {
+        clearAwaiting(proposalHash);
+        setPhase('idle');
+      } else {
+        Bus.warning({
+          title: t('L0_GOVERNANCE_REFRESH_PENDING_TITLE'),
+          message: t('L0_GOVERNANCE_REFRESH_PENDING_MESSAGE'),
+        });
+      }
     } catch (error) {
       setPhase('idle');
 
@@ -204,14 +251,28 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
 
       const rpcMessage = extractRpcErrorMessage(error);
       ErrorHandler.process(error, rpcMessage || t('L0_EXCLUSION_PROPOSE_FAILED'));
+    } finally {
+      setIsRefreshingAfterSubmit(false);
     }
-  }, [currentSigner, govPubProvider, hasActive, isGovPubAvailable, t]);
+  }, [
+    address,
+    chainId,
+    clearAwaiting,
+    currentSigner,
+    govPubProvider,
+    hasActive,
+    indexerUrl,
+    isGovPubAvailable,
+    markAwaiting,
+    t,
+  ]);
 
   return {
     phase,
     isGovPubAvailable,
     isCheckingGovPub,
     isLoadingActive,
+    isRefreshingAfterSubmit,
     hasActive,
     submittedProposalHash,
     proposeExclusionListTimestampRefresh,

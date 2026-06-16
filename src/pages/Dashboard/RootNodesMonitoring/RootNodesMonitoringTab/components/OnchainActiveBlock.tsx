@@ -47,6 +47,7 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
 
   const {
     phase: proposePhase,
+    isRefreshingAfterSubmit,
     proposeFromOnchainPanel,
   } = proposeRootList;
 
@@ -106,7 +107,7 @@ function OnchainActiveBlock ({ showGovernanceActions }: Props) {
         <MonitoringGovernanceFooter>
           <GovernanceActionButton
             guard={proposeGuard}
-            loading={isProposeRunning || proposeGuard.isChecking}
+            loading={isProposeRunning || proposeGuard.isChecking || isRefreshingAfterSubmit}
             onClick={proposeFromOnchainPanel}
           >
             {proposeButtonLabel}
