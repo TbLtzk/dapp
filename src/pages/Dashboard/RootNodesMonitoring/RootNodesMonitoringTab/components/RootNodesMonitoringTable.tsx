@@ -3,22 +3,26 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
-import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/useL0GovernanceEligibility';
-import { CosignatureStatus } from 'typings/root-nodes';
+import {
+  isGovernanceOperatorEligible,
+  L0GovernanceEligibilityStatus,
+  useL0GovernanceEligibility,
+} from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
 import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
 import {
   getCosignatureStats,
-  getTableCosignatureStatus,
   getL0ApprovalStatus,
   getL0MembershipStatus,
   getOnchainMembershipStatus,
+  getTableCosignatureStatus,
   getVotingParticipationStats,
 } from '../helpers/table-collect-data';
 import {
@@ -98,10 +102,8 @@ const AddressColumnWrapper = styled.div`
   gap: 8px;
 `;
 
-function isEligibleGovernanceVisitor (
-  status: ReturnType<typeof useL0GovernanceEligibility>['status'],
-): boolean {
-  return status === 'eligible-root' || status === 'eligible-alias';
+function isEligibleGovernanceVisitor (status: L0GovernanceEligibilityStatus): boolean {
+  return isGovernanceOperatorEligible(status);
 }
 
 function isConnectedRootRow (

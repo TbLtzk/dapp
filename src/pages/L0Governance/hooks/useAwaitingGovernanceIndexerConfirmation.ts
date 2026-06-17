@@ -10,22 +10,26 @@ import {
   removePendingAttestationsForWallet,
 } from '../helpers/pending-attestation-store';
 
+import { useL0GovernanceEligibility } from './L0GovernanceEligibilityContext';
+
 export function useAwaitingGovernanceIndexerConfirmation (
   action: L0GovernanceSubmitAction,
 ) {
-  const { address, chainId } = useWeb3Context();
+  const { chainId } = useWeb3Context();
+  const { signingAddress } = useL0GovernanceEligibility();
+  const walletAddress = signingAddress;
 
   const [isAwaiting, setIsAwaiting] = useState(() => (
-    Boolean(chainId && address && hasPendingAttestation(chainId, address, action))
+    Boolean(chainId && walletAddress && hasPendingAttestation(chainId, walletAddress, action))
   ));
 
   useEffect(() => {
     setIsAwaiting(Boolean(
-      chainId && address && hasPendingAttestation(chainId, address, action),
+      chainId && walletAddress && hasPendingAttestation(chainId, walletAddress, action),
     ));
-  }, [action, address, chainId]);
+  }, [action, chainId, walletAddress]);
 
-  const markAwaiting = useCallback((entry: PendingAttestation) => {
+  const markAwaiting = useCallback((_: PendingAttestation) => {
     if (!chainId) {
       return;
     }
@@ -40,12 +44,12 @@ export function useAwaitingGovernanceIndexerConfirmation (
 
     if (attestationHash) {
       removePendingAttestation(chainId, attestationHash);
-    } else if (address) {
-      removePendingAttestationsForWallet(chainId, address, action);
+    } else if (walletAddress) {
+      removePendingAttestationsForWallet(chainId, walletAddress, action);
     }
 
     setIsAwaiting(false);
-  }, [action, address, chainId]);
+  }, [action, chainId, walletAddress]);
 
   return {
     isAwaiting,

@@ -13,6 +13,7 @@ export interface L0GovernanceActionGuardInput {
   hasProposed?: boolean;
   hasAlreadySigned?: boolean;
   isOnchainPanelEmpty?: boolean;
+  isSigningAddressUnavailable?: boolean;
 }
 
 export interface L0GovernanceActionGuardResult {
@@ -42,6 +43,14 @@ export function useL0GovernanceActionGuard (
 
     if (isChecking || input.isLoadingProposed) {
       return { enabled: false, disabledReasons: [], isChecking: true };
+    }
+
+    if (input.isSigningAddressUnavailable) {
+      return {
+        enabled: false,
+        disabledReasons: [t('L0_SIGNING_ADDRESS_UNAVAILABLE')],
+        isChecking: false,
+      };
     }
 
     if (!hasRpcUrl) {
@@ -142,6 +151,7 @@ export function useL0GovernanceActionGuard (
     input.hasProposed,
     input.isLoadingProposed,
     input.isOnchainPanelEmpty,
+    input.isSigningAddressUnavailable,
     input.phase,
     isExclusionListSigningAvailable,
     isExternalSubmissionDisabled,

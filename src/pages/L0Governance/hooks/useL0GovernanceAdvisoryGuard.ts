@@ -10,8 +10,8 @@ import {
   isL0GovernanceRelayPhase0,
 } from '../helpers/governance-advisories';
 
-import { L0GovernanceAction } from './useL0GovernanceActionGuard';
 import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
+import { L0GovernanceAction } from './useL0GovernanceActionGuard';
 
 export type L0GovernanceAdvisoryAction = L0GovernanceAction | 'propose-exclusion';
 

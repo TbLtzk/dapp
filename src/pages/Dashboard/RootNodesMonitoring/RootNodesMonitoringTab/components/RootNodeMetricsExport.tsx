@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 
 import { HALF_YEAR_BLOCKS, useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
 import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
-import { getCosignatureStats, getTableCosignatureStatus, getL0ApprovalStatus, getL0MembershipStatus, getOnchainMembershipStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
+import { getCosignatureStats, getL0ApprovalStatus, getL0MembershipStatus, getOnchainMembershipStatus, getTableCosignatureStatus, getVotingParticipationStats } from '../helpers/table-collect-data';
 
 import { useRootNodes } from 'store/root-nodes/hooks';
 

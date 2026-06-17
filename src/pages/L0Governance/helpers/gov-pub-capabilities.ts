@@ -41,6 +41,7 @@ export interface ResolvedGovPubCapabilities {
   isRootListSigningAvailable: boolean | null;
   isExclusionListSigningAvailable: boolean | null;
   qgovTypedRelayVersion: number | null;
+  aliasSigningRequired: boolean | null;
 }
 
 const EIP712_V1 = 'eip712-v1';
@@ -101,6 +102,7 @@ export function resolveCapabilitiesFromEndpoint (
     isRootListSigningAvailable: isRootListGovernanceSupported(capabilities),
     isExclusionListSigningAvailable: isExclusionListGovernanceSupported(capabilities),
     qgovTypedRelayVersion: capabilities.qgovTypedRelayVersion ?? null,
+    aliasSigningRequired: capabilities.aliasSigningRequired ?? null,
   };
 }
 
@@ -128,5 +130,6 @@ export async function resolveGovPubCapabilities (
     isRootListSigningAvailable,
     isExclusionListSigningAvailable,
     qgovTypedRelayVersion: null,
+    aliasSigningRequired: null,
   };
 }

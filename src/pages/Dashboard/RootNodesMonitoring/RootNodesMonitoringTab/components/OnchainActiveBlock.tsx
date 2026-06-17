@@ -3,13 +3,13 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
-import { useWeb3Context } from 'context/Web3ContextProvider';
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import Button from 'components/Button';
+import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
 import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
-import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
@@ -45,7 +45,7 @@ interface Props {
 
 function OnchainActiveBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
-  const { address } = useWeb3Context();
+  const { status, signingAddress } = useL0GovernanceEligibility();
 
   const { rootNodesOnchainDiffList, rootNodesOnchainList, rootNodesL0Proposed } = useRootNodesMonitoringContext();
   const { proposeRootList } = useL0GovernanceActions();
@@ -69,12 +69,13 @@ function OnchainActiveBlock ({ connectedCosignatureStatus, showGovernanceActions
   const proposeGuard = useL0GovernanceActionGuard('propose-root', {
     phase: proposePhase,
     isOnchainPanelEmpty: rootNodesOnchainList.length === 0,
+    isSigningAddressUnavailable: status === 'signing-unavailable',
   });
 
   const { advisories: proposeAdvisories } = useL0GovernanceAdvisoryGuard('propose-root', {
     connectedCosignatureStatus,
     proposedRootList: rootNodesL0Proposed,
-    walletAddress: address,
+    walletAddress: signingAddress,
   });
 
   const proposeButtonLabel = (() => {

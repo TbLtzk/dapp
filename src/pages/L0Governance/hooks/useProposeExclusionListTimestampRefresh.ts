@@ -13,7 +13,6 @@ import { fetchGovPubActiveExclusionList } from '../helpers/gov-pub-active-exclus
 import {
   createGovPubProvider,
   exclusionListFromSigningPayload,
-  extractRpcErrorMessage,
   fetchSigningPayloadExclusionListV1WithDigest,
   probeGovPubExclusionListSigning,
   submitTypedSignedExclusionList,
@@ -24,6 +23,7 @@ import { signExclusionListGovernancePayload } from '../helpers/sign-governance-t
 import { GovPubExclusionList, ZERO_HASH } from '../helpers/types';
 
 import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
+import { useL0GovernanceSubmitSigning } from './useL0GovernanceSubmitSigning';
 
 import { Bus } from 'utils/event-bus';
 
@@ -46,7 +46,12 @@ interface UseProposeExclusionListTimestampRefreshResult {
 export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionListTimestampRefreshResult {
   const { t } = useTranslation();
   const { rpcUrl, indexerUrl } = useNetworkConfig();
-  const { address, chainId, currentSigner, isConnected } = useWeb3Context();
+  const { chainId, isConnected } = useWeb3Context();
+  const {
+    signingAddress,
+    requireSigningSigner,
+    processSubmitError,
+  } = useL0GovernanceSubmitSigning();
 
   const { isAwaiting, clearAwaiting, markAwaiting } = useAwaitingGovernanceIndexerConfirmation('propose-exclusion');
 
@@ -146,7 +151,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
   }, [indexerUrl, isConnected]);
 
   const proposeExclusionListTimestampRefresh = useCallback(async () => {
-    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
+    if (!govPubProvider || !signingAddress || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_EXCLUSION_PROPOSE_DISCONNECTED'));
       return;
     }
@@ -158,6 +163,11 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
 
     if (!hasActive) {
       ErrorHandler.process(new Error('No active exclusion list'), t('L0_EXCLUSION_PROPOSE_NO_ACTIVE'));
+      return;
+    }
+
+    const signingSigner = await requireSigningSigner();
+    if (!signingSigner) {
       return;
     }
 
@@ -194,7 +204,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
 
       const canonicalList = exclusionListFromSigningPayload(payloadBundle);
       const signature = await signExclusionListGovernancePayload(
-        currentSigner,
+        signingSigner,
         payloadBundle,
       );
 
@@ -210,7 +220,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
       markAwaiting({
         attestationHash: proposalHash,
         action: 'propose-exclusion',
-        walletAddress: address,
+        walletAddress: signingAddress,
         submittedAt: Date.now(),
         listFingerprint,
       });
@@ -225,7 +235,7 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
       const { result } = await refreshGovernanceStateAfterSubmit({
         chainId,
         indexerUrl,
-        walletAddress: address,
+        walletAddress: signingAddress,
         action: 'propose-exclusion',
         attestationHash: proposalHash,
         listFingerprint,
@@ -243,27 +253,21 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
       }
     } catch (error) {
       setPhase('idle');
-
-      if (isUserRejectedRequest(error)) {
-        ErrorHandler.process(error, t('L0_PROPOSE_SIGN_REJECTED'));
-        return;
-      }
-
-      const rpcMessage = extractRpcErrorMessage(error);
-      ErrorHandler.process(error, rpcMessage || t('L0_EXCLUSION_PROPOSE_FAILED'));
+      processSubmitError(error, t('L0_EXCLUSION_PROPOSE_FAILED'));
     } finally {
       setIsRefreshingAfterSubmit(false);
     }
   }, [
-    address,
     chainId,
     clearAwaiting,
-    currentSigner,
     govPubProvider,
     hasActive,
     indexerUrl,
     isGovPubAvailable,
     markAwaiting,
+    processSubmitError,
+    requireSigningSigner,
+    signingAddress,
     t,
   ]);
 
@@ -277,13 +281,4 @@ export function useProposeExclusionListTimestampRefresh (): UseProposeExclusionL
     submittedProposalHash,
     proposeExclusionListTimestampRefresh,
   };
-}
-
-function isUserRejectedRequest (error: unknown): boolean {
-  const candidate = error as { code?: number; message?: string };
-  const message = candidate?.message?.toLowerCase() || '';
-
-  return candidate?.code === 4001 ||
-    message.includes('user rejected') ||
-    message.includes('user denied');
 }

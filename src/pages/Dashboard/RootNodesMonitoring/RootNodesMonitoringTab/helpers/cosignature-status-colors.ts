@@ -1,5 +1,4 @@
 import { DefaultTheme } from 'styled-components';
-
 import { CosignatureStatus } from 'typings/root-nodes';
 
 export function getCosignatureStatusColor (

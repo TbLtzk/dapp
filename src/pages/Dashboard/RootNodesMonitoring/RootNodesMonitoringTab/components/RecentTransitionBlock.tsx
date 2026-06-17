@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { ObservedCosignatureStatus } from 'typings/root-nodes';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
 import {
   COSIGNATURE_TRANSITION_BLOCK_DELTA,
   getCosignatureStatus,
 } from '../helpers/table-collect-data';
-import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
 
 import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 

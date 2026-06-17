@@ -10,7 +10,6 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 
 import {
   createGovPubProvider,
-  extractRpcErrorMessage,
   fetchSigningPayloadRootListV1WithDigest,
   rootListFromSigningPayload,
   submitTypedSignedRootList,
@@ -22,6 +21,7 @@ import { GovPubRootList } from '../helpers/types';
 
 import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
 import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
+import { useL0GovernanceSubmitSigning } from './useL0GovernanceSubmitSigning';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 
@@ -44,7 +44,12 @@ interface UseProposeOnchainPanelRootListResult {
 export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootListResult {
   const { t } = useTranslation();
   const { rpcUrl, indexerUrl } = useNetworkConfig();
-  const { address, chainId, currentSigner } = useWeb3Context();
+  const { chainId } = useWeb3Context();
+  const {
+    signingAddress,
+    requireSigningSigner,
+    processSubmitError,
+  } = useL0GovernanceSubmitSigning();
 
   const {
     isRootListSigningAvailable: isGovPubAvailable,
@@ -69,13 +74,18 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
   }, [isAwaiting]);
 
   const proposeFromOnchainPanel = useCallback(async () => {
-    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
+    if (!govPubProvider || !signingAddress || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_PROPOSE_DISCONNECTED'));
       return;
     }
 
     if (isGovPubAvailable === false) {
       ErrorHandler.process(new Error('govPub unavailable'), t('L0_PROPOSE_RPC_UNSUPPORTED'));
+      return;
+    }
+
+    const signingSigner = await requireSigningSigner();
+    if (!signingSigner) {
       return;
     }
 
@@ -112,7 +122,7 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
 
       const canonicalList = rootListFromSigningPayload(payloadBundle);
       const signature = await signRootListGovernancePayload(
-        currentSigner,
+        signingSigner,
         payloadBundle,
       );
 
@@ -128,7 +138,7 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
       markAwaiting({
         attestationHash: proposalHash,
         action: 'propose-root',
-        walletAddress: address,
+        walletAddress: signingAddress,
         submittedAt: Date.now(),
         listFingerprint,
       });
@@ -143,7 +153,7 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
       const { result } = await refreshGovernanceStateAfterSubmit({
         chainId,
         indexerUrl,
-        walletAddress: address,
+        walletAddress: signingAddress,
         action: 'propose-root',
         attestationHash: proposalHash,
         listFingerprint,
@@ -161,26 +171,20 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
       }
     } catch (error) {
       setPhase('idle');
-
-      if (isUserRejectedRequest(error)) {
-        ErrorHandler.process(error, t('L0_PROPOSE_SIGN_REJECTED'));
-        return;
-      }
-
-      const rpcMessage = extractRpcErrorMessage(error);
-      ErrorHandler.process(error, rpcMessage || t('L0_PROPOSE_FAILED'));
+      processSubmitError(error, t('L0_PROPOSE_FAILED'));
     } finally {
       setIsRefreshingAfterSubmit(false);
     }
   }, [
-    address,
     chainId,
     clearAwaiting,
-    currentSigner,
     govPubProvider,
     indexerUrl,
     isGovPubAvailable,
     markAwaiting,
+    processSubmitError,
+    requireSigningSigner,
+    signingAddress,
     t,
   ]);
 
@@ -192,13 +196,4 @@ export function useProposeOnchainPanelRootList (): UseProposeOnchainPanelRootLis
     submittedProposalHash,
     proposeFromOnchainPanel,
   };
-}
-
-function isUserRejectedRequest (error: unknown): boolean {
-  const candidate = error as { code?: number; message?: string };
-  const message = candidate?.message?.toLowerCase() || '';
-
-  return candidate?.code === 4001 ||
-    message.includes('user rejected') ||
-    message.includes('user denied');
 }

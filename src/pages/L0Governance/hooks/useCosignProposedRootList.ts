@@ -11,7 +11,6 @@ import useNetworkConfig from 'hooks/useNetworkConfig';
 import { fetchGovPubProposedRootList } from '../helpers/gov-pub-proposed-root-list';
 import {
   createGovPubProvider,
-  extractRpcErrorMessage,
   fetchSigningPayloadRootListV1WithDigest,
   rootListFromSigningPayload,
   submitTypedSignedRootList,
@@ -27,6 +26,7 @@ import { GovPubRootList } from '../helpers/types';
 
 import { useGovPubCapabilitiesContext } from './GovPubCapabilitiesContext';
 import { useAwaitingGovernanceIndexerConfirmation } from './useAwaitingGovernanceIndexerConfirmation';
+import { useL0GovernanceSubmitSigning } from './useL0GovernanceSubmitSigning';
 
 import { Bus } from 'utils/event-bus';
 
@@ -50,7 +50,12 @@ interface UseCosignProposedRootListResult {
 export function useCosignProposedRootList (): UseCosignProposedRootListResult {
   const { t } = useTranslation();
   const { rpcUrl, indexerUrl } = useNetworkConfig();
-  const { address, chainId, currentSigner, isConnected } = useWeb3Context();
+  const { chainId, isConnected } = useWeb3Context();
+  const {
+    signingAddress,
+    requireSigningSigner,
+    processSubmitError,
+  } = useL0GovernanceSubmitSigning();
 
   const {
     isRootListSigningAvailable: isGovPubAvailable,
@@ -71,7 +76,7 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
   );
 
   const hasProposed = hasProposedRootList(proposedFromIndexer);
-  const hasAlreadySignedFromIndexer = hasSignedProposedRootList(proposedFromIndexer, address);
+  const hasAlreadySignedFromIndexer = hasSignedProposedRootList(proposedFromIndexer, signingAddress);
   const hasAlreadySigned = hasAlreadySignedFromIndexer || isAwaiting;
 
   useEffect(() => {
@@ -93,8 +98,8 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
         if (isMounted) {
           setProposedFromIndexer(proposed);
 
-          if (proposed && address && chainId && hasSignedProposedRootList(proposed, address)) {
-            removePendingAttestationsForWallet(chainId, address, 'cosign-root');
+          if (proposed && signingAddress && chainId && hasSignedProposedRootList(proposed, signingAddress)) {
+            removePendingAttestationsForWallet(chainId, signingAddress, 'cosign-root');
             clearAwaiting();
             setPhase('idle');
           }
@@ -115,10 +120,10 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
     return () => {
       isMounted = false;
     };
-  }, [address, chainId, clearAwaiting, indexerUrl, isConnected]);
+  }, [chainId, clearAwaiting, indexerUrl, isConnected, signingAddress]);
 
   const cosignProposedRootList = useCallback(async () => {
-    if (!currentSigner || !govPubProvider || !address || !chainId || !indexerUrl) {
+    if (!govPubProvider || !signingAddress || !chainId || !indexerUrl) {
       ErrorHandler.process(new Error('Wallet not connected'), t('L0_COSIGN_DISCONNECTED'));
       return;
     }
@@ -135,6 +140,11 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
 
     if (hasAlreadySigned) {
       ErrorHandler.process(new Error('Already signed'), t('L0_COSIGN_ALREADY_SIGNED'));
+      return;
+    }
+
+    const signingSigner = await requireSigningSigner();
+    if (!signingSigner) {
       return;
     }
 
@@ -165,7 +175,7 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
 
       const canonicalList = rootListFromSigningPayload(payloadBundle);
       const signature = await signRootListGovernancePayload(
-        currentSigner,
+        signingSigner,
         payloadBundle,
       );
 
@@ -181,7 +191,7 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
       markAwaiting({
         attestationHash,
         action: 'cosign-root',
-        walletAddress: address,
+        walletAddress: signingAddress,
         submittedAt: Date.now(),
         listFingerprint,
       });
@@ -196,7 +206,7 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
       const { result, proposedRoot } = await refreshGovernanceStateAfterSubmit({
         chainId,
         indexerUrl,
-        walletAddress: address,
+        walletAddress: signingAddress,
         action: 'cosign-root',
         attestationHash,
         listFingerprint,
@@ -218,29 +228,23 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
       }
     } catch (error) {
       setPhase('idle');
-
-      if (isUserRejectedRequest(error)) {
-        ErrorHandler.process(error, t('L0_PROPOSE_SIGN_REJECTED'));
-        return;
-      }
-
-      const rpcMessage = extractRpcErrorMessage(error);
-      ErrorHandler.process(error, rpcMessage || t('L0_COSIGN_FAILED'));
+      processSubmitError(error, t('L0_COSIGN_FAILED'));
     } finally {
       setIsRefreshingAfterSubmit(false);
     }
   }, [
-    address,
     chainId,
     clearAwaiting,
-    currentSigner,
     govPubProvider,
     hasAlreadySigned,
     hasProposed,
     indexerUrl,
     isGovPubAvailable,
     markAwaiting,
+    processSubmitError,
     proposedFromIndexer,
+    requireSigningSigner,
+    signingAddress,
     t,
   ]);
 
@@ -255,13 +259,4 @@ export function useCosignProposedRootList (): UseCosignProposedRootListResult {
     submittedAttestationHash,
     cosignProposedRootList,
   };
-}
-
-function isUserRejectedRequest (error: unknown): boolean {
-  const candidate = error as { code?: number; message?: string };
-  const message = candidate?.message?.toLowerCase() || '';
-
-  return candidate?.code === 4001 ||
-    message.includes('user rejected') ||
-    message.includes('user denied');
 }

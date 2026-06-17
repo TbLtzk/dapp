@@ -6,7 +6,10 @@ import { media, Spinner } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import PageLayout from 'components/PageLayout';
-import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/useL0GovernanceEligibility';
+import {
+  isGovernanceOperatorEligible,
+  useL0GovernanceEligibility,
+} from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 import NotFound from 'pages/NotFound';
 
 import DashboardLink from '../../components/DashboardLink';
@@ -14,6 +17,7 @@ import { L0GovernanceActionsProvider } from '../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../RootNodesMonitoringContext';
 
 import ExclusionProposedBlock from './components/ExclusionProposedBlock';
+import L0GovernanceSigningInfo from './components/L0GovernanceSigningInfo';
 import L0ProposedBlock from './components/L0ProposedBlock';
 import OnchainActiveBlock from './components/OnchainActiveBlock';
 import RecentTransitionBlock from './components/RecentTransitionBlock';
@@ -54,21 +58,14 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function RootNodesMonitoring () {
-  const { t } = useTranslation();
+function RootNodesMonitoringGovernanceContent () {
   const {
-    isInitiallyLoaded,
-    isLoadingFailed,
     latestCosignatureMetrics,
     blockHeight,
   } = useRootNodesMonitoringContext();
-  const { rootMembersLoading } = useRootNodes();
   const l0GovernanceEligibility = useL0GovernanceEligibility();
 
-  const showGovernanceActions = (
-    l0GovernanceEligibility.status === 'eligible-root' ||
-    l0GovernanceEligibility.status === 'eligible-alias'
-  );
+  const showGovernanceActions = isGovernanceOperatorEligible(l0GovernanceEligibility.status);
 
   const connectedCosignatureStatus = useMemo(() => {
     if (!showGovernanceActions || !l0GovernanceEligibility.rootAccount) {
@@ -87,6 +84,40 @@ function RootNodesMonitoring () {
     showGovernanceActions,
   ]);
 
+  return (
+    <>
+      <div className="root-nodes-monitoring__blocks-wrap">
+        <OnchainActiveBlock
+          connectedCosignatureStatus={connectedCosignatureStatus}
+          showGovernanceActions={showGovernanceActions}
+        />
+        <L0ProposedBlock
+          connectedCosignatureStatus={connectedCosignatureStatus}
+          showGovernanceActions={showGovernanceActions}
+        />
+        <ExclusionProposedBlock
+          connectedCosignatureStatus={connectedCosignatureStatus}
+          showGovernanceActions={showGovernanceActions}
+        />
+        <RecentTransitionBlock
+          showGovernanceActions={showGovernanceActions}
+          connectedRootAccount={l0GovernanceEligibility.rootAccount}
+        />
+      </div>
+      <L0GovernanceSigningInfo />
+      <RootNodesMonitoringTable />
+    </>
+  );
+}
+
+function RootNodesMonitoring () {
+  const { t } = useTranslation();
+  const {
+    isInitiallyLoaded,
+    isLoadingFailed,
+  } = useRootNodesMonitoringContext();
+  const { rootMembersLoading } = useRootNodes();
+
   if (!isInitiallyLoaded && isLoadingFailed) {
     return <NotFound title={t('ERROR_PLEASE_TRY_AGAIN')} />;
   }
@@ -104,25 +135,7 @@ function RootNodesMonitoring () {
       <DashboardLink />
       <PageLayout title={t('ROOT_NODES_MONITORING')}>
         <L0GovernanceActionsProvider>
-          <div className="root-nodes-monitoring__blocks-wrap">
-            <OnchainActiveBlock
-              connectedCosignatureStatus={connectedCosignatureStatus}
-              showGovernanceActions={showGovernanceActions}
-            />
-            <L0ProposedBlock
-              connectedCosignatureStatus={connectedCosignatureStatus}
-              showGovernanceActions={showGovernanceActions}
-            />
-            <ExclusionProposedBlock
-              connectedCosignatureStatus={connectedCosignatureStatus}
-              showGovernanceActions={showGovernanceActions}
-            />
-            <RecentTransitionBlock
-              showGovernanceActions={showGovernanceActions}
-              connectedRootAccount={l0GovernanceEligibility.rootAccount}
-            />
-          </div>
-          <RootNodesMonitoringTable />
+          <RootNodesMonitoringGovernanceContent />
         </L0GovernanceActionsProvider>
       </PageLayout>
     </StyledWrapper>

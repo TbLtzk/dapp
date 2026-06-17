@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
+import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
 import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
-import { CosignatureStatus } from 'typings/root-nodes';
 
 import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
@@ -49,6 +50,7 @@ interface Props {
 
 function ExclusionProposedBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
+  const { status } = useL0GovernanceEligibility();
 
   const { rootNodesExclusionActive, rootNodesExclusionProposed, rootNodesL0Active } = useRootNodesMonitoringContext();
   const { cosignExclusionList } = useL0GovernanceActions();
@@ -90,6 +92,7 @@ function ExclusionProposedBlock ({ connectedCosignatureStatus, showGovernanceAct
     isLoadingProposed,
     hasProposed,
     hasAlreadySigned,
+    isSigningAddressUnavailable: status === 'signing-unavailable',
   });
 
   const { advisories: cosignAdvisories } = useL0GovernanceAdvisoryGuard('cosign-exclusion', {

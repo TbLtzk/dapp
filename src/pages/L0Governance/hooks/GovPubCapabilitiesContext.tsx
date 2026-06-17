@@ -25,6 +25,7 @@ export interface GovPubCapabilities {
   isRootListSigningAvailable: boolean | null;
   isExclusionListSigningAvailable: boolean | null;
   qgovTypedRelayVersion: number | null;
+  aliasSigningRequired: boolean | null;
   isChecking: boolean;
 }
 
@@ -38,6 +39,7 @@ const idleCapabilities: GovPubCapabilities = {
   isRootListSigningAvailable: null,
   isExclusionListSigningAvailable: null,
   qgovTypedRelayVersion: null,
+  aliasSigningRequired: null,
   isChecking: false,
 };
 
@@ -79,6 +81,7 @@ function useGovPubCapabilitiesState (): GovPubCapabilities {
     isRootListSigningAvailable: null,
     isExclusionListSigningAvailable: null,
     qgovTypedRelayVersion: null,
+    aliasSigningRequired: null,
     isChecking: false,
   });
 
@@ -95,6 +98,7 @@ function useGovPubCapabilitiesState (): GovPubCapabilities {
             isRootListSigningAvailable: null,
             isExclusionListSigningAvailable: null,
             qgovTypedRelayVersion: null,
+            aliasSigningRequired: null,
             isChecking: false,
           });
         }
@@ -116,6 +120,7 @@ function useGovPubCapabilitiesState (): GovPubCapabilities {
             isRootListSigningAvailable: next.isRootListSigningAvailable,
             isExclusionListSigningAvailable: next.isExclusionListSigningAvailable,
             qgovTypedRelayVersion: next.qgovTypedRelayVersion,
+            aliasSigningRequired: next.aliasSigningRequired,
             isChecking: false,
           });
         }
@@ -128,6 +133,7 @@ function useGovPubCapabilitiesState (): GovPubCapabilities {
             isRootListSigningAvailable: false,
             isExclusionListSigningAvailable: false,
             qgovTypedRelayVersion: null,
+            aliasSigningRequired: null,
             isChecking: false,
           });
         }

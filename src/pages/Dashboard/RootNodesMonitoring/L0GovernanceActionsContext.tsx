@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import { GovPubCapabilitiesProvider } from 'pages/L0Governance/hooks/GovPubCapabilitiesContext';
+import { L0GovernanceEligibilityProvider } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 import { useCosignProposedExclusionList } from 'pages/L0Governance/hooks/useCosignProposedExclusionList';
 import { useCosignProposedRootList } from 'pages/L0Governance/hooks/useCosignProposedRootList';
 import { useProposeOnchainPanelRootList } from 'pages/L0Governance/hooks/useProposeOnchainPanelRootList';
@@ -16,9 +17,11 @@ const L0GovernanceActionsContext = createContext<L0GovernanceActionsContextValue
 export function L0GovernanceActionsProvider ({ children }: { children: ReactNode }) {
   return (
     <GovPubCapabilitiesProvider>
-      <L0GovernanceActionsProviderInner>
-        {children}
-      </L0GovernanceActionsProviderInner>
+      <L0GovernanceEligibilityProvider>
+        <L0GovernanceActionsProviderInner>
+          {children}
+        </L0GovernanceActionsProviderInner>
+      </L0GovernanceEligibilityProvider>
     </GovPubCapabilitiesProvider>
   );
 }
