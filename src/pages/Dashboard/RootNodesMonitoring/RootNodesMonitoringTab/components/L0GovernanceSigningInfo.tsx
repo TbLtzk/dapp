@@ -4,11 +4,11 @@ import { media } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
+import { isSameAddress } from 'pages/L0Governance/helpers/l0-governance-signing';
 import {
   isGovernanceOperatorEligible,
   useL0GovernanceEligibility,
 } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
-import { isSameAddress } from 'pages/L0Governance/helpers/l0-governance-signing';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -97,11 +97,19 @@ function L0GovernanceSigningInfo () {
       <StyledAddresses>
         <StyledRow>
           <StyledLabel>{t('L0_SIGNING_ROOT_ACCOUNT')}</StyledLabel>
-          <ExplorerAddress short semibold address={rootAccount} />
+          <ExplorerAddress
+            short
+            semibold
+            address={rootAccount}
+          />
         </StyledRow>
         <StyledRow>
           <StyledLabel>{t('L0_SIGNING_REQUIRED_ADDRESS')}</StyledLabel>
-          <ExplorerAddress short semibold address={signingAddress} />
+          <ExplorerAddress
+            short
+            semibold
+            address={signingAddress}
+          />
         </StyledRow>
       </StyledAddresses>
     </StyledWrapper>
