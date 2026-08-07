@@ -1,18 +1,28 @@
 
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import ExplorerAddress from 'components/Custom/ExplorerAddress';
 import Table, { TableColumn } from 'components/Table';
 import AliasTooltip from 'components/Tooltips/AliasTooltip';
+import {
+  isGovernanceOperatorEligible,
+  L0GovernanceEligibilityStatus,
+  useL0GovernanceEligibility,
+} from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
 
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getCosignatureStatusColor } from '../helpers/cosignature-status-colors';
+import { buildMonitoringTableMembers } from '../helpers/monitoring-table-members';
 import {
   getCosignatureStats,
-  getCosignatureStatus,
   getL0ApprovalStatus,
   getL0MembershipStatus,
+  getOnchainMembershipStatus,
+  getTableCosignatureStatus,
   getVotingParticipationStats,
 } from '../helpers/table-collect-data';
 import {
@@ -20,6 +30,7 @@ import {
   cosignatureStatusSortFunc,
   l0ApprovalStatusSortFunc,
   l0MembershipStatusSortFunc,
+  onchainMembershipStatusSortFunc,
   votingParticipationStatsSortFunc,
 } from '../helpers/table-sorting';
 
@@ -27,6 +38,7 @@ import CosignatureStatsColumn from './CosignatureStatsColumn';
 import CosignatureStatusColumn from './CosignatureStatusColumn';
 import L0ApprovalStatusColumn from './L0ApprovalStatusColumn';
 import L0MembershipStatusColumn from './L0MembershipStatusColumn';
+import OnchainMembershipStatusColumn from './OnchainMembershipStatusColumn';
 import RootNodeMetricsExport from './RootNodeMetricsExport';
 import RootNodeMetricTooltip from './RootNodeMetricTooltip';
 import VotingParticipationStatsColumn from './VotingParticipationStatsColumn';
@@ -34,6 +46,8 @@ import VotingParticipationStatsColumn from './VotingParticipationStatsColumn';
 import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { formatDateRelative } from 'utils/date';
+
+const CONNECTED_ROW_CLASS = 'root-nodes-monitoring-table--connected-row';
 
 const StyledTable = styled(Table)`
   .table tr td {
@@ -43,6 +57,37 @@ const StyledTable = styled(Table)`
       padding-left: 24px;
     }
   }
+
+  .table .${CONNECTED_ROW_CLASS} {
+    background: ${({ theme }) => theme.colors.tertiaryMain};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--online {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.successMain};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--offline {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.errorMain};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--waiting-approval {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.warningSecondary};
+  }
+
+  .table .${CONNECTED_ROW_CLASS}--not-in-list {
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.colors.textAdditional};
+  }
+`;
+
+const ConnectedRowBadge = styled.span<{ $status: CosignatureStatus }>`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.buttonTextPrimary};
+  background: ${({ theme, $status }) => getCosignatureStatusColor(theme, $status)};
 `;
 
 const DateColumnWrapper = styled.div`
@@ -51,10 +96,45 @@ const DateColumnWrapper = styled.div`
   gap: 4px;
 `;
 
+const AddressColumnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+function isEligibleGovernanceVisitor (status: L0GovernanceEligibilityStatus): boolean {
+  return isGovernanceOperatorEligible(status);
+}
+
+function isConnectedRootRow (
+  row: { address: string; alias?: string },
+  rootAccount: string | null | undefined,
+  aliasAccount: string | null | undefined,
+): boolean {
+  if (!rootAccount && !aliasAccount) {
+    return false;
+  }
+
+  const rowAddress = row.address?.toLowerCase();
+  const rowAlias = row.alias?.toLowerCase();
+
+  if (rootAccount && rowAddress === rootAccount.toLowerCase()) {
+    return true;
+  }
+
+  if (aliasAccount && rowAlias === aliasAccount.toLowerCase()) {
+    return true;
+  }
+
+  return false;
+}
+
 function RootNodesMonitoringTable () {
   const { t, i18n } = useTranslation();
   const { rootMembers } = useRootNodes();
+  const l0GovernanceEligibility = useL0GovernanceEligibility();
   const {
+    rootNodesOnchainDiffList,
     rootNodesL0Active,
     rootNodesL0Proposed,
     rootNodesExclusionActive,
@@ -65,9 +145,27 @@ function RootNodesMonitoringTable () {
     qTHVotingsStats,
     votingsStats,
     proposalsStats,
+    blockHeight,
   } = useRootNodesMonitoringContext();
 
-  const rootMembersMonitoring = rootMembers.map((rootNode) => {
+  const connectedRootAccount = useMemo(() => (
+    isEligibleGovernanceVisitor(l0GovernanceEligibility.status)
+      ? l0GovernanceEligibility.rootAccount
+      : undefined
+  ), [l0GovernanceEligibility]);
+
+  const connectedAliasAccount = useMemo(() => (
+    isEligibleGovernanceVisitor(l0GovernanceEligibility.status)
+      ? l0GovernanceEligibility.aliasAccount
+      : undefined
+  ), [l0GovernanceEligibility]);
+
+  const monitoringTableMembers = useMemo(
+    () => buildMonitoringTableMembers(rootNodesOnchainDiffList, rootMembers),
+    [rootMembers, rootNodesOnchainDiffList],
+  );
+
+  const rootMembersMonitoring = monitoringTableMembers.map((rootNode) => {
     const l0MembershipStatus = getL0MembershipStatus({
       address: rootNode.address,
       rootNodesL0Active,
@@ -81,7 +179,13 @@ function RootNodesMonitoringTable () {
       rootNodesExclusionActive,
       rootNodesExclusionProposed,
     });
-    const cosignatureStatus = getCosignatureStatus(rootNode.address, latestCosignatureMetrics);
+    const cosignatureStatus = getTableCosignatureStatus(
+      l0MembershipStatus,
+      rootNode.address,
+      latestCosignatureMetrics,
+      blockHeight,
+    );
+    const onchainMembershipStatus = getOnchainMembershipStatus(rootNode.isOnchain);
     const cosignatureStats20 = getCosignatureStats(rootNode.address, cosignatureMetrics20);
     const cosignatureStats1000 = getCosignatureStats(rootNode.address, cosignatureMetrics1000);
     const votingParticipationStats = getVotingParticipationStats({
@@ -91,11 +195,19 @@ function RootNodesMonitoringTable () {
       proposalsStats,
     });
 
+    const isConnectedRow = isConnectedRootRow(
+      rootNode,
+      connectedRootAccount,
+      connectedAliasAccount,
+    );
+
     return {
       address: rootNode.address,
       alias: rootNode.alias,
+      isConnectedRow,
       date: rootNode.metric?.attributes.startTime,
       metric: rootNode.metric,
+      onchainMembershipStatus,
       cosignatureStatus,
       l0RootApprovalStatus,
       l0ExclusionApprovalStatus,
@@ -113,7 +225,7 @@ function RootNodesMonitoringTable () {
       dataField: 'address',
       text: t('ROOT_NODE_ADDRESS'),
       formatter: (cell, row) => (
-        <div style={{ display: 'flex' }}>
+        <AddressColumnWrapper>
           <ExplorerAddress
             short
             iconed
@@ -121,19 +233,32 @@ function RootNodesMonitoringTable () {
             address={cell}
           />
           <AliasTooltip isRootNode alias={row.alias} />
-        </div>
+          {row.isConnectedRow && (
+            <ConnectedRowBadge $status={row.cosignatureStatus}>
+              {t('RN_CONNECTED_ROW_BADGE')}
+            </ConnectedRowBadge>
+          )}
+        </AddressColumnWrapper>
       ),
     },
     {
-      headerStyle: () => ({ minWidth: '150px', cursor: 'pointer' }),
-      dataField: 'date',
-      text: t('JOIN_TIME'),
+      headerStyle: () => ({ minWidth: '130px', whiteSpace: 'pre-line' }),
+      dataField: 'onchainMembershipStatus',
+      text: t('ONCHAIN_MEMBERSHIP_STATUS'),
       sort: true,
-      formatter: (cell, row) => (
-        <DateColumnWrapper>
-          <span>{formatDateRelative(cell * 1000, i18n.language)}</span>
-          {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
-        </DateColumnWrapper>
+      sortFunc: onchainMembershipStatusSortFunc,
+      formatter: (cell) => (
+        <OnchainMembershipStatusColumn status={cell} />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: i18n.language === 'en-GB' ? '120px' : '180px', whiteSpace: 'pre-line', }),
+      dataField: 'cosignatureStatus',
+      text: t('CO_SIGNATURE_STATUS'),
+      sort: true,
+      sortFunc: cosignatureStatusSortFunc,
+      formatter: (cell) => (
+        <CosignatureStatusColumn status={cell} />
       ),
     },
     {
@@ -197,16 +322,6 @@ function RootNodesMonitoringTable () {
       ),
     },
     {
-      headerStyle: () => ({ minWidth: i18n.language === 'en-GB' ? '120px' : '180px', whiteSpace: 'pre-line', }),
-      dataField: 'cosignatureStatus',
-      text: t('CO_SIGNATURE_STATUS'),
-      sort: true,
-      sortFunc: cosignatureStatusSortFunc,
-      formatter: (cell) => (
-        <CosignatureStatusColumn status={cell} />
-      ),
-    },
-    {
       headerStyle: () => ({ minWidth: '160px', whiteSpace: 'pre-line', }),
       dataField: 'votingParticipationStats',
       text: t('VOTING_PARTICIPATION'),
@@ -214,6 +329,22 @@ function RootNodesMonitoringTable () {
       sortFunc: votingParticipationStatsSortFunc,
       formatter: (cell) => (
         <VotingParticipationStatsColumn stats={cell} />
+      ),
+    },
+    {
+      headerStyle: () => ({ minWidth: '150px', cursor: 'pointer' }),
+      dataField: 'date',
+      text: t('JOIN_TIME'),
+      sort: true,
+      formatter: (cell, row) => (
+        <DateColumnWrapper>
+          <span>
+            {cell != null
+              ? formatDateRelative(cell * 1000, i18n.language)
+              : '–'}
+          </span>
+          {row.metric && <RootNodeMetricTooltip metric={row.metric} />}
+        </DateColumnWrapper>
       ),
     },
   ];
@@ -227,6 +358,13 @@ function RootNodesMonitoringTable () {
       </h2>}
       emptyTableMessage={t('ROOT_NODES_LIST_EMPTY')}
       keyField="address"
+      rowClasses={(row) => {
+        if (!row.isConnectedRow) {
+          return '';
+        }
+
+        return `${CONNECTED_ROW_CLASS} ${CONNECTED_ROW_CLASS}--${row.cosignatureStatus}`;
+      }}
       searchFormatted={false}
       table={rootMembersMonitoring}
       buttons={<RootNodeMetricsExport />}

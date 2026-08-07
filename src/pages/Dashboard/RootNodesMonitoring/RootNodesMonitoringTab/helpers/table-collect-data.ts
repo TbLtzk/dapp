@@ -8,10 +8,15 @@ import {
 } from '@q-dev/q-js-sdk';
 import {
   CosignatureStats,
+  CosignatureStatus,
   L0ApprovalMap,
   L0ApprovalStatus,
-  L0MembershipStatus
+  L0MembershipStatus,
+  ObservedCosignatureStatus,
+  OnchainMembershipStatus,
 } from 'typings/root-nodes';
+
+export const COSIGNATURE_TRANSITION_BLOCK_DELTA = 10;
 
 interface L0ApprovalStatusArgs {
   address: string;
@@ -88,6 +93,10 @@ export function getL0ApprovalStatus ({
   };
 }
 
+export function getOnchainMembershipStatus (isOnchain: boolean): OnchainMembershipStatus {
+  return isOnchain ? 'member' : 'not-member';
+}
+
 export function getL0MembershipStatus ({
   address,
   rootNodesL0Active,
@@ -105,20 +114,47 @@ export function getL0MembershipStatus ({
     : 'not-in-list';
 }
 
-export function getCosignatureStatus (address: string, latestCosignatureMetrics: RootNodeMetric | null) {
+export function getCosignatureStatus (
+  address: string,
+  latestCosignatureMetrics: RootNodeMetric | null,
+  blockHeight?: number | null,
+): ObservedCosignatureStatus {
   const metrics = latestCosignatureMetrics?.byAddress.find(({ mainAccount }) =>
     mainAccount.toLocaleLowerCase() === address.toLocaleLowerCase()
   );
-  if (!metrics) return 'offline';
-  if (metrics.lastObservedApproval.block === latestCosignatureMetrics?.lastTransitionBlock) {
-    return 'online';
-  }
-  if (metrics.firstObservedApproval.block ===
-      latestCosignatureMetrics?.firstTransitionBlock) {
+  if (!metrics || !latestCosignatureMetrics) return 'offline';
+
+  const { lastTransitionBlock } = latestCosignatureMetrics;
+  const { lastObservedApproval } = metrics;
+
+  if (lastObservedApproval.block === lastTransitionBlock) return 'online';
+
+  const inActiveTransitionWindow = blockHeight != null &&
+    blockHeight - lastTransitionBlock < COSIGNATURE_TRANSITION_BLOCK_DELTA;
+
+  if (
+    inActiveTransitionWindow &&
+    lastObservedApproval.block > 0 &&
+    lastObservedApproval.block < lastTransitionBlock
+  ) {
     return 'waiting-approval';
   }
 
   return 'offline';
+}
+
+/** Table/export only: non-active L0 members are not evaluated for co-signature. */
+export function getTableCosignatureStatus (
+  l0MembershipStatus: L0MembershipStatus,
+  address: string,
+  latestCosignatureMetrics: RootNodeMetric | null,
+  blockHeight?: number | null,
+): CosignatureStatus {
+  if (l0MembershipStatus !== 'active') {
+    return 'not-in-list';
+  }
+
+  return getCosignatureStatus(address, latestCosignatureMetrics, blockHeight);
 }
 
 export function getCosignatureStats (address: string, metrics: RootNodeMetric | null): CosignatureStats | null {

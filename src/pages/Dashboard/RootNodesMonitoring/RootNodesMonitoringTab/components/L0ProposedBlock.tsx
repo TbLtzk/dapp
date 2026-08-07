@@ -3,8 +3,18 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { formatPercent } from '@q-dev/utils';
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
+import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
+import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
+import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
+
+import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+import { getActiveQuorumSigningProgress } from '../helpers/l0-quorum-signing-progress';
+
+import GovernanceActionButton from './GovernanceActionButton';
+import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 const StyledWrapper = styled.div<{
   $isEqual: boolean;
@@ -43,10 +53,26 @@ const StyledWrapper = styled.div<{
   }
 `;
 
-function L0ProposedBlock () {
+interface Props {
+  connectedCosignatureStatus: CosignatureStatus | null;
+  showGovernanceActions: boolean;
+}
+
+function L0ProposedBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
   const { t } = useTranslation();
+  const { status } = useL0GovernanceEligibility();
 
   const { rootNodesL0Active, rootNodesL0Proposed, rootNodesOnchainList } = useRootNodesMonitoringContext();
+  const { cosignRootList } = useL0GovernanceActions();
+
+  const {
+    phase: cosignPhase,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+    isRefreshingAfterSubmit,
+    cosignProposedRootList,
+  } = cosignRootList;
 
   const hasRootNodesL0ProposedList = Boolean(rootNodesL0Proposed);
 
@@ -68,13 +94,34 @@ function L0ProposedBlock () {
       );
   }, [rootNodesOnchainList, rootNodesL0Proposed]);
 
-  const signersPercentage = useMemo(() => {
-    if (rootNodesL0Proposed?.signers?.length && rootNodesL0Active?.roots.length) {
-      return rootNodesL0Proposed.signers.length * 100 / rootNodesL0Active.roots.length;
-    }
+  const quorumSigningProgress = useMemo(
+    () => getActiveQuorumSigningProgress({
+      signers: rootNodesL0Proposed?.signers ?? undefined,
+      activeRoots: rootNodesL0Active?.roots ?? undefined,
+      activeRootPercentage: rootNodesL0Proposed?.activeRootPercentage,
+    }),
+    [rootNodesL0Active, rootNodesL0Proposed],
+  );
 
-    return 0;
-  }, [rootNodesL0Proposed, rootNodesL0Active]);
+  const isCosignRunning = cosignPhase === 'running';
+
+  const cosignGuard = useL0GovernanceActionGuard('cosign-root', {
+    phase: cosignPhase,
+    isLoadingProposed,
+    hasProposed,
+    hasAlreadySigned,
+    isSigningAddressUnavailable: status === 'signing-unavailable',
+  });
+
+  const { advisories: cosignAdvisories } = useL0GovernanceAdvisoryGuard('cosign-root', {
+    connectedCosignatureStatus,
+  });
+
+  const cosignButtonLabel = (() => {
+    if (isCosignRunning) return t('L0_COSIGN_IN_PROGRESS');
+    if (cosignPhase === 'success') return t('L0_COSIGN_SUBMITTED');
+    return t('L0_COSIGN_PROPOSED_ROOT_LIST');
+  })();
 
   return (
     <StyledWrapper
@@ -89,12 +136,12 @@ function L0ProposedBlock () {
             ? (<>
               <span className="font-semibold">
                 {t('NUMBER_SIGNED', {
-                  currentCount: rootNodesL0Proposed?.signers?.length || 0,
-                  fullCount: rootNodesL0Active?.roots.length || 0
+                  currentCount: quorumSigningProgress.signedCount,
+                  fullCount: quorumSigningProgress.quorumSize,
                 })}
               </span>
               <span className="l0-proposed-block__val-percent">
-                {formatPercent(signersPercentage, 0)}
+                {formatPercent(quorumSigningProgress.percentage, 0)}
               </span>
             </>)
             : t('NO_LIST')
@@ -116,6 +163,19 @@ function L0ProposedBlock () {
           </div>
         )}
       </div>
+
+      {showGovernanceActions && (
+        <MonitoringGovernanceFooter>
+          <GovernanceActionButton
+            guard={cosignGuard}
+            advisories={cosignAdvisories}
+            loading={isCosignRunning || cosignGuard.isChecking || isRefreshingAfterSubmit}
+            onClick={cosignProposedRootList}
+          >
+            {cosignButtonLabel}
+          </GovernanceActionButton>
+        </MonitoringGovernanceFooter>
+      )}
     </StyledWrapper>
   );
 }

@@ -1,6 +1,8 @@
+export type OnchainMembershipStatus = 'member' | 'not-member';
 export type L0MembershipStatus = 'active' | 'proposed' | 'not-in-list';
 export type L0ApprovalStatus = 'all-signed' | 'not-signed' | 'not-in-list';
-export type CosignatureStatus = 'online' | 'offline' | 'waiting-approval';
+export type ObservedCosignatureStatus = 'online' | 'offline' | 'waiting-approval';
+export type CosignatureStatus = ObservedCosignatureStatus | 'not-in-list';
 export interface L0ApprovalMap {
   isRootActiveSigned: boolean;
   isRootProposedSigned: boolean;

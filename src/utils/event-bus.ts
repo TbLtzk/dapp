@@ -16,7 +16,8 @@ enum EVENTS {
   default = 'default',
 
   updateBorrowingAllowance = 'updateBorrowingAllowance',
-  updateBorrowingVault = 'updateBorrowingVault'
+  updateBorrowingVault = 'updateBorrowingVault',
+  refreshRootNodesMonitoring = 'refreshRootNodesMonitoring',
 }
 
 export class EventBus {
@@ -72,6 +73,10 @@ export class EventBus {
 
   updateBorrowingVault (payload: number): void {
     this.emit(this.eventList.updateBorrowingVault, payload);
+  }
+
+  refreshRootNodesMonitoring (): void {
+    this.emit(this.eventList.refreshRootNodesMonitoring);
   }
 }
 

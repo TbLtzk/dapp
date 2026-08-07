@@ -47,6 +47,10 @@ function Routes () {
       <LazyLoading>
         <ScrollToTop />
         <Switch>
+          <Route exact path="/dashboard/root-nodes-monitoring/l0-governance">
+            <Redirect to={RoutePaths.dashboardRootNodesMonitoring} />
+          </Route>
+
           <Route
             exact
             path={[

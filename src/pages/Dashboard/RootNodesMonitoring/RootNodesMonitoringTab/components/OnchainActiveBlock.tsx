@@ -4,18 +4,29 @@ import { Link } from 'react-router-dom';
 
 import { Icon } from '@q-dev/q-ui-kit';
 import styled from 'styled-components';
+import { CosignatureStatus } from 'typings/root-nodes';
 
 import Button from 'components/Button';
+import { useL0GovernanceEligibility } from 'pages/L0Governance/hooks/L0GovernanceEligibilityContext';
+import { useL0GovernanceActionGuard } from 'pages/L0Governance/hooks/useL0GovernanceActionGuard';
+import { useL0GovernanceAdvisoryGuard } from 'pages/L0Governance/hooks/useL0GovernanceAdvisoryGuard';
 
+import { useL0GovernanceActions } from '../../L0GovernanceActionsContext';
 import { useRootNodesMonitoringContext } from '../../RootNodesMonitoringContext';
+
+import GovernanceActionButton from './GovernanceActionButton';
+import MonitoringGovernanceFooter from './MonitoringGovernanceFooter';
 
 import { RoutePaths } from 'constants/routes';
 
 const StyledWrapper = styled.div<{$isEqual: boolean}>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 24px 16px 16px 24px;
+
+  .onchain-active-block__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .onchain-active-block__val {
     margin-top: 4px;
@@ -27,10 +38,23 @@ const StyledWrapper = styled.div<{$isEqual: boolean}>`
   }
 `;
 
-function OnchainActiveBlock () {
-  const { t } = useTranslation();
+interface Props {
+  connectedCosignatureStatus: CosignatureStatus | null;
+  showGovernanceActions: boolean;
+}
 
-  const { rootNodesOnchainDiffList } = useRootNodesMonitoringContext();
+function OnchainActiveBlock ({ connectedCosignatureStatus, showGovernanceActions }: Props) {
+  const { t } = useTranslation();
+  const { status, signingAddress } = useL0GovernanceEligibility();
+
+  const { rootNodesOnchainDiffList, rootNodesOnchainList, rootNodesL0Proposed } = useRootNodesMonitoringContext();
+  const { proposeRootList } = useL0GovernanceActions();
+
+  const {
+    phase: proposePhase,
+    isRefreshingAfterSubmit,
+    proposeFromOnchainPanel,
+  } = proposeRootList;
 
   const diffCount = useMemo(() => {
     return rootNodesOnchainDiffList
@@ -40,34 +64,69 @@ function OnchainActiveBlock () {
 
   const isEqualLists = useMemo(() => !diffCount, [diffCount]);
 
+  const isProposeRunning = proposePhase === 'running';
+
+  const proposeGuard = useL0GovernanceActionGuard('propose-root', {
+    phase: proposePhase,
+    isOnchainPanelEmpty: rootNodesOnchainList.length === 0,
+    isSigningAddressUnavailable: status === 'signing-unavailable',
+  });
+
+  const { advisories: proposeAdvisories } = useL0GovernanceAdvisoryGuard('propose-root', {
+    connectedCosignatureStatus,
+    proposedRootList: rootNodesL0Proposed,
+    walletAddress: signingAddress,
+  });
+
+  const proposeButtonLabel = (() => {
+    if (isProposeRunning) return t('L0_PROPOSE_IN_PROGRESS');
+    if (proposePhase === 'success') return t('L0_PROPOSE_SUBMITTED');
+    return t('L0_PROPOSE_FROM_ONCHAIN_PANEL');
+  })();
+
   return (
     <StyledWrapper className="block" $isEqual={isEqualLists}>
-      <div>
-        <h2 className="text-lg">{t('ONCHAIN_ACTIVE_LISTS')}</h2>
-        <p className="onchain-active-block__val text-xl font-semibold">
-          {isEqualLists ? t('EQUAL_LISTS_STATUS') : t('NOT_EQUAL_LISTS_STATUS')}
-        </p>
-        <Trans
-          className="onchain-active-block__sub-val text-sm font-light"
-          i18nKey="DIFFERENCES_COUNT"
-          parent="p"
-          values={{ count: diffCount }}
-          components={{
-            countWrapper: <span className="font-regular" />
-          }}
-        />
+      <div className="onchain-active-block__main">
+        <div>
+          <h2 className="text-lg">{t('ONCHAIN_ACTIVE_LISTS')}</h2>
+          <p className="onchain-active-block__val text-xl font-semibold">
+            {isEqualLists ? t('EQUAL_LISTS_STATUS') : t('NOT_EQUAL_LISTS_STATUS')}
+          </p>
+          <Trans
+            className="onchain-active-block__sub-val text-sm font-light"
+            i18nKey="DIFFERENCES_COUNT"
+            parent="p"
+            values={{ count: diffCount }}
+            components={{
+              countWrapper: <span className="font-regular" />
+            }}
+          />
+        </div>
+
+        <Link to={RoutePaths.dashboardRootNodesMonitoringOnchainActiveDifference}>
+          <Button
+            icon
+            alwaysEnabled
+            block
+            look="ghost"
+          >
+            <Icon name="chevron-right" />
+          </Button>
+        </Link>
       </div>
 
-      <Link to={RoutePaths.dashboardRootNodesMonitoringOnchainActiveDifference}>
-        <Button
-          icon
-          alwaysEnabled
-          block
-          look="ghost"
-        >
-          <Icon name="chevron-right" />
-        </Button>
-      </Link>
+      {showGovernanceActions && (
+        <MonitoringGovernanceFooter>
+          <GovernanceActionButton
+            guard={proposeGuard}
+            advisories={proposeAdvisories}
+            loading={isProposeRunning || proposeGuard.isChecking || isRefreshingAfterSubmit}
+            onClick={proposeFromOnchainPanel}
+          >
+            {proposeButtonLabel}
+          </GovernanceActionButton>
+        </MonitoringGovernanceFooter>
+      )}
     </StyledWrapper>
   );
 }

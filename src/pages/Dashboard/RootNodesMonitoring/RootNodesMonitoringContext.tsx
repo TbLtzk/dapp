@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 import {
   L0ExclusionListItem,
@@ -24,6 +24,8 @@ import { useRootNodes } from 'store/root-nodes/hooks';
 
 import { getRootNodesInstance } from 'contracts/contract-instance';
 import { fetchBlockNumber } from 'contracts/helpers/block-number';
+
+import { Bus } from 'utils/event-bus';
 
 const SECONDS_IN_HALF_YEAR = 182.625 * 24 * 60 * 60;
 const SECONDS_PER_BLOCK = 5;
@@ -159,6 +161,18 @@ function RootNodesMonitoringContextProvider ({ children }: Props) {
       setIsLoadingFailed(true);
     }
   }, [indexerUrl, isInitiallyLoaded, isLoadingFailed]);
+
+  useEffect(() => {
+    const refreshMonitoring = () => {
+      loadRootNodesMonitoringData();
+    };
+
+    Bus.on(Bus.eventList.refreshRootNodesMonitoring, refreshMonitoring);
+
+    return () => {
+      Bus.off(Bus.eventList.refreshRootNodesMonitoring, refreshMonitoring);
+    };
+  }, [loadRootNodesMonitoringData]);
 
   useInterval(loadRootNodesMonitoringData, 30000, { immediate: true });
 
